@@ -26,6 +26,12 @@
   _tmp;                        \
 })
 
+typedef struct file_info {
+  char file_type[12];
+  uint32_t version;
+  uint32_t file_size;
+} file_info_t;
+
 typedef struct corridor_path {
   heap_node_t *hn;
   uint8_t pos[2];
@@ -678,6 +684,25 @@ int gen_dungeon(dungeon_t *d)
   return 0;
 }
 
+int load_dungeon(dungeon_t *d)
+{
+  char *path = (char*)malloc(4096*sizeof(char));
+  path = getenv("PWD");
+  strcat(path,"/rlg327/dungeon");
+  FILE *file;
+  file = fopen(path,"r");
+
+  fseek(file,SEEK_END,SEEK_SET);
+  int len = ftell(file);
+  char buff[len];
+  fread(buff,len,1,file);
+  
+
+
+  free(path);
+  return 0;
+}
+
 void render_dungeon(dungeon_t *d)
 {
   pair_t p;
@@ -723,27 +748,50 @@ void init_dungeon(dungeon_t *d)
   empty_dungeon(d);
 }
 
+int save_dungeon(dungeon_t *d)
+{
+ 
+  return 0;
+}
+
 int main(int argc, char *argv[])
 {
   dungeon_t d;
   struct timeval tv;
-  uint32_t seed;
+  uint32_t seed = 0;
+  int load = 0;
+  int save = 0;
 
   UNUSED(in_room);
 
-  if (argc == 2) {
-    seed = atoi(argv[1]);
-  } else {
+  for (int i = 1; i < argc; i++)
+    {
+      if (!strcmp(argv[i],"--save")) { save=1;}
+      else if (!strcmp(argv[i],"--load")){load=1;}
+      else {seed=atoi(argv[i]);}
+    }
+ 
+
+   if (!seed)
+  {
     gettimeofday(&tv, NULL);
     seed = (tv.tv_usec ^ (tv.tv_sec << 20)) & 0xffffffff;
   }
-
-  printf("Using seed: %u\n", seed);
+  
   srand(seed);
 
+  printf("Load: %d",load);
+  printf("Save: %d",save);
+
   init_dungeon(&d);
-  gen_dungeon(&d);
+  if (load){
+    load_dungeon(&d);
+      }
+  else {
+    gen_dungeon(&d);
+  }
   render_dungeon(&d);
+  if (save) {save_dungeon(&d);}
   delete_dungeon(&d);
 
   return 0;
