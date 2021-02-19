@@ -811,9 +811,10 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
     fread(&x, 1, 1, file);
     fread(&y, 1, 1, file);
 
+    
     d->stairs[i].position[dim_x] = x;
     d->stairs[i].position[dim_y] = y;
-    d->stairs[i].up_down = 1;
+    //d->stairs[i].up_down = 1;
     
     mapxy(x, y) = ter_stairs_up;
   }
@@ -829,9 +830,10 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
     fread(&x, 1, 1, file);
     fread(&y, 1, 1, file);
 
+    
     d->stairs[i].position[dim_x] = x;
     d->stairs[i].position[dim_y] = y;
-    d->stairs[i].up_down = 0;
+    //d->stairs[i].up_down = 0;
     
     mapxy(x, y) = ter_stairs_down;
   }
@@ -861,7 +863,7 @@ void render_dungeon(dungeon_t *d)
         break;
       case ter_debug:
         putchar('*');
-        fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
+        //fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
         break;
       case ter_stairs_up:
         putchar('<');
@@ -963,13 +965,6 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
       fwrite(&d->stairs[i].position[dim_y],1,1,file);
       }
     }
- 
-
-  
-  
-
-
-  
   printf("version: %i",pc.x);
   
   return 0;
