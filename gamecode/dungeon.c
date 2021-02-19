@@ -30,7 +30,7 @@ typedef struct file_info {
   char file_type[12];
   uint32_t version;
   uint32_t file_size;
-} file_info_t;
+} file_info_f;
 
 struct pc {
   int8_t x, y;
@@ -74,7 +74,8 @@ typedef enum __attribute__ ((__packed__)) terrain_type {
   ter_floor_hall,
   ter_stairs,
   ter_stairs_up,
-  ter_stairs_down
+  ter_stairs_down,
+  ter_pc
 } terrain_type_t;
 
 typedef struct room {
@@ -95,6 +96,8 @@ typedef struct dungeon {
    * and pulling in unnecessary data with each map cell would add a lot   *
    * of overhead to the memory system.                                    */
   uint8_t hardness[DUNGEON_Y][DUNGEON_X];
+  uint16_t stairs_up;
+  uint16_t stairs_down;
 } dungeon_t;
 
 static uint32_t in_room(dungeon_t *d, int16_t y, int16_t x)
@@ -675,6 +678,20 @@ static int make_rooms(dungeon_t *d)
   return 0;
 }
 
+static void place_pc(dungeon_t *d)
+{
+  int loop = 1;
+  while(loop){
+    int x = rand() % DUNGEON_X;
+    int y = rand() % DUNGEON_Y;
+
+    if(d->map[y][x] == ter_floor_room){
+      mapxy(x, y) = ter_pc;
+      loop = 0;
+    }
+  }
+}
+
 int gen_dungeon(dungeon_t *d)
 {
   empty_dungeon(d);
@@ -684,6 +701,7 @@ int gen_dungeon(dungeon_t *d)
   } while (place_rooms(d));
   connect_rooms(d);
   place_stairs(d);
+  place_pc(d);
 
   return 0;
 }
@@ -696,28 +714,92 @@ int load_dungeon(dungeon_t *d)
 
   char *path = malloc(strlen(home) + strlen(game_dir) + strlen(save_file) + 3);
   sprintf(path,"%s/%s/%s", home, game_dir, save_file);
-  printf("%s\n", path);
   FILE *file = fopen(path,"r");
 
-   char semantic[13];
+  char semantic[13];
   semantic[12] = '\0';
   fread(semantic, 1, 12, file);
 
-  printf("%s\n", semantic);
-
+  if(strcmp(semantic, "RLG327-S2021")){
+    return 0;
+  }
+  
   int version;
   fread(&version, 4, 1, file);
   version = be32toh(version);
-
-  printf("%d\n", version);
+  //file_info_f->version = version;
   
   int size;
   fread(&size, 4, 1, file);
   size = be32toh(size);
-
-  printf("%d\n", size);
+  //file_info_f->size = size;
   
-  return 0;
+  fread(&pc.x, 1, 1, file);
+  fread(&pc.y, 1, 1, file);
+
+  fread(d->hardness, 1, 1680, file);
+
+  fread(&d->num_rooms, 2, 1, file);
+  d->num_rooms = be16toh(d->num_rooms);
+
+  for(int i = 0; i < d->num_rooms; ++i)
+  {
+    uint8_t x;
+    uint8_t y;
+    uint8_t width;
+    uint8_t height;
+
+    fread(&x, 1, 1, file);
+    fread(&y, 1, 1, file);
+    fread(&width, 1, 1, file);
+    fread(&height, 1, 1, file);
+
+    for(int j = y; j < y + height; ++j){
+      for(int k = x; k < x + width; ++k){
+	mapxy(k, j) = ter_floor_room;
+      }
+    }
+  }
+
+  for(int i = 0; i < DUNGEON_Y; i++){
+    for(int j = 0; j < DUNGEON_X; j++){
+      if((d->hardness[i][j] == 0) && (d->map[i][j] != ter_floor_room)){
+	mapxy(j, i) = ter_floor_hall;
+      }
+    }
+  }
+
+  fread(&d->stairs_up, 2, 1, file);
+  d->stairs_up = be16toh(d->stairs_up);
+
+  for(int i = 0; i < d->stairs_up; ++i)
+  {
+    uint8_t x;
+    uint8_t y;
+
+    fread(&x, 1, 1, file);
+    fread(&y, 1, 1, file);
+
+    mapxy(x, y) = ter_stairs_up;
+  }
+
+  fread(&d->stairs_down, 2, 1, file);
+  d->stairs_down = be16toh(d->stairs_down);
+
+  for(int i = 0; i < d->stairs_down; ++i)
+  {
+    uint8_t x;
+    uint8_t y;
+
+    fread(&x, 1, 1, file);
+    fread(&y, 1, 1, file);
+
+    mapxy(x, y) = ter_stairs_down;
+  }
+  
+  mapxy(pc.x, pc.y) = ter_pc;
+
+  return 1;
 }
 
 void render_dungeon(dungeon_t *d)
@@ -748,6 +830,9 @@ void render_dungeon(dungeon_t *d)
       case ter_stairs_down:
         putchar('>');
         break;
+      case ter_pc:
+	putchar('@');
+	break;
       default:
         break;
       }
@@ -767,23 +852,6 @@ void init_dungeon(dungeon_t *d)
 
 int save_dungeon(dungeon_t *d)
 {
-  char *home = getenv("HOME");
-  char *game_dir = ".rlg327";
-  char *save_file = "dungeon";
-
-  char *path = malloc(strlen(home) + strlen(game_dir) + strlen(save_file) + 3);
-  sprintf(path,"%s/%s/%s", home, game_dir, save_file);
-  printf("%s", path);
-  FILE *file = fopen(path,"w");
-
-  char semantic[13];
-  semantic[12] = '\0';
-  fwrite(semantic, 1, 12, file);
-
-  printf("%s\n", semantic);
-
-  
-  
   return 0;
 }
 
@@ -812,9 +880,6 @@ int main(int argc, char *argv[])
   }
   
   srand(seed);
-
-  printf("Load: %d",load);
-  printf("Save: %d",save);
 
   init_dungeon(&d);
   if (load){
