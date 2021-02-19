@@ -83,6 +83,7 @@ typedef struct room {
   pair_t position;
   pair_t size;
 } room_t;
+
 typedef struct stair{
   pair_t position;
   //down=0 up =1
@@ -704,11 +705,11 @@ static void place_pc(dungeon_t *d)
 {
   int loop = 1;
   while(loop){
-    int x = rand() % DUNGEON_X;
-    int y = rand() % DUNGEON_Y;
+    pc.x = rand() % DUNGEON_X;
+    pc.y = rand() % DUNGEON_Y;
 
-    if(d->map[y][x] == ter_floor_room){
-      mapxy(x, y) = ter_pc;
+    if(d->map[pc.y][pc.x] == ter_floor_room){
+      mapxy(pc.x, pc.y) = ter_pc;
       loop = 0;
     }
   }
@@ -773,6 +774,11 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
     fread(&width, 1, 1, file);
     fread(&height, 1, 1, file);
 
+    d->rooms[i].position[dim_x] = x;
+    d->rooms[i].position[dim_y] = y;
+    d->rooms[i].size[dim_x] = width;
+    d->rooms[i].size[dim_y] = height;
+
     for(int j = y; j < y + height; ++j){
       for(int k = x; k < x + width; ++k){
 	mapxy(k, j) = ter_floor_room;
@@ -799,6 +805,10 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
     fread(&x, 1, 1, file);
     fread(&y, 1, 1, file);
 
+    d->stairs[i].position[dim_x] = x;
+    d->stairs[i].position[dim_y] = y;
+    d->stairs[i].up_down = 1;
+    
     mapxy(x, y) = ter_stairs_up;
   }
 
@@ -813,6 +823,10 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
     fread(&x, 1, 1, file);
     fread(&y, 1, 1, file);
 
+    d->stairs[i].position[dim_x] = x;
+    d->stairs[i].position[dim_y] = y;
+    d->stairs[i].up_down = 0;
+    
     mapxy(x, y) = ter_stairs_down;
   }
   
@@ -930,13 +944,16 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
     }
 printf(" print rooms ");
 
+ int stairs_up2 = d->stairs_up;
+ int stairs_down2 = d-> stairs_down;
   d->stairs_up = htobe16(d->stairs_up);
   fwrite(&d->stairs_up,2,1,file);
-  for (int i =0; i <(d->stairs_up+d->stairs_down);i++)
+  for (int i =0; i <(stairs_up2+stairs_down2);i++)
     {
       //write only the up stairs
       if (d->stairs->up_down){
       fwrite(&d->stairs->position[dim_x],1,1,file);
+      fwrite(&d->stairs->position[dim_y],1,1,file);
       }
     }
   d->stairs_down = htobe16(d->stairs_down);
@@ -945,7 +962,8 @@ printf(" print rooms ");
     {
       //write only the down stairs
       if (!d->stairs->up_down){
-      fwrite(&d->stairs->position[dim_x],2,1,file);
+      fwrite(&d->stairs->position[dim_x],1,1,file);
+      fwrite(&d->stairs->position[dim_y],1,1,file);
       }
     }
   
