@@ -691,7 +691,6 @@ static int make_rooms(dungeon_t *d)
   for (i = MIN_ROOMS; i < MAX_ROOMS && rand_under(5, 8); i++)
     ;
   d->num_rooms = i;
-  printf("numrooms:%i",d->num_rooms);
 
   for (i = 0; i < d->num_rooms; i++) {
     d->rooms[i].size[dim_x] = ROOM_MIN_X;
@@ -752,19 +751,19 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
     return -1;
   }
   
-
+  //version
   fread(&f->version, 4, 1, file);
   f->version = be32toh(f->version);
-  
+  //file size
   fread(&f->file_size, 4, 1, file);
   f->file_size = be32toh(f->file_size);
 
-  
+  //pc location
   fread(&pc.x, 1, 1, file);
   fread(&pc.y, 1, 1, file);
-
+  //hardness
   fread(d->hardness, 1, 1680, file);
-
+  //rooms
   fread(&d->num_rooms, 2, 1, file);
   d->num_rooms = be16toh(d->num_rooms);
 
@@ -799,11 +798,14 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
       }
     }
   }
-
+  //stairs
   fread(&d->stairs_up, 2, 1, file);
   d->stairs_up = be16toh(d->stairs_up);
 
-  for(int i = 0; i < d->stairs_up; ++i)
+  
+
+  int i;
+  for(i = 0; i < d->stairs_up; ++i)
   {
     uint8_t x;
     uint8_t y;
@@ -818,11 +820,10 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
     
     mapxy(x, y) = ter_stairs_up;
   }
-
+  
   fread(&d->stairs_down, 2, 1, file);
   d->stairs_down = be16toh(d->stairs_down);
-
-  for(int i = 0; i < d->stairs_down; ++i)
+  for(i = d->stairs_up; i < d->stairs_down+d->stairs_up; ++i)
   {
     uint8_t x;
     uint8_t y;
@@ -837,9 +838,7 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
     
     mapxy(x, y) = ter_stairs_down;
   }
-  
   mapxy(pc.x, pc.y) = ter_pc;
-
   return 0;
 }
 
@@ -905,7 +904,6 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
   sprintf(path,"%s/%s/%s", home, game_dir, save_file);
   FILE *file = fopen(path,"w");
   free(path);
-  
   fwrite(f->file_type, 1, 12, file);
    f->version = htobe32(f->version);
   fwrite(&f->version,4,1,file);
@@ -948,7 +946,7 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
   for (int i =0; i <(stairs_up2+stairs_down2);i++)
     {
       //write only the up stairs
-      if (d->stairs->up_down){
+      if (d->stairs[i].up_down){
 
       fwrite(&d->stairs[i].position[dim_x],1,1,file);
       fwrite(&d->stairs[i].position[dim_y],1,1,file);
@@ -960,13 +958,11 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
   for (int i =0; i <(stairs_up2+stairs_down2);i++)
     {
       //write only the down stairs
-      if (!d->stairs->up_down){
+      if (!d->stairs[i].up_down){
       fwrite(&d->stairs[i].position[dim_x],1,1,file);
       fwrite(&d->stairs[i].position[dim_y],1,1,file);
       }
     }
-  printf("version: %i",pc.x);
-  
   return 0;
 }
 
