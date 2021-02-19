@@ -739,23 +739,19 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
   FILE *file = fopen(path,"r");
   free(path);
 
-  char semantic[13];
-  semantic[12] = '\0';
-  fread(semantic, 1, 12, file);
+  fread(f->file_type, 1, 12, file);
 
-  if(strcmp(semantic, "RLG327-S2021")){
+  if(strcmp(f->file_type, "RLG327-S2021")){
     return -1;
   }
   
-  int version;
-  fread(&version, 4, 1, file);
-  version = be32toh(version);
-  f->version = version;
+
+  fread(&f->version, 4, 1, file);
+  f->version = be32toh(f->version);
   
-  int size;
-  fread(&size, 4, 1, file);
-  size = be32toh(size);
-  f->file_size = size;
+  fread(&f->file_size, 4, 1, file);
+  f->file_size = be32toh(f->file_size);
+
   
   fread(&pc.x, 1, 1, file);
   fread(&pc.y, 1, 1, file);
