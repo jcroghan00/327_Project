@@ -1,1 +1,17 @@
-Basic README file
+Jack Croghan   jcroghan@iastate.edu
+Ryan Tullis    rctullis@iastate.edu
+
+     Assignment-1.02 is the first assignment I've worked with a partner on.
+We decided that it would be best to use the instructor's code posted on
+piazza to get started on code we knew we could expand upon.
+     We started by allowing the program to use switches to determine whether
+or not a file was to be loaded or saved. We chose to use "--load" and
+"--save" respectively.
+     The first new function that was started was the load_dungeon function.
+The load dungeon function is able to load a binary file from the user's home
+directory and translate it into a usable dungeon by the program.
+    The other new fucntion is save_dungeon. The save_dungeon function saves
+the currently generated dungeon to a binary file in the user's home directory.
+    The ability to randomly generate the player characters position was also
+added for this assignment as well as the apility to print the playable
+charachter to the console.
