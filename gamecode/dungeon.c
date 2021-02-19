@@ -644,6 +644,12 @@ static void place_stairs(dungeon_t *d)
   pair_t p;
   int i = 0;
   stair_t *s;
+  
+  // this is very needed. i don't know why, its very late and i just want
+  // to sleep
+  d->stairs_up = 0;
+  
+  
   do {
     while ((p[dim_y] = rand_range(1, DUNGEON_Y - 2)) &&
            (p[dim_x] = rand_range(1, DUNGEON_X - 2)) &&
@@ -704,11 +710,11 @@ static void place_pc(dungeon_t *d)
 {
   int loop = 1;
   while(loop){
-    int x = rand() % DUNGEON_X;
-    int y = rand() % DUNGEON_Y;
+    pc.x = rand() % DUNGEON_X;
+    pc.y = rand() % DUNGEON_Y;
 
-    if(d->map[y][x] == ter_floor_room){
-      mapxy(x, y) = ter_pc;
+    if(d->map[pc.y][pc.x] == ter_floor_room){
+      mapxy(pc.x, pc.y) = ter_pc;
       loop = 0;
     }
   }
@@ -871,37 +877,30 @@ void init_dungeon(dungeon_t *d)
 
 int save_dungeon(dungeon_t *d, file_info_t *f)
 {
-  printf("start");
+ 
   char *home = getenv("HOME");
   char *game_dir = ".rlg327";
   char *save_file = "dungeon";
   sprintf(f->file_type,"RLG327-S2021");
   f->version = htobe32(0);
   f->file_size = 1704+(d->num_rooms*4)+((d->stairs_up+d->stairs_down)*2);
-  printf("FILE_SIZE:%i",f->file_size);
   
   char *path = malloc(strlen(home) + strlen(game_dir) + strlen(save_file) + 3);
   sprintf(path,"%s/%s/%s", home, game_dir, save_file);
   FILE *file = fopen(path,"w");
   free(path);
-  printf("\ncursor:%li\n",ftell(file));
+  
   fwrite(f->file_type, 1, 12, file);
-  printf(" file type ");
-  printf("cursor:%li\n",ftell(file));
    f->version = htobe32(f->version);
   fwrite(&f->version,4,1,file);
-  printf(" file version ");
-  printf("cursor:%li\n",ftell(file));
   f->file_size = htobe32(f->file_size);
   fwrite(&f->file_size,4,1,file);
-  printf("file size");
-  printf("cursor:%li\n",ftell(file));
+ 
   
   
   fwrite(&pc.x,1,1,file);
   fwrite(&pc.y,1,1,file);
-  printf(" pc location ");
-  printf("cursor:%li\n",ftell(file));
+
   
   for (int i=0; i<DUNGEON_Y;i++)
     {
@@ -910,16 +909,11 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
 	  fwrite(&d->hardness[i][j],1,1,file);
 	}
     }
-    printf(" Hardnesses ");
-    
-    printf("cursor:%li\n",ftell(file));
-    printf("num rooms:%i",d->num_rooms);
-    int tempnumrooms = d->num_rooms;
+
+
+  int tempnumrooms = d->num_rooms;
   d->num_rooms = htobe16(d->num_rooms);
   fwrite(&d->num_rooms,2,1,file);
-  
-  printf("cursor:%li\n",ftell(file));
-  
   
   for (int i=0; i <tempnumrooms;i++)
     {
@@ -928,26 +922,34 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
         fwrite(&d->rooms[i].size[dim_x],1,1,file);
         fwrite(&d->rooms[i].size[dim_y],1,1,file);
     }
-printf(" print rooms ");
 
+//im sorry
+ int stairs_up2 = d->stairs_up;
+ int stairs_down2 = d->stairs_down;
+ 
   d->stairs_up = htobe16(d->stairs_up);
   fwrite(&d->stairs_up,2,1,file);
-  for (int i =0; i <(d->stairs_up+d->stairs_down);i++)
+  for (int i =0; i <(stairs_up2+stairs_down2);i++)
     {
       //write only the up stairs
       if (d->stairs->up_down){
-      fwrite(&d->stairs->position[dim_x],1,1,file);
+      fwrite(&d->stairs[i].position[dim_x],1,1,file);
+      fwrite(&d->stairs[i].position[dim_y],1,1,file);
       }
     }
+  
   d->stairs_down = htobe16(d->stairs_down);
   fwrite(&d->stairs_down,2,1,file);
-  for (int i =0; i <(d->stairs_up+d->stairs_down);i++)
+  for (int i =0; i <(stairs_up2+stairs_down2);i++)
     {
       //write only the down stairs
       if (!d->stairs->up_down){
-      fwrite(&d->stairs->position[dim_x],2,1,file);
+      fwrite(&d->stairs[i].position[dim_x],1,1,file);
+      fwrite(&d->stairs[i].position[dim_y],1,1,file);
       }
     }
+ 
+
   
   
 
