@@ -30,7 +30,7 @@ typedef struct file_info {
   char file_type[13];
   uint32_t version;
   uint32_t file_size;
-} file_info_f;
+} file_info_t;
 
  struct pc {
   int8_t x, y;
@@ -707,7 +707,7 @@ int gen_dungeon(dungeon_t *d)
   return 0;
 }
 
-int load_dungeon(dungeon_t *d)
+int load_dungeon(dungeon_t *d, file_info_t *f)
 {
   char *home = getenv("HOME");
   char *game_dir = ".rlg327";
@@ -717,23 +717,17 @@ int load_dungeon(dungeon_t *d)
   sprintf(path,"%s/%s/%s", home, game_dir, save_file);
   FILE *file = fopen(path,"r");
 
-  char semantic[13];
-  semantic[12] = '\0';
-  fread(semantic, 1, 12, file);
+  fread(f->file_type, 1, 12, file);
 
-  if(strcmp(semantic, "RLG327-S2021")){
+  if(strcmp(f->file_type, "RLG327-S2021")){
     return 0;
   }
   
-  int version;
-  fread(&version, 4, 1, file);
-  version = be32toh(version);
-  //file_info_f->version = version;
+  fread(&f->version, 4, 1, file);
+  f->version = be32toh(f->version);
   
-  int size;
-  fread(&size, 4, 1, file);
-  size = be32toh(size);
-  //file_info_f->size = size;
+  fread(&f->file_size, 4, 1, file);
+  f->file_size = be32toh(f->file_size);
   
   fread(&pc.x, 1, 1, file);
   fread(&pc.y, 1, 1, file);
@@ -853,6 +847,7 @@ void init_dungeon(dungeon_t *d)
 
 int save_dungeon(dungeon_t *d, file_info_t *f)
 {
+  
 <<<<<<< HEAD
 =======
   char *home = getenv("HOME");
@@ -893,9 +888,6 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
   
   printf("version: %i",pc.x);
 
-  
-  
->>>>>>> ec4c6fc72a90829578cfdc91e3489f45048c8851
   return 0;
 }
 
@@ -928,7 +920,7 @@ int main(int argc, char *argv[])
 
   init_dungeon(&d);
   if (load){
-    load_dungeon(&d);
+    load_dungeon(&d, &f);
       }
   else {
     gen_dungeon(&d);
