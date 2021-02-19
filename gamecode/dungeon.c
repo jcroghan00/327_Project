@@ -642,6 +642,7 @@ static int place_rooms(dungeon_t *d)
 static void place_stairs(dungeon_t *d)
 {
   pair_t p;
+  int i = 0;
   stair_t *s;
   do {
     while ((p[dim_y] = rand_range(1, DUNGEON_Y - 2)) &&
@@ -649,8 +650,9 @@ static void place_stairs(dungeon_t *d)
            ((mappair(p) < ter_floor)                 ||
             (mappair(p) > ter_stairs)))
       ;
-    s = d->stairs + d->stairs_down;
+    s = d->stairs + i;
     d->stairs_down = d->stairs_down +1;
+    i++;
     s->position[dim_y] = p[dim_y];
     s->position[dim_x] = p[dim_x];
     s->up_down = 0;
@@ -663,11 +665,12 @@ static void place_stairs(dungeon_t *d)
             (mappair(p) > ter_stairs)))
       
       ;
-    s = d->stairs + d->stairs_up;
+    s = d->stairs + i;
     d->stairs_up = d->stairs_up +1;
+    i++;
     s->position[dim_y] = p[dim_y];
     s->position[dim_x] = p[dim_x];
-    s->up_down = 0;
+    s->up_down = 1;
     mappair(p) = ter_stairs_up;
   } while (rand_under(2, 4));
 }
@@ -681,6 +684,7 @@ static int make_rooms(dungeon_t *d)
   for (i = MIN_ROOMS; i < MAX_ROOMS && rand_under(5, 8); i++)
     ;
   d->num_rooms = i;
+  printf("numrooms:%i",d->num_rooms);
 
   for (i = 0; i < d->num_rooms; i++) {
     d->rooms[i].size[dim_x] = ROOM_MIN_X;
@@ -724,7 +728,7 @@ int gen_dungeon(dungeon_t *d)
   return 0;
 }
 
-int load_dungeon(dungeon_t *d)
+int load_dungeon(dungeon_t *d, file_info_t *f)
 {
   char *home = getenv("HOME");
   char *game_dir = ".rlg327";
@@ -733,6 +737,7 @@ int load_dungeon(dungeon_t *d)
   char *path = malloc(strlen(home) + strlen(game_dir) + strlen(save_file) + 3);
   sprintf(path,"%s/%s/%s", home, game_dir, save_file);
   FILE *file = fopen(path,"r");
+  free(path);
 
   char semantic[13];
   semantic[12] = '\0';
@@ -745,12 +750,12 @@ int load_dungeon(dungeon_t *d)
   int version;
   fread(&version, 4, 1, file);
   version = be32toh(version);
-  //file_info_f->version = version;
+  f->version = version;
   
   int size;
   fread(&size, 4, 1, file);
   size = be32toh(size);
-  //file_info_f->size = size;
+  f->file_size = size;
   
   fread(&pc.x, 1, 1, file);
   fread(&pc.y, 1, 1, file);
@@ -870,23 +875,38 @@ void init_dungeon(dungeon_t *d)
 
 int save_dungeon(dungeon_t *d, file_info_t *f)
 {
+  printf("start");
   char *home = getenv("HOME");
   char *game_dir = ".rlg327";
   char *save_file = "dungeon";
   sprintf(f->file_type,"RLG327-S2021");
   f->version = htobe32(0);
   f->file_size = 1704+(d->num_rooms*4)+((d->stairs_up+d->stairs_down)*2);
-
+  printf("FILE_SIZE:%i",f->file_size);
+  
   char *path = malloc(strlen(home) + strlen(game_dir) + strlen(save_file) + 3);
   sprintf(path,"%s/%s/%s", home, game_dir, save_file);
   FILE *file = fopen(path,"w");
+  free(path);
+  printf("\ncursor:%li\n",ftell(file));
   fwrite(f->file_type, 1, 12, file);
-  f->version = htobe32(f->version);
+  printf(" file type ");
+  printf("cursor:%li\n",ftell(file));
+   f->version = htobe32(f->version);
   fwrite(&f->version,4,1,file);
+  printf(" file version ");
+  printf("cursor:%li\n",ftell(file));
   f->file_size = htobe32(f->file_size);
   fwrite(&f->file_size,4,1,file);
-  fwrite(&pc.x,2,1,file);
-  fwrite(&pc.y,2,1,file);
+  printf("file size");
+  printf("cursor:%li\n",ftell(file));
+  
+  
+  fwrite(&pc.x,1,1,file);
+  fwrite(&pc.y,1,1,file);
+  printf(" pc location ");
+  printf("cursor:%li\n",ftell(file));
+  
   for (int i=0; i<DUNGEON_Y;i++)
     {
       for(int j=0; j<DUNGEON_X;j++)
@@ -894,15 +914,26 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
 	  fwrite(&d->hardness[i][j],1,1,file);
 	}
     }
+    printf(" Hardnesses ");
+    
+    printf("cursor:%li\n",ftell(file));
+    printf("num rooms:%i",d->num_rooms);
+    int tempnumrooms = d->num_rooms;
   d->num_rooms = htobe16(d->num_rooms);
   fwrite(&d->num_rooms,2,1,file);
-  for (int i=0; i < d->num_rooms;i++)
+  
+  printf("cursor:%li\n",ftell(file));
+  
+  
+  for (int i=0; i <tempnumrooms;i++)
     {
-      fwrite(&d->rooms[i].position[dim_x],4,1,file);
-      fwrite(&d->rooms[i].position[dim_y],4,1,file);
-      fwrite(&d->rooms[i].size[dim_x],4,1,file);
-      fwrite(&d->rooms[i].size[dim_y],4,1,file);
+        fwrite(&d->rooms[i].position[dim_x],1,1,file);
+        fwrite(&d->rooms[i].position[dim_y],1,1,file);
+        fwrite(&d->rooms[i].size[dim_x],1,1,file);
+        fwrite(&d->rooms[i].size[dim_y],1,1,file);
     }
+printf(" print rooms ");
+
   d->stairs_up = htobe16(d->stairs_up);
   fwrite(&d->stairs_up,2,1,file);
   for (int i =0; i <(d->stairs_up+d->stairs_down);i++)
@@ -922,11 +953,12 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
       }
     }
   
+  
 
 
   
   printf("version: %i",pc.x);
-
+  
   return 0;
 }
 
@@ -959,7 +991,7 @@ int main(int argc, char *argv[])
 
   init_dungeon(&d);
   if (load){
-    load_dungeon(&d);
+    load_dungeon(&d, &f);
       }
   else {
     gen_dungeon(&d);
