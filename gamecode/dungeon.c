@@ -32,6 +32,10 @@ typedef struct file_info {
   uint32_t file_size;
 } file_info_t;
 
+struct pc {
+  int8_t x, y;
+} pc;
+
 typedef struct corridor_path {
   heap_node_t *hn;
   uint8_t pos[2];
@@ -686,20 +690,33 @@ int gen_dungeon(dungeon_t *d)
 
 int load_dungeon(dungeon_t *d)
 {
-  char *path = (char*)malloc(4096*sizeof(char));
-  path = getenv("PWD");
-  strcat(path,"/rlg327/dungeon");
-  FILE *file;
-  file = fopen(path,"r");
+  char *home = getenv("HOME");
+  char *game_dir = ".rlg327";
+  char *save_file = "dungeon";
 
-  fseek(file,SEEK_END,SEEK_SET);
-  int len = ftell(file);
-  char buff[len];
-  fread(buff,len,1,file);
+  char *path = malloc(strlen(home) + strlen(game_dir) + strlen(save_file) + 3);
+  sprintf(path,"%s/%s/%s", home, game_dir, save_file);
+  printf("%s\n", path);
+  FILE *file = fopen(path,"r");
+
+   char semantic[13];
+  semantic[12] = '\0';
+  fread(semantic, 1, 12, file);
+
+  printf("%s\n", semantic);
+
+  int version;
+  fread(&version, 4, 1, file);
+  version = be32toh(version);
+
+  printf("%d\n", version);
   
+  int size;
+  fread(&size, 4, 1, file);
+  size = be32toh(size);
 
-
-  free(path);
+  printf("%d\n", size);
+  
   return 0;
 }
 
@@ -750,7 +767,23 @@ void init_dungeon(dungeon_t *d)
 
 int save_dungeon(dungeon_t *d)
 {
- 
+  char *home = getenv("HOME");
+  char *game_dir = ".rlg327";
+  char *save_file = "dungeon";
+
+  char *path = malloc(strlen(home) + strlen(game_dir) + strlen(save_file) + 3);
+  sprintf(path,"%s/%s/%s", home, game_dir, save_file);
+  printf("%s", path);
+  FILE *file = fopen(path,"w");
+
+  char semantic[13];
+  semantic[12] = '\0';
+  fwrite(semantic, 1, 12, file);
+
+  printf("%s\n", semantic);
+
+  
+  
   return 0;
 }
 

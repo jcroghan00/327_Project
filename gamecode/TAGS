@@ -1,0 +1,133 @@
+
+dungeon.c,2478
+# define rand_under(16,339
+# define rand_range(20,482
+# define UNUSED(21,555
+#define malloc(23,586
+typedef struct file_info 29,725
+  char file_type[file_type30,752
+  uint32_t version;31,774
+  uint32_t file_size;32,794
+} file_info_t;33,816
+struct pc 35,832
+  int8_t x,36,844
+  int8_t x, y;36,844
+} pc;37,859
+typedef struct corridor_path 39,866
+  heap_node_t *hn;hn40,897
+  uint8_t pos[pos41,916
+  uint8_t from[from42,934
+  int32_t cost;43,953
+} corridor_path_t;44,969
+typedef enum dim 46,989
+  dim_x,47,1008
+  dim_y,48,1017
+  num_dims49,1026
+} dim_t;50,1037
+typedef int16_t pair_t[pair_t52,1047
+#define DUNGEON_X 54,1082
+#define DUNGEON_Y 55,1116
+#define MIN_ROOMS 56,1150
+#define MAX_ROOMS 57,1183
+#define ROOM_MIN_X 58,1217
+#define ROOM_MIN_Y 59,1250
+#define ROOM_MAX_X 60,1283
+#define ROOM_MAX_Y 61,1317
+#define mappair(63,1352
+#define mapxy(64,1409
+#define hardnesspair(65,1444
+#define hardnessxy(66,1511
+typedef enum __attribute__ ((__packed__)) terrain_type 68,1557
+  ter_debug,69,1614
+  ter_wall,70,1627
+  ter_wall_immutable,71,1639
+  ter_floor,72,1661
+  ter_floor_room,73,1674
+  ter_floor_hall,74,1692
+  ter_stairs,75,1710
+  ter_stairs_up,76,1724
+  ter_stairs_down77,1741
+} terrain_type_t;78,1759
+typedef struct room 80,1778
+  pair_t position;81,1800
+  pair_t size;82,1819
+} room_t;83,1834
+typedef struct dungeon 85,1845
+  uint32_t num_rooms;86,1870
+  room_t rooms[rooms87,1892
+  terrain_type_t map[map88,1919
+  uint8_t hardness[hardness97,2572
+} dungeon_t;98,2614
+static uint32_t in_room(100,2628
+static uint32_t adjacent_to_room(116,3019
+static uint32_t is_open_space(124,3280
+static int32_t corridor_path_cmp(129,3379
+static void dijkstra_corridor(133,3529
+static void dijkstra_corridor_inv(232,7266
+#define hardnesspair_inv(285,8588
+static int connect_two_rooms(335,11259
+static int create_cycle(354,11911
+static int connect_rooms(396,13476
+int gaussian[gaussian409,13669
+typedef struct queue_node 417,13825
+  int x,418,13853
+  int x, y;418,13853
+  struct queue_node *next;next419,13865
+} queue_node_t;420,13892
+static int smooth_hardness(422,13909
+static int empty_dungeon(576,18083
+static int place_rooms(595,18459
+static void place_stairs(632,19646
+static int make_rooms(654,20281
+int gen_dungeon(678,20829
+int load_dungeon(691,20991
+void render_dungeon(723,21628
+void delete_dungeon(759,22393
+void init_dungeon(763,22432
+int save_dungeon(768,22489
+int main(790,22933
+
+heap.c,1020
+struct heap_node 8,99
+  heap_node_t *next;next9,118
+  heap_node_t *prev;prev10,139
+  heap_node_t *parent;parent11,160
+  heap_node_t *child;child12,183
+  void *datum;datum13,205
+  uint32_t degree;14,220
+  uint32_t mark;15,239
+#define swap(18,260
+#define splice_heap_node_lists(24,372
+#define insert_heap_node_in_list(33,684
+#define remove_heap_node_from_list(40,908
+void print_heap_node(45,1041
+void print_heap(61,1363
+void print_heap_node_list(78,1665
+void heap_init(94,1864
+void heap_node_delete(104,2100
+void heap_delete(122,2404
+heap_node_t *heap_insert(heap_insert133,2569
+void *heap_peek_min(heap_peek_min153,2895
+static void heap_link(158,2971
+static void heap_consolidate(172,3293
+void *heap_remove_min(heap_remove_min213,4226
+int heap_combine(248,4760
+static void heap_cut(277,5411
+static void heap_cascading_cut(291,5692
+int heap_decrease_key(305,5918
+int heap_decrease_key_no_replace(319,6160
+int32_t compare(343,6734
+char *print_int(print_int348,6833
+int main(357,6951
+
+heap.h,245
+# define HEAP_H2,15
+typedef struct heap_node heap_node_t;11,114
+typedef struct heap 13,153
+  heap_node_t *min;min14,175
+  uint32_t size;15,195
+  int32_t (*compare)compare16,212
+  void (*datum_delete)datum_delete17,269
+} heap_t;18,301
+
+game.c,0
