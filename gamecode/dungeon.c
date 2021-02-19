@@ -30,7 +30,7 @@ typedef struct file_info {
   char file_type[13];
   uint32_t version;
   uint32_t file_size;
-} file_info_f;
+} file_info_t;
 
  struct pc {
   int8_t x, y;
@@ -83,10 +83,16 @@ typedef struct room {
   pair_t position;
   pair_t size;
 } room_t;
+typedef struct stair{
+  pair_t position;
+  //down=0 up =1
+  int up_down;
+}stair_t;
 
 typedef struct dungeon {
   uint32_t num_rooms;
   room_t rooms[MAX_ROOMS];
+  stair_t stairs[255];
   terrain_type_t map[DUNGEON_Y][DUNGEON_X];
   /* Since hardness is usually not used, it would be expensive to pull it *
    * into cache every time we need a map cell, so we store it in a        *
@@ -636,12 +642,18 @@ static int place_rooms(dungeon_t *d)
 static void place_stairs(dungeon_t *d)
 {
   pair_t p;
+  stair_t *s;
   do {
     while ((p[dim_y] = rand_range(1, DUNGEON_Y - 2)) &&
            (p[dim_x] = rand_range(1, DUNGEON_X - 2)) &&
            ((mappair(p) < ter_floor)                 ||
             (mappair(p) > ter_stairs)))
       ;
+    s = d->stairs + d->stairs_down;
+    d->stairs_down = d->stairs_down +1;
+    s->position[dim_y] = p[dim_y];
+    s->position[dim_x] = p[dim_x];
+    s->up_down = 0;
     mappair(p) = ter_stairs_down;
   } while (rand_under(1, 3));
   do {
@@ -651,6 +663,11 @@ static void place_stairs(dungeon_t *d)
             (mappair(p) > ter_stairs)))
       
       ;
+    s = d->stairs + d->stairs_up;
+    d->stairs_up = d->stairs_up +1;
+    s->position[dim_y] = p[dim_y];
+    s->position[dim_x] = p[dim_x];
+    s->up_down = 0;
     mappair(p) = ter_stairs_up;
   } while (rand_under(2, 4));
 }
@@ -722,7 +739,7 @@ int load_dungeon(dungeon_t *d)
   fread(semantic, 1, 12, file);
 
   if(strcmp(semantic, "RLG327-S2021")){
-    return 0;
+    return -1;
   }
   
   int version;
@@ -800,7 +817,7 @@ int load_dungeon(dungeon_t *d)
   
   mapxy(pc.x, pc.y) = ter_pc;
 
-  return 1;
+  return 0;
 }
 
 void render_dungeon(dungeon_t *d)
@@ -853,22 +870,20 @@ void init_dungeon(dungeon_t *d)
 
 int save_dungeon(dungeon_t *d, file_info_t *f)
 {
-<<<<<<< HEAD
-=======
   char *home = getenv("HOME");
   char *game_dir = ".rlg327";
   char *save_file = "dungeon";
   sprintf(f->file_type,"RLG327-S2021");
   f->version = htobe32(0);
+  f->file_size = 1704+(d->num_rooms*4)+((d->stairs_up+d->stairs_down)*2);
 
-  
-  //TODO calculate file size
-  f->file_size = 0;
   char *path = malloc(strlen(home) + strlen(game_dir) + strlen(save_file) + 3);
   sprintf(path,"%s/%s/%s", home, game_dir, save_file);
   FILE *file = fopen(path,"w");
   fwrite(f->file_type, 1, 12, file);
+  f->version = htobe32(f->version);
   fwrite(&f->version,4,1,file);
+  f->file_size = htobe32(f->file_size);
   fwrite(&f->file_size,4,1,file);
   fwrite(&pc.x,2,1,file);
   fwrite(&pc.y,2,1,file);
@@ -879,6 +894,7 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
 	  fwrite(&d->hardness[i][j],1,1,file);
 	}
     }
+  d->num_rooms = htobe16(d->num_rooms);
   fwrite(&d->num_rooms,2,1,file);
   for (int i=0; i < d->num_rooms;i++)
     {
@@ -887,15 +903,30 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
       fwrite(&d->rooms[i].size[dim_x],4,1,file);
       fwrite(&d->rooms[i].size[dim_y],4,1,file);
     }
+  d->stairs_up = htobe16(d->stairs_up);
+  fwrite(&d->stairs_up,2,1,file);
+  for (int i =0; i <(d->stairs_up+d->stairs_down);i++)
+    {
+      //write only the up stairs
+      if (d->stairs->up_down){
+      fwrite(&d->stairs->position[dim_x],1,1,file);
+      }
+    }
+  d->stairs_down = htobe16(d->stairs_down);
+  fwrite(&d->stairs_down,2,1,file);
+  for (int i =0; i <(d->stairs_up+d->stairs_down);i++)
+    {
+      //write only the down stairs
+      if (!d->stairs->up_down){
+      fwrite(&d->stairs->position[dim_x],2,1,file);
+      }
+    }
   
 
 
   
   printf("version: %i",pc.x);
 
-  
-  
->>>>>>> ec4c6fc72a90829578cfdc91e3489f45048c8851
   return 0;
 }
 
