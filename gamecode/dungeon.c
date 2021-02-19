@@ -27,14 +27,15 @@
 })
 
 typedef struct file_info {
-  char file_type[12];
+  char file_type[13];
   uint32_t version;
   uint32_t file_size;
 } file_info_f;
 
-struct pc {
+ struct pc {
   int8_t x, y;
 } pc;
+
 
 typedef struct corridor_path {
   heap_node_t *hn;
@@ -850,14 +851,58 @@ void init_dungeon(dungeon_t *d)
   empty_dungeon(d);
 }
 
-int save_dungeon(dungeon_t *d)
+int save_dungeon(dungeon_t *d, file_info_t *f)
 {
+<<<<<<< HEAD
+=======
+  char *home = getenv("HOME");
+  char *game_dir = ".rlg327";
+  char *save_file = "dungeon";
+  sprintf(f->file_type,"RLG327-S2021");
+  f->version = htobe32(0);
+
+  
+  //TODO calculate file size
+  f->file_size = 0;
+  char *path = malloc(strlen(home) + strlen(game_dir) + strlen(save_file) + 3);
+  sprintf(path,"%s/%s/%s", home, game_dir, save_file);
+  FILE *file = fopen(path,"w");
+  fwrite(f->file_type, 1, 12, file);
+  fwrite(&f->version,4,1,file);
+  fwrite(&f->file_size,4,1,file);
+  fwrite(&pc.x,2,1,file);
+  fwrite(&pc.y,2,1,file);
+  for (int i=0; i<DUNGEON_Y;i++)
+    {
+      for(int j=0; j<DUNGEON_X;j++)
+	{
+	  fwrite(&d->hardness[i][j],1,1,file);
+	}
+    }
+  fwrite(&d->num_rooms,2,1,file);
+  for (int i=0; i < d->num_rooms;i++)
+    {
+      fwrite(&d->rooms[i].position[dim_x],4,1,file);
+      fwrite(&d->rooms[i].position[dim_y],4,1,file);
+      fwrite(&d->rooms[i].size[dim_x],4,1,file);
+      fwrite(&d->rooms[i].size[dim_y],4,1,file);
+    }
+  
+
+
+  
+  printf("version: %i",pc.x);
+
+  
+  
+>>>>>>> ec4c6fc72a90829578cfdc91e3489f45048c8851
   return 0;
 }
 
 int main(int argc, char *argv[])
 {
   dungeon_t d;
+  file_info_t f;
   struct timeval tv;
   uint32_t seed = 0;
   int load = 0;
@@ -889,7 +934,7 @@ int main(int argc, char *argv[])
     gen_dungeon(&d);
   }
   render_dungeon(&d);
-  if (save) {save_dungeon(&d);}
+  if (save) {save_dungeon(&d, &f);}
   delete_dungeon(&d);
 
   return 0;
