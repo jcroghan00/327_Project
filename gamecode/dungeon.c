@@ -10,6 +10,7 @@
 #include <assert.h>
 
 #include "heap.h"
+#include "monster.h"
 
 /* Returns true if random float in [0,1] is less than *
  * numerator/denominator.  Uses only integer math.    */
