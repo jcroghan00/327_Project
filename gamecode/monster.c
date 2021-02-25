@@ -13,7 +13,7 @@ static int32_t monster_path_cmp(const void *key, const void *with) {
 //mostly complete, needs to be able to save and print
 void dijkstra_non_tunneling(dungeon_t *d)
 {
-    static monster_path_t path[DUNGEON_Y][DUNGEON_X], *p;
+  static monster_path_t *p;
     static uint32_t initialized = 0;
     heap_t h;
     uint32_t x, y;
@@ -21,8 +21,8 @@ void dijkstra_non_tunneling(dungeon_t *d)
     if (!initialized) {
         for (y = 0; y < DUNGEON_Y; y++) {
             for (x = 0; x < DUNGEON_X; x++) {
-                path[y][x].pos[dim_y] = y;
-                path[y][x].pos[dim_x] = x;
+                d->non_tun_path[y][x].pos[dim_y] = y;
+                d->non_tun_path[y][x].pos[dim_x] = x;
             }
         }
         initialized = 1;
@@ -30,20 +30,20 @@ void dijkstra_non_tunneling(dungeon_t *d)
 
     for (y = 0; y < DUNGEON_Y; y++) {
         for (x = 0; x < DUNGEON_X; x++) {
-            path[y][x].cost = INT_MAX;
+            d->non_tun_path[y][x].cost = INT_MAX;
         }
     }
 
-    path[d->pc.y][d->pc.x].cost = 0;
+    d->non_tun_path[d->pc.y][d->pc.x].cost = 0;
 
     heap_init(&h, monster_path_cmp, NULL);
 
     for (y = 0; y < DUNGEON_Y; y++) {
         for (x = 0; x < DUNGEON_X; x++) {
             if (mapxy(x, y) > ter_floor) {
-                path[y][x].hn = heap_insert(&h, &path[y][x]);
+                d->non_tun_path[y][x].hn = heap_insert(&h, &d->non_tun_path[y][x]);
             } else {
-                path[y][x].hn = NULL;
+                d->non_tun_path[y][x].hn = NULL;
             }
         }
     }
@@ -53,12 +53,12 @@ void dijkstra_non_tunneling(dungeon_t *d)
 
         for(int i = -1; i <= 1; ++i){
             for(int j = -1; j <= 1; ++j){
-                if ((path[p->pos[dim_y] + j][p->pos[dim_x] + i].hn) &&
-                    (path[p->pos[dim_y] + j][p->pos[dim_x] + i].cost >
+                if ((d->non_tun_path[p->pos[dim_y] + j][p->pos[dim_x] + i].hn) &&
+                    (d->non_tun_path[p->pos[dim_y] + j][p->pos[dim_x] + i].cost >
                      p->cost + hardnesspair(p->pos))) {
-                    path[p->pos[dim_y] + j][p->pos[dim_x] + i].cost =
+                    d->non_tun_path[p->pos[dim_y] + j][p->pos[dim_x] + i].cost =
                             p->cost + 1;
-                    heap_decrease_key_no_replace(&h, path[p->pos[dim_y] + j]
+                    heap_decrease_key_no_replace(&h, d->non_tun_path[p->pos[dim_y] + j]
                     [p->pos[dim_x] + i].hn);
                 }
             }
@@ -66,14 +66,9 @@ void dijkstra_non_tunneling(dungeon_t *d)
     }
 }
 
-<<<<<<< HEAD
-//not modified
-=======
-
->>>>>>> e048ad43822d7a0675d27daff37e80ca41a87683
 void dijkstra_tunneling(dungeon_t *d)
 {
-    static monster_path_t path[DUNGEON_Y][DUNGEON_X], *p;
+    static monster_path_t *p;
     static uint32_t initialized = 0;
     heap_t h;
     uint32_t x, y;
@@ -81,8 +76,8 @@ void dijkstra_tunneling(dungeon_t *d)
     if (!initialized) {
         for (y = 0; y < DUNGEON_Y; y++) {
             for (x = 0; x < DUNGEON_X; x++) {
-                path[y][x].pos[dim_y] = y;
-                path[y][x].pos[dim_x] = x;
+                d->tun_path[y][x].pos[dim_y] = y;
+                d->tun_path[y][x].pos[dim_x] = x;
             }
         }
         initialized = 1;
@@ -91,11 +86,11 @@ void dijkstra_tunneling(dungeon_t *d)
     //set each path cost to infinity
     for (y = 0; y < DUNGEON_Y; y++) {
         for (x = 0; x < DUNGEON_X; x++) {
-            path[y][x].cost = INT_MAX;
+            d->tun_path[y][x].cost = INT_MAX;
         }
     }
     //set PC location cost to 0
-    path[d->pc.y][d->pc.x].cost = 0;
+    d->tun_path[d->pc.y][d->pc.x].cost = 0;
 
     heap_init(&h, monster_path_cmp, NULL);
 
@@ -103,9 +98,9 @@ void dijkstra_tunneling(dungeon_t *d)
     for (y = 0; y < DUNGEON_Y; y++) {
         for (x = 0; x < DUNGEON_X; x++) {
             if (mapxy(x, y) != ter_wall_immutable) {
-                path[y][x].hn = heap_insert(&h, &path[y][x]);
+                d->tun_path[y][x].hn = heap_insert(&h, &d->tun_path[y][x]);
             } else {
-                path[y][x].hn = NULL;
+                d->tun_path[y][x].hn = NULL;
             }
         }
     }
@@ -117,12 +112,12 @@ void dijkstra_tunneling(dungeon_t *d)
 	//iterate through neighbors are if cost is more than cost from node, update
 	for(int i = -1; i <= 1; ++i){
             for(int j = -1; j <= 1; ++j){
-                if ((path[p->pos[dim_y] + j][p->pos[dim_x] + i].hn) &&
-                    (path[p->pos[dim_y] + j][p->pos[dim_x] + i].cost >
+                if ((d->tun_path[p->pos[dim_y] + j][p->pos[dim_x] + i].hn) &&
+                    (d->tun_path[p->pos[dim_y] + j][p->pos[dim_x] + i].cost >
                      p->cost + 1 + (hardnesspair(p->pos)/85))) {
-                    path[p->pos[dim_y] + j][p->pos[dim_x] + i].cost =
+                    d->tun_path[p->pos[dim_y] + j][p->pos[dim_x] + i].cost =
 		      p->cost + 1 + (hardnesspair(p->pos)/85);
-                    heap_decrease_key_no_replace(&h, path[p->pos[dim_y] + j]
+                    heap_decrease_key_no_replace(&h, d->tun_path[p->pos[dim_y] + j]
                     [p->pos[dim_x] + i].hn);
                 }
             }

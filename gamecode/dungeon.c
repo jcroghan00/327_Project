@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 
->>>>>>> e048ad43822d7a0675d27daff37e80ca41a87683
 #include "dungeon.h"
 #include "heap.h"
 #include "monster.h"
