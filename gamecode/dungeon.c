@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> e048ad43822d7a0675d27daff37e80ca41a87683
 #include "dungeon.h"
 #include "heap.h"
 #include "monster.h"
@@ -24,6 +28,7 @@ typedef struct file_info {
   int load;
   int save;
   int ren_non_tun_dist_map;
+  int ren_tun_dist_map;
 } file_info_t;
 
 typedef struct corridor_path {
@@ -811,7 +816,11 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
 
     //render the non-tunneling distance map if specified (1.03 defaults to true)
     if (f->ren_non_tun_dist_map){
-      
+      for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
+    for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
+    }
+    if (f->ren_tun_dist_map){
+
     }
   }
 }

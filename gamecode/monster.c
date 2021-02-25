@@ -72,7 +72,11 @@ void dijkstra_non_tunneling(dungeon_t *d)
     }
 }
 
+<<<<<<< HEAD
 //not modified
+=======
+
+>>>>>>> e048ad43822d7a0675d27daff37e80ca41a87683
 void dijkstra_tunneling(dungeon_t *d)
 {
     static monster_path_t path[DUNGEON_Y][DUNGEON_X], *p;
