@@ -71,13 +71,13 @@ typedef enum __attribute__ ((__packed__)) terrain_type {
   ter_debug,
   ter_wall,
   ter_wall_immutable,
+  ter_pc,
   ter_floor,
   ter_floor_room,
   ter_floor_hall,
   ter_stairs,
   ter_stairs_up,
-  ter_stairs_down,
-  ter_pc
+  ter_stairs_down
 } terrain_type_t;
 
 typedef struct room {
@@ -107,6 +107,7 @@ typedef struct dungeon {
   uint8_t hardness[DUNGEON_Y][DUNGEON_X];
   uint16_t stairs_up;
   uint16_t stairs_down;
+  pc pc;
 } dungeon_t;
 
 static uint32_t in_room(dungeon_t *d, int16_t y, int16_t x)

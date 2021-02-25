@@ -1,4 +1,8 @@
 #include <stdint.h>
 
-void dijkstra_normal(dungeon_t *d, pair_t monsterPosition);
-void dijkstra_tunneling(dungeon_t *d, pair_t monsterPosition);
+struct dungeon{
+    struct dungeon_t *d;
+};
+
+void dijkstra_normal(dungeon *d);
+void dijkstra_tunneling(dungeon *d);
