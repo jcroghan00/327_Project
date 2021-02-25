@@ -85,8 +85,8 @@ typedef struct dungeon {
   uint16_t stairs_up;
   uint16_t stairs_down;
   pc_t pc;
-  monster_path_t non_tun_dist_map[DUNGEON_Y][DUNGEON_X];
-  monster_path_t tun_dist_map[DUNGEON_Y][DUNGEON_X];
+  monster_path_t non_tun_path[DUNGEON_Y][DUNGEON_X];
+  monster_path_t tun_path[DUNGEON_Y][DUNGEON_X];
 } dungeon_t;
 
 #endif
