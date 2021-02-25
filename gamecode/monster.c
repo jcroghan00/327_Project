@@ -16,7 +16,7 @@ static int32_t monster_path_cmp(const void *key, const void *with) {
 }
 
 //mostly complete, needs to be able to save and print
-static void dijkstra_normal(dungeon_t *d)
+static void dijkstra_non_tunneling(dungeon_t *d)
 {
     static monster_path_t path[DUNGEON_Y][DUNGEON_X], *p;
     static uint32_t initialized = 0;
@@ -62,7 +62,7 @@ static void dijkstra_normal(dungeon_t *d)
                     (path[p->pos[dim_y] + j][p->pos[dim_x] + i].cost >
                      p->cost + hardnesspair(p->pos))) {
                     path[p->pos[dim_y] + j][p->pos[dim_x] + i].cost =
-                            p->cost + hardnesspair(p->pos);
+                            p->cost + 1;
                     heap_decrease_key_no_replace(&h, path[p->pos[dim_y] + j]
                     [p->pos[dim_x] + i].hn);
                 }

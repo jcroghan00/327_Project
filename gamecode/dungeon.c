@@ -34,18 +34,12 @@ typedef struct file_info {
   uint32_t file_size;
 } file_info_t;
 
-
-
 typedef struct corridor_path {
   heap_node_t *hn;
   uint8_t pos[2];
   uint8_t from[2];
   int32_t cost;
 } corridor_path_t;
-
-
-
-
 
 static uint32_t in_room(dungeon_t *d, int16_t y, int16_t x)
 {
@@ -665,7 +659,8 @@ int gen_dungeon(dungeon_t *d)
   connect_rooms(d);
   place_stairs(d);
   place_pc(d);
-
+  dijkstra_non_tunneling(d);
+  dijkstra_tunneling(d);
   return 0;
 }
 
@@ -696,6 +691,11 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
   //pc location
   fread(&d->pc.x, 1, 1, file);
   fread(&d->pc.y, 1, 1, file);
+
+  //monster pathmaking
+  dijkstra_non_tunneling(d);
+  dijkstra_tunneling(d);
+
   //hardness
   fread(d->hardness, 1, 1680, file);
   //rooms
@@ -834,19 +834,21 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
   sprintf(f->file_type,"RLG327-S2021");
   f->version = htobe32(0);
   f->file_size = 1704+(d->num_rooms*4)+((d->stairs_up+d->stairs_down)*2);
-  
+
+
   char *path = malloc(strlen(home) + strlen(game_dir) + strlen(save_file) + 3);
   sprintf(path,"%s/%s/%s", home, game_dir, save_file);
   FILE *file = fopen(path,"w");
   free(path);
+
   fwrite(f->file_type, 1, 12, file);
+
    f->version = htobe32(f->version);
   fwrite(&f->version,4,1,file);
+
   f->file_size = htobe32(f->file_size);
   fwrite(&f->file_size,4,1,file);
- 
-  
-  
+
   fwrite(&d->pc.x,1,1,file);
   fwrite(&d->pc.y,1,1,file);
 
@@ -918,7 +920,6 @@ int main(int argc, char *argv[])
       else if (!strcmp(argv[i],"--load")){load=1;}
       else {seed=atoi(argv[i]);}
     }
- 
 
    if (!seed)
   {
