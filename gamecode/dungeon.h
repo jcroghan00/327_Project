@@ -42,13 +42,13 @@ typedef enum __attribute__ ((__packed__)) terrain_type {
   ter_debug,
   ter_wall,
   ter_wall_immutable,
-  ter_pc,
   ter_floor,
   ter_floor_room,
   ter_floor_hall,
   ter_stairs,
   ter_stairs_up,
-  ter_stairs_down
+  ter_stairs_down,
+  ter_pc
 } terrain_type_t;
 
 typedef struct room {
