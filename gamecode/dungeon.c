@@ -815,7 +815,7 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
     if (f->ren_non_tun_dist_map){
       for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
 	    for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-	        if(d->non_tun_path[p[dim_y]][p[dim_x]].cost == INTMAX){
+	        if(d->non_tun_path[p[dim_y]][p[dim_x]].cost == INT_MAX){
 	            if(d->hardness[p[dim_y]][p[dim_x]] == 0){
 	                printf("X");
 	            }
@@ -834,7 +834,7 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
     if (f->ren_tun_dist_map){
         for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
             for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-                if(d->tun_path[p[dim_y]][p[dim_x]].cost == INTMAX){
+                if(d->tun_path[p[dim_y]][p[dim_x]].cost == INT_MAX){
                     printf("X");
                 }
                 else{
@@ -898,7 +898,7 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
   for (int i=0; i <tempnumrooms;i++)
     {
         fwrite(&d->rooms[i].position[dim_x],1,1,file);
-        fwrite(&d->rooms[i].position[dim_y],1,1,fi
+        fwrite(&d->rooms[i].position[dim_y],1,1,file);
         fwrite(&d->rooms[i].size[dim_x],1,1,file);
         fwrite(&d->rooms[i].size[dim_y],1,1,file);
     }
