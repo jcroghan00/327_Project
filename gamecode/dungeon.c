@@ -1,14 +1,3 @@
-#include <stdio.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
-#include <endian.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <limits.h>
-#include <sys/time.h>
-#include <assert.h>
-
 #include "dungeon.h"
 #include "heap.h"
 #include "monster.h"
@@ -666,8 +655,8 @@ int gen_dungeon(dungeon_t *d)
   connect_rooms(d);
   place_stairs(d);
   place_pc(d);
-  //dijkstra_non_tunneling(d);
-  //dijkstra_tunneling(d);
+  dijkstra_non_tunneling(d);
+  dijkstra_tunneling(d);
   return 0;
 }
 
@@ -700,8 +689,8 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
   fread(&d->pc.y, 1, 1, file);
 
   //monster pathmaking
-  //dijkstra_non_tunneling(d);
-  //dijkstra_tunneling(d);
+  dijkstra_non_tunneling(d);
+  dijkstra_tunneling(d);
 
   //hardness
   fread(&d->hardness, 1, 1680, file);
