@@ -10,6 +10,7 @@
 #include <limits.h>
 #include <sys/time.h>
 #include <assert.h>
+#include "heap.h"
 
  typedef struct pc {
   int8_t x, y;
@@ -61,6 +62,12 @@ typedef struct stair{
   int up_down;
 }stair_t;
 
+typedef struct monster_path {
+    heap_node_t *hn;
+    uint8_t pos[2];
+    int32_t cost;
+} monster_path_t;
+
 typedef struct dungeon {
   uint32_t num_rooms;
   room_t rooms[MAX_ROOMS];
@@ -78,6 +85,8 @@ typedef struct dungeon {
   uint16_t stairs_up;
   uint16_t stairs_down;
   pc_t pc;
+  monster_path_t non_tun_dist_map[DUNGEON_Y][DUNGEON_X];
+  monster_path_t tun_dist_map[DUNGEON_Y][DUNGEON_X];
 } dungeon_t;
 
 #endif

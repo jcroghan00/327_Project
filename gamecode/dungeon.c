@@ -817,8 +817,12 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
     //render the non-tunneling distance map if specified (1.03 defaults to true)
     if (f->ren_non_tun_dist_map){
       for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
-    for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
+	for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
+
+	}
+      }
     }
+    
     if (f->ren_tun_dist_map){
 
     }
