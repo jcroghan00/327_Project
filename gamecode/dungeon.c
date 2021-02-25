@@ -599,6 +599,8 @@ static void place_stairs(dungeon_t *d)
     s->up_down = 0;
     mappair(p) = ter_stairs_down;
   } while (rand_under(1, 3));
+
+  d->stairs_up = 0;
   do {
     while ((p[dim_y] = rand_range(1, DUNGEON_Y - 2)) &&
            (p[dim_x] = rand_range(1, DUNGEON_X - 2)) &&
@@ -664,8 +666,8 @@ int gen_dungeon(dungeon_t *d)
   connect_rooms(d);
   place_stairs(d);
   place_pc(d);
-  dijkstra_non_tunneling(d);
-  dijkstra_tunneling(d);
+  //dijkstra_non_tunneling(d);
+  //dijkstra_tunneling(d);
   return 0;
 }
 
@@ -698,11 +700,11 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
   fread(&d->pc.y, 1, 1, file);
 
   //monster pathmaking
-  dijkstra_non_tunneling(d);
-  dijkstra_tunneling(d);
+  //dijkstra_non_tunneling(d);
+  //dijkstra_tunneling(d);
 
   //hardness
-  fread(d->hardness, 1, 1680, file);
+  fread(&d->hardness, 1, 1680, file);
   //rooms
   fread(&d->num_rooms, 2, 1, file);
   d->num_rooms = be16toh(d->num_rooms);
@@ -743,8 +745,6 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
   fread(&d->stairs_up, 2, 1, file);
   d->stairs_up = be16toh(d->stairs_up);
 
-  
-
   int i;
   for(i = 0; i < d->stairs_up; ++i)
   {
@@ -757,7 +757,7 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
     
     d->stairs[i].position[dim_x] = x;
     d->stairs[i].position[dim_y] = y;
-    //d->stairs[i].up_down = 1;
+    d->stairs[i].up_down = 1;
     
     mapxy(x, y) = ter_stairs_up;
   }
@@ -775,7 +775,7 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
     
     d->stairs[i].position[dim_x] = x;
     d->stairs[i].position[dim_y] = y;
-    //d->stairs[i].up_down = 0;
+    d->stairs[i].up_down = 0;
     
     mapxy(x, y) = ter_stairs_down;
   }
@@ -867,9 +867,9 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
   for (int i=0; i<DUNGEON_Y;i++)
     {
       for(int j=0; j<DUNGEON_X;j++)
-	{
-	  fwrite(&d->hardness[i][j],1,1,file);
-	}
+	    {
+	        fwrite(&d->hardness[i][j],1,1,file);
+	    }
     }
 
 
