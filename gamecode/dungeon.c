@@ -706,6 +706,7 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
   //rooms
   fread(&d->num_rooms, 2, 1, file);
   d->num_rooms = be16toh(d->num_rooms);
+  printf("num_rooms: %i",d->num_rooms);
 
   for(int i = 0; i < d->num_rooms; ++i)
   {
@@ -802,7 +803,7 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
         break;
       case ter_debug:
         putchar('*');
-        fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
+        //fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
         break;
       case ter_stairs_up:
         putchar('<');
@@ -942,7 +943,7 @@ int main(int argc, char *argv[])
   init_dungeon(&d);
   if (f.load){
     load_dungeon(&d, &f);
-      }
+  }
   else {
     gen_dungeon(&d);
   }
