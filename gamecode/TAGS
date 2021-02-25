@@ -1,5 +1,5 @@
 
-dungeon.c,1384
+dungeon.c,1459
 # define rand_under(18,381
 # define rand_range(22,524
 # define UNUSED(23,597
@@ -8,42 +8,45 @@ typedef struct file_info 31,767
   char file_type[file_type32,794
   uint32_t version;33,816
   uint32_t file_size;34,836
-} file_info_t;35,858
-typedef struct corridor_path 39,876
-  heap_node_t *hn;hn40,907
-  uint8_t pos[pos41,926
-  uint8_t from[from42,944
-  int32_t cost;43,963
-} corridor_path_t;44,979
-static uint32_t in_room(50,1003
-static uint32_t adjacent_to_room(66,1394
-static uint32_t is_open_space(74,1655
-static int32_t corridor_path_cmp(79,1754
-static void dijkstra_corridor(83,1904
-static void dijkstra_corridor_inv(182,5641
-#define hardnesspair_inv(235,6963
-static int connect_two_rooms(285,9634
-static int create_cycle(304,10286
-static int connect_rooms(346,11851
-int gaussian[gaussian359,12044
-typedef struct queue_node 367,12200
-  int x,368,12228
-  int x, y;368,12228
-  struct queue_node *next;next369,12240
-} queue_node_t;370,12267
-static int smooth_hardness(372,12284
-static int empty_dungeon(526,16458
-static int place_rooms(545,16834
-static void place_stairs(582,18021
-static int make_rooms(620,19009
-static void place_pc(644,19557
-int gen_dungeon(658,19815
-int load_dungeon(672,19992
-void render_dungeon(780,22348
-void delete_dungeon(819,23155
-void init_dungeon(823,23194
-int save_dungeon(828,23251
-int main(904,25219
+  int load;35,858
+  int save;36,870
+  int ren_non_tun_dist_map;37,882
+} file_info_t;38,910
+typedef struct corridor_path 40,926
+  heap_node_t *hn;hn41,957
+  uint8_t pos[pos42,976
+  uint8_t from[from43,994
+  int32_t cost;44,1013
+} corridor_path_t;45,1029
+static uint32_t in_room(47,1049
+static uint32_t adjacent_to_room(63,1440
+static uint32_t is_open_space(71,1701
+static int32_t corridor_path_cmp(76,1800
+static void dijkstra_corridor(80,1950
+static void dijkstra_corridor_inv(179,5687
+#define hardnesspair_inv(232,7009
+static int connect_two_rooms(282,9680
+static int create_cycle(301,10332
+static int connect_rooms(343,11897
+int gaussian[gaussian356,12090
+typedef struct queue_node 364,12246
+  int x,365,12274
+  int x, y;365,12274
+  struct queue_node *next;next366,12286
+} queue_node_t;367,12313
+static int smooth_hardness(369,12330
+static int empty_dungeon(523,16504
+static int place_rooms(542,16880
+static void place_stairs(579,18067
+static int make_rooms(619,19116
+static void place_pc(643,19664
+int gen_dungeon(657,19922
+int load_dungeon(671,20099
+void render_dungeon(779,22455
+void delete_dungeon(823,23407
+void init_dungeon(827,23446
+int save_dungeon(832,23503
+int main(908,25471
 
 dungeon.h,1357
 # define DUNGEON_H2,18
