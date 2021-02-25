@@ -14,17 +14,19 @@ static int32_t monster_path_cmp(const void *key, const void *with) {
 void dijkstra_non_tunneling(dungeon_t *d)
 {
   static monster_path_t *p;
-    static uint32_t initialized = 0;
-    heap_t h;
-    uint32_t x, y;
+  static uint32_t initialized = 0;
+  heap_t h;
+  uint32_t x, y;
 
-    if (!initialized) {
-        for (y = 0; y < DUNGEON_Y; y++) {
-            for (x = 0; x < DUNGEON_X; x++) {
-                d->non_tun_path[y][x].pos[dim_y] = y;
-                d->non_tun_path[y][x].pos[dim_x] = x;
-            }
-        }
+  if (!initialized) {
+      for (y = 0; y < DUNGEON_Y; y++)
+      {
+	for (x = 0; x < DUNGEON_X; x++)
+	{
+	  d->non_tun_path[y][x].pos[dim_y] = y;
+          d->non_tun_path[y][x].pos[dim_x] = x;
+	}
+      }
         initialized = 1;
     }
 
