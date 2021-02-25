@@ -32,6 +32,9 @@ typedef struct file_info {
   char file_type[13];
   uint32_t version;
   uint32_t file_size;
+  int load;
+  int save;
+  int ren_non_tun_dist_map;
 } file_info_t;
 
 typedef struct corridor_path {
@@ -578,7 +581,9 @@ static void place_stairs(dungeon_t *d)
   pair_t p;
   int i = 0;
   stair_t *s;
-  
+
+  //I really don't know why this is needed
+  d->stairs_up = 0;
   
   do {
     while ((p[dim_y] = rand_range(1, DUNGEON_Y - 2)) &&
@@ -777,7 +782,7 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
   return 0;
 }
 
-void render_dungeon(dungeon_t *d)
+void render_dungeon(dungeon_t *d, file_info_t *f)
 {
   pair_t p;
 
@@ -813,6 +818,11 @@ void render_dungeon(dungeon_t *d)
       }
     }
     putchar('\n');
+
+    //render the non-tunneling distance map if specified (1.03 defaults to true)
+    if (f->ren_non_tun_dist_map){
+      
+    }
   }
 }
 
@@ -909,15 +919,15 @@ int main(int argc, char *argv[])
   file_info_t f;
   struct timeval tv;
   uint32_t seed = 0;
-  int load = 0;
-  int save = 0;
+  f.load = 0;
+  f.save = 0;
 
   UNUSED(in_room);
 
   for (int i = 1; i < argc; i++)
     {
-      if (!strcmp(argv[i],"--save")) { save=1;}
-      else if (!strcmp(argv[i],"--load")){load=1;}
+      if (!strcmp(argv[i],"--save")) { f.save=1;}
+      else if (!strcmp(argv[i],"--load")){f.load=1;}
       else {seed=atoi(argv[i]);}
     }
 
@@ -930,14 +940,16 @@ int main(int argc, char *argv[])
   srand(seed);
 
   init_dungeon(&d);
-  if (load){
+  if (f.load){
     load_dungeon(&d, &f);
       }
   else {
     gen_dungeon(&d);
   }
-  render_dungeon(&d);
-  if (save) {save_dungeon(&d, &f);}
+  render_dungeon(&d,&f);
+  if (f.save) {
+    save_dungeon(&d,&f);
+  }
   delete_dungeon(&d);
 
   return 0;
