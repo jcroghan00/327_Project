@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #include "monster.h"
 #include "dungeon.h"
@@ -16,7 +17,7 @@ static int32_t monster_path_cmp(const void *key, const void *with) {
 }
 
 //mostly complete, needs to be able to save and print
-static void dijkstra_non_tunneling(dungeon_t *d)
+void dijkstra_non_tunneling(dungeon_t *d)
 {
     static monster_path_t path[DUNGEON_Y][DUNGEON_X], *p;
     static uint32_t initialized = 0;
@@ -71,8 +72,8 @@ static void dijkstra_non_tunneling(dungeon_t *d)
     }
 }
 
-//not modified
-static void dijkstra_tunneling(dungeon *d)
+
+void dijkstra_tunneling(dungeon_t *d)
 {
     static monster_path_t path[DUNGEON_Y][DUNGEON_X], *p;
     static uint32_t initialized = 0;

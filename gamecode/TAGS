@@ -1,107 +1,107 @@
 
-dungeon.c,1459
-# define rand_under(18,381
-# define rand_range(22,524
-# define UNUSED(23,597
-#define malloc(25,628
-typedef struct file_info 31,767
-  char file_type[file_type32,794
-  uint32_t version;33,816
-  uint32_t file_size;34,836
-  int load;35,858
-  int save;36,870
-  int ren_non_tun_dist_map;37,882
-} file_info_t;38,910
-typedef struct corridor_path 40,926
-  heap_node_t *hn;hn41,957
-  uint8_t pos[pos42,976
-  uint8_t from[from43,994
-  int32_t cost;44,1013
-} corridor_path_t;45,1029
-static uint32_t in_room(47,1049
-static uint32_t adjacent_to_room(63,1440
-static uint32_t is_open_space(71,1701
-static int32_t corridor_path_cmp(76,1800
-static void dijkstra_corridor(80,1950
-static void dijkstra_corridor_inv(179,5687
-#define hardnesspair_inv(232,7009
-static int connect_two_rooms(282,9680
-static int create_cycle(301,10332
-static int connect_rooms(343,11897
-int gaussian[gaussian356,12090
-typedef struct queue_node 364,12246
-  int x,365,12274
-  int x, y;365,12274
-  struct queue_node *next;next366,12286
-} queue_node_t;367,12313
-static int smooth_hardness(369,12330
-static int empty_dungeon(523,16504
-static int place_rooms(542,16880
-static void place_stairs(579,18067
-static int make_rooms(619,19116
-static void place_pc(643,19664
-int gen_dungeon(657,19922
-int load_dungeon(672,20156
-void render_dungeon(786,22636
-void delete_dungeon(830,23590
-void init_dungeon(834,23629
-int save_dungeon(839,23686
-int main(917,25649
+dungeon.c,1455
+# define rand_under(8,175
+# define rand_range(12,318
+# define UNUSED(13,391
+#define malloc(15,422
+typedef struct file_info 21,561
+  char file_type[file_type22,588
+  uint32_t version;23,610
+  uint32_t file_size;24,630
+  int load;25,652
+  int save;26,664
+  int ren_non_tun_dist_map;27,676
+} file_info_t;28,704
+typedef struct corridor_path 30,720
+  heap_node_t *hn;hn31,751
+  uint8_t pos[pos32,770
+  uint8_t from[from33,788
+  int32_t cost;34,807
+} corridor_path_t;35,823
+static uint32_t in_room(37,843
+static uint32_t adjacent_to_room(53,1234
+static uint32_t is_open_space(61,1495
+static int32_t corridor_path_cmp(66,1594
+static void dijkstra_corridor(70,1744
+static void dijkstra_corridor_inv(169,5481
+#define hardnesspair_inv(222,6803
+static int connect_two_rooms(272,9474
+static int create_cycle(291,10126
+static int connect_rooms(333,11691
+int gaussian[gaussian346,11884
+typedef struct queue_node 354,12040
+  int x,355,12068
+  int x, y;355,12068
+  struct queue_node *next;next356,12080
+} queue_node_t;357,12107
+static int smooth_hardness(359,12124
+static int empty_dungeon(513,16298
+static int place_rooms(532,16674
+static void place_stairs(569,17861
+static int make_rooms(611,18931
+static void place_pc(635,19479
+int gen_dungeon(649,19737
+int load_dungeon(664,19967
+void render_dungeon(776,22439
+void delete_dungeon(820,23393
+void init_dungeon(824,23432
+int save_dungeon(829,23489
+int main(907,25466
 
-dungeon.h,1357
+dungeon.h,1379
 # define DUNGEON_H2,18
- typedef struct pc 4,38
-  int8_t x,5,59
-  int8_t x, y;5,59
-}pc_t;pc_t6,74
-typedef enum dim 8,82
-  dim_x,9,101
-  dim_y,10,110
-  num_dims11,119
-} dim_t;12,130
-typedef int16_t pair_t[pair_t14,140
-#define DUNGEON_X 16,175
-#define DUNGEON_Y 17,209
-#define MIN_ROOMS 18,243
-#define MAX_ROOMS 19,276
-#define ROOM_MIN_X 20,310
-#define ROOM_MIN_Y 21,343
-#define ROOM_MAX_X 22,376
-#define ROOM_MAX_Y 23,410
-#define mappair(25,445
-#define mapxy(26,502
-#define hardnesspair(27,537
-#define hardnessxy(28,604
-typedef enum __attribute__ ((__packed__)) terrain_type 30,650
-  ter_debug,31,707
-  ter_wall,32,720
-  ter_wall_immutable,33,732
-  ter_pc,34,754
-  ter_floor,35,764
-  ter_floor_room,36,777
-  ter_floor_hall,37,795
-  ter_stairs,38,813
-  ter_stairs_up,39,827
-  ter_stairs_down40,844
-} terrain_type_t;41,862
-typedef struct room 43,881
-  pair_t position;44,903
-  pair_t size;45,922
-} room_t;46,937
-typedef struct stair{stair48,948
-  pair_t position;49,970
-  int up_down;51,1006
-}stair_t;stair_t52,1021
-typedef struct dungeon 54,1032
-  uint32_t num_rooms;55,1057
-  room_t rooms[rooms56,1079
-  stair_t stairs[stairs57,1106
-  terrain_type_t map[map58,1129
-  uint8_t hardness[hardness67,1746
-  uint16_t stairs_up;68,1788
-  uint16_t stairs_down;69,1810
-  pc_t pc;70,1834
-} dungeon_t;71,1845
+ typedef struct pc 14,244
+  int8_t x,15,265
+  int8_t x, y;15,265
+}pc_t;pc_t16,280
+typedef enum dim 18,288
+  dim_x,19,307
+  dim_y,20,316
+  num_dims21,325
+} dim_t;22,336
+typedef int16_t pair_t[pair_t24,346
+#define DUNGEON_X 26,381
+#define DUNGEON_Y 27,415
+#define MIN_ROOMS 28,449
+#define MAX_ROOMS 29,482
+#define ROOM_MIN_X 30,516
+#define ROOM_MIN_Y 31,549
+#define ROOM_MAX_X 32,582
+#define ROOM_MAX_Y 33,616
+#define mappair(35,651
+#define mapxy(36,708
+#define hardnesspair(37,743
+#define hardnessxy(38,810
+typedef enum __attribute__ ((__packed__)) terrain_type 40,856
+  ter_debug,41,913
+  ter_wall,42,926
+  ter_wall_immutable,43,938
+  ter_pc,44,960
+  ter_floor,45,970
+  ter_floor_room,46,983
+  ter_floor_hall,47,1001
+  ter_stairs,48,1019
+  ter_stairs_up,49,1033
+  ter_stairs_down50,1050
+} terrain_type_t;51,1068
+typedef struct room 53,1087
+  pair_t position;54,1109
+  pair_t size;55,1128
+} room_t;56,1143
+typedef struct stair{stair58,1154
+  pair_t position;59,1176
+  int up_down;61,1212
+}stair_t;stair_t62,1227
+typedef struct dungeon 64,1238
+  uint32_t num_rooms;65,1263
+  room_t rooms[rooms66,1285
+  stair_t stairs[stairs67,1312
+  terrain_type_t map[map68,1335
+  uint8_t hardness[hardness77,1952
+  uint16_t stairs_up;78,1994
+  uint16_t stairs_down;79,2016
+  pc_t pc;80,2040
+} dungeon_t;81,2051
 
 heap.c,1020
 struct heap_node 8,99
@@ -146,15 +146,15 @@ typedef struct heap 13,153
   void (*datum_delete)datum_delete17,269
 } heap_t;18,301
 
-monster.c,266
-typedef struct monster_path 8,101
-    heap_node_t *hn;hn9,131
-    uint8_t pos[pos10,152
-    int32_t cost;11,172
-} monster_path_t;12,190
-static int32_t monster_path_cmp(14,209
-static void dijkstra_non_tunneling(19,412
-static void dijkstra_tunneling(75,1979
+monster.c,253
+typedef struct monster_path 9,121
+    heap_node_t *hn;hn10,151
+    uint8_t pos[pos11,172
+    int32_t cost;12,192
+} monster_path_t;13,210
+static int32_t monster_path_cmp(15,229
+void dijkstra_non_tunneling(20,432
+void dijkstra_tunneling(76,1992
 
 monster.h,24
 # define MONSTER_H2,18

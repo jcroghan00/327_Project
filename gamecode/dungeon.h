@@ -1,5 +1,15 @@
 #ifndef DUNGEON_H
 # define DUNGEON_H
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <endian.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <limits.h>
+#include <sys/time.h>
+#include <assert.h>
 
  typedef struct pc {
   int8_t x, y;
