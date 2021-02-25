@@ -44,10 +44,11 @@ void dijkstra_non_tunneling(dungeon_t *d)
         for (x = 0; x < DUNGEON_X; x++) {
             if (mapxy(x, y) > ter_floor) {
                 d->non_tun_path[y][x].hn = heap_insert(&h, &d->non_tun_path[y][x]);
-            } else {
-                d->non_tun_path[y][x].hn = NULL;
             }
-        }
+	    else {
+	      d->non_tun_path[y][x].hn = NULL;
+            }
+	}
     }
 
     while ((p = heap_remove_min(&h))) {
