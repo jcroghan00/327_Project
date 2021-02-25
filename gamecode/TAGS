@@ -44,10 +44,17 @@ static void place_pc(636,19503
 int gen_dungeon(650,19761
 int load_dungeon(665,19991
 void render_dungeon(777,22459
+<<<<<<< HEAD
 void delete_dungeon(847,24582
 void init_dungeon(851,24621
 int save_dungeon(856,24678
 int main(934,26655
+=======
+void delete_dungeon(847,24348
+void init_dungeon(851,24387
+int save_dungeon(856,24444
+int main(934,26421
+>>>>>>> 208efd3afa1d4fcacfe724ddd3ceb3d7cd4e2af6
 
 dungeon.h,1626
 # define DUNGEON_H2,18

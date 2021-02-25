@@ -812,6 +812,7 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
       putchar('\n');
   }
     //render the non-tunneling distance map if specified (1.03 defaults to true)
+<<<<<<< HEAD
     if (f->ren_non_tun_dist_map) {
         for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
             for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
@@ -839,7 +840,38 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
                 }
             }
         }
+=======
+  if (f->ren_non_tun_dist_map){
+    for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
+      for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
+	if(d->non_tun_path[p[dim_y]][p[dim_x]].cost == INT_MAX){
+	  if(d->hardness[p[dim_y]][p[dim_x]] == 0){
+	    printf("X");
+	  }
+	  else{
+	    printf(" ");
+	  }
+	}
+	else{
+	  printf("%d", d->non_tun_path[p[dim_y]][p[dim_x]].cost % 10);
+	}
+      }
     }
+  }
+
+  if (f->ren_tun_dist_map){
+    for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
+      for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
+	if(d->tun_path[p[dim_y]][p[dim_x]].cost == INT_MAX){
+	  printf("X");
+	}
+	else{
+	  printf("%d", d->tun_path[p[dim_y]][p[dim_x]].cost % 10);
+	}
+      }
+>>>>>>> 208efd3afa1d4fcacfe724ddd3ceb3d7cd4e2af6
+    }
+  }
 }
 
 void delete_dungeon(dungeon_t *d)
