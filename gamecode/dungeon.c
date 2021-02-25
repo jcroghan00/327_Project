@@ -666,7 +666,7 @@ static void place_stairs(dungeon_t *d)
   
   // this is very needed. i don't know why, its very late and i just want
   // to sleep
-  d->stairs_up = 0;
+   d->stairs_up = 0;
   
   
   do {
@@ -728,11 +728,11 @@ static void place_pc(dungeon_t *d)
 {
   int loop = 1;
   while(loop){
-    pc.x = rand() % DUNGEON_X;
-    pc.y = rand() % DUNGEON_Y;
+    d->pc.x = rand() % DUNGEON_X;
+    d->pc.y = rand() % DUNGEON_Y;
 
-    if(d->map[pc.y][pc.x] == ter_floor_room){
-      mapxy(pc.x, pc.y) = ter_pc;
+    if(d->map[d->pc.y][d->pc.x] == ter_floor_room){
+      mapxy(d->pc.x, d->pc.y) = ter_pc;
       loop = 0;
     }
   }
@@ -777,8 +777,8 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
   f->file_size = be32toh(f->file_size);
 
   //pc location
-  fread(&pc.x, 1, 1, file);
-  fread(&pc.y, 1, 1, file);
+  fread(&d->pc.x, 1, 1, file);
+  fread(&d->pc.y, 1, 1, file);
   //hardness
   fread(d->hardness, 1, 1680, file);
   //rooms
@@ -856,7 +856,7 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
     
     mapxy(x, y) = ter_stairs_down;
   }
-  mapxy(pc.x, pc.y) = ter_pc;
+  mapxy(d->pc.x, d->pc.y) = ter_pc;
   return 0;
 }
 
@@ -930,8 +930,8 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
  
   
   
-  fwrite(&pc.x,1,1,file);
-  fwrite(&pc.y,1,1,file);
+  fwrite(&d->pc.x,1,1,file);
+  fwrite(&d->pc.y,1,1,file);
 
   
   for (int i=0; i<DUNGEON_Y;i++)

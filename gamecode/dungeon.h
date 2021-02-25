@@ -1,9 +1,9 @@
 #ifndef DUNGEON_H
 # define DUNGEON_H
 
- struct pc {
+ typedef struct pc {
   int8_t x, y;
-}pc;
+}pc_t;
 
 typedef enum dim {
   dim_x,
@@ -67,7 +67,7 @@ typedef struct dungeon {
   uint8_t hardness[DUNGEON_Y][DUNGEON_X];
   uint16_t stairs_up;
   uint16_t stairs_down;
-  struct pc pc;
+  pc_t pc;
 } dungeon_t;
 
 #endif
