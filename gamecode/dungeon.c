@@ -969,6 +969,8 @@ int main(int argc, char *argv[])
   uint32_t seed = 0;
   f.load = 0;
   f.save = 0;
+  f.ren_non_tun_dist_map = 1;
+  f.ren_tun_dist_map = 1;
 
   UNUSED(in_room);
 
