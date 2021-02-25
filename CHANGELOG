@@ -1,1 +1,13 @@
-Basic CHANGELOG file
+b87a7f1 (HEAD -> 1.02, origin/1.02) fixed bugs and added tears
+f0277b7 Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02 fixed merge conflicts
+54062f9 hopefully finished save
+5a7a6dc Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02 updated load_dungeon so that it works better when called with save_dungeon
+5fbc62a updated load_dungeon so it works better when called along with save_dungeon
+c515587 fleshed out save method
+8b8dc04 updated the README to reflect the current status of the assignment
+c8560e9 Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02 finished the functionality of the load function. added the ability for the program to keep track of the number of staircases. added the place_pc function that randomly places the player character in a room in the dungeon
+a89ea51 finished the load function and added the ability to store the number of stair cases for later use in the save function. allowed the player character to be randomly placed in any room when a dungeon is being generated
+ec4c6fc added code to save method
+4481ca1 added some of the functionality to both load and save funtions
+52860b3 added the test files for the load function
+
