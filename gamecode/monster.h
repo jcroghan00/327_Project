@@ -1,8 +1,9 @@
-#include <stdint.h>
+#ifndef MONSTER_H
+# define MONSTER_H
 
-struct dungeon{
-    struct dungeon_t *d;
-};
+#include "dungeon.h"
 
-void dijkstra_normal(dungeon *d);
-void dijkstra_tunneling(dungeon *d);
+void dijkstra_normal(dungeon_t *d);
+void dijkstra_tunneling(dungeon_t *d);
+
+#endif

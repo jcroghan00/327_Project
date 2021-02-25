@@ -11,21 +11,12 @@ typedef struct monster_path {
     int32_t cost;
 } monster_path_t;
 
-struct dungeon{
-    struct dungeon_t *d;
-};
-
-#define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
-#define mapxy(x, y) (d->map[y][x])
-#define hardnesspair(pair) (d->hardness[pair[dim_y]][pair[dim_x]])
-#define hardnessxy(x, y) (d->hardness[y][x])
-
 static int32_t monster_path_cmp(const void *key, const void *with) {
     return ((monster_path_t *) key)->cost - ((monster_path_t *) with)->cost;
 }
 
-//started modifying
-static void dijkstra_normal(dungeon *d)
+//mostly complete, needs to be able to save and print
+static void dijkstra_normal(dungeon_t *d)
 {
     static monster_path_t path[DUNGEON_Y][DUNGEON_X], *p;
     static uint32_t initialized = 0;

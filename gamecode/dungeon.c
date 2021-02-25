@@ -9,6 +9,7 @@
 #include <sys/time.h>
 #include <assert.h>
 
+#include "dungeon.h"
 #include "heap.h"
 #include "monster.h"
 
@@ -33,10 +34,11 @@ typedef struct file_info {
   uint32_t file_size;
 } file_info_t;
 
+/*
  struct pc {
   int8_t x, y;
 } pc;
-
+ */
 
 typedef struct corridor_path {
   heap_node_t *hn;
@@ -45,14 +47,19 @@ typedef struct corridor_path {
   int32_t cost;
 } corridor_path_t;
 
+/*
 typedef enum dim {
   dim_x,
   dim_y,
   num_dims
 } dim_t;
+ */
 
+/*
 typedef int16_t pair_t[num_dims];
+ */
 
+/*
 #define DUNGEON_X              80
 #define DUNGEON_Y              21
 #define MIN_ROOMS              6
@@ -66,7 +73,9 @@ typedef int16_t pair_t[num_dims];
 #define mapxy(x, y) (d->map[y][x])
 #define hardnesspair(pair) (d->hardness[pair[dim_y]][pair[dim_x]])
 #define hardnessxy(x, y) (d->hardness[y][x])
+ */
 
+/*
 typedef enum __attribute__ ((__packed__)) terrain_type {
   ter_debug,
   ter_wall,
@@ -79,36 +88,43 @@ typedef enum __attribute__ ((__packed__)) terrain_type {
   ter_stairs_up,
   ter_stairs_down
 } terrain_type_t;
+*/
 
+/*
 typedef struct room {
   pair_t position;
   pair_t size;
 } room_t;
+*/
 
+/*
 typedef struct stair{
   pair_t position;
   //down=0 up =1
   int up_down;
 }stair_t;
+*/
 
+/*
 typedef struct dungeon {
   uint32_t num_rooms;
   room_t rooms[MAX_ROOMS];
   stair_t stairs[255];
   terrain_type_t map[DUNGEON_Y][DUNGEON_X];
-  /* Since hardness is usually not used, it would be expensive to pull it *
+   Since hardness is usually not used, it would be expensive to pull it *
    * into cache every time we need a map cell, so we store it in a        *
    * parallel array, rather than using a structure to represent the       *
    * cells.  We may want a cell structure later, but from a performanace  *
    * perspective, it would be a bad idea to ever have the map be part of  *
    * that structure.  Pathfinding will require efficient use of the map,  *
    * and pulling in unnecessary data with each map cell would add a lot   *
-   * of overhead to the memory system.                                    */
+   * of overhead to the memory system.
   uint8_t hardness[DUNGEON_Y][DUNGEON_X];
   uint16_t stairs_up;
   uint16_t stairs_down;
   pc pc;
 } dungeon_t;
+*/
 
 static uint32_t in_room(dungeon_t *d, int16_t y, int16_t x)
 {
