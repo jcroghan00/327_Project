@@ -690,10 +690,6 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
   fread(&d->pc.x, 1, 1, file);
   fread(&d->pc.y, 1, 1, file);
 
-  //monster pathmaking
-  dijkstra_non_tunneling(d);
-  dijkstra_tunneling(d);
-
   //hardness
   fread(&d->hardness, 1, 1680, file);
   //rooms
@@ -771,6 +767,11 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
     mapxy(x, y) = ter_stairs_down;
   }
   mapxy(d->pc.x, d->pc.y) = ter_pc;
+
+  //monster pathmaking
+  dijkstra_non_tunneling(d);
+  dijkstra_tunneling(d);
+
   return 0;
 }
 
@@ -815,7 +816,10 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
   if (f->ren_non_tun_dist_map){
     for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
       for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-	if(d->non_tun_path[p[dim_y]][p[dim_x]].cost == INT_MAX){
+          if(d->non_tun_path[p[dim_y]][p[dim_x]].cost == 0){
+              printf("@");
+          }
+	else if(d->non_tun_path[p[dim_y]][p[dim_x]].cost == INT_MAX){
 	  if(d->hardness[p[dim_y]][p[dim_x]] == 0){
 	    printf("X");
 	  }
@@ -834,7 +838,10 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
   if (f->ren_tun_dist_map){
     for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
       for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-	if(d->tun_path[p[dim_y]][p[dim_x]].cost == INT_MAX){
+          if(d->tun_path[p[dim_y]][p[dim_x]].cost == 0){
+              printf("@");
+          }
+	else if(d->tun_path[p[dim_y]][p[dim_x]].cost == INT_MAX){
 	  printf("X");
 	}
 	else{
