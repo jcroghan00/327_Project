@@ -812,29 +812,26 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
       putchar('\n');
   }
     //render the non-tunneling distance map if specified (1.03 defaults to true)
-    if (f->ren_non_tun_dist_map){
-      for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
-	    for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-	        if(d->non_tun_path[p[dim_y]][p[dim_x]].cost == INTMAX){
-	            if(d->hardness[p[dim_y]][p[dim_x]] == 0){
-	                printf("X");
-	            }
-	            else{
-	                printf(" ");
-	            }
-	        }
-	        else{
-	            printf("%d", d->non_tun_path[p[dim_y]][p[dim_x]].cost % 10);
-	        }
-	        non_tun_path
-	    }
-      }
+    if (f->ren_non_tun_dist_map) {
+        for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
+            for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
+                if (d->non_tun_path[p[dim_y]][p[dim_x]].cost == INT_MAX) {
+                    if (d->hardness[p[dim_y]][p[dim_x]] == 0) {
+                        printf("X");
+                    } else {
+                        printf(" ");
+                    }
+                } else {
+                    printf("%d", d->non_tun_path[p[dim_y]][p[dim_x]].cost % 10);
+                }
+            }
+        }
     }
     
     if (f->ren_tun_dist_map){
         for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
             for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-                if(d->tun_path[p[dim_y]][p[dim_x]].cost == INTMAX){
+                if(d->tun_path[p[dim_y]][p[dim_x]].cost == INT_MAX){
                     printf("X");
                 }
                 else{
@@ -898,7 +895,7 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
   for (int i=0; i <tempnumrooms;i++)
     {
         fwrite(&d->rooms[i].position[dim_x],1,1,file);
-        fwrite(&d->rooms[i].position[dim_y],1,1,fi
+        fwrite(&d->rooms[i].position[dim_y],1,1,file);
         fwrite(&d->rooms[i].size[dim_x],1,1,file);
         fwrite(&d->rooms[i].size[dim_y],1,1,file);
     }
