@@ -857,6 +857,7 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
 
 void delete_dungeon(dungeon_t *d)
 {
+    free(d->rooms);
 }
 
 void init_dungeon(dungeon_t *d)
