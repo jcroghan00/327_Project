@@ -613,11 +613,10 @@ static int make_rooms(dungeon_t *d)
 {
   uint32_t i;
 
-  memset(d->rooms, 0, sizeof (d->rooms));
-
   for (i = MIN_ROOMS; i < MAX_ROOMS && rand_under(5, 8); i++)
     ;
   d->num_rooms = i;
+  d->rooms = malloc(sizeof (*d->rooms) * d->num_rooms);
 
   for (i = 0; i < d->num_rooms; i++) {
     d->rooms[i].size[dim_x] = ROOM_MIN_X;
@@ -692,10 +691,12 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
 
   //hardness
   fread(&d->hardness, 1, 1680, file);
+
   //rooms
   fread(&d->num_rooms, 2, 1, file);
   d->num_rooms = be16toh(d->num_rooms);
-  printf("num_rooms: %i",d->num_rooms);
+
+  d->rooms = malloc(sizeof (*d->rooms) * d->num_rooms);
 
   for(int i = 0; i < d->num_rooms; ++i)
   {
@@ -714,8 +715,8 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
     d->rooms[i].size[dim_x] = width;
     d->rooms[i].size[dim_y] = height;
 
-    for(int j = y; j < y + height; ++j){
-      for(int k = x; k < x + width; ++k){
+    for(int j = y; j < y + height; j++){
+      for(int k = x; k < x + width; k++){
 	mapxy(k, j) = ter_floor_room;
       }
     }
@@ -728,6 +729,7 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
       }
     }
   }
+
   //stairs
   fread(&d->stairs_up, 2, 1, file);
   d->stairs_up = be16toh(d->stairs_up);
@@ -842,7 +844,7 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
               printf("@");
           }
 	else if(d->tun_path[p[dim_y]][p[dim_x]].cost == INT_MAX){
-	  printf("X");
+	  printf(" ");
 	}
 	else{
 	  printf("%d", d->tun_path[p[dim_y]][p[dim_x]].cost % 10);
@@ -864,14 +866,12 @@ void init_dungeon(dungeon_t *d)
 
 int save_dungeon(dungeon_t *d, file_info_t *f)
 {
- 
   char *home = getenv("HOME");
   char *game_dir = ".rlg327";
   char *save_file = "dungeon";
   sprintf(f->file_type,"RLG327-S2021");
   f->version = htobe32(0);
   f->file_size = 1704+(d->num_rooms*4)+((d->stairs_up+d->stairs_down)*2);
-
 
   char *path = malloc(strlen(home) + strlen(game_dir) + strlen(save_file) + 3);
   sprintf(path,"%s/%s/%s", home, game_dir, save_file);

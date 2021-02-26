@@ -70,7 +70,7 @@ typedef struct monster_path {
 
 typedef struct dungeon {
   uint32_t num_rooms;
-  room_t rooms[MAX_ROOMS];
+  room_t *rooms;
   stair_t stairs[255];
   terrain_type_t map[DUNGEON_Y][DUNGEON_X];
    /*Since hardness is usually not used, it would be expensive to pull it *

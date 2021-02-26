@@ -58,7 +58,7 @@ void dijkstra_non_tunneling(dungeon_t *d)
             for(int j = -1; j <= 1; ++j){
                 if ((d->non_tun_path[p->pos[dim_y] + j][p->pos[dim_x] + i].hn) &&
                     (d->non_tun_path[p->pos[dim_y] + j][p->pos[dim_x] + i].cost >
-                     p->cost + 1)) {
+                     p->cost + 1) && (p->cost != INT_MAX)) {
 		  d->non_tun_path[p->pos[dim_y] + j][p->pos[dim_x] + i].cost =
 		    p->cost + 1;
                     heap_decrease_key_no_replace(&h, d->non_tun_path[p->pos[dim_y] + j]
