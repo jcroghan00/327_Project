@@ -1,0 +1,4 @@
+.rlg327
+.git
+.exclude.txt
+backups

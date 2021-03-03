@@ -1,1 +1,103 @@
-Basic CHANGELOG file
+* 4b734cd : made delete_dungeon free the memory for rooms
+* 762c0d6 : fixed a memory issue with loading files with a large number of rooms
+* 3610a56 : fixed a bug with saving and loading with monster pathmaking
+*   bb043db : Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03
+|\  
+| * 557797d : fixed tunneling print statments
+* | e33ec58 : commit for merge
+|/  
+* ad35744 : made clobber
+*   a48eae3 : Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03
+|\  
+| * de8beb6 : forgot to run make clobber im soory
+* | dff132b : Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03
+|\| 
+| * 208efd3 : fixed indents
+| * cc14030 : tiny error
+* | 9e198b1 : indent
+|/  
+* 6e30f51 : touchups, code cleaning
+*   ad700d1 : Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03
+|\  
+| * 516296f : added monster path arrays to dungeon
+* | 0585146 : added the print functions for the monster paths
+|/  
+* 7340af7 : moved path struct to dungeon.h
+*   649f213 : Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03
+|\  
+| * e048ad4 : added placeholder for rendering tun_dist_map
+| * 2a52d4c : fixed header files for dungeon.h and monster.h
+* | 6308d9f : fixed errors in the header files for dungeon and monster
+|/  
+* d04d70f : fixed Makefile linking with monster.c
+* 10e8f3d : fixed a bug in the load function that now allows it to properly function, finally
+*   1424c83 : Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03
+|\  
+| * 8180bfa : removed bad files (sorry)
+* | 4dd08f4 : Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03
+|\| 
+| * 795b5d6 : broken version, need to fix save and load
+* | 118a84d : added the monster pathfinding functions into the generate and load dungeon functions
+|/  
+* 98c129d : remove unneeded code
+* 2ee797a : converted pc to typedef struct
+* 9f3964c : made dungeon.h and moves struct definitions into it
+* 7e6b470 : added monster tunneling code to monster.c
+*   8937393 : Merge branch 'main' into 1.03 bring 1.03 up to date
+|\  
+| *   01864a6 : Merge branch 'main' of https://github.com/ryantullis/327_Project into main
+| |\  
+| | *   bc68530 : Merge pull request #1 from ryantullis/1.03
+| | |\  
+* | | | f9dbd96 : added functionality for in monster.c for the non-tunneling pathmaking. added monster.h. added the pc to the dungeon structure so it woks better with the pathfinding in monster.c
+* | | |   1d28574 : Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03
+|\ \ \ \  
+| * | | | 12cfc1c : Merge pull request #2 from ryantullis/1.02
+| |\| | | 
+| | |_|/  
+| |/| |   
+| | * |   3448576 : Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02
+| | |\ \  
+| | | * | 62cbc2c : and it sweeeeeet sweeeeet sweet victory!                yeah
+| | * | | 645117e : preparing for a merge
+| | |/ /  
+| | * |   b97a7d4 : Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02
+| | |\ \  
+| | | * | b87a7f1 : fixed bugs and added tears
+| | * | | 86f544f : updated load_dungeon to hopefully fix some bugs
+| | |/ /  
+| | * |   f0277b7 : Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02 fixed merge conflicts
+| | |\ \  
+| | | * \   5a7a6dc : Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02 updated load_dungeon so that it works better when called with save_dungeon
+| | | |\ \  
+| | | * | | 5fbc62a : updated load_dungeon so it works better when called along with save_dungeon
+| | * | | | 54062f9 : hopefully finished save
+| | | |/ /  
+| | |/| |   
+| | * | | c515587 : fleshed out save method
+| | |/ /  
+| | * | 8b8dc04 : updated the README to reflect the current status of the assignment
+| | * |   c8560e9 : Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02 finished the functionality of the load function. added the ability for the program to keep track of the number of staircases. added the place_pc function that randomly places the player character in a room in the dungeon
+| | |\ \  
+| | | * | ec4c6fc : added code to save method
+| | * | | a89ea51 : finished the load function and added the ability to store the number of stair cases for later use in the save function. allowed the player character to be randomly placed in any room when a dungeon is being generated
+| | |/ /  
+| | * | 4481ca1 : added some of the functionality to both load and save funtions
+| | * | 52860b3 : added the test files for the load function
+| | * | 2f318ce : test for adding .rlg327
+| | * | fa114a8 : started adding functionality for save and load. added .rlg327 directory
+| | |/  
+* | / bd5eed5 : added monster.h and started to add functions into monster.c
+|/ /  
+* / b47c4a8 : added monster.c to the project files
+|/  
+*   bd4b46c : Merge branch 'main' of https://github.com/ryantullis/327_Project into main
+|\  
+| * f6649d4 : removed testing2
+| * 9e5530c : testing how pushes and pulls work
+| * 0594984 : Create testingFile
+* | 6a3b562 : Added assignment-1.01 code to the repository
+|/  
+* 55096bd : moved README and CHANGELOG to top level directory and added game.c
+* 26056d6 : added gamecode directory to branch and created README and CHANGELOG
+* 7bf6424 : added backup.sh to tracked files
