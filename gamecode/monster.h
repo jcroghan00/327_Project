@@ -38,6 +38,7 @@ typedef struct monster {
 
 } monster_t;
 char get_display_char(monster_t *m);
+void move_monster(monster_t *m, dungeon_t *d);
 void dijkstra_non_tunneling(dungeon_t *d);
 void dijkstra_tunneling(dungeon_t *d);
 int bresenham_LOS(dungeon_t *d, int x0, int y0, int x1, int y1);

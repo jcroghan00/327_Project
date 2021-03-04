@@ -1027,7 +1027,7 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
   return 0;
 }
 
-int play_game(dungeon_t *d)
+int play_game(dungeon_t *d,file_info_t *f)
 {
     heap_t h;
     heap_init(&h,character_cmp,NULL);
@@ -1056,9 +1056,11 @@ int play_game(dungeon_t *d)
             //do whatever the pc needs to do
             c->turn = c->turn + 1;
             c->hn = heap_insert(&h, c);
+            render_dungeon(d,f);
+            usleep(2500);
         }
         else {
-            // do whatever a monster needs to do
+            move_monster(c->monster,d);
             c->turn = c->turn + 1;
             c->hn = heap_insert(&h, c);
         }
@@ -1102,7 +1104,7 @@ int main(int argc, char *argv[])
   if (f.save) {
     save_dungeon(&d,&f);
   }
-  play_game(&d);
+  play_game(&d,&f);
   delete_dungeon(&d);
 
   return 0;

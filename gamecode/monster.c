@@ -148,6 +148,19 @@ void dijkstra_tunneling(dungeon_t *d)
     }
 }
 
+void move_monster(monster_t *m, dungeon_t *d)
+{
+    if (m->erratic)
+    {
+        if (rand() % 2)
+        {
+            //move erratically
+        }
+    }
+    
+
+}
+
 int bresenham_LOS(dungeon_t *d, int x0, int y0, int x1, int y1)
 {
     int dx = abs(x1 - x0);
