@@ -698,8 +698,8 @@ int gen_monsters(dungeon_t *d)
 
     }
 
-    int totalMonsters = 0;
-    while(totalMonsters < d->num_monsters)
+    int totalMonsters = 1;
+    while(totalMonsters <= d->num_monsters)
     {
         if(totalMonsters == totalArea){break;}
 
