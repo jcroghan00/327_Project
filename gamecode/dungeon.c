@@ -1031,7 +1031,7 @@ int play_game(dungeon_t *d)
 {
     heap_t h;
     heap_init(&h,character_cmp,NULL);
-    characters = malloc((sizeof(d->monsters)+1)*sizeof(character_t));
+    characters = malloc((d->num_monsters+1)*sizeof(character_t));
     character_t c_pc;
     c_pc.pc = &d->pc;
     c_pc.turn = 0;
@@ -1045,12 +1045,28 @@ int play_game(dungeon_t *d)
         characters[i].sd = i;
         characters[i].hn = heap_insert(&h,&characters[i]);
     }
+    free(characters);
 
-
+    character_t *c;
     while(d->pc.living)
     {
-        
+        if ((c = heap_remove_min(&h)))
+        {
+            //if the node is a pc
+            if (c->pc) {
+                //do whatever the pc needs to do
+                c->turn = c->turn + 1;
+                c->hn = heap_insert(&h, c);
+            } else {
+                // do whatever a monster needs to do
+                c->turn = c->turn + 1;
+                c->hn = heap_insert(&h, c);
+            }
+
+            d->pc.living = 0;
+        }
     }
+
     return 0;
 }
 
