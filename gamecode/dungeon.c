@@ -648,6 +648,9 @@ static void place_pc(dungeon_t *d)
 // Function to add monsters to the dungeon
 int gen_monsters(dungeon_t *d)
 {
+    //if num monsters not specified, set it to twice the number of rooms or 50
+    //whichever is smaller
+    if (d->num_monsters == -1){d->num_monsters = d->num_rooms*2 < 50 ? d->num_rooms*2 : 50;}
     return 0;
 }
 
@@ -663,6 +666,7 @@ int gen_dungeon(dungeon_t *d)
   place_pc(d);
   dijkstra_non_tunneling(d);
   dijkstra_tunneling(d);
+  gen_monsters(d);
   return 0;
 }
 
@@ -778,6 +782,8 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
   //monster pathmaking
   dijkstra_non_tunneling(d);
   dijkstra_tunneling(d);
+  //adds monsters to the dungeon
+  gen_monsters(d);
 
   return 0;
 }
