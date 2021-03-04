@@ -1050,23 +1050,19 @@ int play_game(dungeon_t *d)
     character_t *c;
     while(d->pc.living)
     {
-        if ((c = heap_remove_min(&h)))
-        {
-            //if the node is a pc
-            if (c->pc) {
-                //do whatever the pc needs to do
-                c->turn = c->turn + 1;
-                c->hn = heap_insert(&h, c);
-            } else {
-                // do whatever a monster needs to do
-                c->turn = c->turn + 1;
-                c->hn = heap_insert(&h, c);
-            }
-
-            d->pc.living = 0;
+        c = heap_remove_min(&h);
+        //if the node is a pc
+        if (c->pc) {
+            //do whatever the pc needs to do
+            c->turn = c->turn + 1;
+            c->hn = heap_insert(&h, c);
+        }
+        else {
+            // do whatever a monster needs to do
+            c->turn = c->turn + 1;
+            c->hn = heap_insert(&h, c);
         }
     }
-
     return 0;
 }
 
