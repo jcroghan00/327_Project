@@ -645,6 +645,14 @@ static void place_pc(dungeon_t *d)
     }
   }
 }
+// Function to add monsters to the dungeon
+int gen_monsters(dungeon_t *d)
+{
+    //if num monsters not specified, set it to twice the number of rooms or 50
+    //whichever is smaller
+    if (d->num_monsters == -1){d->num_monsters = d->num_rooms*2 < 50 ? d->num_rooms*2 : 50;}
+    return 0;
+}
 
 int gen_dungeon(dungeon_t *d)
 {
@@ -658,6 +666,7 @@ int gen_dungeon(dungeon_t *d)
   place_pc(d);
   dijkstra_non_tunneling(d);
   dijkstra_tunneling(d);
+  gen_monsters(d);
   return 0;
 }
 
@@ -773,6 +782,8 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
   //monster pathmaking
   dijkstra_non_tunneling(d);
   dijkstra_tunneling(d);
+  //adds monsters to the dungeon
+  gen_monsters(d);
 
   return 0;
 }
@@ -943,24 +954,20 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
 
 int main(int argc, char *argv[])
 {
-  dungeon_t d;
-  file_info_t f;
+  dungeon_t d = { .num_monsters = -1};
+  file_info_t f = { .load = 0, .save = 0, .ren_non_tun_dist_map = 1, .ren_tun_dist_map = 1};
   struct timeval tv;
   uint32_t seed = 0;
-  f.load = 0;
-  f.save = 0;
-  f.ren_non_tun_dist_map = 1;
-  f.ren_tun_dist_map = 1;
 
   UNUSED(in_room);
 
   for (int i = 1; i < argc; i++)
     {
-      if (!strcmp(argv[i],"--save")) { f.save=1;}
-      else if (!strcmp(argv[i],"--load")){f.load=1;}
+      if (!strcmp(argv[i],"--save"))         {f.save=1;}
+      else if (!strcmp(argv[i],"--load"))    {f.load=1;}
+      else if (!strcmp(argv[i],"--nummon"))  {d.num_monsters = atoi(argv[++i]);}
       else {seed=atoi(argv[i]);}
     }
-
    if (!seed)
   {
     gettimeofday(&tv, NULL);
