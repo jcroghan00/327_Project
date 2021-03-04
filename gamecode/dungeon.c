@@ -976,6 +976,9 @@ int main(int argc, char *argv[])
   else {
     gen_dungeon(&d);
   }
+
+  bresenham_monsters(&d,1, 1, d.pc.x, d.pc.y);
+
   render_dungeon(&d,&f);
   if (f.save) {
     save_dungeon(&d,&f);
