@@ -41,6 +41,8 @@ typedef int16_t pair_t[num_dims];
 #define mapxy(x, y) (d->map[y][x])
 #define hardnesspair(pair) (d->hardness[pair[dim_y]][pair[dim_x]])
 #define hardnessxy(x, y) (d->hardness[y][x])
+#define monster_mappair(pair) (d->monster_map[pair[dim_y]][pair[dim_x]])
+#define monster_mapxy(x, y) (d->monster_map[y][x])
 
 typedef enum __attribute__ ((__packed__)) terrain_type {
   ter_debug,
@@ -72,12 +74,14 @@ typedef struct monster_path {
     int32_t cost;
 } monster_path_t;
 
+
 typedef struct dungeon {
   uint32_t num_rooms;
   room_t *rooms;
   monster_t *monsters;
   stair_t stairs[255];
   terrain_type_t map[DUNGEON_Y][DUNGEON_X];
+  monster_t *monster_map[DUNGEON_Y][DUNGEON_X];
    /*Since hardness is usually not used, it would be expensive to pull it *
    * into cache every time we need a map cell, so we store it in a        *
    * parallel array, rather than using a structure to represent the       *

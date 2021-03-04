@@ -10,6 +10,10 @@ static int32_t monster_path_cmp(const void *key, const void *with) {
     return ((monster_path_t *) key)->cost - ((monster_path_t *) with)->cost;
 }
 
+char get_monster_char(monster_t *m){
+    return '*';
+}
+
 void dijkstra_non_tunneling(dungeon_t *d)
 {
   static monster_path_t *p;

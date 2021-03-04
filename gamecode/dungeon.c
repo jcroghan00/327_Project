@@ -643,7 +643,7 @@ static void place_pc(dungeon_t *d)
       mapxy(d->pc.x, d->pc.y) = ter_pc;
       loop = 0;
     }
-    d->px.living = 1;
+    d->pc.living = 1;
   }
 }
 // Function to add monsters to the dungeon
@@ -661,6 +661,7 @@ int gen_monsters(dungeon_t *d)
         d->monsters[i].erratic = rand() % 2;
         d->monsters[i].speed = rand() % 16 + 5;
     }
+
 
 
 
@@ -807,33 +808,39 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
 
   for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
       for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-          switch (mappair(p)) {
-              case ter_wall:
-              case ter_wall_immutable:
-                  putchar(' ');
-                  break;
-              case ter_floor:
-              case ter_floor_room:
-                  putchar('.');
-                  break;
-              case ter_floor_hall:
-                  putchar('#');
-                  break;
-              case ter_debug:
-                  putchar('*');
-                  //fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
-                  break;
-              case ter_stairs_up:
-                  putchar('<');
-                  break;
-              case ter_stairs_down:
-                  putchar('>');
-                  break;
-              case ter_pc:
-                  putchar('@');
-                  break;
-              default:
-                  break;
+          if (monster_mappair(p))
+          {
+            putchar(get_monster_char(monster_mappair(p)));
+          }
+          else {
+              switch (mappair(p)) {
+                  case ter_wall:
+                  case ter_wall_immutable:
+                      putchar(' ');
+                      break;
+                  case ter_floor:
+                  case ter_floor_room:
+                      putchar('.');
+                      break;
+                  case ter_floor_hall:
+                      putchar('#');
+                      break;
+                  case ter_debug:
+                      putchar('*');
+                      //fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
+                      break;
+                  case ter_stairs_up:
+                      putchar('<');
+                      break;
+                  case ter_stairs_down:
+                      putchar('>');
+                      break;
+                  case ter_pc:
+                      putchar('@');
+                      break;
+                  default:
+                      break;
+              }
           }
       }
       putchar('\n');
