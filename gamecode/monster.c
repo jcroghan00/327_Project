@@ -11,7 +11,24 @@ static int32_t monster_path_cmp(const void *key, const void *with) {
 }
 char get_display_char(monster_t *m)
 {
-    return '*';
+    char binary_char[4] = {'0'+(char)m->erratic,
+                           '0'+(char)m->tunneling,
+                           '0'+(char)m->telepath,
+                           '0'+(char)m->intelligent};
+
+    int binary = atoi(binary_char),decimal = 0,base = 1,rem;
+    while (binary > 0){
+        rem = binary % 10;
+        decimal = decimal + rem * base;
+        binary = binary/10;
+        base = base * 2;
+    }
+    if (decimal <= 9){
+        return (char)('0' + decimal);}
+    else {
+        decimal -= 10;
+        return (char)('A' + decimal);
+    }
 }
 
 void dijkstra_non_tunneling(dungeon_t *d)
