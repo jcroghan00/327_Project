@@ -810,7 +810,7 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
       for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
           if (monster_mappair(p))
           {
-            putchar(get_monster_char(monster_mappair(p)));
+            putchar((monster_mappair(p)->display_char));
           }
           else {
               switch (mappair(p)) {

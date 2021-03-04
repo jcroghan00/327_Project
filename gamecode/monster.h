@@ -34,10 +34,10 @@ typedef struct monster {
      */
     int erratic;
     int speed;
+    char display_char;
 
 } monster_t;
 
-char get_monster_char(monster_t *m);
 void dijkstra_non_tunneling(dungeon_t *d);
 void dijkstra_tunneling(dungeon_t *d);
 void bresenham_monsters(dungeon_t *d, int x0, int y0, int x1, int y1);
