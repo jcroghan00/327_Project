@@ -695,6 +695,9 @@ int gen_monsters(dungeon_t *d)
                 }
             }
         }
+        if(totalMonsters >= totalArea){
+            break;
+        }
     }
     return 0;
 }
