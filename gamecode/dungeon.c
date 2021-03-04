@@ -698,8 +698,6 @@ int gen_monsters(dungeon_t *d)
 
     }
 
-    printf("Area: %d\n", totalArea);
-
     int totalMonsters = 0;
     while(totalMonsters < d->num_monsters)
     {
@@ -717,8 +715,6 @@ int gen_monsters(dungeon_t *d)
         d->monster_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] = &d->monsters[totalMonsters];
         ++totalMonsters;
     }
-
-    printf("Monsters: %d\n", totalMonsters);
     return 0;
 }
 
@@ -1050,18 +1046,20 @@ int play_game(dungeon_t *d)
     character_t *c;
     while(d->pc.living)
     {
-        c = heap_remove_min(&h);
+
         //if the node is a pc
         if (c->pc) {
             //do whatever the pc needs to do
             c->turn = c->turn + 1;
             c->hn = heap_insert(&h, c);
+
         }
         else {
             // do whatever a monster needs to do
             c->turn = c->turn + 1;
             c->hn = heap_insert(&h, c);
         }
+        //d->pc.living = 0;
     }
     return 0;
 }
