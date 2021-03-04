@@ -679,26 +679,27 @@ int gen_monsters(dungeon_t *d)
 
     }
 
+    printf("Area: %d\n", totalArea);
+
     int totalMonsters = 0;
     while(totalMonsters < d->num_monsters)
     {
-        int x = rand() % 80;
-        int y = rand() % 21;
-        for(int i = 0; i < d->num_rooms; ++i)
-        {
-            if(x >= d->rooms[i].position[dim_x] && x < d->rooms[i].position[dim_x] + d->rooms[i].size[dim_x]
-                    && y >= d->rooms[i].position[dim_y] && y < d->rooms[i].position[dim_y] + d->rooms[i].size[dim_y])
-            {
-                if(i != pcRoomNum){
-                    d->monster_map[y][x] = &d->monsters[totalMonsters];
-                    ++totalMonsters;
-                }
-            }
-        }
-        if(totalMonsters >= totalArea){
-            break;
-        }
+        if(totalMonsters == totalArea){break;}
+
+        int randRoom = rand() % d->num_rooms;
+
+        if(randRoom == pcRoomNum){continue;}
+
+        int x = rand() % d->rooms[randRoom].size[dim_x];
+        int y = rand() % d->rooms[randRoom].size[dim_y];
+
+        if(d->monster_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] != NULL){continue;}
+
+        d->monster_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] = &d->monsters[totalMonsters];
+        ++totalMonsters;
     }
+
+    printf("Monsters: %d\n", totalMonsters);
     return 0;
 }
 
