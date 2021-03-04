@@ -653,33 +653,38 @@ static int make_rooms(dungeon_t *d)
 
 static void place_pc(dungeon_t *d)
 {
-  int loop = 1;
-  while(loop){
-    d->pc.x = rand() % DUNGEON_X;
-    d->pc.y = rand() % DUNGEON_Y;
+    //if num monsters not specified, set it to twice the number of rooms or 50
+    //whichever is smaller
+    if (d->num_monsters == -1){d->num_monsters = d->num_rooms*2 < 50 ? d->num_rooms*2 : 50;}
+    d->monsters = malloc(sizeof(monster_t) * (d->num_monsters + 1));
 
-    if(d->map[d->pc.y][d->pc.x] == ter_floor_room){
-      mapxy(d->pc.x, d->pc.y) = ter_pc;
-      loop = 0;
-    }
+    int randRoom = rand() % d->num_rooms;
+    int x = rand() % d->rooms[randRoom].size[dim_x];
+    int y = rand() % d->rooms[randRoom].size[dim_y];
+
+    d->pc.x = d->rooms[randRoom].position[dim_x] + x;
+    d->pc.y = d->rooms[randRoom].position[dim_y] + y;
+
+    d->monsters[0].pc = 1;
+    d->monsters[0].display_char = get_display_char(&d->monsters[0]);
+    d->monster_map[d->pc.y][d->pc.x] = &d->monsters[0];
     d->pc.living = 1;
-  }
-  d->pc.living = 1;
+
+    printf("pcx: %d\n", d->pc.x);
+    printf("pcy: %d\n", d->pc.y);
 }
 // Function to add monsters to the dungeon
 int gen_monsters(dungeon_t *d)
 {
-    //if num monsters not specified, set it to twice the number of rooms or 50
-    //whichever is smaller
-    if (d->num_monsters == -1){d->num_monsters = d->num_rooms*2 < 50 ? d->num_rooms*2 : 50;}
-    d->monsters = malloc(sizeof(monster_t) * d->num_monsters);
-    for(int i = 0; i < d->num_monsters; i++)
+    for(int i = 1; i <= d->num_monsters; i++)
     {
+        d->monsters[i].living = 1;
         d->monsters[i].intelligent = rand() % 2;
         d->monsters[i].telepath = rand() % 2;
         d->monsters[i].tunneling = rand() % 2;
         d->monsters[i].erratic = rand() % 2;
         d->monsters[i].speed = rand() % 16 + 5;
+        d->monsters[i].pc = 0;
         d->monsters[i].display_char = get_display_char(&d->monsters[i]);
     }
 
@@ -713,6 +718,8 @@ int gen_monsters(dungeon_t *d)
         if(d->monster_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] != NULL){continue;}
 
         d->monster_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] = &d->monsters[totalMonsters];
+        d->monsters[totalMonsters].y = d->rooms[randRoom].position[dim_y] + y;
+        d->monsters[totalMonsters].x = d->rooms[randRoom].position[dim_x] + x;
         ++totalMonsters;
     }
     return 0;
@@ -841,7 +848,10 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
     
     mapxy(x, y) = ter_stairs_down;
   }
-  mapxy(d->pc.x, d->pc.y) = ter_pc;
+    if (d->num_monsters == -1){d->num_monsters = d->num_rooms*2 < 50 ? d->num_rooms*2 : 50;}
+    d->monsters = malloc(sizeof(monster_t) * (d->num_monsters + 1));
+    d->monsters[0].pc = 1;
+    d->monsters[0].display_char = get_display_char(&d->monsters[0]);
 
   //monster pathmaking
   dijkstra_non_tunneling(d);
@@ -884,9 +894,6 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
                       break;
                   case ter_stairs_down:
                       putchar('>');
-                      break;
-                  case ter_pc:
-                      putchar('@');
                       break;
                   default:
                       break;
@@ -1023,13 +1030,29 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
   return 0;
 }
 
-void move_pc()
+void move_pc(dungeon_t *d)
 {
-    int x = (rand() % 2) * (((rand() % 2) + 1) * -1);
-    int y = (rand() % 2) * (((rand() % 2) + 1) * -1);
+    int hasMoved = 0;
+    while(!hasMoved)
+    {
+        int x = (rand() % 3) - 1;
+        int y = (rand() % 3) - 1;
 
-    printf("x: %d\n", x);
-    printf("y: %d\n", y);
+        if(d->map[d->pc.y + y][d->pc.x + x] == ter_wall || d->map[d->pc.y + y][d->pc.x + x] == ter_wall_immutable){continue;}
+
+
+        if (d->monster_map[d->pc.y][d->pc.x])
+        {
+            d->monster_map[d->pc.y][d->pc.x]->living = 0;
+            d->monster_map[d->pc.y][d->pc.x] = NULL;
+        }
+
+        d->pc.y += y;
+        d->pc.x += x;
+
+        d->monster_map[d->pc.y][d->pc.x] = &d->monsters[0];
+        hasMoved = 1;
+    }
 }
 
 int play_game(dungeon_t *d, file_info_t *f)
@@ -1053,23 +1076,27 @@ int play_game(dungeon_t *d, file_info_t *f)
     free(characters);
 
     character_t *c;
+    //int counter = 0;
     while(d->pc.living)
     {
+        c = heap_remove_min(&h);
+        c->hn = NULL;
         //if the node is a pc
-        if (c->pc) {
+        if (c->sd == 0) {
             //do whatever the pc needs to do
-            move_pc();
+            move_pc(d);
             c->turn = c->turn + 1;
             c->hn = heap_insert(&h, c);
+            printf("turn: %d\n",c->turn);
             render_dungeon(d,f);
-            usleep(2500);
+            usleep(2500000);
         }
-        else {
-            // do whatever a monster needs to do
+        else if (c->monster->living){
+            move_monster(c->monster,d);
             c->turn = c->turn + 1;
             c->hn = heap_insert(&h, c);
         }
-        //d->pc.living = 0;
+        //counter++;
     }
     return 0;
 }
@@ -1110,7 +1137,7 @@ int main(int argc, char *argv[])
   if (f.save) {
     save_dungeon(&d,&f);
   }
-  play_game(&d, &f);
+  play_game(&d,&f);
   delete_dungeon(&d);
 
   return 0;

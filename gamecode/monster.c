@@ -11,6 +11,8 @@ static int32_t monster_path_cmp(const void *key, const void *with) {
 }
 char get_display_char(monster_t *m)
 {
+    if(m->pc == 1){return (char)'@';}
+
     char binary_char[4] = {'0'+(char)m->erratic,
                            '0'+(char)m->tunneling,
                            '0'+(char)m->telepath,
@@ -146,6 +148,44 @@ void dijkstra_tunneling(dungeon_t *d)
             }
         }
     }
+}
+
+void move_monster(monster_t *m, dungeon_t *d)
+{
+    if (m->erratic)
+    {
+        if (rand() % 2)
+        {
+            //move erratically
+            int moved = 0,dx,dy;
+            while(!moved)
+            {
+                dx = (rand() % 3) - 1;
+                dy = (rand() % 3) - 1;
+                if (m->tunneling)
+                {
+
+                }
+                else
+                {
+                    if (d->map[m->y+dy][m->x+dx] >= ter_floor)
+                    {
+                        d->monster_map[m->y][m->x] = NULL;
+                        if (d->monster_map[m->y+dy][m->x+dx])
+                        {
+                            d->monster_map[m->y+dy][m->x+dx]->living = 0;
+                        }
+                        d->monster_map[m->y+dy][m->x+dx] = m;
+                        m->y = m->y+dy;
+                        m->x = m->x+dx;
+                    }
+                }
+                moved = 1;
+            }
+            return;
+        }
+    }
+
 }
 
 int bresenham_LOS(dungeon_t *d, int x0, int y0, int x1, int y1)
