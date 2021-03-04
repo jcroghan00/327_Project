@@ -11,6 +11,8 @@ static int32_t monster_path_cmp(const void *key, const void *with) {
 }
 char get_display_char(monster_t *m)
 {
+    if(m->pc == 1){return (char)'@';}
+
     char binary_char[4] = {'0'+(char)m->erratic,
                            '0'+(char)m->tunneling,
                            '0'+(char)m->telepath,

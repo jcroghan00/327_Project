@@ -54,8 +54,7 @@ typedef enum __attribute__ ((__packed__)) terrain_type {
   ter_floor_hall,
   ter_stairs,
   ter_stairs_up,
-  ter_stairs_down,
-  ter_pc
+  ter_stairs_down
 } terrain_type_t;
 
 typedef struct room {
@@ -74,7 +73,6 @@ typedef struct monster_path {
     uint8_t pos[2];
     int32_t cost;
 } monster_path_t;
-
 
 typedef struct dungeon {
   uint32_t num_rooms;
