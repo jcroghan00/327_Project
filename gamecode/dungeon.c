@@ -948,7 +948,7 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
 
 int main(int argc, char *argv[])
 {
-  dungeon_t d;
+  dungeon_t d = { .num_monsters = -1};
   file_info_t f = { .load = 0, .save = 0, .ren_non_tun_dist_map = 1, .ren_tun_dist_map = 1};
   struct timeval tv;
   uint32_t seed = 0;
@@ -957,11 +957,11 @@ int main(int argc, char *argv[])
 
   for (int i = 1; i < argc; i++)
     {
-      if (!strcmp(argv[i],"--save")) { f.save=1;}
-      else if (!strcmp(argv[i],"--load")){f.load=1;}
+      if (!strcmp(argv[i],"--save"))         {f.save=1;}
+      else if (!strcmp(argv[i],"--load"))    {f.load=1;}
+      else if (!strcmp(argv[i],"--nummon"))  {d.num_monsters = atoi(argv[++i]);}
       else {seed=atoi(argv[i]);}
     }
-
    if (!seed)
   {
     gettimeofday(&tv, NULL);
