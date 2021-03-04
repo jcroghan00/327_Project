@@ -658,20 +658,20 @@ static void place_pc(dungeon_t *d)
     if (d->num_monsters == -1){d->num_monsters = d->num_rooms*2 < 50 ? d->num_rooms*2 : 50;}
     d->monsters = malloc(sizeof(monster_t) * (d->num_monsters + 1));
 
-  int loop = 1;
-  while(loop){
-    d->pc.x = rand() % DUNGEON_X;
-    d->pc.y = rand() % DUNGEON_Y;
+    int randRoom = rand() % d->num_rooms;
+    int x = rand() % d->rooms[randRoom].size[dim_x];
+    int y = rand() % d->rooms[randRoom].size[dim_y];
 
-    if(d->map[d->pc.y][d->pc.x] == ter_floor_room){
-      d->monsters[0].pc = 1;
-      d->monsters[0].display_char = get_display_char(&d->monsters[0]);
-      d->monster_map[d->pc.y][d->pc.x] = &d->monsters[0];
-      loop = 0;
-    }
+    d->pc.x = d->rooms[randRoom].position[dim_x] + x;
+    d->pc.y = d->rooms[randRoom].position[dim_y] + y;
+
+    d->monsters[0].pc = 1;
+    d->monsters[0].display_char = get_display_char(&d->monsters[0]);
+    d->monster_map[d->pc.y][d->pc.x] = &d->monsters[0];
     d->pc.living = 1;
-  }
-  d->pc.living = 1;
+
+    printf("pcx: %d\n", d->pc.x);
+    printf("pcy: %d\n", d->pc.y);
 }
 // Function to add monsters to the dungeon
 int gen_monsters(dungeon_t *d)
@@ -1038,7 +1038,7 @@ void move_pc(dungeon_t *d)
         int x = (rand() % 3) - 1;
         int y = (rand() % 3) - 1;
 
-        if(d->map[d->pc.y + y][d->pc.x + x] == ter_wall){continue;}
+        if(d->map[d->pc.y + y][d->pc.x + x] == ter_wall || d->map[d->pc.y + y][d->pc.x + x] == ter_wall_immutable){continue;}
 
 
         if (d->monster_map[d->pc.y][d->pc.x])
