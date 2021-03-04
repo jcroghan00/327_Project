@@ -1079,6 +1079,7 @@ int play_game(dungeon_t *d, file_info_t *f)
             move_pc(d);
             c->turn = c->turn + 1;
             c->hn = heap_insert(&h, c);
+            printf("turn: %d\n",c->turn);
             render_dungeon(d,f);
             usleep(250000);
         }

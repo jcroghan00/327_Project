@@ -170,8 +170,10 @@ void move_monster(monster_t *m, dungeon_t *d)
                 {
                     if (d->map[m->y+dy][m->x+dx] >= ter_floor)
                     {
+                        printf("test");
                         if (!d->monster_map[m->y+dy][m->x+dx])
                         {
+                            printf("test");
                             d->monster_map[m->y+dy][m->x+dx]->living = 0;
                             d->monster_map[m->y+dy][m->x+dx] = m;
                             d->monster_map[m->y][m->x] = NULL;
