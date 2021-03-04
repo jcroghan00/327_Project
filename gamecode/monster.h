@@ -34,6 +34,9 @@ typedef struct monster {
      */
     int erratic;
     int speed;
+    int x;
+    int y;
+    int living;
     char display_char;
 
 } monster_t;

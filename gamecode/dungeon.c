@@ -675,6 +675,7 @@ int gen_monsters(dungeon_t *d)
     d->monsters = malloc(sizeof(monster_t) * d->num_monsters);
     for(int i = 0; i < d->num_monsters; i++)
     {
+        d->monsters[i].living = 1;
         d->monsters[i].intelligent = rand() % 2;
         d->monsters[i].telepath = rand() % 2;
         d->monsters[i].tunneling = rand() % 2;
@@ -715,6 +716,8 @@ int gen_monsters(dungeon_t *d)
         if(d->monster_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] != NULL){continue;}
 
         d->monster_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] = &d->monsters[totalMonsters];
+        d->monsters[totalMonsters].y = d->rooms[randRoom].position[dim_y] + y;
+        d->monsters[totalMonsters].x = d->rooms[randRoom].position[dim_x] + x;
         ++totalMonsters;
     }
 
@@ -1051,6 +1054,7 @@ int play_game(dungeon_t *d,file_info_t *f)
     while(d->pc.living)
     {
         c = heap_remove_min(&h);
+        c->hn = NULL;
         //if the node is a pc
         if (c->pc) {
             //do whatever the pc needs to do
@@ -1059,7 +1063,7 @@ int play_game(dungeon_t *d,file_info_t *f)
             render_dungeon(d,f);
             usleep(2500);
         }
-        else {
+        else if (c->monster->living){
             move_monster(c->monster,d);
             c->turn = c->turn + 1;
             c->hn = heap_insert(&h, c);

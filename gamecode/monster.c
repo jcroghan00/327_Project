@@ -155,9 +155,35 @@ void move_monster(monster_t *m, dungeon_t *d)
         if (rand() % 2)
         {
             //move erratically
+            int moved = 0,dx,dy;
+            while(!moved)
+            {
+                dx = (rand() % 3) - 1;
+                dy = (rand() % 3) - 1;
+                if (m->tunneling)
+                {
+
+                }
+                else
+                {
+                    if (d->map[m->y+dy][m->x+dx] >= ter_floor)
+                    {
+                        if (!d->monster_map[m->y+dy][m->x+dx])
+                        {
+                            d->monster_map[m->y+dy][m->x+dx]->living = 0;
+                            d->monster_map[m->y+dy][m->x+dx] = m;
+                            d->monster_map[m->y][m->x] = NULL;
+                        }
+                        m->y = m->y+dy;
+                        m->x = m->x+dx;
+                    }
+                }
+                moved = 1;
+            }
+            return;
         }
     }
-    
+
 
 }
 
