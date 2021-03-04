@@ -979,7 +979,7 @@ int play_game(dungeon_t *d)
 {
     while(d->pc.living)
     {
-
+        
     }
     return 0;
 }
