@@ -661,6 +661,7 @@ int gen_monsters(dungeon_t *d)
         d->monsters[i].tunneling = rand() % 2;
         d->monsters[i].erratic = rand() % 2;
         d->monsters[i].speed = rand() % 16 + 5;
+        d->monsters[i].display_char = get_display_char(&d->monsters[i]);
     }
 
 
