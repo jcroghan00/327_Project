@@ -664,9 +664,38 @@ int gen_monsters(dungeon_t *d)
         d->monsters[i].display_char = get_display_char(&d->monsters[i]);
     }
 
+    int pcRoomNum;
+    int totalArea = 0;
+    for(int i = 0; i < d->num_rooms; ++i)
+    {
+        if(d->pc.x >= d->rooms[i].position[dim_x] && d->pc.x < d->rooms[i].position[dim_x] + d->rooms[i].size[dim_x]
+                && d->pc.y >= d->rooms[i].position[dim_y] && d->pc.y < d->rooms[i].position[dim_y] + d->rooms[i].size[dim_y])
+        {
+            pcRoomNum = i;
+        }
+        else{
+            totalArea += d->rooms[i].size[dim_x] * d->rooms[i].size[dim_y];
+        }
 
+    }
 
-
+    int totalMonsters = 0;
+    while(totalMonsters < d->num_monsters)
+    {
+        int x = rand() % 80;
+        int y = rand() % 21;
+        for(int i = 0; i < d->num_rooms; ++i)
+        {
+            if(x >= d->rooms[i].position[dim_x] && x < d->rooms[i].position[dim_x] + d->rooms[i].size[dim_x]
+                    && y >= d->rooms[i].position[dim_y] && y < d->rooms[i].position[dim_y] + d->rooms[i].size[dim_y])
+            {
+                if(i != pcRoomNum){
+                    d->monster_map[y][x] = &d->monsters[totalMonsters];
+                    ++totalMonsters;
+                }
+            }
+        }
+    }
     return 0;
 }
 
