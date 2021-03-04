@@ -50,16 +50,16 @@ static int place_rooms(552,17168
 static void place_stairs(589,18355
 static int make_rooms(631,19425
 static void place_pc(654,19986
-int gen_monsters(677,20715
-int gen_dungeon(728,22468
-int load_dungeon(744,22717
-void render_dungeon(863,25317
-void delete_dungeon(944,27586
-void init_dungeon(950,27668
-int save_dungeon(955,27725
-void move_pc(1031,29699
-int play_game(1056,30230
-int main(1102,31432
+int gen_monsters(677,20838
+int gen_dungeon(728,22591
+int load_dungeon(744,22840
+void render_dungeon(865,25602
+void delete_dungeon(946,27871
+void init_dungeon(952,27953
+int save_dungeon(957,28010
+void move_pc(1033,29984
+int play_game(1058,30573
+int main(1102,31731
 
 dungeon.h,1855
 # define DUNGEON_H2,18
@@ -178,7 +178,7 @@ char get_display_char(12,269
 void dijkstra_non_tunneling(36,905
 void dijkstra_tunneling(94,2467
 void move_monster(153,4313
-int bresenham_LOS(192,5309
+int bresenham_LOS(191,5308
 
 monster.h,315
 # define MONSTER_H2,18
