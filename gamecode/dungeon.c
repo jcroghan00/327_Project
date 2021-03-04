@@ -848,6 +848,8 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
     
     mapxy(x, y) = ter_stairs_down;
   }
+    if (d->num_monsters == -1){d->num_monsters = d->num_rooms*2 < 50 ? d->num_rooms*2 : 50;}
+    d->monsters = malloc(sizeof(monster_t) * (d->num_monsters + 1));
     d->monsters[0].pc = 1;
     d->monsters[0].display_char = get_display_char(&d->monsters[0]);
 
