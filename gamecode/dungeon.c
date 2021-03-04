@@ -644,6 +644,7 @@ static void place_pc(dungeon_t *d)
       loop = 0;
     }
   }
+  d->pc.living = 1;
 }
 // Function to add monsters to the dungeon
 int gen_monsters(dungeon_t *d)
@@ -657,7 +658,7 @@ int gen_monsters(dungeon_t *d)
         d->monsters[i].intelligent = rand() % 2;
         d->monsters[i].telepath = rand() % 2;
         d->monsters[i].tunneling = rand() % 2;
-        d->monster[i].erratic = rand() % 2;
+        d->monsters[i].erratic = rand() % 2;
         d->monsters[i].speed = rand() % 16 + 5;
     }
 
@@ -968,7 +969,7 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
 int main(int argc, char *argv[])
 {
   dungeon_t d = { .num_monsters = -1};
-  file_info_t f = { .load = 0, .save = 0, .ren_non_tun_dist_map = 1, .ren_tun_dist_map = 1};
+  file_info_t f = { .load = 0, .save = 0, .ren_non_tun_dist_map = 0, .ren_tun_dist_map = 0};
   struct timeval tv;
   uint32_t seed = 0;
 
@@ -996,9 +997,6 @@ int main(int argc, char *argv[])
   else {
     gen_dungeon(&d);
   }
-
-  bresenham_monsters(&d,1, 1, d.pc.x, d.pc.y);
-
   render_dungeon(&d,&f);
   if (f.save) {
     save_dungeon(&d,&f);

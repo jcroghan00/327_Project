@@ -127,7 +127,7 @@ void dijkstra_tunneling(dungeon_t *d)
     }
 }
 
-void bresenham_monsters(dungeon_t *d, int x0, int y0, int x1, int y1)
+int bresenham_LOS(dungeon_t *d, int x0, int y0, int x1, int y1)
 {
     int dx = abs(x1 - x0);
     int sx = x0<x1 ? 1 : -1;
@@ -137,10 +137,15 @@ void bresenham_monsters(dungeon_t *d, int x0, int y0, int x1, int y1)
 
     int err = dx + dy;
     int e2 = 0;
+
+    mapxy(x0, y0) = ter_debug;
     while(1)
     {
-        mapxy(x0, y0) = ter_debug;
-        if(x0 == x1 && y0 == y1) {break;}
+        if(mapxy(x0, y0) == ter_wall || mapxy(x0, y0) == ter_wall_immutable)
+        {
+            return 0;
+        }
+        if(x0 == x1 && y0 == y1) {return 1;}
         e2 = err * 2;
         if(e2 >= dy){
             err += dy;

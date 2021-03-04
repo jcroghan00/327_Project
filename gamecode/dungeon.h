@@ -17,6 +17,7 @@
 
  typedef struct pc {
   int8_t x, y;
+  int living;
 }pc_t;
 
 typedef enum dim {
