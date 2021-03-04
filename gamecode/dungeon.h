@@ -32,6 +32,7 @@ typedef int16_t pair_t[num_dims];
 #define ROOM_MIN_Y             3
 #define ROOM_MAX_X             20
 #define ROOM_MAX_Y             15
+#define MAX_MONSTERS           10
 
 #define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
 #define mapxy(x, y) (d->map[y][x])
@@ -76,7 +77,7 @@ typedef struct dungeon {
    /*Since hardness is usually not used, it would be expensive to pull it *
    * into cache every time we need a map cell, so we store it in a        *
    * parallel array, rather than using a structure to represent the       *
-   * cells.  We may want a cell structure later, but from a performanace  *
+   * cells.  We may want a cell structure later, but from a performance   *
    * perspective, it would be a bad idea to ever have the map be part of  *
    * that structure.  Pathfinding will require efficient use of the map,  *
    * and pulling in unnecessary data with each map cell would add a lot   *
