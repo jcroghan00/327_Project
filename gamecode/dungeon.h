@@ -10,6 +10,7 @@
 #include <limits.h>
 #include <sys/time.h>
 #include <assert.h>
+#include <unistd.h>
 #include "heap.h"
 
  typedef struct monster monster_t;

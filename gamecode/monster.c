@@ -159,7 +159,6 @@ int bresenham_LOS(dungeon_t *d, int x0, int y0, int x1, int y1)
     int err = dx + dy;
     int e2 = 0;
 
-    mapxy(x0, y0) = ter_debug;
     while(1)
     {
         if(mapxy(x0, y0) == ter_wall || mapxy(x0, y0) == ter_wall_immutable)
