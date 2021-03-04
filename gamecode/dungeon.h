@@ -12,6 +12,9 @@
 #include <assert.h>
 #include "heap.h"
 
+ typedef struct monster monster_t;
+
+
  typedef struct pc {
   int8_t x, y;
 }pc_t;
@@ -32,7 +35,6 @@ typedef int16_t pair_t[num_dims];
 #define ROOM_MIN_Y             3
 #define ROOM_MAX_X             20
 #define ROOM_MAX_Y             15
-#define MAX_MONSTERS           10
 
 #define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
 #define mapxy(x, y) (d->map[y][x])
@@ -72,6 +74,7 @@ typedef struct monster_path {
 typedef struct dungeon {
   uint32_t num_rooms;
   room_t *rooms;
+  monster_t *monsters;
   stair_t stairs[255];
   terrain_type_t map[DUNGEON_Y][DUNGEON_X];
    /*Since hardness is usually not used, it would be expensive to pull it *
@@ -86,6 +89,7 @@ typedef struct dungeon {
   uint16_t stairs_up;
   uint16_t stairs_down;
   pc_t pc;
+  int num_monsters;
   monster_path_t non_tun_path[DUNGEON_Y][DUNGEON_X];
   monster_path_t tun_path[DUNGEON_Y][DUNGEON_X];
 } dungeon_t;

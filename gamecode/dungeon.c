@@ -651,6 +651,18 @@ int gen_monsters(dungeon_t *d)
     //if num monsters not specified, set it to twice the number of rooms or 50
     //whichever is smaller
     if (d->num_monsters == -1){d->num_monsters = d->num_rooms*2 < 50 ? d->num_rooms*2 : 50;}
+    d->monsters = malloc(sizeof(monster_t) * d->num_monsters);
+    for(int i = 0; i < d->num_monsters; i++)
+    {
+        d->monsters[i].intelligent = rand() % 2;
+        d->monsters[i].telepath = rand() % 2;
+        d->monsters[i].tunneling = rand() % 2;
+        d->monster[i].erratic = rand() % 2;
+        d->monsters[i].speed = rand() % 16 + 5;
+    }
+
+
+
     return 0;
 }
 
@@ -869,6 +881,7 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
 void delete_dungeon(dungeon_t *d)
 {
     free(d->rooms);
+    free(d->monsters);
 }
 
 void init_dungeon(dungeon_t *d)

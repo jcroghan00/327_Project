@@ -34,6 +34,7 @@ typedef struct monster {
      */
     int erratic;
     int speed;
+
 } monster_t;
 
 void dijkstra_non_tunneling(dungeon_t *d);
