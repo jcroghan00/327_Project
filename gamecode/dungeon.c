@@ -28,6 +28,25 @@ typedef struct file_info {
   int ren_tun_dist_map;
 } file_info_t;
 
+typedef struct character {
+    pc_t *pc;
+    monster_t *monster;
+    uint32_t turn;
+    uint32_t sd;
+    heap_node_t *hn;
+}character_t;
+character_t *characters;
+
+static int32_t character_cmp(const void *key, const void *with) {
+    if (((character_t *) key)->turn != ((character_t *) with)->turn){
+        return ((character_t *) key)->turn - ((character_t *) with)->turn;
+    }
+    else{
+        return ((character_t *) key)->sd - ((character_t *) with)->sd;
+    }
+}
+
+
 typedef struct corridor_path {
   heap_node_t *hn;
   uint8_t pos[2];
@@ -1009,6 +1028,24 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
 
 int play_game(dungeon_t *d)
 {
+    heap_t h;
+    heap_init(&h,character_cmp,NULL);
+    characters = malloc((sizeof(d->monsters)+1)*sizeof(character_t));
+    character_t c_pc;
+    c_pc.pc = &d->pc;
+    c_pc.turn = 0;
+    c_pc.sd = 0;
+    c_pc.hn = heap_insert(&h,&c_pc);
+    characters[0] = c_pc;
+    for(int i = 1; i < d->num_monsters; i++)
+    {
+        characters[i].monster = &d->monsters[i-1];
+        characters[i].turn = 0;
+        characters[i].sd = i;
+        characters[i].hn = heap_insert(&h,&characters[i]);
+    }
+
+
     while(d->pc.living)
     {
         
