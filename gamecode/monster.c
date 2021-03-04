@@ -152,6 +152,9 @@ void dijkstra_tunneling(dungeon_t *d)
 
 void move_monster(monster_t *m, dungeon_t *d)
 {
+    pair_t pc_last_loc;
+    
+
     if (m->erratic)
     {
         if (rand() % 2)

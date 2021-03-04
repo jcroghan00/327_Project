@@ -1077,7 +1077,6 @@ int play_game(dungeon_t *d, file_info_t *f)
     free(characters);
 
     character_t *c;
-    //int counter = 0;
     while(d->pc.living)
     {
         c = heap_remove_min(&h);
@@ -1097,7 +1096,6 @@ int play_game(dungeon_t *d, file_info_t *f)
             c->turn = c->turn + 1;
             c->hn = heap_insert(&h, c);
         }
-        //counter++;
     }
     return 0;
 }
