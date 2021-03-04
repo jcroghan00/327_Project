@@ -1038,7 +1038,12 @@ void move_pc(dungeon_t *d)
 
         if(d->map[d->pc.y + y][d->pc.x + x] == ter_wall){continue;}
 
-        d->monster_map[d->pc.y][d->pc.x] = NULL;
+
+        if (d->monster_map[d->pc.y][d->pc.x])
+        {
+            d->monster_map[d->pc.y][d->pc.x]->living = 0;
+            d->monster_map[d->pc.y][d->pc.x] = NULL;
+        }
 
         d->pc.y += y;
         d->pc.x += x;
@@ -1069,12 +1074,13 @@ int play_game(dungeon_t *d, file_info_t *f)
     free(characters);
 
     character_t *c;
+    //int counter = 0;
     while(d->pc.living)
     {
         c = heap_remove_min(&h);
         c->hn = NULL;
         //if the node is a pc
-        if (c->pc) {
+        if (c->sd == 0) {
             //do whatever the pc needs to do
             move_pc(d);
             c->turn = c->turn + 1;
@@ -1088,7 +1094,7 @@ int play_game(dungeon_t *d, file_info_t *f)
             c->turn = c->turn + 1;
             c->hn = heap_insert(&h, c);
         }
-        //d->pc.living = 0;
+        //counter++;
     }
     return 0;
 }

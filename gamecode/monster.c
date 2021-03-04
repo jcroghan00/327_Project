@@ -168,8 +168,10 @@ void move_monster(monster_t *m, dungeon_t *d)
                 }
                 else
                 {
+
                     if (d->map[m->y+dy][m->x+dx] >= ter_floor)
                     {
+                        /*
                         printf("test");
                         if (!d->monster_map[m->y+dy][m->x+dx])
                         {
@@ -180,6 +182,7 @@ void move_monster(monster_t *m, dungeon_t *d)
                         }
                         m->y = m->y+dy;
                         m->x = m->x+dx;
+                         */
                     }
                 }
                 moved = 1;
@@ -187,7 +190,6 @@ void move_monster(monster_t *m, dungeon_t *d)
             return;
         }
     }
-
 
 }
 
