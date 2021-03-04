@@ -99,4 +99,6 @@ typedef struct dungeon {
   monster_path_t tun_path[DUNGEON_Y][DUNGEON_X];
 } dungeon_t;
 
+
+
 #endif

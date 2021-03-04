@@ -876,7 +876,7 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
       }
       putchar('\n');
   }
-    //render the non-tunneling distance map if specified (1.03 defaults to true)
+    //render the non-tunneling distance map if specified
   if (f->ren_non_tun_dist_map){
     for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
       for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
@@ -1026,6 +1026,7 @@ int main(int argc, char *argv[])
     {
       if (!strcmp(argv[i],"--save"))         {f.save=1;}
       else if (!strcmp(argv[i],"--load"))    {f.load=1;}
+      else if (!strcmp(argv[i],"--distmap")) {f.ren_non_tun_dist_map = 1; f.ren_tun_dist_map = 1;}
       else if (!strcmp(argv[i],"--nummon"))  {d.num_monsters = atoi(argv[++i]);}
       else {seed=atoi(argv[i]);}
     }
