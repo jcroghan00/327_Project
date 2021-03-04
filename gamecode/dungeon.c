@@ -645,6 +645,11 @@ static void place_pc(dungeon_t *d)
     }
   }
 }
+// Function to add monsters to the dungeon
+int gen_monsters(dungeon_t *d)
+{
+    return 0;
+}
 
 int gen_dungeon(dungeon_t *d)
 {
@@ -944,13 +949,9 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
 int main(int argc, char *argv[])
 {
   dungeon_t d;
-  file_info_t f;
+  file_info_t f = { .load = 0, .save = 0, .ren_non_tun_dist_map = 1, .ren_tun_dist_map = 1};
   struct timeval tv;
   uint32_t seed = 0;
-  f.load = 0;
-  f.save = 0;
-  f.ren_non_tun_dist_map = 1;
-  f.ren_tun_dist_map = 1;
 
   UNUSED(in_room);
 
