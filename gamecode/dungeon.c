@@ -668,6 +668,7 @@ static void place_pc(dungeon_t *d)
     d->monsters[0].pc = 1;
     d->monsters[0].display_char = get_display_char(&d->monsters[0]);
     d->monster_map[d->pc.y][d->pc.x] = &d->monsters[0];
+
     d->pc.living = 1;
 
     printf("pcx: %d\n", d->pc.x);
