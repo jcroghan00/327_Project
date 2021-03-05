@@ -1049,10 +1049,10 @@ void move_pc(dungeon_t *d)
         if(d->map[d->characters[0].y + dy][d->characters[0].x + dx] != ter_wall &&
             d->map[d->characters[0].y + dy][d->characters[0].x + dx] != ter_wall_immutable)
         {
-            // dont know how to check if it exists
+
             int testx = d->characters[0].x + dx;
             int testy = d->characters[0].y + dy;
-            if (d->character_map[testy][testx]) {
+            if (d->character_map[testy][testx] && !d->character_map[testy][testx]->pc) {
                 if (d->character_map[testy][testx]->living)
                 {
                     d->character_map[testy][testx]->living = 0;
@@ -1074,39 +1074,33 @@ int play_game(dungeon_t *d, file_info_t *f)
     heap_init(&h,character_cmp,NULL);
     for(int i = 0; i < d->num_monsters+1; i++)
     {
-        d->characters[i].hn = heap_insert(&h,&d->characters[i]);
+        heap_insert(&h,&d->characters[i]);
     }
     character_t *c;
     while(d->characters[0].living)
     {
         //printf("made it here\n");
         c = heap_remove_min(&h);
-        c->hn = NULL;
         //if the node is a pc
         if (c->sd == 0) {
             //do whatever the pc needs to do
-            move_pc(d);
             c->turn = c->turn + 1;
-            if (!heap_peek_min(&h))
-            {
-                break;
-            }
-            c->hn = heap_insert(&h, c);
-            //printf("turn: %d\n",c->turn);
+            move_pc(d);
+            if (!heap_peek_min(&h)){break;}
+            heap_insert(&h, c);
+            printf("turn: %d\n",c->turn);
             render_dungeon(d,f);
             usleep(250000);
         }
         else if (c->living){
-            //printf("made it here2\n");
             move_monster(c,d);
             //TODO change turn with speed
-            //printf("made it here3\n");
             c->turn = c->turn + 1;
-            //printf("made it here4\n");
-            c->hn = heap_insert(&h, c);
-            //printf("made it here5\n");
+            if(c->living)
+            {
+                heap_insert(&h, c);
+            }
         }
-        //else{printf("living: %d\n",c->sd); break;}
     }
     if (!d->characters[0].living)
     {

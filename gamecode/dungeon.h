@@ -76,7 +76,6 @@ typedef struct character {
     monster_t *monster;
     uint32_t turn;
     uint32_t sd;
-    heap_node_t *hn;
     char display_char;
     int living;
     int8_t x,y;
