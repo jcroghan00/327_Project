@@ -15,7 +15,6 @@
 
  typedef struct monster monster_t;
 
-
  typedef struct pc {
   int8_t x, y;
   int living;

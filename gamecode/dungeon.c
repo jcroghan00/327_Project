@@ -1089,7 +1089,7 @@ int play_game(dungeon_t *d, file_info_t *f)
             c->hn = heap_insert(&h, c);
             printf("turn: %d\n",c->turn);
             render_dungeon(d,f);
-            usleep(2500000);
+            usleep(250000);
         }
         else if (c->monster->living){
             move_monster(c->monster,d);
