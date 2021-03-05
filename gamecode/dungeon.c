@@ -1052,9 +1052,6 @@ void move_pc(dungeon_t *d)
             if (d->character_map[testy][testx]->display_char != '*') {
                 printf("made it here4\n");
                 character_mapxy(d->characters[0].x + dx,d->characters[0].y + dy)->living = 0;
-                printf("made it here5\n");
-                printf("living: %d", d->character_map[d->characters[0].y][d->characters[0].x]->living);
-
             }
             d->character_map[d->characters[0].y + dy][d->characters[0].x + dx] = &d->characters[0];
             d->character_map[d->characters[0].y][d->characters[0].x] = NULL;
