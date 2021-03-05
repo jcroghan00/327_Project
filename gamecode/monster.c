@@ -152,14 +152,11 @@ void dijkstra_tunneling(dungeon_t *d)
 
 void move_monster(monster_t *m, dungeon_t *d)
 {
-    pair_t pc_last_loc;
-    
-
+    int sees_player = 0;
     if (m->erratic)
     {
         if (rand() % 2)
         {
-            //move erratically
             int moved = 0,dx,dy;
             while(!moved)
             {
@@ -188,11 +185,48 @@ void move_monster(monster_t *m, dungeon_t *d)
             return;
         }
     }
-
+    if (m->telepath || bresenham_LOS(d,m))
+    {
+        sees_player = 1;
+        m->pc_last_loc[dim_x] = d->pc.x;
+        m->pc_last_loc[dim_y] = d->pc.y;
+    }
+    if (sees_player || m->intelligent)
+    {
+        if (m->intelligent)
+        {
+            if (m->pc_last_loc[dim_x]) {
+                if (m->tunneling)
+                {
+                    //dx dy based on tunnel dist map
+                }
+                else // intelligent non tunneling
+                {
+                    //dx dy based on non tunnel dist map
+                }
+            }
+        }
+        else // non intelligent
+        {
+            // use straight line dx and dy
+        }
+        if (m->tunneling)
+        {
+            //allow dx and dy for walls
+        }
+        else
+        {
+            //dont allow wall dx and dys
+        }
+    }
 }
 
-int bresenham_LOS(dungeon_t *d, int x0, int y0, int x1, int y1)
+int bresenham_LOS(dungeon_t *d,monster_t *m)
 {
+    int x0 = m->x;
+    int y0 = m->y;
+    int x1 = d->pc.x;
+    int y1 = d->pc.y;
     int dx = abs(x1 - x0);
     int sx = x0<x1 ? 1 : -1;
 
