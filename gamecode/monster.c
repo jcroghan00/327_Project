@@ -153,38 +153,44 @@ void dijkstra_tunneling(dungeon_t *d)
 void move_monster(monster_t *m, dungeon_t *d)
 {
     int sees_player = 0;
+
     dif_t dif;
     dif.x = 0;
     dif.y = 0;
-
-    if (m->erratic)
+    void final_move (monster_t *m, dungeon_t *d)
     {
-        if (rand() % 2)
+        d->monster_map[m->y][m->x] = NULL;
+        if (d->monster_map[m->y+dy][m->x+dx])
         {
-            int moved = 0;
-            while(!moved)
-            {
-                int dx = (rand() % 3) - 1;
-                int dy = (rand() % 3) - 1;
-                if (m->tunneling)
-                {
-
-                }
-                else
-                {
-                    if (d->map[m->y+dy][m->x+dx] >= ter_floor)
-                    {
-                        d->monster_map[m->y][m->x] = NULL;
-                        if (d->monster_map[m->y+dy][m->x+dx])
-                        {
-                            d->monster_map[m->y+dy][m->x+dx]->living = 0;
+            d->monster_map[m->y+dy][m->x+dx]->living = 0;
+        }
+        d->monster_map[m->y+dy][m->x+dx] = m;
+        m->y = m->y+dy;
+        m->x = m->x+dx;
+    }
+    if (m->erratic) {
+        if (rand() % 2) {
+            int moved = 0,counter = 0;
+            while(!moved) {
+                if (counter > 500) {return;} //if it cant find a move, give up
+                counter++;
+                dx = (rand() % 3) - 1;
+                dy = (rand() % 3) - 1;
+                if (mapxy(m->x+dx,m->y+dy) == ter_wall) {
+                    if(m->tunneling) {
+                        hardnessxy(m->x+dx,m->y+dy) = hardnessxy(m->x+dx,m->y+dy)-85;
+                        if (hardnessxy(m->x+dx,m->y+dy) <= 0) {
+                            hardnessxy(m->x+dx,m->y+dy) = 0;
+                            mapxy(m->x+dx,m->y+dy) = ter_floor_hall;
                         }
-                        d->monster_map[m->y+dy][m->x+dx] = m;
-                        m->y = m->y+dy;
-                        m->x = m->x+dx;
+                        else{return;} //hit wall but didn't break
                     }
+                    else {continue;} //non-tunnel monster or immutable wall hit
                 }
-                moved = 1;
+                if (mapxy(m->x+dx,m->y+dy) != ter_wall_immutable) {
+                    final_move(m, d);
+                    moved = 1;
+                }
             }
             return;
         }
@@ -195,16 +201,16 @@ void move_monster(monster_t *m, dungeon_t *d)
         m->pc_last_loc[dim_x] = d->pc.x;
         m->pc_last_loc[dim_y] = d->pc.y;
     }
-    if (sees_player || m->intelligent)
-    {
-        if (m->intelligent)
-        {
+    // FOR TESTING
+    dx = 1;
+    dy = 1;
+
+    if (sees_player || m->intelligent) {
+        if (m->intelligent) {
             if (m->pc_last_loc[dim_x]) {
-                if (m->tunneling)
-                {
+                if (m->tunneling) {
                     //dx dy based on tunnel dist map
-                }
-                else // intelligent non tunneling
+                } else // intelligent non tunneling
                 {
                     //dx dy based on non tunnel dist map
                 }
@@ -214,15 +220,29 @@ void move_monster(monster_t *m, dungeon_t *d)
         {
             // use straight line dx and dy
         }
-        if (m->tunneling)
+        if (mapxy(m->x+dx,m->y+dy) == ter_wall)
         {
-            //allow dx and dy for walls
+            if (m->tunneling)
+            {
+                hardnessxy(m->x+dx,m->y+dy) = hardnessxy(m->x+dx,m->y+dy)-85;
+                if (hardnessxy(m->x+dx,m->y+dy) <= 0)
+                {
+                    hardnessxy(m->x+dx,m->y+dy) = 0;
+                    mapxy(m->x+dx,m->y+dy) = ter_floor_hall;
+                }
+                else {return;} //tunneling monsters hit wall but didnt break it
+            }
+            else{return;} // non-tunneling monster hit a wall
         }
-        else
-        {
-            //dont allow wall dx and dys
+        if (mapxy(m->x+dx,m->y+dy) != ter_wall_immutable) {
+            final_move(m, d);
         }
+
+        //dont allow wall dx and dys
+
     }
+
+
 }
 
 
