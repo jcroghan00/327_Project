@@ -34,12 +34,9 @@ typedef struct monster {
      */
     int erratic;
     int speed;
-    int pc;
     int x;
     int y;
-    int living;
     pair_t pc_last_loc;
-    char display_char;
 
 } monster_t;
 
@@ -48,8 +45,8 @@ typedef struct dif{
     int y;
 }dif_t;
 
-char get_display_char(monster_t *m);
-void move_monster(monster_t *m, dungeon_t *d);
+char get_display_char(character_t *c);
+void move_monster(character_t *c, dungeon_t *d);
 void dijkstra_non_tunneling(dungeon_t *d);
 void dijkstra_tunneling(dungeon_t *d);
 int bresenham_LOS(dungeon_t *d,monster_t *m,dif_t *dif);
