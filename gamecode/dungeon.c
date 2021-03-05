@@ -1046,7 +1046,7 @@ void move_pc(dungeon_t *d)
         if(d->map[d->pc.y + y][d->pc.x + x] == ter_wall || d->map[d->pc.y + y][d->pc.x + x] == ter_wall_immutable){continue;}
 
 
-        if (d->monster_map[d->pc.y][d->pc.x])
+        if (d->monster_map[d->pc.y][d->pc.x] != NULL)
         {
             d->monster_map[d->pc.y][d->pc.x]->living = 0;
             d->monster_map[d->pc.y][d->pc.x] = NULL;
@@ -1093,7 +1093,7 @@ int play_game(dungeon_t *d, file_info_t *f)
             c->hn = heap_insert(&h, c);
             printf("turn: %d\n",c->turn);
             render_dungeon(d,f);
-            usleep(2500);
+            usleep(250000);
         }
         else if (c->monster->living){
             move_monster(c->monster,d);
@@ -1102,7 +1102,7 @@ int play_game(dungeon_t *d, file_info_t *f)
             c->hn = heap_insert(&h, c);
         }
     }
-    printf("\nGAME OVER\nYOU LOST");
+    printf("\nGAME OVER\nYOU LOST\n");
     return 0;
 }
 
