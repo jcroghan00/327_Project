@@ -175,8 +175,6 @@ void move_monster(monster_t *m, dungeon_t *d)
     dif.x = 0;
     dif.y = 0;
 
-
-
     /*
     void move_line(dungeon_t *d, monster_t *m, dif_t *dif)
     {
@@ -282,10 +280,12 @@ void move_monster(monster_t *m, dungeon_t *d)
                 if (hardness <= 0)
                 {
                     hardness = 0;
-                    hardnessxy(m->x+dx,m->y+dy) = hardness;
                     mapxy(m->x+dx,m->y+dy) = ter_floor_hall;
                 }
-                else {return;} //tunneling monsters hit wall but didnt break it
+                else {
+                    hardnessxy(m->x+dx,m->y+dy) = hardness;
+                    return;
+                } //tunneling monsters hit wall but didnt break it
             }
             else{return;} // non-tunneling monster hit a wall
         }
