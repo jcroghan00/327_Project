@@ -251,8 +251,6 @@ void move_monster(character_t *c, dungeon_t *d)
             final_move(c, d,dx,dy);
         }
     }
-
-
 }
 
 

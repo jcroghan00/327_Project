@@ -673,18 +673,19 @@ int gen_monsters(dungeon_t *d)
 {
     for(int i = 1; i <= d->num_monsters; i++)
     {
-        monster_t m;
+        monster_t *m = malloc(sizeof(monster_t));
         //d->characters[i].monster->intelligent = rand() % 2;
-        m.intelligent = 0;
+        m->intelligent = 0;
         //d->characters[i].monster->telepath = rand() % 2;
-        m.telepath = 1;
+        m->telepath = 1;
         //d->characters[i].monster->tunneling = rand() % 2;
-        m.tunneling = 1;
+        m->tunneling = 1;
         //d->characters[i].monster->erratic = rand() % 2;
-        m.erratic = 0;
-        m.speed = rand() % 16 + 5;
+        m->erratic = 0;
+        m->speed = rand() % 16 + 5;
 
-        d->characters[i].monster = &m;
+        d->characters[i].monster = m;
+        free(m);
         d->characters[i].living = 1;
         d->characters[i].display_char = get_display_char(&d->characters[i]);
         d->characters[i].turn = 0;
@@ -1078,7 +1079,7 @@ int play_game(dungeon_t *d, file_info_t *f)
     character_t *c;
     while(d->characters[0].living)
     {
-        printf("made it here\n");
+        //printf("made it here\n");
         c = heap_remove_min(&h);
         c->hn = NULL;
         //if the node is a pc
@@ -1091,28 +1092,29 @@ int play_game(dungeon_t *d, file_info_t *f)
                 break;
             }
             c->hn = heap_insert(&h, c);
-            printf("turn: %d\n",c->turn);
+            //printf("turn: %d\n",c->turn);
             render_dungeon(d,f);
-            usleep(2500);
+            usleep(250000);
         }
         else if (c->living){
-            printf("made it here2\n");
+            //printf("made it here2\n");
             move_monster(c,d);
             //TODO change turn with speed
+            //printf("made it here3\n");
             c->turn = c->turn + 1;
-            printf("made it here3\n");
+            //printf("made it here4\n");
             c->hn = heap_insert(&h, c);
-            printf("made it here4\n");
+            //printf("made it here5\n");
         }
         //else{printf("living: %d\n",c->sd); break;}
     }
     if (!d->characters[0].living)
     {
-        printf("\nGAME OVER\nYOU LOST");
+        printf("\nGAME OVER\nYOU LOST\n");
     }
     else
     {
-        printf("\nGAME OVER\nYOU WON");
+        printf("\nGAME OVER\nYOU WON\n");
     }
     return 0;
 }
