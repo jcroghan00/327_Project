@@ -649,8 +649,6 @@ static void place_pc(dungeon_t *d)
     //whichever is smaller
     if (d->num_monsters == -1){d->num_monsters = d->num_rooms*2 < 50 ? d->num_rooms*2 : 50;}
 
-    d->characters = malloc(sizeof(character_t) * (d->num_monsters + 1));
-
     int randRoom = rand() % d->num_rooms;
     int x = rand() % d->rooms[randRoom].size[dim_x];
     int y = rand() % d->rooms[randRoom].size[dim_y];
@@ -718,7 +716,7 @@ int gen_monsters(dungeon_t *d)
         int x = rand() % d->rooms[randRoom].size[dim_x];
         int y = rand() % d->rooms[randRoom].size[dim_y];
 
-        if(d->character_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] != NULL){continue;}
+        if(d->character_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x]){continue;}
 
         d->character_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] = &d->characters[totalMonsters];
         d->characters[totalMonsters].y = d->rooms[randRoom].position[dim_y] + y;
@@ -955,11 +953,14 @@ void delete_dungeon(dungeon_t *d)
 void init_dungeon(dungeon_t *d)
 {
   empty_dungeon(d);
+  /*
+  //character_t c = {.display_char = '*'};
     for (int y = 0; y < DUNGEON_Y; y++) {
         for (int x = 0; x < DUNGEON_X; x++) {
-            d->character_map[y][x]->living = -1;
+            d->character_map[y][x] = &c;
         }
     }
+    */
 }
 
 int save_dungeon(dungeon_t *d, file_info_t *f)
@@ -1052,7 +1053,10 @@ void move_pc(dungeon_t *d)
         {
             printf("made it here3\n");
             // dont know how to check if it exists
-            if (character_mapxy(d->characters[0].x + dx,d->characters[0].y + dy)->living != -1) {
+            int testx = d->characters[0].x + dx;
+            int testy = d->characters[0].y + dy;
+            printf("testx: %d   testy: %d\n",testx,testy);
+            if (d->character_map[testy][testx]->display_char != '*') {
                 printf("made it here4\n");
                 character_mapxy(d->characters[0].x + dx,d->characters[0].y + dy)->living = 0;
                 printf("made it here5\n");
