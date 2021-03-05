@@ -150,32 +150,7 @@ void dijkstra_tunneling(dungeon_t *d)
     }
 }
 
-void final_move(monster_t *m, dungeon_t *d, dif_t *dif)
-{
-    d->monster_map[m->y][m->x] = NULL;
-    if (d->monster_map[m->y+dif->y][m->x+dif->x])
-    {
-        d->monster_map[m->y+dif->y][m->x+dif->x]->living = 0;
-    }
-        // if collision is with the PC
-    else if (m->y+dif->y == d->pc.y && m->x+dif->x == d->pc.x && m->living)
-    {
-        d->pc.living = 0;
-    }
-    d->monster_map[m->y+dif->y][m->x+dif->x] = m;
-    m->y = m->y+dif->y;
-    m->x = m->x+dif->x;
-}
 
-void move_monster(monster_t *m, dungeon_t *d)
-{
-    int sees_player = 0,dx,dy;
-
-    dif_t dif;
-    dif.x = 0;
-    dif.y = 0;
-
-    /*
     void move_line(dungeon_t *d, monster_t *m, dif_t *dif)
     {
         if(m->x < m->pc_last_loc[dim_x]){
@@ -208,7 +183,32 @@ void move_monster(monster_t *m, dungeon_t *d)
             }
         }
     }
-     */
+
+
+void final_move(monster_t *m, dungeon_t *d,int dx,int dy)
+{
+    d->monster_map[m->y][m->x] = NULL;
+    if (d->monster_map[m->y+dy][m->x+dx])
+    {
+        d->monster_map[m->y+dy][m->x+dx]->living = 0;
+    }
+        // if collision is with the PC
+    else if (m->y+dy == d->monsters[0].y && m->x+dx == d->monsters[0].x)
+    {
+        d->monsters[0].living = 0;
+    }
+    d->monster_map[m->y+dy][m->x+dx] = m;
+    m->y = m->y+dy;
+    m->x = m->x+dx;
+}
+
+void move_monster(monster_t *m, dungeon_t *d)
+{
+    int sees_player = 0,dx,dy;
+
+    dif_t dif;
+    dif.x = 0;
+    dif.y = 0;
 
     if (m->erratic) {
         if (rand() % 2) {
@@ -220,17 +220,22 @@ void move_monster(monster_t *m, dungeon_t *d)
                 dy = (rand() % 3) - 1;
                 if (mapxy(m->x+dx,m->y+dy) == ter_wall) {
                     if(m->tunneling) {
-                        hardnessxy(m->x+dx,m->y+dy) = hardnessxy(m->x+dx,m->y+dy)-85;
-                        if (hardnessxy(m->x+dx,m->y+dy) <= 0) {
+                        int hardness = hardnessxy(m->x+dx,m->y+dy);
+                        hardness = hardness-85;
+                        if (hardness <= 0)
+                        {
                             hardnessxy(m->x+dx,m->y+dy) = 0;
                             mapxy(m->x+dx,m->y+dy) = ter_floor_hall;
                         }
-                        else{return;} //hit wall but didn't break
+                        else {
+                            hardnessxy(m->x+dx,m->y+dy) = hardness;
+                            return;
+                        } //tunneling monsters hit wall but didnt break it
                     }
                     else {continue;} //non-tunnel monster or immutable wall hit
                 }
                 if (mapxy(m->x+dx,m->y+dy) != ter_wall_immutable) {
-                    final_move(m, d, &dif);
+                    final_move(m, d, dx, dy);
                     moved = 1;
                 }
             }
@@ -248,35 +253,57 @@ void move_monster(monster_t *m, dungeon_t *d)
             if (m->pc_last_loc[dim_x]) {
                 if (m->tunneling) {
                     //dx dy based on tunnel dist map
+                    uint32_t cost = INT_MAX;
+                    for (int i = -1; i <= 1; i++){
+                        for (int j = -1; j <= 1; j++){
+                            if (d->tun_path[m->y+i][m->x+j].cost < cost){
+                                dy = i;
+                                dx = j;
+                                cost = d->tun_path[m->y+i][m->x+j].cost;
+                            }
+                        }
+                    }
                 } else // intelligent non tunneling
                 {
                     //dx dy based on non tunnel dist map
+                    uint32_t cost = INT_MAX;
+                    for (int i = -1; i <= 1; i++){
+                        for (int j = -1; j <= 1; j++){
+                            if (d->non_tun_path[m->y+i][m->x+j].cost < cost){
+                                dy = i;
+                                dx = j;
+                                cost = d->non_tun_path[m->y+i][m->x+j].cost;
+                            }
+                        }
+                    }
                 }
             }
-            else {dx = 0; dy = 0;}
-            dx=0;
-            dy=0;
+            else {
+                dx = 0;
+                dy = 0;
+            }
         }
         else // non intelligent
         {
             if(m->tunneling){
                 bresenham_move(d,m,&dif);
                 dx = dif.x;
-                printf("dx: %d\n",dif.x);
+                //printf("dx: %d\n",dif.x);
                 dy = dif.y;
             }
             else{
-
+                move_line(d,m,&dif);
+                dx = dif.x;
+                //printf("dx: %d\n",dif.x);
+                dy = dif.y;
             }
         }
         if (mapxy(m->x+dx,m->y+dy) == ter_wall)
         {
             if (m->tunneling)
             {
-                printf("Hard1: %d\n",hardnessxy(m->x+dx,m->y+dy));
                 int hardness = hardnessxy(m->x+dx,m->y+dy);
                 hardness = hardness-85;
-                printf("Hard2: %d\n",hardness);
                 if (hardness <= 0)
                 {
                     hardness = 0;
@@ -290,11 +317,9 @@ void move_monster(monster_t *m, dungeon_t *d)
             else{return;} // non-tunneling monster hit a wall
         }
         if (mapxy(m->x+dx,m->y+dy) != ter_wall_immutable) {
-            final_move(m, d, &dif);
+            final_move(m, d, dx, dy);
         }
     }
-
-
 }
 
 
