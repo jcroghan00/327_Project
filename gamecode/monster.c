@@ -214,9 +214,29 @@ void move_monster(character_t *c, dungeon_t *d)
             if (c->monster->pc_last_loc[dim_x]) {
                 if (c->monster->tunneling) {
                     //dx dy based on tunnel dist map
+                    uint32_t cost = INT_MAX;
+                    for (int i = -1; i <= 1; i++){
+                        for (int j = -1; j <= 1; j++){
+                            if (d->tun_path[c->y+i][c->x+j].cost < cost){
+                                dy = i;
+                                dx = j;
+                                cost = d->tun_path[c->y+i][c->x+j].cost;
+                            }
+                        }
+                    }
                 } else // intelligent non tunneling
                 {
                     //dx dy based on non tunnel dist map
+                    uint32_t cost = INT_MAX;
+                    for (int i = -1; i <= 1; i++){
+                        for (int j = -1; j <= 1; j++){
+                            if (d->non_tun_path[c->y+i][c->x+j].cost < cost){
+                                dy = i;
+                                dx = j;
+                                cost = d->non_tun_path[c->y+i][c->x+j].cost;
+                            }
+                        }
+                    }
                 }
             }
             else {dx = 0; dy = 0;}
