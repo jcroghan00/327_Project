@@ -157,12 +157,18 @@ void move_monster(monster_t *m, dungeon_t *d)
     dif_t dif;
     dif.x = 0;
     dif.y = 0;
-    void final_move (monster_t *m, dungeon_t *d)
+
+    void final_move(monster_t *m, dungeon_t *d)
     {
         d->monster_map[m->y][m->x] = NULL;
         if (d->monster_map[m->y+dy][m->x+dx])
         {
             d->monster_map[m->y+dy][m->x+dx]->living = 0;
+        }
+        // if collision is with the PC
+        else if (m->y+dy == d->pc.y && m->x+dx == d->pc.x && m->living)
+        {
+            d->pc.living = 0;
         }
         d->monster_map[m->y+dy][m->x+dx] = m;
         m->y = m->y+dy;
@@ -201,10 +207,6 @@ void move_monster(monster_t *m, dungeon_t *d)
         m->pc_last_loc[dim_x] = d->pc.x;
         m->pc_last_loc[dim_y] = d->pc.y;
     }
-    // FOR TESTING
-    dx = 1;
-    dy = 1;
-
     if (sees_player || m->intelligent) {
         if (m->intelligent) {
             if (m->pc_last_loc[dim_x]) {
@@ -215,10 +217,15 @@ void move_monster(monster_t *m, dungeon_t *d)
                     //dx dy based on non tunnel dist map
                 }
             }
+            else {dx = 0; dy = 0;}
+            dx=0;
+            dy=0;
         }
         else // non intelligent
         {
-            // use straight line dx and dy
+            dx = dif.x;
+            printf("dx: %d",dif.x);
+            dy = dif.y;
         }
         if (mapxy(m->x+dx,m->y+dy) == ter_wall)
         {
@@ -237,9 +244,6 @@ void move_monster(monster_t *m, dungeon_t *d)
         if (mapxy(m->x+dx,m->y+dy) != ter_wall_immutable) {
             final_move(m, d);
         }
-
-        //dont allow wall dx and dys
-
     }
 
 
