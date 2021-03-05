@@ -241,10 +241,6 @@ void move_monster(character_t *c, dungeon_t *d)
                     mapxy(c->x+dx,c->y+dy) = ter_floor_hall;
                 }
                 else {
-<<<<<<< HEAD
-=======
-                    int hardness = 0;
->>>>>>> temp
                     hardnessxy(c->x+dx,c->y+dy) = hardness;
                     return;
                 } //tunneling monsters hit wall but didnt break it

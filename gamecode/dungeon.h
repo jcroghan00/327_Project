@@ -82,6 +82,7 @@ typedef struct character {
     int8_t x,y;
 }character_t;
 
+character_t nullchar;
 
 typedef struct dungeon {
   uint32_t num_rooms;
