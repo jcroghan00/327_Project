@@ -158,12 +158,17 @@ void move_monster(monster_t *m, dungeon_t *d)
     dif.x = 0;
     dif.y = 0;
 
-    void final_move (monster_t *m, dungeon_t *d)
+    void final_move(monster_t *m, dungeon_t *d)
     {
         d->monster_map[m->y][m->x] = NULL;
         if (d->monster_map[m->y+dy][m->x+dx])
         {
             d->monster_map[m->y+dy][m->x+dx]->living = 0;
+        }
+        // if collision is with the PC
+        else if (m->y+dy == d->pc.y && m->x+dx == d->pc.x && m->living)
+        {
+            d->pc.living = 0;
         }
         d->monster_map[m->y+dy][m->x+dx] = m;
         m->y = m->y+dy;
