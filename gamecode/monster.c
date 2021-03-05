@@ -174,6 +174,7 @@ void move_monster(character_t *c, dungeon_t *d)
         c->y = c->y+dy;
         c->x = c->x+dx;
     }
+
     if (c->monster->erratic) {
 
         if (rand() % 2) {
@@ -202,7 +203,7 @@ void move_monster(character_t *c, dungeon_t *d)
             return;
         }
     }
-    if (c->monster->telepath || bresenham_LOS(d,c->monster,&dif))
+    if (c->monster->telepath || bresenham_LOS(d,c->monster))
     {
         sees_player = 1;
         c->monster->pc_last_loc[dim_x] = d->characters[0].x;
@@ -224,6 +225,7 @@ void move_monster(character_t *c, dungeon_t *d)
         }
         else // non intelligent
         {
+            bresenham_move(d, c->monster, &dif);
             dx = dif.x;
             dy = dif.y;
         }
@@ -231,14 +233,15 @@ void move_monster(character_t *c, dungeon_t *d)
         {
             if (c->monster->tunneling)
             {
-                hardnessxy(c->x+dx,c->y+dy) = hardnessxy(c->x+dx,c->y+dy)-85;
-                if (hardnessxy(c->x+dx,c->y+dy) <= 0)
+                int hardness = hardnessxy(c->x+dx,c->y+dy);
+                hardness = hardness-85;
+                if (hardness <= 0)
                 {
                     hardnessxy(c->x+dx,c->y+dy) = 0;
                     mapxy(c->x+dx,c->y+dy) = ter_floor_hall;
                 }
                 else {
-                    hardnessxy(m->x+dx,m->y+dy) = hardness;
+                    hardnessxy(c->x+dx,c->y+dy) = hardness;
                     return;
                 } //tunneling monsters hit wall but didnt break it
             }
@@ -253,7 +256,7 @@ void move_monster(character_t *c, dungeon_t *d)
 }
 
 
-int bresenham_LOS(dungeon_t *d,monster_t *m, dif_t *dif)
+int bresenham_LOS(dungeon_t *d,monster_t *m)
 {
     int x0 = m->x;
     int y0 = m->y;
@@ -292,8 +295,8 @@ void bresenham_move(dungeon_t *d,monster_t *m, dif_t *dif)
 {
     int x0 = m->x;
     int y0 = m->y;
-    int x1 = d->pc.x;
-    int y1 = d->pc.y;
+    int x1 = d->characters[0].x;
+    int y1 = d->characters[0].y;
 
     int dx = abs(x1 - x0);
     int sx = x0<x1 ? 1 : -1;

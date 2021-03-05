@@ -49,7 +49,7 @@ char get_display_char(character_t *c);
 void move_monster(character_t *c, dungeon_t *d);
 void dijkstra_non_tunneling(dungeon_t *d);
 void dijkstra_tunneling(dungeon_t *d);
-int bresenham_LOS(dungeon_t *d,monster_t *m, dif_t *dif);
+int bresenham_LOS(dungeon_t *d,monster_t *m);
 void bresenham_move(dungeon_t *d,monster_t *m, dif_t *dif);
 
 

@@ -957,7 +957,7 @@ void init_dungeon(dungeon_t *d)
   empty_dungeon(d);
     for (int y = 0; y < DUNGEON_Y; y++) {
         for (int x = 0; x < DUNGEON_X; x++) {
-            d->character_map[y][x]->living = -1;
+            //d->character_map[y][x]->living = -1;
         }
     }
 }
