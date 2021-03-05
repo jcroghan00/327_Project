@@ -42,14 +42,17 @@ typedef struct monster {
     char display_char;
 
 } monster_t;
+
+typedef struct dif{
+    int x;
+    int y;
+}dif_t;
+
 char get_display_char(monster_t *m);
 void move_monster(monster_t *m, dungeon_t *d);
 void dijkstra_non_tunneling(dungeon_t *d);
 void dijkstra_tunneling(dungeon_t *d);
-<<<<<<< HEAD
-int bresenham_LOS(dungeon_t *d, monster_t *m);
-=======
-int bresenham_LOS(dungeon_t *d,monster_t *m);
->>>>>>> 5c257d7679034ace7e27d3970a2107ecc5799250
+int bresenham_LOS(dungeon_t *d,monster_t *m,dif_t *dif);
+
 
 #endif

@@ -152,7 +152,11 @@ void dijkstra_tunneling(dungeon_t *d)
 
 void move_monster(monster_t *m, dungeon_t *d)
 {
-    int sees_player, dx, dy = 0;
+    int sees_player = 0;
+    dif_t dif;
+    dif.x = 0;
+    dif.y = 0;
+
     if (m->erratic)
     {
         if (rand() % 2)
@@ -160,8 +164,8 @@ void move_monster(monster_t *m, dungeon_t *d)
             int moved = 0;
             while(!moved)
             {
-                dx = (rand() % 3) - 1;
-                dy = (rand() % 3) - 1;
+                int dx = (rand() % 3) - 1;
+                int dy = (rand() % 3) - 1;
                 if (m->tunneling)
                 {
 
@@ -185,7 +189,7 @@ void move_monster(monster_t *m, dungeon_t *d)
             return;
         }
     }
-    if (m->telepath || bresenham_LOS(d,m))
+    if (m->telepath || bresenham_LOS(d,m,&dif))
     {
         sees_player = 1;
         m->pc_last_loc[dim_x] = d->pc.x;
@@ -222,7 +226,7 @@ void move_monster(monster_t *m, dungeon_t *d)
 }
 
 
-int bresenham_LOS(dungeon_t *d,monster_t *m)
+int bresenham_LOS(dungeon_t *d,monster_t *m,dif_t *dif)
 {
     int x0 = m->x;
     int y0 = m->y;
@@ -238,6 +242,7 @@ int bresenham_LOS(dungeon_t *d,monster_t *m)
     int err = dx + dy;
     int e2 = 0;
 
+    int loop = 0;
     while(1)
     {
         if(mapxy(x0, y0) == ter_wall || mapxy(x0, y0) == ter_wall_immutable)
@@ -249,10 +254,18 @@ int bresenham_LOS(dungeon_t *d,monster_t *m)
         if(e2 >= dy){
             err += dy;
             x0 += sx;
+            if(loop == 0)
+            {
+                dif->x = sx;
+            }
         }
         if(e2 <= dx){
             err += dx;
             y0 += sy;
+            if(loop == 0)
+            {
+                dif->y = sy;
+            }
         }
     }
 }

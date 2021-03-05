@@ -178,9 +178,9 @@ char get_display_char(12,269
 void dijkstra_non_tunneling(36,905
 void dijkstra_tunneling(94,2467
 void move_monster(153,4313
-int bresenham_LOS(196,5435
+int bresenham_LOS(229,6192
 
-monster.h,347
+monster.h,439
 # define MONSTER_H2,18
 typedef struct monster 6,60
     int intelligent;13,483
@@ -195,5 +195,9 @@ typedef struct monster 6,60
     pair_t pc_last_loc;41,1840
     char display_char;42,1864
 } monster_t;44,1888
+typedef struct dif{dif46,1902
+    int x;47,1922
+    int y;48,1933
+}dif_t;dif_t49,1944
 
 game.c,0
