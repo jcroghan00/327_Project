@@ -648,6 +648,7 @@ static void place_pc(dungeon_t *d)
     //if num monsters not specified, set it to twice the number of rooms or 50
     //whichever is smaller
     if (d->num_monsters == -1){d->num_monsters = d->num_rooms*2 < 50 ? d->num_rooms*2 : 50;}
+    d->characters = malloc(sizeof(character_t)*(d->num_monsters+1));
 
     int randRoom = rand() % d->num_rooms;
     int x = rand() % d->rooms[randRoom].size[dim_x];
@@ -850,7 +851,7 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
     mapxy(x, y) = ter_stairs_down;
   }
     if (d->num_monsters == -1){d->num_monsters = d->num_rooms*2 < 50 ? d->num_rooms*2 : 50;}
-    d->characters = malloc(sizeof(character_t) * (d->num_monsters + 1));
+    d->characters = malloc(sizeof(character_t)*(d->num_monsters+1));
     d->characters[0].pc = &d->pc;
     d->characters[0].display_char = get_display_char(&d->characters[0]);
 
@@ -953,14 +954,6 @@ void delete_dungeon(dungeon_t *d)
 void init_dungeon(dungeon_t *d)
 {
   empty_dungeon(d);
-  /*
-  //character_t c = {.display_char = '*'};
-    for (int y = 0; y < DUNGEON_Y; y++) {
-        for (int x = 0; x < DUNGEON_X; x++) {
-            d->character_map[y][x] = &c;
-        }
-    }
-    */
 }
 
 int save_dungeon(dungeon_t *d, file_info_t *f)
