@@ -152,7 +152,7 @@ void dijkstra_tunneling(dungeon_t *d)
 
 void move_monster(monster_t *m, dungeon_t *d)
 {
-    int sees_player = 0;
+    int sees_player = 0,dx,dy;
 
     dif_t dif;
     dif.x = 0;
