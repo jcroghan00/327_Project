@@ -674,18 +674,18 @@ int gen_monsters(dungeon_t *d)
     for(int i = 1; i <= d->num_monsters; i++)
     {
         monster_t m;
+        //d->characters[i].monster->intelligent = rand() % 2;
+        m.intelligent = 0;
+        //d->characters[i].monster->telepath = rand() % 2;
+        m.telepath = 1;
+        //d->characters[i].monster->tunneling = rand() % 2;
+        m.tunneling = 1;
+        //d->characters[i].monster->erratic = rand() % 2;
+        m.erratic = 0;
+        m.speed = rand() % 16 + 5;
+
         d->characters[i].monster = &m;
         d->characters[i].living = 1;
-        //d->characters[i].monster->intelligent = rand() % 2;
-        d->characters[i].monster->intelligent = 0;
-        //d->characters[i].monster->telepath = rand() % 2;
-        d->characters[i].monster->telepath = 1;
-        //d->characters[i].monster->tunneling = rand() % 2;
-        d->characters[i].monster->tunneling = 1;
-        //d->characters[i].monster->erratic = rand() % 2;
-        d->characters[i].monster->erratic = 0;
-        d->characters[i].monster->speed = rand() % 16 + 5;
-
         d->characters[i].display_char = get_display_char(&d->characters[i]);
         d->characters[i].turn = 0;
         d->characters[i].sd = i;
@@ -954,6 +954,11 @@ void delete_dungeon(dungeon_t *d)
 void init_dungeon(dungeon_t *d)
 {
   empty_dungeon(d);
+    for (int y = 0; y < DUNGEON_Y; y++) {
+        for (int x = 0; x < DUNGEON_X; x++) {
+            d->character_map[DUNGEON_Y][DUNGEON_X] = NULL;
+        }
+    }
 }
 
 int save_dungeon(dungeon_t *d, file_info_t *f)
@@ -1037,30 +1042,25 @@ void move_pc(dungeon_t *d)
     int hasMoved = 0;
     while(!hasMoved)
     {
-        printf("made it here2\n");
         int dx = (rand() % 3) - 1;
         int dy = (rand() % 3) - 1;
 
         if(d->map[d->characters[0].y + dy][d->characters[0].x + dx] != ter_wall &&
             d->map[d->characters[0].y + dy][d->characters[0].x + dx] != ter_wall_immutable)
         {
-            printf("made it here3\n");
             // dont know how to check if it exists
             int testx = d->characters[0].x + dx;
             int testy = d->characters[0].y + dy;
-            printf("testx: %d   testy: %d\n",testx,testy);
-            if (d->character_map[testy][testx]->display_char != '*') {
-                printf("made it here4\n");
-                character_mapxy(d->characters[0].x + dx,d->characters[0].y + dy)->living = 0;
-                printf("made it here5\n");
-                printf("living: %d", d->character_map[d->characters[0].y][d->characters[0].x]->living);
-
+            if (d->character_map[testy][testx]) {
+                if (d->character_map[testy][testx]->living)
+                {
+                    d->character_map[testy][testx]->living = 0;
+                }
             }
             d->character_map[d->characters[0].y + dy][d->characters[0].x + dx] = &d->characters[0];
             d->character_map[d->characters[0].y][d->characters[0].x] = NULL;
-            d->characters[0].y += dy;
-            d->characters[0].x += dx;
-
+            d->characters[0].y = d->characters[0].y + dy;
+            d->characters[0].x = d->characters[0].x + dx;
             d->character_map[d->characters[0].y][d->characters[0].x] = &d->characters[0];
             hasMoved = 1;
         }
@@ -1078,6 +1078,7 @@ int play_game(dungeon_t *d, file_info_t *f)
     character_t *c;
     while(d->characters[0].living)
     {
+        printf("made it here\n");
         c = heap_remove_min(&h);
         c->hn = NULL;
         //if the node is a pc
@@ -1095,10 +1096,13 @@ int play_game(dungeon_t *d, file_info_t *f)
             usleep(2500);
         }
         else if (c->living){
+            printf("made it here2\n");
             move_monster(c,d);
             //TODO change turn with speed
             c->turn = c->turn + 1;
+            printf("made it here3\n");
             c->hn = heap_insert(&h, c);
+            printf("made it here4\n");
         }
         //else{printf("living: %d\n",c->sd); break;}
     }

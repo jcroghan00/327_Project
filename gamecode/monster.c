@@ -150,6 +150,23 @@ void dijkstra_tunneling(dungeon_t *d)
     }
 }
 
+void final_move(character_t *c, dungeon_t *d,int dx,int dy)
+{
+    d->character_map[c->y][c->x] = NULL;
+    if (d->character_map[c->y+dy][c->x+dx])
+    {
+        d->character_map[c->y+dy][c->x+dx]->living = 0;
+    }
+        // if collision is with the PC
+    else if (c->y+dy == d->characters[0].y && c->x+dx == d->characters[0].x)
+    {
+        d->characters[0].living = 0;
+    }
+    d->character_map[c->y+dy][c->x+dx] = c;
+    c->y = c->y+dy;
+    c->x = c->x+dx;
+}
+
 void move_monster(character_t *c, dungeon_t *d)
 {
     int sees_player = 0,dx,dy;
@@ -157,23 +174,6 @@ void move_monster(character_t *c, dungeon_t *d)
     dif_t dif;
     dif.x = 0;
     dif.y = 0;
-
-    void final_move(character_t *c, dungeon_t *d)
-    {
-        d->character_map[c->y][c->x] = NULL;
-        if (d->character_map[c->y+dy][c->x+dx])
-        {
-            d->character_map[c->y+dy][c->x+dx]->living = 0;
-        }
-        // if collision is with the PC
-        else if (c->y+dy == d->characters[0].y && c->x+dx == d->characters[0].x)
-        {
-            d->characters[0].living = 0;
-        }
-        d->character_map[c->y+dy][c->x+dx] = c;
-        c->y = c->y+dy;
-        c->x = c->x+dx;
-    }
 
     if (c->monster->erratic) {
 
@@ -196,7 +196,7 @@ void move_monster(character_t *c, dungeon_t *d)
                     else {continue;} //non-tunnel monster or immutable wall hit
                 }
                 if (mapxy(c->x+dx,c->y+dy) != ter_wall_immutable) {
-                    final_move(c, d);
+                    final_move(c, d,dx,dy);
                     moved = 1;
                 }
             }
@@ -248,7 +248,7 @@ void move_monster(character_t *c, dungeon_t *d)
             else{return;} // non-tunneling monster hit a wall
         }
         if (mapxy(c->x+dx,c->y+dy) != ter_wall_immutable) {
-            final_move(c, d);
+            final_move(c, d,dx,dy);
         }
     }
 
