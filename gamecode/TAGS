@@ -48,12 +48,12 @@ int load_dungeon(747,23253
 void render_dungeon(868,26052
 void delete_dungeon(949,28325
 void init_dungeon(955,28409
-int save_dungeon(960,28466
-void move_pc(1036,30462
-int play_game(1067,31663
-int main(1115,32812
+int save_dungeon(965,28619
+void move_pc(1041,30615
+int play_game(1073,31860
+int main(1121,33009
 
-dungeon.h,2178
+dungeon.h,2134
 # define DUNGEON_H2,18
  typedef struct monster monster_t;16,282
  typedef struct pc 18,318
@@ -112,23 +112,22 @@ typedef struct character 74,1527
     int living;81,1672
     int8_t x,82,1688
     int8_t x,y;82,1688
-}character_t;character_t84,1705
-character_t *characters;characters85,1719
-typedef struct dungeon 87,1745
-  uint32_t num_rooms;88,1770
-  room_t *rooms;rooms89,1792
-  character_t *characters;characters90,1809
-  stair_t stairs[stairs91,1836
-  terrain_type_t map[map92,1859
-  character_t *character_map[character_map93,1903
-  uint8_t hardness[hardness102,2528
-  uint16_t stairs_up;103,2570
-  uint16_t stairs_down;104,2592
-  pc_t pc;105,2616
-  int num_monsters;106,2627
-  monster_path_t non_tun_path[non_tun_path107,2647
-  monster_path_t tun_path[tun_path108,2700
-} dungeon_t;109,2749
+}character_t;character_t83,1704
+typedef struct dungeon 86,1720
+  uint32_t num_rooms;87,1745
+  room_t *rooms;rooms88,1767
+  character_t *characters;characters89,1784
+  stair_t stairs[stairs90,1811
+  terrain_type_t map[map91,1834
+  character_t *character_map[character_map92,1878
+  uint8_t hardness[hardness101,2503
+  uint16_t stairs_up;102,2545
+  uint16_t stairs_down;103,2567
+  pc_t pc;104,2591
+  int num_monsters;105,2602
+  monster_path_t non_tun_path[non_tun_path106,2622
+  monster_path_t tun_path[tun_path107,2675
+} dungeon_t;108,2724
 
 heap.c,1020
 struct heap_node 8,99

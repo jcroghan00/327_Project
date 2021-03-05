@@ -80,9 +80,8 @@ typedef struct character {
     char display_char;
     int living;
     int8_t x,y;
-
 }character_t;
-character_t *characters;
+
 
 typedef struct dungeon {
   uint32_t num_rooms;

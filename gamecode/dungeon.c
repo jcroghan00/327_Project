@@ -955,6 +955,11 @@ void delete_dungeon(dungeon_t *d)
 void init_dungeon(dungeon_t *d)
 {
   empty_dungeon(d);
+    for (int y = 0; y < DUNGEON_Y; y++) {
+        for (int x = 0; x < DUNGEON_X; x++) {
+            d->character_map[y][x]->living = -1;
+        }
+    }
 }
 
 int save_dungeon(dungeon_t *d, file_info_t *f)
@@ -1047,9 +1052,10 @@ void move_pc(dungeon_t *d)
         {
             printf("made it here3\n");
             // dont know how to check if it exists
-            if (&d->character_map[d->characters[0].y + dy][d->characters[0].x + dx] != NULL) {
+            if (character_mapxy(d->characters[0].x + dx,d->characters[0].y + dy)->living != -1) {
                 printf("made it here4\n");
-                d->character_map[d->characters[0].y + dy][d->characters[0].x + dx]->living = 0;
+                character_mapxy(d->characters[0].x + dx,d->characters[0].y + dy)->living = 0;
+                printf("made it here5\n");
                 printf("living: %d", d->character_map[d->characters[0].y][d->characters[0].x]->living);
 
             }
