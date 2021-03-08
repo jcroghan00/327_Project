@@ -8,7 +8,27 @@
 
 
 
+char get_monster_char(character_t *c)
+{
+    char binary_char[4] = {'0'+(char)c->monster->erratic,
+                           '0'+(char)c->monster->tunneling,
+                           '0'+(char)c->monster->telepath,
+                           '0'+(char)c->monster->intelligent};
 
+    int binary = atoi(binary_char),decimal = 0,base = 1,rem;
+    while (binary > 0){
+        rem = binary % 10;
+        decimal = decimal + rem * base;
+        binary = binary/10;
+        base = base * 2;
+    }
+    if (decimal <= 9){
+        return (char)('0' + decimal);}
+    else {
+        decimal -= 10;
+        return (char)('A' + decimal);
+    }
+}
 
 int gen_monsters(dungeon_t *d)
 {
@@ -16,17 +36,11 @@ int gen_monsters(dungeon_t *d)
     {
         d->characters[i]->living = 1;
         d->characters[i]->monster->intelligent = rand() % 2;
-        //d->characters[i]->intelligent = 0;
         d->characters[i]->monster->telepath = rand() % 2;
-        //d->characters[i]->telepath = 1;
         d->characters[i]->monster->tunneling = rand() % 2;
-        //d->characters[i]->tunneling = 1;
         d->characters[i]->monster->erratic = rand() % 2;
-        //d->characters[i]->erratic = 0;
         d->characters[i]->speed = rand() % 16 + 5;
-        d->characters[i]->pc = 0;
-        //outsource to function i monster.c to calc displaychar
-        //d->characters[i]->display_char = get_display_char(&d->characters[i]);
+        d->characters[i]->display_char = get_monster_char(d->characters[i]);
     }
 
     int pcRoomNum;
@@ -66,32 +80,6 @@ int gen_monsters(dungeon_t *d)
     }
     return 0;
 }
-
-/* ensure that character assignment is done on monster creation
-char get_display_char(monster_t *m)
-{
-    if(c->pc == 1){return (char)'@';}
-
-    char binary_char[4] = {'0'+(char)c->erratic,
-                           '0'+(char)c->tunneling,
-                           '0'+(char)c->telepath,
-                           '0'+(char)c->monster->};
-
-    int binary = atoi(binary_char),decimal = 0,base = 1,rem;
-    while (binary > 0){
-        rem = binary % 10;
-        decimal = decimal + rem * base;
-        binary = binary/10;
-        base = base * 2;
-    }
-    if (decimal <= 9){
-        return (char)('0' + decimal);}
-    else {
-        decimal -= 10;
-        return (char)('A' + decimal);
-    }
-}
- */
 void move_line(dungeon_t *d, character_t *c, dif_t *dif)
 {
     if(c->pos[dim_x] < c->monster->pc_last_loc[dim_x]){
