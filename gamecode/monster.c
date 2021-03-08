@@ -29,7 +29,69 @@ char get_display_char(monster_t *m)
     }
 }
 
+<<<<<<< HEAD
 void move_line(dungeon_t *d, monster_t *m, dif_t *dif)
+=======
+void dijkstra_non_tunneling(dungeon_t *d)
+{
+  static monster_path_t *p;
+  static uint32_t initialized = 0;
+  heap_t h;
+  uint32_t x, y;
+
+  if (!initialized) {
+      for (y = 0; y < DUNGEON_Y; y++)
+      {
+          for (x = 0; x < DUNGEON_X; x++)
+          {
+              d->non_tun_path[y][x].pos[dim_y] = y;
+              d->non_tun_path[y][x].pos[dim_x] = x;
+          }
+      }
+      initialized = 1;
+  }
+
+  for (y = 0; y < DUNGEON_Y; y++) {
+      for (x = 0; x < DUNGEON_X; x++) {
+          d->non_tun_path[y][x].cost = INT_MAX;
+      }
+  }
+
+  d->non_tun_path[d->pc.pos[dim_y]][d->pc.pos[dim_x]].cost = 0;
+
+  heap_init(&h, monster_path_cmp, NULL);
+
+  for (y = 0; y < DUNGEON_Y; y++) {
+      for (x = 0; x < DUNGEON_X; x++) {
+          if (mapxy(x, y) > ter_floor) {
+              d->non_tun_path[y][x].hn = heap_insert(&h, &d->non_tun_path[y][x]);
+          }
+          else {
+              d->non_tun_path[y][x].hn = NULL;
+          }
+      }
+  }
+
+  while ((p = heap_remove_min(&h))) {
+      p->hn = NULL;
+
+      for(int i = -1; i <= 1; ++i){
+          for(int j = -1; j <= 1; ++j){
+              if ((d->non_tun_path[p->pos[dim_y] + j][p->pos[dim_x] + i].hn) &&
+              (d->non_tun_path[p->pos[dim_y] + j][p->pos[dim_x] + i].cost >
+              p->cost + 1) && (p->cost != INT_MAX)) {
+                  d->non_tun_path[p->pos[dim_y] + j][p->pos[dim_x] + i].cost =
+		            p->cost + 1;
+                  heap_decrease_key_no_replace(&h, d->non_tun_path[p->pos[dim_y] + j]
+                    [p->pos[dim_x] + i].hn);
+              }
+          }
+      }
+  }
+}
+
+void dijkstra_tunneling(dungeon_t *d)
+>>>>>>> added code to pc.c
 {
     if(m->x < m->pc_last_loc[dim_x]){
         dif->x = 1;
@@ -37,8 +99,10 @@ void move_line(dungeon_t *d, monster_t *m, dif_t *dif)
     else if(m->x > m->pc_last_loc[dim_x]){
         dif->x = -1;
     }
+<<<<<<< HEAD
     else{
             dif->x = 0;
+=======
     }
 
     if(m->y < m->pc_last_loc[dim_y]){
@@ -122,8 +186,8 @@ void move_monster(monster_t *m, dungeon_t *d)
     if (m->telepath || bresenham_LOS(d,m,&dif))
     {
         sees_player = 1;
-        m->pc_last_loc[dim_x] = d->pc.x;
-        m->pc_last_loc[dim_y] = d->pc.y;
+        m->pc_last_loc[dim_x] = d->pc.pos[dim_x];
+        m->pc_last_loc[dim_y] = d->pc.pos[dim_y];
     }
     if (sees_player || m->intelligent) {
         if (m->intelligent) {
@@ -203,8 +267,8 @@ int bresenham_LOS(dungeon_t *d,monster_t *m, dif_t *dif)
 {
     int x0 = m->x;
     int y0 = m->y;
-    int x1 = d->pc.x;
-    int y1 = d->pc.y;
+    int x1 = d->pc.pos[dim_x];
+    int y1 = d->pc.pos[dim_y];
 
     int dx = abs(x1 - x0);
     int sx = x0<x1 ? 1 : -1;
@@ -238,8 +302,8 @@ void bresenham_move(dungeon_t *d,monster_t *m, dif_t *dif)
 {
     int x0 = m->x;
     int y0 = m->y;
-    int x1 = d->pc.x;
-    int y1 = d->pc.y;
+    int x1 = d->pc.pos[dim_x];
+    int y1 = d->pc.pos[dim_y];
 
     int dx = abs(x1 - x0);
     int sx = x0<x1 ? 1 : -1;
