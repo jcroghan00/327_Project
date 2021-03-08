@@ -10,8 +10,8 @@ CXXFLAGS = -Wall -Werror -ggdb -funroll-loops -DTERM=$(TERM)
 
 LDFLAGS = 
 
-BIN = dungeon
-OBJS = dungeon.o heap.o monster.o rlg327.o path.o pc.o
+BIN = rlg327
+OBJS = rlg327.o dungeon.o heap.o monster.o path.o pc.o
 
 all: $(BIN) etags
 

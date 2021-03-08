@@ -104,7 +104,13 @@ typedef struct dungeon {
   monster_path_t tun_path[DUNGEON_Y][DUNGEON_X];
 } dungeon_t;
 
-
+int gen_dungeon(dungeon_t *d);
+void render_dungeon(dungeon_t *d);
+void delete_dungeon(dungeon_t *d);
+int load_dungeon(dungeon_t *d);
+void init_dungeon(dungeon_t *d);
+int save_dungeon(dungeon_t *d);
+int play_game(dungeon_t *d);
 
 
 

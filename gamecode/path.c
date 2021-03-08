@@ -31,7 +31,7 @@ void dijkstra_non_tunneling(dungeon_t *d)
         }
     }
 
-    d->non_tun_path[d->pc.y][d->pc.x].cost = 0;
+    d->non_tun_path[d->pc.pos[dim_y]][d->pc.pos[dim_x]].cost = 0;
 
     heap_init(&h, monster_path_cmp, NULL);
 
@@ -88,7 +88,7 @@ void dijkstra_tunneling(dungeon_t *d)
         }
     }
     //set PC location cost to 0
-    d->tun_path[d->pc.y][d->pc.x].cost = 0;
+    d->tun_path[d->pc.pos[dim_y]][d->pc.pos[dim_x]].cost = 0;
 
     heap_init(&h, monster_path_cmp, NULL);
 

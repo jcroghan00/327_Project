@@ -38,7 +38,7 @@ typedef struct corridor_path {
   int32_t cost;
 } corridor_path_t;
 
-// we can probably use this somewhere
+/* we can probably use this somewhere
 static uint32_t in_room(dungeon_t *d, int16_t y, int16_t x)
 {
   int i;
@@ -54,6 +54,7 @@ static uint32_t in_room(dungeon_t *d, int16_t y, int16_t x)
 
   return 0;
 }
+ */
 
 static uint32_t adjacent_to_room(dungeon_t *d, int16_t y, int16_t x)
 {
@@ -1039,7 +1040,6 @@ int play_game(dungeon_t *d)
 
     d->pc.turn = 0;
     d->pc.sd = 0;
-    d->pc.hn = heap_insert(&h,&d->pc);
     //THIS MAY CAUSE ERRORS
     characters[0] = d->pc;
     for(int i = 1; i < d->num_monsters; i++)
@@ -1047,7 +1047,6 @@ int play_game(dungeon_t *d)
         characters[i].monster = &d->monsters[i];
         characters[i].turn = 0;
         characters[i].sd = i;
-        characters[i].hn = heap_insert(&h,&characters[i]);
     }
     free(characters);
 
@@ -1055,7 +1054,6 @@ int play_game(dungeon_t *d)
     while(d->pc.living)
     {
         c = heap_remove_min(&h);
-        c->hn = NULL;
         //if the node is a pc
         if (c->sd == 0) {
             //do whatever the pc needs to do
@@ -1066,58 +1064,14 @@ int play_game(dungeon_t *d)
             dijkstra_tunneling(d);
 
             c->turn = c->turn + (1000/10);
-            c->hn = heap_insert(&h, c);
             render_dungeon(d);
             usleep(250000);
         }
         else if (c->monster->living){
             move_monster(c->monster,d);
             c->turn = c->turn + (1000/c->monster->speed);
-            c->hn = heap_insert(&h, c);
         }
     }
     printf("\nGAME OVER\nYOU LOST\n");
     return 0;
-}
-
-int main(int argc, char *argv[])
-{
-    int do_load, do_save;
-  dungeon_t d = { .num_monsters = -1};
-  struct timeval tv;
-  uint32_t seed = 0;
-
-    do_load = do_save = 0;
-
-  UNUSED(in_room);
-
-  for (int i = 1; i < argc; i++)
-    {
-      if (!strcmp(argv[i],"--save"))         {do_save=1;}
-      else if (!strcmp(argv[i],"--load"))    {do_load = 1;}
-      else if (!strcmp(argv[i],"--nummon"))  {d.num_monsters = atoi(argv[++i]);}
-      else {seed=atoi(argv[i]);}
-    }
-   if (!seed)
-  {
-    gettimeofday(&tv, NULL);
-    seed = (tv.tv_usec ^ (tv.tv_sec << 20)) & 0xffffffff;
-  }
-  
-  srand(seed);
-
-  init_dungeon(&d);
-  if (do_load){
-    load_dungeon(&d);
-  } else {
-    gen_dungeon(&d);
-  }
-  render_dungeon(&d);
-  if (do_save) {
-    save_dungeon(&d);
-  }
-  play_game(&d);
-  delete_dungeon(&d);
-
-  return 0;
 }
