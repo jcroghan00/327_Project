@@ -29,10 +29,7 @@ char get_display_char(monster_t *m)
         return (char)('A' + decimal);
     }
 }
-
-
 void move_line(dungeon_t *d, monster_t *m, dif_t *dif)
-
 {
     if(m->x < m->pc_last_loc[dim_x]){
         dif->x = 1;
