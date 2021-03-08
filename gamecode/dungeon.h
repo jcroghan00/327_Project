@@ -13,6 +13,8 @@
 #include <assert.h>
 #include <unistd.h>
 
+#include "dim.h"
+#include "character.h"
 #include "heap.h"
 
 #define DUNGEON_X              80
@@ -40,25 +42,7 @@
  */
 
 
-typedef enum dim {
-  dim_x,
-  dim_y,
-  num_dims
-} dim_t;
 
-typedef int16_t pair_t[num_dims];
-
-
-typedef struct character {
-    char display_char;
-    pair_t pos;
-    pc_t *pc;
-    monster_t *monster;
-    uint32_t turn;
-    uint32_t sd;
-    heap_node_t *hn;
-    int living;
-}character_t;
 
 #define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
 #define mapxy(x, y) (d->map[y][x])
