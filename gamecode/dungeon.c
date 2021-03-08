@@ -19,7 +19,6 @@
 })
 
 typedef struct file_info {
-  char file_type[13];
   uint32_t version;
   uint32_t file_size;
 } file_info_t;
@@ -742,6 +741,7 @@ int gen_dungeon(dungeon_t *d)
 
 int load_dungeon(dungeon_t *d, file_info_t *f)
 {
+    char semantic[sizeof(SEMANTIC_FILE_MARKER)];
   char *home = getenv("HOME");
   char *game_dir = ".rlg327";
   char *save_file = "dungeon";
@@ -751,9 +751,9 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
   FILE *file = fopen(path,"r");
   free(path);
 
-  fread(f->file_type, 1, 12, file);
+  fread(semantic, 1, sizeof(SEMANTIC_FILE_MARKER), file);
 
-  if(strcmp(f->file_type, "RLG327-S2021")){
+  if(strcmp(SEMANTIC_FILE_MARKER, "RLG327-S2021")){
     return -1;
   }
   
@@ -958,19 +958,20 @@ void init_dungeon(dungeon_t *d)
 
 int save_dungeon(dungeon_t *d, file_info_t *f)
 {
+    FILE *file;
   char *home = getenv("HOME");
-  char *game_dir = ".rlg327";
-  char *save_file = "dungeon";
-  sprintf(f->file_type,"RLG327-S2021");
   f->version = htobe32(0);
   f->file_size = 1704+(d->num_rooms*4)+((d->stairs_up+d->stairs_down)*2);
 
-  char *path = malloc(strlen(home) + strlen(game_dir) + strlen(save_file) + 3);
-  sprintf(path,"%s/%s/%s", home, game_dir, save_file);
-  FILE *file = fopen(path,"w");
+  char *path = malloc(strlen(home) + sizeof(SAVE_DIR) + sizeof(SAVE_FILE) + 4);
+  sprintf(path,"%s/%s/%s", home, SAVE_DIR, SAVE_FILE);
+  if (!(file = fopen(path,"w"))){
+        return -1;
+    }
   free(path);
 
-  fwrite(f->file_type, 1, 12, file);
+  // write the semantic file marker: 12 bytes
+  fwrite(SEMANTIC_FILE_MARKER, 1, sizeof(SEMANTIC_FILE_MARKER)-1,file);
 
    f->version = htobe32(f->version);
   fwrite(&f->version,4,1,file);

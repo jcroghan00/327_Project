@@ -13,6 +13,21 @@
 #include <unistd.h>
 #include "heap.h"
 
+
+#define DUNGEON_X              80
+#define DUNGEON_Y              21
+#define MIN_ROOMS              6
+#define MAX_ROOMS              10
+#define ROOM_MIN_X             4
+#define ROOM_MIN_Y             3
+#define ROOM_MAX_X             20
+#define ROOM_MAX_Y             15
+#define SEMANTIC_FILE_MARKER   "RLG327-S2021"
+#define SAVE_DIR               ".rlg327"
+#define SAVE_FILE              "dungeon"
+
+
+
  typedef struct monster monster_t;
 
  typedef struct pc {
@@ -28,14 +43,7 @@ typedef enum dim {
 
 typedef int16_t pair_t[num_dims];
 
-#define DUNGEON_X              80
-#define DUNGEON_Y              21
-#define MIN_ROOMS              6
-#define MAX_ROOMS              10
-#define ROOM_MIN_X             4
-#define ROOM_MIN_Y             3
-#define ROOM_MAX_X             20
-#define ROOM_MAX_Y             15
+
 
 #define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
 #define mapxy(x, y) (d->map[y][x])
