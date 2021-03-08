@@ -955,44 +955,30 @@ int play_game(dungeon_t *d)
 {
     heap_t h;
     heap_init(&h,character_cmp,NULL);
-
-    d->pc.turn = 0;
-    d->pc.sd = 0;
-    heap_insert(&h,&d->pc);
-    //THIS MAY CAUSE ERRORS
-    for(int i = 1; i < d->num_monsters; i++)
+    for(int i = 0; i < sizeof(d->characters); i++)
     {
         d->characters[i]->turn = 0;
         d->characters[i]->sd = i;
-        heap_insert(&h,&d->characters[i]);
+        heap_insert(&h,d->characters[i]);
     }
 
     character_t *c;
     while(d->pc.living)
     {
         c = heap_remove_min(&h);
-        //if the node is a pc
-        if (c->sd == 0) {
-            //call pc_next_pos instead
-            pc_next_pos(d);
+        if (c->living){
+            if (c->sd == 0) {
+                pc_next_pos(d);
+                //update monster pathmaking
+                dijkstra_non_tunneling(d);
+                dijkstra_tunneling(d);
 
-            //update monster pathmaking
-            dijkstra_non_tunneling(d);
-            dijkstra_tunneling(d);
-
-            c->turn = c->turn + (1000/d->pc.speed);
-            render_dungeon(d);
-            usleep(250000);
-        }
-        else if (c->living){
-            move_monster(c,d);
-            c->turn = c->turn + (1000/c->speed);
-            heap_insert(&h, c);
-            render_dungeon(d);
-            usleep(250000);
-        }
-        else if (c->living){
-            move_monster(c,d);
+                render_dungeon(d);
+                usleep(250000);
+            }
+            else{
+                move_monster(c,d);
+            }
             c->turn = c->turn + (1000/c->speed);
             heap_insert(&h, c);
         }
