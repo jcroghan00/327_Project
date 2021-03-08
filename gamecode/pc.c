@@ -1,12 +1,12 @@
 #include "dungeon.h"
 
+<<<<<<< HEAD
 int is_pc_alive(dungeon_t *d)
 {
     return d->pc.living;
 }
 
-void place_pc(dungeon_t *d)
-{
+void place_pc(dungeon_t *d) {
     //we should create a new character array elsewhere
     /*
     //if num monsters not specified, set it to twice the number of rooms or 50

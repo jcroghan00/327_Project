@@ -726,7 +726,7 @@ int load_dungeon(dungeon_t *d)
 
   fread(semantic, 1, sizeof(SEMANTIC_FILE_MARKER), file);
 
-  if(strcmp(SEMANTIC_FILE_MARKER, "RLG327-S2021")){
+  if(strcmp(semantic, "RLG327-S2021")){
     return -1;
   }
   
