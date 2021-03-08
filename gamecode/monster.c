@@ -30,9 +30,7 @@ char get_display_char(monster_t *m)
     }
 }
 
-
 void move_line(dungeon_t *d, monster_t *m, dif_t *dif)
-
 {
     if(m->x < m->pc_last_loc[dim_x]){
         dif->x = 1;
@@ -41,7 +39,7 @@ void move_line(dungeon_t *d, monster_t *m, dif_t *dif)
         dif->x = -1;
     }
     else{
-            dif->x = 0;
+        dif->x = 0;
     }
 
     if(m->y < m->pc_last_loc[dim_y]){
