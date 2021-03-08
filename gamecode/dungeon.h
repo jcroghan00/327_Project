@@ -25,6 +25,7 @@
 #define ROOM_MIN_Y             3
 #define ROOM_MAX_X             20
 #define ROOM_MAX_Y             15
+#define PC_SPEED               10
 #define SEMANTIC_FILE_MARKER   "RLG327-S2021"
 #define SAVE_DIR               ".rlg327"
 #define SAVE_FILE              "dungeon"
@@ -72,7 +73,7 @@ typedef struct monster_path {
 typedef struct dungeon {
   uint32_t num_rooms;
   room_t *rooms;
-  character_t *characters;
+  character_t **characters;
   stair_t stairs[255];
   terrain_type_t map[DUNGEON_Y][DUNGEON_X];
   character_t *character_map[DUNGEON_Y][DUNGEON_X];

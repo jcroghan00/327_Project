@@ -1,6 +1,6 @@
 #ifndef GAMECODE_CHARACTER_H
 #define GAMECODE_CHARACTER_H
-
+#include <stdint.h>
 #include "dim.h"
 
 typedef struct dungeon dungeon_t;
@@ -18,5 +18,7 @@ typedef struct character {
     int living;
     uint32_t speed;
 }character_t;
+
+void define_characters(dungeon_t *d);
 
 #endif

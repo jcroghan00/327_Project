@@ -40,7 +40,7 @@ typedef struct dif{
     int x;
     int y;
 }dif_t;
-
+int gen_monsters(dungeon_t *d);
 char get_display_char(character_t *c);
 
 void move_monster(character_t *c, dungeon_t *d);
