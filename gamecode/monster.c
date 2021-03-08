@@ -4,6 +4,7 @@
 
 #include "monster.h"
 #include "dungeon.h"
+#include "path.h"
 
 char get_display_char(monster_t *m)
 {

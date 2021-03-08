@@ -36,7 +36,6 @@ static int32_t character_cmp(const void *key, const void *with) {
     }
 }
 
-
 typedef struct corridor_path {
   heap_node_t *hn;
   uint8_t pos[2];
@@ -728,8 +727,6 @@ int gen_dungeon(dungeon_t *d)
   connect_rooms(d);
   place_stairs(d);
   place_pc(d);
-  dijkstra_non_tunneling(d);
-  dijkstra_tunneling(d);
   gen_monsters(d);
   return 0;
 }
@@ -849,8 +846,6 @@ int load_dungeon(dungeon_t *d)
     d->monsters[0].display_char = get_display_char(&d->monsters[0]);
 
   //monster pathmaking
-  dijkstra_non_tunneling(d);
-  dijkstra_tunneling(d);
   //adds monsters to the dungeon
   gen_monsters(d);
 
@@ -939,7 +934,6 @@ void render_dungeon(dungeon_t *d)
   }
    */
 }
-
 
 void delete_dungeon(dungeon_t *d)
 {
@@ -1090,6 +1084,11 @@ int play_game(dungeon_t *d)
         if (c->sd == 0) {
             //do whatever the pc needs to do
             move_pc(d);
+
+            //update monster pathmaking
+            dijkstra_non_tunneling(d);
+            dijkstra_tunneling(d);
+
             c->turn = c->turn + (1000/10);
             c->hn = heap_insert(&h, c);
             render_dungeon(d);
