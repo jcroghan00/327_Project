@@ -33,7 +33,6 @@ char get_display_char(monster_t *m)
 }
  */
 void move_line(dungeon_t *d, character_t *c, dif_t *dif)
->>>>>>> changed moster map to char map
 {
     if(c->pos[dim_x] < c->monster->pc_last_loc[dim_x]){
         dif->x = 1;

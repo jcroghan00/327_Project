@@ -41,7 +41,7 @@ typedef struct dif{
     int y;
 }dif_t;
 
-char get_display_char(monster_t *m);
+char get_display_char(character_t *c);
 
 void move_monster(character_t *c, dungeon_t *d);
 

@@ -651,9 +651,10 @@ int gen_monsters(dungeon_t *d)
         //d->characters[i].tunneling = 1;
         d->characters[i].monster->erratic = rand() % 2;
         //d->characters[i].erratic = 0;
-        d->characters[i].monster->speed = rand() % 16 + 5;
+        d->characters[i].speed = rand() % 16 + 5;
         d->characters[i].pc = 0;
-        d->characters[i].display_char = get_display_char(&d->characters[i]);
+        //outsource to function i monster.c to calc displaychar
+        //d->characters[i].display_char = get_display_char(&d->characters[i]);
     }
 
     int pcRoomNum;
@@ -684,10 +685,10 @@ int gen_monsters(dungeon_t *d)
 
         if(d->character_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] != NULL){continue;}
 
-        d->character_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] = &d->monsters[totalMonsters];
+        d->character_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] = &d->characters[totalMonsters];
 
-        d->characters[totalMonsters].y = d->rooms[randRoom].position[dim_y] + y;
-        d->characters[totalMonsters].x = d->rooms[randRoom].position[dim_x] + x;
+        d->characters[totalMonsters].pos[dim_y] = d->rooms[randRoom].position[dim_y] + y;
+        d->characters[totalMonsters].pos[dim_x] = d->rooms[randRoom].position[dim_x] + x;
 
         ++totalMonsters;
     }
@@ -1025,7 +1026,7 @@ void move_pc(dungeon_t *d)
         d->pc.pos[dim_y] += y;
         d->pc.pos[dim_x] += x;
 
-        d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = &d->monsters[0];
+        d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = &d->pc;
         hasMoved = 1;
     }
 }
@@ -1067,16 +1068,16 @@ int play_game(dungeon_t *d)
             render_dungeon(d);
             usleep(250000);
         }
-        else if (c->monster->living){
+        else if (c->living){
             move_monster(c->monster,d);
-            c->turn = c->turn + (1000/c->monster->speed);
+            c->turn = c->turn + (1000/c->speed);
             heap_insert(&h, c);
             render_dungeon(d);
             usleep(250000);
         }
         else if (c->living){
             move_monster(c,d);
-            c->turn = c->turn + (1000/c.speed);
+            c->turn = c->turn + (1000/c->speed);
             heap_insert(&h, c);
         }
     }

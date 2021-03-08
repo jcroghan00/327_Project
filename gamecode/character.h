@@ -16,6 +16,7 @@ typedef struct character {
     uint32_t turn;
     uint32_t sd;
     int living;
+    uint32_t speed;
 }character_t;
 
 #endif
