@@ -42,6 +42,26 @@ void config_pc(dungeon_t *d)
 int pc_next_pos(dungeon_t *d)
 {
     //code for calculating the pc's next position should go here
+    int hasMoved = 0;
+    while(!hasMoved)
+    {
+        int x = (rand() % 3) - 1;
+        int y = (rand() % 3) - 1;
 
+        if(d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall || d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall_immutable){continue;}
+
+
+        if (d->character_map[d->pc.pos[dim_y]+y][d->pc.pos[dim_x]+x] != NULL)
+        {
+            d->character_map[d->pc.pos[dim_y]+y][d->pc.pos[dim_x]+x]->living = 0;
+
+        }
+
+        d->pc.pos[dim_y] += y;
+        d->pc.pos[dim_x] += x;
+        d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = &d->pc;
+        d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = NULL;
+        hasMoved = 1;
+    }
     return 0;
 }

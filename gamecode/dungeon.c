@@ -949,31 +949,7 @@ int save_dungeon(dungeon_t *d)
     }
   return 0;
 }
-//To be moved to pc.c pc_next_pos
-void move_pc(dungeon_t *d)
-{
-    int hasMoved = 0;
-    while(!hasMoved)
-    {
-        int x = (rand() % 3) - 1;
-        int y = (rand() % 3) - 1;
 
-        if(d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall || d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall_immutable){continue;}
-
-
-        if (d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] != NULL)
-        {
-            d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]]->living = 0;
-            d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = NULL;
-        }
-
-        d->pc.pos[dim_y] += y;
-        d->pc.pos[dim_x] += x;
-
-        d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = &d->pc;
-        hasMoved = 1;
-    }
-}
 
 int play_game(dungeon_t *d)
 {
@@ -997,14 +973,14 @@ int play_game(dungeon_t *d)
         c = heap_remove_min(&h);
         //if the node is a pc
         if (c->sd == 0) {
-            //do whatever the pc needs to do
-            move_pc(d);
+            //call pc_next_pos instead
+            pc_next_pos(d);
 
             //update monster pathmaking
             dijkstra_non_tunneling(d);
             dijkstra_tunneling(d);
 
-            c->turn = c->turn + (1000/10);
+            c->turn = c->turn + (1000/d->pc.speed);
             render_dungeon(d);
             usleep(250000);
         }

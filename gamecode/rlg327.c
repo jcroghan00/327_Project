@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
     if (save) {
         save_dungeon(&d);
     }
-    //play_game(&d);
-    //delete_dungeon(&d);
+    play_game(&d);
+    delete_dungeon(&d);
 
     return 0;
 }
