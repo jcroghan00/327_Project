@@ -99,6 +99,7 @@ int gen_monsters(dungeon_t *d)
     }
     return 0;
 }
+
 void move_line(dungeon_t *d, character_t *c, dif_t *dif)
 {
     if(c->pos[dim_x] < c->monster->pc_last_loc[dim_x]){
@@ -299,5 +300,3 @@ void bresenham_move(dungeon_t *d,character_t *c, dif_t *dif)
         dif->y = sy;
     }
 }
-
-
