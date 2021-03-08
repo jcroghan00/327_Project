@@ -18,11 +18,6 @@
   _tmp;                        \
 })
 
-typedef struct file_info {
-  uint32_t version;
-  uint32_t file_size;
-} file_info_t;
-
 typedef struct character {
     pc_t *pc;
     monster_t *monster;
@@ -739,8 +734,9 @@ int gen_dungeon(dungeon_t *d)
   return 0;
 }
 
-int load_dungeon(dungeon_t *d, file_info_t *f)
+int load_dungeon(dungeon_t *d)
 {
+    uint32_t version, file_size;
     char semantic[sizeof(SEMANTIC_FILE_MARKER)];
   char *home = getenv("HOME");
   char *game_dir = ".rlg327";
@@ -758,11 +754,11 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
   }
   
   //version
-  fread(&f->version, 4, 1, file);
-  f->version = be32toh(f->version);
+  fread(&version, 4, 1, file);
+  version = be32toh(version);
   //file size
-  fread(&f->file_size, 4, 1, file);
-  f->file_size = be32toh(f->file_size);
+  fread(&file_size, 4, 1, file);
+  file_size = be32toh(file_size);
 
   //pc location
   fread(&d->pc.x, 1, 1, file);
@@ -861,7 +857,7 @@ int load_dungeon(dungeon_t *d, file_info_t *f)
   return 0;
 }
 
-void render_dungeon(dungeon_t *d, file_info_t *f)
+void render_dungeon(dungeon_t *d)
 {
   pair_t p;
 
@@ -956,12 +952,19 @@ void init_dungeon(dungeon_t *d)
   empty_dungeon(d);
 }
 
-int save_dungeon(dungeon_t *d, file_info_t *f)
+uint32_t calc_file_size(dungeon_t *d){
+    return (1708 + (d->num_rooms * 4) +
+            (d->stairs_up * 2)  +
+            (d->stairs_down * 2));
+}
+
+int save_dungeon(dungeon_t *d)
 {
     FILE *file;
+    uint32_t version, file_size, be32;
   char *home = getenv("HOME");
-  f->version = htobe32(0);
-  f->file_size = 1704+(d->num_rooms*4)+((d->stairs_up+d->stairs_down)*2);
+  version = htobe32(FILE_VERSION);
+  file_size = calc_file_size(d);
 
   char *path = malloc(strlen(home) + sizeof(SAVE_DIR) + sizeof(SAVE_FILE) + 4);
   sprintf(path,"%s/%s/%s", home, SAVE_DIR, SAVE_FILE);
@@ -973,11 +976,11 @@ int save_dungeon(dungeon_t *d, file_info_t *f)
   // write the semantic file marker: 12 bytes
   fwrite(SEMANTIC_FILE_MARKER, 1, sizeof(SEMANTIC_FILE_MARKER)-1,file);
 
-   f->version = htobe32(f->version);
-  fwrite(&f->version,4,1,file);
+   be32= htobe32(version);
+  fwrite(&be32,sizeof(be32),1,file);
 
-  f->file_size = htobe32(f->file_size);
-  fwrite(&f->file_size,4,1,file);
+  be32 = htobe32(file_size);
+  fwrite(&be32,sizeof(be32),1,file);
 
   fwrite(&d->pc.x,1,1,file);
   fwrite(&d->pc.y,1,1,file);
@@ -1058,7 +1061,7 @@ void move_pc(dungeon_t *d)
     }
 }
 
-int play_game(dungeon_t *d, file_info_t *f)
+int play_game(dungeon_t *d)
 {
     heap_t h;
     heap_init(&h,character_cmp,NULL);
@@ -1089,7 +1092,7 @@ int play_game(dungeon_t *d, file_info_t *f)
             move_pc(d);
             c->turn = c->turn + (1000/10);
             c->hn = heap_insert(&h, c);
-            render_dungeon(d,f);
+            render_dungeon(d);
             usleep(250000);
         }
         else if (c->monster->living){
@@ -1106,7 +1109,6 @@ int main(int argc, char *argv[])
 {
     int do_load, do_save;
   dungeon_t d = { .num_monsters = -1};
-  file_info_t f;
   struct timeval tv;
   uint32_t seed = 0;
 
@@ -1131,15 +1133,15 @@ int main(int argc, char *argv[])
 
   init_dungeon(&d);
   if (do_load){
-    load_dungeon(&d, &f);
+    load_dungeon(&d);
   } else {
     gen_dungeon(&d);
   }
-  render_dungeon(&d,&f);
+  render_dungeon(&d);
   if (do_save) {
-    save_dungeon(&d,&f);
+    save_dungeon(&d);
   }
-  play_game(&d,&f);
+  play_game(&d);
   delete_dungeon(&d);
 
   return 0;
