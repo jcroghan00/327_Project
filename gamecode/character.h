@@ -6,7 +6,6 @@
 typedef struct dungeon dungeon_t;
 typedef struct pc pc_t;
 typedef struct monster monster_t;
-
 typedef struct character {
     char display_char;
     pair_t pos;

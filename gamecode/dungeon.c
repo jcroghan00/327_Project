@@ -637,6 +637,64 @@ static int make_rooms(dungeon_t *d)
   return 0;
 }
 
+// should be moved to monster.c
+int gen_monsters(dungeon_t *d)
+{
+    for(int i = 1; i <= d->num_monsters; i++)
+    {
+        d->characters[i].living = 1;
+        d->characters[i].monster->intelligent = rand() % 2;
+        //d->characters[i].intelligent = 0;
+        d->characters[i].monster->telepath = rand() % 2;
+        //d->characters[i].telepath = 1;
+        d->characters[i].monster->tunneling = rand() % 2;
+        //d->characters[i].tunneling = 1;
+        d->characters[i].monster->erratic = rand() % 2;
+        //d->characters[i].erratic = 0;
+        d->characters[i].speed = rand() % 16 + 5;
+        d->characters[i].pc = 0;
+        //outsource to function i monster.c to calc displaychar
+        //d->characters[i].display_char = get_display_char(&d->characters[i]);
+    }
+
+    int pcRoomNum;
+    int totalArea = 0;
+    for(int i = 0; i < d->num_rooms; ++i)
+    {
+        if(d->pc.pos[dim_x] >= d->rooms[i].position[dim_x] && d->pc.pos[dim_x] < d->rooms[i].position[dim_x] + d->rooms[i].size[dim_x]
+                && d->pc.pos[dim_y] >= d->rooms[i].position[dim_y] && d->pc.pos[dim_y] < d->rooms[i].position[dim_y] + d->rooms[i].size[dim_y])
+        {
+            pcRoomNum = i;
+        }
+        else{
+            totalArea += d->rooms[i].size[dim_x] * d->rooms[i].size[dim_y];
+        }
+    }
+
+    int totalMonsters = 1;
+    while(totalMonsters <= d->num_monsters)
+    {
+        if(totalMonsters == totalArea){break;}
+
+        int randRoom = rand() % d->num_rooms;
+
+        if(randRoom == pcRoomNum){continue;}
+
+        int x = rand() % d->rooms[randRoom].size[dim_x];
+        int y = rand() % d->rooms[randRoom].size[dim_y];
+
+        if(d->character_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] != NULL){continue;}
+
+        d->character_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] = &d->characters[totalMonsters];
+
+        d->characters[totalMonsters].pos[dim_y] = d->rooms[randRoom].position[dim_y] + y;
+        d->characters[totalMonsters].pos[dim_x] = d->rooms[randRoom].position[dim_x] + x;
+
+        ++totalMonsters;
+    }
+    return 0;
+}
+>>>>>>> 256211d... formatting
 
 int gen_dungeon(dungeon_t *d)
 {
