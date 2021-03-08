@@ -30,7 +30,9 @@ char get_display_char(monster_t *m)
     }
 }
 
+
 void move_line(dungeon_t *d, monster_t *m, dif_t *dif)
+
 {
     if(m->x < m->pc_last_loc[dim_x]){
         dif->x = 1;
@@ -123,8 +125,8 @@ void move_monster(monster_t *m, dungeon_t *d)
     if (m->telepath || bresenham_LOS(d,m,&dif))
     {
         sees_player = 1;
-        m->pc_last_loc[dim_x] = d->pc.x;
-        m->pc_last_loc[dim_y] = d->pc.y;
+        m->pc_last_loc[dim_x] = d->pc.pos[dim_x];
+        m->pc_last_loc[dim_y] = d->pc.pos[dim_y];
     }
     if (sees_player || m->intelligent) {
         if (m->intelligent) {
@@ -204,8 +206,8 @@ int bresenham_LOS(dungeon_t *d,monster_t *m, dif_t *dif)
 {
     int x0 = m->x;
     int y0 = m->y;
-    int x1 = d->pc.x;
-    int y1 = d->pc.y;
+    int x1 = d->pc.pos[dim_x];
+    int y1 = d->pc.pos[dim_y];
 
     int dx = abs(x1 - x0);
     int sx = x0<x1 ? 1 : -1;
@@ -239,8 +241,8 @@ void bresenham_move(dungeon_t *d,monster_t *m, dif_t *dif)
 {
     int x0 = m->x;
     int y0 = m->y;
-    int x1 = d->pc.x;
-    int y1 = d->pc.y;
+    int x1 = d->pc.pos[dim_x];
+    int y1 = d->pc.pos[dim_y];
 
     int dx = abs(x1 - x0);
     int sx = x0<x1 ? 1 : -1;

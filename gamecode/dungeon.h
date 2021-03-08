@@ -29,11 +29,16 @@
 #define FILE_VERSION           5
 
  typedef struct monster monster_t;
+ typedef struct pc pc_t;
 
+
+/*
  typedef struct pc {
   int8_t x, y;
-  int living;
+  //int living;
 }pc_t;
+ */
+
 
 typedef enum dim {
   dim_x,
@@ -42,6 +47,18 @@ typedef enum dim {
 } dim_t;
 
 typedef int16_t pair_t[num_dims];
+
+
+typedef struct character {
+    char display_char;
+    pair_t pos;
+    pc_t *pc;
+    monster_t *monster;
+    uint32_t turn;
+    uint32_t sd;
+    heap_node_t *hn;
+    int living;
+}character_t;
 
 #define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
 #define mapxy(x, y) (d->map[y][x])
@@ -97,11 +114,13 @@ typedef struct dungeon {
   uint8_t hardness[DUNGEON_Y][DUNGEON_X];
   uint16_t stairs_up;
   uint16_t stairs_down;
-  pc_t pc;
+  character_t pc;
   int num_monsters;
   monster_path_t non_tun_path[DUNGEON_Y][DUNGEON_X];
   monster_path_t tun_path[DUNGEON_Y][DUNGEON_X];
 } dungeon_t;
+
+
 
 
 
