@@ -1,5 +1,6 @@
 #ifndef DUNGEON_H
 # define DUNGEON_H
+
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -11,8 +12,8 @@
 #include <sys/time.h>
 #include <assert.h>
 #include <unistd.h>
-#include "heap.h"
 
+#include "heap.h"
 
 #define DUNGEON_X              80
 #define DUNGEON_Y              21
@@ -26,8 +27,6 @@
 #define SAVE_DIR               ".rlg327"
 #define SAVE_FILE              "dungeon"
 #define FILE_VERSION           5
-
-
 
  typedef struct monster monster_t;
 
@@ -43,8 +42,6 @@ typedef enum dim {
 } dim_t;
 
 typedef int16_t pair_t[num_dims];
-
-
 
 #define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
 #define mapxy(x, y) (d->map[y][x])

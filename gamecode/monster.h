@@ -49,10 +49,11 @@ typedef struct dif{
 }dif_t;
 
 char get_display_char(monster_t *m);
+
 void move_monster(monster_t *m, dungeon_t *d);
-void dijkstra_non_tunneling(dungeon_t *d);
-void dijkstra_tunneling(dungeon_t *d);
+
 int bresenham_LOS(dungeon_t *d,monster_t *m, dif_t *dif);
+
 void bresenham_move(dungeon_t *d,monster_t *m, dif_t *dif);
 
 
