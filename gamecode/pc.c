@@ -35,7 +35,6 @@ void place_pc(dungeon_t *d){
 void config_pc(dungeon_t *d){
     memset(&d->pc, 0, sizeof (d->pc));
     d->pc.display_char = '@';
-    place_pc(d);
 }
 
 int pc_next_pos(dungeon_t *d){

@@ -6,14 +6,16 @@
 #include "dungeon.h"
 #include "path.h"
 
+
+/* ensure that character assignment is done on monster creation
 char get_display_char(monster_t *m)
 {
-    if(m->pc == 1){return (char)'@';}
+    if(c->pc == 1){return (char)'@';}
 
-    char binary_char[4] = {'0'+(char)m->erratic,
-                           '0'+(char)m->tunneling,
-                           '0'+(char)m->telepath,
-                           '0'+(char)m->intelligent};
+    char binary_char[4] = {'0'+(char)c->erratic,
+                           '0'+(char)c->tunneling,
+                           '0'+(char)c->telepath,
+                           '0'+(char)c->monster->};
 
     int binary = atoi(binary_char),decimal = 0,base = 1,rem;
     while (binary > 0){
@@ -29,58 +31,59 @@ char get_display_char(monster_t *m)
         return (char)('A' + decimal);
     }
 }
-
-void move_line(dungeon_t *d, monster_t *m, dif_t *dif)
+ */
+void move_line(dungeon_t *d, character_t *c, dif_t *dif)
+>>>>>>> changed moster map to char map
 {
-    if(m->x < m->pc_last_loc[dim_x]){
+    if(c->pos[dim_x] < c->monster->pc_last_loc[dim_x]){
         dif->x = 1;
     }
-    else if(m->x > m->pc_last_loc[dim_x]){
+    else if(c->pos[dim_x] > c->monster->pc_last_loc[dim_x]){
         dif->x = -1;
     }
     else{
         dif->x = 0;
     }
 
-    if(m->y < m->pc_last_loc[dim_y]){
+    if(c->pos[dim_y] < c->monster->pc_last_loc[dim_y]){
         dif->y = 1;
     }
-    else if(m->y > m->pc_last_loc[dim_y]){
+    else if(c->pos[dim_y] > c->monster->pc_last_loc[dim_y]){
         dif->y = -1;
     }
     else{
         dif->y = 0;
     }
 
-    if(d->map[m->y + dif->y][m->x + dif->x] == ter_wall || d->map[m->y + dif->y][m->x + dif->x] == ter_wall_immutable)
+    if(d->map[c->pos[dim_y] + dif->y][c->pos[dim_x] + dif->x] == ter_wall || d->map[c->pos[dim_y] + dif->y][c->pos[dim_x] + dif->x] == ter_wall_immutable)
     {
-        if(d->map[m->y][m->x + dif->x] == ter_wall || d->map[m->y][m->x + dif->x] == ter_wall_immutable){
+        if(d->map[c->pos[dim_y]][c->pos[dim_x] + dif->x] == ter_wall || d->map[c->pos[dim_y]][c->pos[dim_x] + dif->x] == ter_wall_immutable){
             dif->x = 0;
         }
-        else if(d->map[m->y + dif->y][m->x ] == ter_wall || d->map[m->y + dif->y][m->x] == ter_wall_immutable){
+        else if(d->map[c->pos[dim_y] + dif->y][c->pos[dim_x] ] == ter_wall || d->map[c->pos[dim_y] + dif->y][c->pos[dim_x]] == ter_wall_immutable){
             dif->y = 0;
         }
     }
 }
 
-void final_move(monster_t *m, dungeon_t *d,int dx,int dy)
+void final_move(character_t *c, dungeon_t *d,int dx,int dy)
 {
-    d->monster_map[m->y][m->x] = NULL;
-    if (d->monster_map[m->y+dy][m->x+dx])
+    d->character_map[c->pos[dim_y]][c->pos[dim_x]] = NULL;
+    if (d->character_map[c->pos[dim_y]+dy][c->pos[dim_x]+dx])
     {
-        d->monster_map[m->y+dy][m->x+dx]->living = 0;
+        d->character_map[c->pos[dim_y]+dy][c->pos[dim_x]+dx]->living = 0;
     }
         // if collision is with the PC
-    else if (m->y+dy == d->monsters[0].y && m->x+dx == d->monsters[0].x)
+    else if (c->pos[dim_y]+dy == d->pc.pos[dim_y] && c->pos[dim_x]+dx == d->pc.pos[dim_x])
     {
-        d->monsters[0].living = 0;
+        d->pc.living = 0;
     }
-    d->monster_map[m->y+dy][m->x+dx] = m;
-    m->y = m->y+dy;
-    m->x = m->x+dx;
+    d->character_map[c->pos[dim_y]+dy][c->pos[dim_x]+dx] = c;
+    c->pos[dim_y] = c->pos[dim_y]+dy;
+    c->pos[dim_x] = c->pos[dim_x]+dx;
 }
 
-void move_monster(monster_t *m, dungeon_t *d)
+void move_monster(character_t *c, dungeon_t *d)
 {
     int sees_player = 0,dx,dy;
 
@@ -88,7 +91,7 @@ void move_monster(monster_t *m, dungeon_t *d)
     dif.x = 0;
     dif.y = 0;
 
-    if (m->erratic) {
+    if (c->monster->erratic) {
         if (rand() % 2) {
             int moved = 0,counter = 0;
             while(!moved) {
@@ -96,61 +99,61 @@ void move_monster(monster_t *m, dungeon_t *d)
                 counter++;
                 dx = (rand() % 3) - 1;
                 dy = (rand() % 3) - 1;
-                if (mapxy(m->x+dx,m->y+dy) == ter_wall) {
-                    if(m->tunneling) {
-                        int hardness = hardnessxy(m->x+dx,m->y+dy);
+                if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) == ter_wall) {
+                    if(c->monster->tunneling) {
+                        int hardness = hardnessxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy);
                         hardness = hardness-85;
                         if (hardness <= 0)
                         {
-                            hardnessxy(m->x+dx,m->y+dy) = 0;
-                            mapxy(m->x+dx,m->y+dy) = ter_floor_hall;
+                            hardnessxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) = 0;
+                            mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) = ter_floor_hall;
                         }
                         else {
-                            hardnessxy(m->x+dx,m->y+dy) = hardness;
+                            hardnessxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) = hardness;
                             return;
                         } //tunneling monsters hit wall but didnt break it
                     }
                     else {continue;} //non-tunnel monster or immutable wall hit
                 }
-                if (mapxy(m->x+dx,m->y+dy) != ter_wall_immutable) {
-                    final_move(m, d, dx, dy);
+                if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) != ter_wall_immutable) {
+                    final_move(c, d, dx, dy);
                     moved = 1;
                 }
             }
             return;
         }
     }
-    if (m->telepath || bresenham_LOS(d,m,&dif))
+    if (c->monster->telepath || bresenham_LOS(d,c,&dif))
     {
         sees_player = 1;
-        m->pc_last_loc[dim_x] = d->pc.pos[dim_x];
-        m->pc_last_loc[dim_y] = d->pc.pos[dim_y];
+        c->monster->pc_last_loc[dim_x] = d->pc.pos[dim_x];
+        c->monster->pc_last_loc[dim_y] = d->pc.pos[dim_y];
     }
-    if (sees_player || m->intelligent) {
-        if (m->intelligent) {
-            if (m->pc_last_loc[dim_x]) {
-                if (m->tunneling) {
+    if (sees_player || c->monster->intelligent) {
+        if (c->monster->intelligent) {
+            if (c->monster->pc_last_loc[dim_x]) {
+                if (c->monster->tunneling) {
                     //dx dy based on tunnel dist map
                     uint32_t cost = INT_MAX;
                     for (int i = -1; i <= 1; i++){
                         for (int j = -1; j <= 1; j++){
-                            if (d->tun_path[m->y+i][m->x+j].cost < cost){
+                            if (d->tun_path[c->pos[dim_y]+i][c->pos[dim_x]+j].cost < cost){
                                 dy = i;
                                 dx = j;
-                                cost = d->tun_path[m->y+i][m->x+j].cost;
+                                cost = d->tun_path[c->pos[dim_y]+i][c->pos[dim_x]+j].cost;
                             }
                         }
                     }
-                } else // intelligent non tunneling
+                } else // monster-> non tunneling
                 {
                     //dx dy based on non tunnel dist map
                     uint32_t cost = INT_MAX;
                     for (int i = -1; i <= 1; i++){
                         for (int j = -1; j <= 1; j++){
-                            if (d->non_tun_path[m->y+i][m->x+j].cost < cost){
+                            if (d->non_tun_path[c->pos[dim_y]+i][c->pos[dim_x]+j].cost < cost){
                                 dy = i;
                                 dx = j;
-                                cost = d->non_tun_path[m->y+i][m->x+j].cost;
+                                cost = d->non_tun_path[c->pos[dim_y]+i][c->pos[dim_x]+j].cost;
                             }
                         }
                     }
@@ -161,49 +164,49 @@ void move_monster(monster_t *m, dungeon_t *d)
                 dy = 0;
             }
         }
-        else // non intelligent
+        else // non monster->
         {
-            if(m->tunneling){
-                bresenham_move(d,m,&dif);
+            if(c->monster->tunneling){
+                bresenham_move(d,c,&dif);
                 dx = dif.x;
                 //printf("dx: %d\n",dif.x);
                 dy = dif.y;
             }
             else{
-                move_line(d,m,&dif);
+                move_line(d,c,&dif);
                 dx = dif.x;
                 //printf("dx: %d\n",dif.x);
                 dy = dif.y;
             }
         }
-        if (mapxy(m->x+dx,m->y+dy) == ter_wall)
+        if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) == ter_wall)
         {
-            if (m->tunneling)
+            if (c->monster->tunneling)
             {
-                int hardness = hardnessxy(m->x+dx,m->y+dy);
+                int hardness = hardnessxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy);
                 hardness = hardness-85;
                 if (hardness <= 0)
                 {
                     hardness = 0;
-                    mapxy(m->x+dx,m->y+dy) = ter_floor_hall;
+                    mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) = ter_floor_hall;
                 }
                 else {
-                    hardnessxy(m->x+dx,m->y+dy) = hardness;
+                    hardnessxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) = hardness;
                     return;
                 } //tunneling monsters hit wall but didnt break it
             }
             else{return;} // non-tunneling monster hit a wall
         }
-        if (mapxy(m->x+dx,m->y+dy) != ter_wall_immutable) {
-            final_move(m, d, dx, dy);
+        if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) != ter_wall_immutable) {
+            final_move(c, d, dx, dy);
         }
     }
 }
 
-int bresenham_LOS(dungeon_t *d,monster_t *m, dif_t *dif)
+int bresenham_LOS(dungeon_t *d,character_t *c, dif_t *dif)
 {
-    int x0 = m->x;
-    int y0 = m->y;
+    int x0 = c->pos[dim_x];
+    int y0 = c->pos[dim_y];
     int x1 = d->pc.pos[dim_x];
     int y1 = d->pc.pos[dim_y];
 
@@ -235,10 +238,10 @@ int bresenham_LOS(dungeon_t *d,monster_t *m, dif_t *dif)
     }
 }
 
-void bresenham_move(dungeon_t *d,monster_t *m, dif_t *dif)
+void bresenham_move(dungeon_t *d,character_t *c, dif_t *dif)
 {
-    int x0 = m->x;
-    int y0 = m->y;
+    int x0 = c->pos[dim_x];
+    int y0 = c->pos[dim_y];
     int x1 = d->pc.pos[dim_x];
     int y1 = d->pc.pos[dim_y];
 

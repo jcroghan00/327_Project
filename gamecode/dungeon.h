@@ -33,17 +33,6 @@
  typedef struct monster monster_t;
  typedef struct pc pc_t;
 
-
-/*
- typedef struct pc {
-  int8_t x, y;
-  //int living;
-}pc_t;
- */
-
-
-
-
 #define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
 #define mapxy(x, y) (d->map[y][x])
 #define hardnesspair(pair) (d->hardness[pair[dim_y]][pair[dim_x]])
@@ -83,10 +72,10 @@ typedef struct monster_path {
 typedef struct dungeon {
   uint32_t num_rooms;
   room_t *rooms;
-  monster_t *monsters;
+  character_t *characters;
   stair_t stairs[255];
   terrain_type_t map[DUNGEON_Y][DUNGEON_X];
-  monster_t *monster_map[DUNGEON_Y][DUNGEON_X];
+  character_t *character_map[DUNGEON_Y][DUNGEON_X];
    /*Since hardness is usually not used, it would be expensive to pull it *
    * into cache every time we need a map cell, so we store it in a        *
    * parallel array, rather than using a structure to represent the       *
