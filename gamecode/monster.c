@@ -32,6 +32,7 @@ char get_monster_char(character_t *c)
 
 int gen_monsters(dungeon_t *d)
 {
+    memset(&d->characters, 0, sizeof (d->characters));
     for(int i = 1; i <= d->num_monsters; i++)
     {
         d->characters[i]->living = 1;

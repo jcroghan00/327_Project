@@ -1,6 +1,5 @@
 #include "dungeon.h"
 
-<<<<<<< HEAD
 int is_pc_alive(dungeon_t *d)
 {
     return d->pc.living;
