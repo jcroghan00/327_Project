@@ -22,10 +22,6 @@ typedef struct file_info {
   char file_type[13];
   uint32_t version;
   uint32_t file_size;
-  int load;
-  int save;
-  int ren_non_tun_dist_map;
-  int ren_tun_dist_map;
 } file_info_t;
 
 typedef struct character {
@@ -54,6 +50,7 @@ typedef struct corridor_path {
   int32_t cost;
 } corridor_path_t;
 
+// we can probably use this somewhere
 static uint32_t in_room(dungeon_t *d, int16_t y, int16_t x)
 {
   int i;
@@ -904,6 +901,7 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
       }
       putchar('\n');
   }
+  /*
     //render the non-tunneling distance map if specified
   if (f->ren_non_tun_dist_map){
     for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
@@ -943,7 +941,9 @@ void render_dungeon(dungeon_t *d, file_info_t *f)
     }
     printf("\n");
   }
+   */
 }
+
 
 void delete_dungeon(dungeon_t *d)
 {
@@ -1103,18 +1103,20 @@ int play_game(dungeon_t *d, file_info_t *f)
 
 int main(int argc, char *argv[])
 {
+    int do_load, do_save;
   dungeon_t d = { .num_monsters = -1};
-  file_info_t f = { .load = 0, .save = 0, .ren_non_tun_dist_map = 0, .ren_tun_dist_map = 0};
+  file_info_t f;
   struct timeval tv;
   uint32_t seed = 0;
+
+    do_load = do_save = 0;
 
   UNUSED(in_room);
 
   for (int i = 1; i < argc; i++)
     {
-      if (!strcmp(argv[i],"--save"))         {f.save=1;}
-      else if (!strcmp(argv[i],"--load"))    {f.load=1;}
-      else if (!strcmp(argv[i],"--distmap")) {f.ren_non_tun_dist_map = 1; f.ren_tun_dist_map = 1;}
+      if (!strcmp(argv[i],"--save"))         {do_save=1;}
+      else if (!strcmp(argv[i],"--load"))    {do_load = 1;}
       else if (!strcmp(argv[i],"--nummon"))  {d.num_monsters = atoi(argv[++i]);}
       else {seed=atoi(argv[i]);}
     }
@@ -1127,14 +1129,13 @@ int main(int argc, char *argv[])
   srand(seed);
 
   init_dungeon(&d);
-  if (f.load){
+  if (do_load){
     load_dungeon(&d, &f);
-  }
-  else {
+  } else {
     gen_dungeon(&d);
   }
   render_dungeon(&d,&f);
-  if (f.save) {
+  if (do_save) {
     save_dungeon(&d,&f);
   }
   play_game(&d,&f);
