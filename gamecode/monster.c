@@ -32,10 +32,11 @@ char get_monster_char(character_t *c)
 
 int gen_monsters(dungeon_t *d)
 {
-    memset(&d->characters, 0, sizeof (d->characters));
     for(int i = 1; i <= d->num_monsters; i++)
     {
+        d->characters[i] = malloc(sizeof(character_t));
         d->characters[i]->living = 1;
+        d->characters[i]->monster = malloc (sizeof(monster_t));
         d->characters[i]->monster->intelligent = rand() % 2;
         d->characters[i]->monster->telepath = rand() % 2;
         d->characters[i]->monster->tunneling = rand() % 2;
@@ -43,7 +44,6 @@ int gen_monsters(dungeon_t *d)
         d->characters[i]->speed = rand() % 16 + 5;
         d->characters[i]->display_char = get_monster_char(d->characters[i]);
     }
-
     int pcRoomNum;
     int totalArea = 0;
     for(int i = 0; i < d->num_rooms; ++i)

@@ -858,6 +858,7 @@ void delete_dungeon(dungeon_t *d)
 {
     free(d->rooms);
     free(d->characters);
+    //maybe free characters elements?
 }
 
 void init_dungeon(dungeon_t *d)
