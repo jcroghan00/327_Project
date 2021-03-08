@@ -1035,21 +1035,17 @@ int play_game(dungeon_t *d)
 {
     heap_t h;
     heap_init(&h,character_cmp,NULL);
-    characters = malloc((d->num_monsters+1)*sizeof(character_t));
 
     d->pc.turn = 0;
     d->pc.sd = 0;
     heap_insert(&h,&d->pc);
     //THIS MAY CAUSE ERRORS
-    characters[0] = d->pc;
     for(int i = 1; i < d->num_monsters; i++)
     {
-        characters[i].monster = &d->characters[i];
-        characters[i].turn = 0;
-        characters[i].sd = i;
-        heap_insert(&h,&characters[i]);
+        d->characters[i].turn = 0;
+        d->characters[i].sd = i;
+        heap_insert(&h,&d->characters[i]);
     }
-    free(characters);
 
     character_t *c;
     while(d->pc.living)
@@ -1069,7 +1065,7 @@ int play_game(dungeon_t *d)
             usleep(250000);
         }
         else if (c->living){
-            move_monster(c->monster,d);
+            move_monster(c,d);
             c->turn = c->turn + (1000/c->speed);
             heap_insert(&h, c);
             render_dungeon(d);
