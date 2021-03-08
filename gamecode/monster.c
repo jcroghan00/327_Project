@@ -170,7 +170,7 @@ void move_monster(character_t *c, dungeon_t *d)
             return;
         }
     }
-    if (c->monster->telepath || bresenham_LOS(d,c,&dif))
+    if (c->monster->telepath || bresenham_LOS(d,c))
     {
         sees_player = 1;
         c->monster->pc_last_loc[dim_x] = d->pc.pos[dim_x];
@@ -250,7 +250,7 @@ void move_monster(character_t *c, dungeon_t *d)
     }
 }
 
-int bresenham_LOS(dungeon_t *d,character_t *c, dif_t *dif)
+int bresenham_LOS(dungeon_t *d,character_t *c)
 {
     int x0 = c->pos[dim_x];
     int y0 = c->pos[dim_y];
