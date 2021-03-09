@@ -203,15 +203,13 @@ void move_monster(character_t *c, dungeon_t *d)
     if (c->monster->intelligent) {
         //test if path_to_pc has been filled
         if (c->monster->path_to_pc[0][0].cost == INT_MAX) {
-
             uint32_t cost = INT_MAX;
-            for (int i = -1; i <= 1; i++) {
-                for (int j = -1; j <= 1; j++) {
-                    if (c->monster->path_to_pc[c->pos[dim_y] + i][c->pos[dim_x] + j].cost < cost &&
-                        i != 0 && j != 0) {
-                        dy = i;
-                        dx = j;
-                        cost = c->monster->path_to_pc[c->pos[dim_y] + i][c->pos[dim_x] + j].cost;
+            for (int y = -1; y <= 1; y++) {
+                for (int x = -1; x <= 1; x++) {
+                    if (c->monster->path_to_pc[c->pos[dim_y] + y][c->pos[dim_x] + x].cost < cost) {
+                        dy = y;
+                        dx = x;
+                        cost = c->monster->path_to_pc[c->pos[dim_y] + y][c->pos[dim_x] + x].cost;
                     }
                 }
             }
