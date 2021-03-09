@@ -37,7 +37,6 @@ uint32_t in_room(room_t r, character_t c)
     return 0;
 }
 
-
 static uint32_t adjacent_to_room(dungeon_t *d, int16_t y, int16_t x)
 {
   return (mapxy(x - 1, y) == ter_floor_room ||
@@ -889,7 +888,6 @@ int save_dungeon(dungeon_t *d)
   return 0;
 }
 
-
 int play_game(dungeon_t *d)
 {
     heap_t h;
@@ -925,6 +923,5 @@ int play_game(dungeon_t *d)
     } else {
         printf("\nGAME OVER\nYOU LOST\n");
     }
-
     return 0;
 }

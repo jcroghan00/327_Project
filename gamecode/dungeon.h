@@ -105,6 +105,4 @@ void init_dungeon(dungeon_t *d);
 int save_dungeon(dungeon_t *d);
 int play_game(dungeon_t *d);
 
-
-
 #endif

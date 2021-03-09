@@ -1,5 +1,6 @@
-#ifndef GAMECODE_CHARACTER_H
-#define GAMECODE_CHARACTER_H
+#ifndef CHARACTER_H
+# define CHARACTER_H
+
 #include <stdint.h>
 #include "dim.h"
 

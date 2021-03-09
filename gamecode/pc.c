@@ -6,8 +6,8 @@ int is_pc_alive(dungeon_t *d)
     return d->pc.living;
 }
 
-void place_pc(dungeon_t *d) {
-
+void place_pc(dungeon_t *d)
+{
     int randRoom = rand() % d->num_rooms;
     int x = rand() % d->rooms[randRoom].size[dim_x];
     int y = rand() % d->rooms[randRoom].size[dim_y];
@@ -26,8 +26,6 @@ void config_pc(dungeon_t *d)
     d->pc.speed = PC_SPEED;
     place_pc(d);
     d->characters[0] = &d->pc;
-
-
 }
 
 int pc_next_pos(dungeon_t *d)

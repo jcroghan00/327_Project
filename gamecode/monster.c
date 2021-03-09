@@ -127,7 +127,7 @@ void move_line(dungeon_t *d, character_t *c, dif_t *dif)
         if(d->map[c->pos[dim_y]][c->pos[dim_x] + dif->x] == ter_wall || d->map[c->pos[dim_y]][c->pos[dim_x] + dif->x] == ter_wall_immutable){
             dif->x = 0;
         }
-        else if(d->map[c->pos[dim_y] + dif->y][c->pos[dim_x] ] == ter_wall || d->map[c->pos[dim_y] + dif->y][c->pos[dim_x]] == ter_wall_immutable){
+        if(d->map[c->pos[dim_y] + dif->y][c->pos[dim_x] ] == ter_wall || d->map[c->pos[dim_y] + dif->y][c->pos[dim_x]] == ter_wall_immutable){
             dif->y = 0;
         }
     }
