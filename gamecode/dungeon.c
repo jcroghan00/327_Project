@@ -794,6 +794,8 @@ void render_dungeon(dungeon_t *d)
   }
 }
 
+/* A copy of the above code but using ncurses as of
+ * assignment 1.05 */
 void render_ncurses(dungeon_t *d)
 {
     pair_t p;
@@ -949,7 +951,9 @@ int play_game(dungeon_t *d)
         if (c->living){
             if (c->sd == 0) {
                 pc_next_pos(d);
-                render_dungeon(d);
+                render_ncurses(d);
+                refresh(); /* Print it on to the real screen */
+                getch(); /* Wait for user input */
                 usleep(250000);
             }
             else{
@@ -959,11 +963,9 @@ int play_game(dungeon_t *d)
             heap_insert(&h, c);
         }
     }
-    render_dungeon(d);
     if (won){
-        printf("\nGAME OVER\nYOU WON\n");
+        return 1;
     } else {
-        printf("\nGAME OVER\nYOU LOST\n");
+        return 0;
     }
-    return 0;
 }

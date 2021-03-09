@@ -36,17 +36,18 @@ int main(int argc, char *argv[])
     if (save) {
         save_dungeon(&d);
     }
-    // play_game(&d);
-    // delete_dungeon(&d);
 
     initscr();
-    render_ncurses(&d);
 
-	refresh();			/* Print it on to the real screen */
-	getch();			/* Wait for user input */
+    int won = play_game(&d);
+
 	endwin();
     delete_dungeon(&d);
 
-printf("Hello");
+    if (won){
+        printf("\nGAME OVER\nYOU WON\n");
+    } else {
+        printf("\nGAME OVER\nYOU LOST\n");
+    }
     return 0;
 }
