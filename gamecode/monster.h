@@ -40,13 +40,10 @@ typedef struct dif{
     int x;
     int y;
 }dif_t;
+
 int gen_monsters(dungeon_t *d);
-char get_display_char(character_t *c);
-
 void move_monster(character_t *c, dungeon_t *d);
-
 int bresenham_LOS(dungeon_t *d,character_t *c);
-
 void bresenham_move(dungeon_t *d,character_t *c, dif_t *dif);
 
 

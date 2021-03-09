@@ -94,6 +94,7 @@ typedef struct dungeon {
   monster_path_t tun_path[DUNGEON_Y][DUNGEON_X];
 } dungeon_t;
 
+uint32_t in_room(room_t r, character_t c);
 int gen_dungeon(dungeon_t *d);
 void render_dungeon(dungeon_t *d);
 void delete_dungeon(dungeon_t *d);

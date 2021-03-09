@@ -20,9 +20,6 @@
   assert((_tmp = malloc(size)));		\
   _tmp;                        \
 })
-
-character_t *characters;
-
 static int32_t character_cmp(const void *key, const void *with) {
     if (((character_t *) key)->turn != ((character_t *) with)->turn){
         return ((character_t *) key)->turn - ((character_t *) with)->turn;
@@ -39,23 +36,16 @@ typedef struct corridor_path {
   int32_t cost;
 } corridor_path_t;
 
-/* we can probably use this somewhere
-static uint32_t in_room(dungeon_t *d, int16_t y, int16_t x)
+uint32_t in_room(room_t r, character_t c)
 {
-  int i;
-
-  for (i = 0; i < d->num_rooms; i++) {
-    if ((x >= d->rooms[i].position[dim_x]) &&
-        (x < (d->rooms[i].position[dim_x] + d->rooms[i].size[dim_x])) &&
-        (y >= d->rooms[i].position[dim_y]) &&
-        (y < (d->rooms[i].position[dim_y] + d->rooms[i].size[dim_y]))) {
-      return 1;
+    if(c.pos[dim_x] >= r.position[dim_x] && c.pos[dim_x] < r.position[dim_x] + r.size[dim_x]
+       && c.pos[dim_y] >= r.position[dim_y] && c.pos[dim_y] < r.position[dim_y] + r.size[dim_y])
+    {
+        return 1;
     }
-  }
-
-  return 0;
+    return 0;
 }
- */
+
 
 static uint32_t adjacent_to_room(dungeon_t *d, int16_t y, int16_t x)
 {
@@ -811,47 +801,6 @@ void render_dungeon(dungeon_t *d)
       }
       putchar('\n');
   }
-  /*
-    //render the non-tunneling distance map if specified
-  if (f->ren_non_tun_dist_map){
-    for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
-      for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-          if(d->non_tun_path[p[dim_y]][p[dim_x]].cost == 0){
-              printf("@");
-          }
-	else if(d->non_tun_path[p[dim_y]][p[dim_x]].cost == INT_MAX){
-	  if(d->hardness[p[dim_y]][p[dim_x]] == 0){
-	    printf("X");
-	  }
-	  else{
-	    printf(" ");
-	  }
-	}
-	else{
-	  printf("%d", d->non_tun_path[p[dim_y]][p[dim_x]].cost % 10);
-	}
-      }
-      printf("\n");
-    }
-  }
-
-  if (f->ren_tun_dist_map){
-    for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
-      for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-          if(d->tun_path[p[dim_y]][p[dim_x]].cost == 0){
-              printf("@");
-          }
-	else if(d->tun_path[p[dim_y]][p[dim_x]].cost == INT_MAX){
-	  printf(" ");
-	}
-	else{
-	  printf("%d", d->tun_path[p[dim_y]][p[dim_x]].cost % 10);
-	}
-      }
-    }
-    printf("\n");
-  }
-   */
 }
 
 void delete_dungeon(dungeon_t *d)
@@ -972,7 +921,6 @@ int play_game(dungeon_t *d)
                 //update monster pathmaking
                 dijkstra_non_tunneling(d);
                 dijkstra_tunneling(d);
-
                 render_dungeon(d);
                 usleep(250000);
             }
