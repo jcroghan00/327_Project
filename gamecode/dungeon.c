@@ -900,10 +900,11 @@ int play_game(dungeon_t *d)
         d->characters[i]->sd = i;
         heap_insert(&h,d->characters[i]);
     }
-
+    int won = 0;
     character_t *c;
     while(d->pc.living)
     {
+        if (!d->num_monsters){won = 1;break;}
         c = heap_remove_min(&h);
         if (c->living){
             if (c->sd == 0) {
@@ -918,6 +919,11 @@ int play_game(dungeon_t *d)
             heap_insert(&h, c);
         }
     }
-    printf("\nGAME OVER\nYOU LOST\n");
+    if (won){
+        printf("\nGAME OVER\nYOU WON\n");
+    } else {
+        printf("\nGAME OVER\nYOU LOST\n");
+    }
+
     return 0;
 }

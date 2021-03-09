@@ -45,6 +45,7 @@ int pc_next_pos(dungeon_t *d)
             d->character_map[d->pc.pos[dim_y] + dy][d->pc.pos[dim_x] + dx] != &d->pc)
         {
             d->character_map[d->pc.pos[dim_y] + dy][d->pc.pos[dim_x] + dx]->living = 0;
+            d->num_monsters--;
         }
         d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = NULL;
         d->pc.pos[dim_y] += dy;
