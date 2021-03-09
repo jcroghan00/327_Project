@@ -127,14 +127,26 @@ void move_line(dungeon_t *d, character_t *c, dif_t *dif)
 
 void final_move(character_t *c, dungeon_t *d,int dx,int dy)
 {
+    //set current space to null
     d->character_map[c->pos[dim_y]][c->pos[dim_x]] = NULL;
-    if (d->character_map[c->pos[dim_y]+dy][c->pos[dim_x]+dx])
-    {
+    // if there's another character in destination, kill it
+    if (d->character_map[c->pos[dim_y]+dy][c->pos[dim_x]+dx]){
         d->character_map[c->pos[dim_y]+dy][c->pos[dim_x]+dx]->living = 0;
     }
-    d->character_map[c->pos[dim_y]+dy][c->pos[dim_x]+dx] = c;
+    //set future position and update the map
     c->pos[dim_y] = c->pos[dim_y]+dy;
     c->pos[dim_x] = c->pos[dim_x]+dx;
+    d->character_map[c->pos[dim_y]][c->pos[dim_x]] = c;
+}
+
+void tun_rock_check(dungeon_t *d, character_t *c, int *dx, int *dy){
+    int hardness = hardnessxy(c->pos[dim_x]+*dx,c->pos[dim_y]+*dy)-85;
+    hardnessxy(c->pos[dim_x]+*dx,c->pos[dim_y]+*dy) = MAX(0,hardness);
+    if (is_open_space(d,c->pos[dim_x]+*dx,c->pos[dim_y]+*dy)){
+        mapxy(c->pos[dim_x]+*dx,c->pos[dim_y]+*dy) = ter_floor_hall;
+    } else {
+        *dx = *dy = 0;
+    }
 }
 //needs to be cleaned up
 void erratic_move(character_t *c,dungeon_t *d){
@@ -146,19 +158,8 @@ void erratic_move(character_t *c,dungeon_t *d){
         dy = (rand() % 3) - 1;
         if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) == ter_wall) {
             if(c->monster->tunneling) {
-                int hardness = hardnessxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy);
-                hardness = hardness-85;
-                if (hardness <= 0)
-                {
-                    hardnessxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) = 0;
-                    mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) = ter_floor_hall;
-                }
-                else {
-                    hardnessxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) = hardness;
-                    return;
-                } //tunneling monsters hit wall but didnt break it
+                tun_rock_check(d,c,&dx,&dy);
             }
-            else {continue;} //non-tunnel monster or immutable wall hit
         }
         if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) != ter_wall_immutable) {
             final_move(c, d, dx, dy);
@@ -217,15 +218,8 @@ void move_monster(character_t *c, dungeon_t *d)
             }
         if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) == ter_wall)
         {
-            if (c->monster->tunneling)
-            {
-                int hardness = hardnessxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy)-85;
-                hardnessxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) = MAX(0,hardness);
-                if (is_open_space(d,c->pos[dim_x]+dx,c->pos[dim_y]+dy)){
-                    mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) = ter_floor_hall;
-                } else {
-                    dx = dy = 0;
-                }
+            if (c->monster->tunneling){
+               tun_rock_check(d,c,&dx,&dy);
             }
         }
         if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) != ter_wall_immutable) {
