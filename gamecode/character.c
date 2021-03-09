@@ -7,3 +7,11 @@ void define_characters(dungeon_t *d)
 
     d->characters = calloc(d->num_monsters+1,sizeof(character_t) * (d->num_monsters + 1));
 }
+int32_t character_cmp(const void *key, const void *with) {
+    if (((character_t *) key)->turn != ((character_t *) with)->turn){
+        return ((character_t *) key)->turn - ((character_t *) with)->turn;
+    }
+    else{
+        return ((character_t *) key)->sd - ((character_t *) with)->sd;
+    }
+}

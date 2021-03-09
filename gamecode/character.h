@@ -18,5 +18,6 @@ typedef struct character {
 }character_t;
 
 void define_characters(dungeon_t *d);
+int32_t character_cmp(const void *key, const void *with);
 
 #endif

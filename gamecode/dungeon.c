@@ -1,7 +1,6 @@
 #include "dungeon.h"
 #include "heap.h"
 #include "monster.h"
-#include "path.h"
 #include "pc.h"
 #include "character.h"
 
@@ -20,14 +19,6 @@
   assert((_tmp = malloc(size)));		\
   _tmp;                        \
 })
-static int32_t character_cmp(const void *key, const void *with) {
-    if (((character_t *) key)->turn != ((character_t *) with)->turn){
-        return ((character_t *) key)->turn - ((character_t *) with)->turn;
-    }
-    else{
-        return ((character_t *) key)->sd - ((character_t *) with)->sd;
-    }
-}
 
 typedef struct corridor_path {
   heap_node_t *hn;
