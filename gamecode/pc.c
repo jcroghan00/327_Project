@@ -1,4 +1,5 @@
 #include "dungeon.h"
+#include "path.h"
 
 int is_pc_alive(dungeon_t *d)
 {
@@ -13,7 +14,7 @@ void place_pc(dungeon_t *d) {
 
     d->pc.pos[dim_x] = d->rooms[randRoom].position[dim_x] + x;
     d->pc.pos[dim_y] = d->rooms[randRoom].position[dim_y] + y;
-
+    character_mapxy(d->pc.pos[dim_x],d->pc.pos[dim_y]) = &d->pc;
     d->pc.living = 1;
 }
 
@@ -40,15 +41,18 @@ int pc_next_pos(dungeon_t *d)
         if(d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall || d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall_immutable){continue;}
 
 
-        if (d->character_map[d->pc.pos[dim_y]+y][d->pc.pos[dim_x]+x] != NULL)
+        if (d->character_map[d->pc.pos[dim_y]+y][d->pc.pos[dim_x]+x] != NULL &&
+            d->character_map[d->pc.pos[dim_y]+y][d->pc.pos[dim_x]+x] != &d->pc)
         {
             d->character_map[d->pc.pos[dim_y]+y][d->pc.pos[dim_x]+x]->living = 0;
         }
-
+        d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = NULL;
         d->pc.pos[dim_y] += y;
         d->pc.pos[dim_x] += x;
         d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = &d->pc;
-        d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = NULL;
+        //update monster path making
+        dijkstra_non_tunneling(d);
+        dijkstra_tunneling(d);
         hasMoved = 1;
     }
     return 0;

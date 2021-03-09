@@ -764,7 +764,6 @@ int load_dungeon(dungeon_t *d)
 void render_dungeon(dungeon_t *d)
 {
   pair_t p;
-
   for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
       for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
           if (character_mappair(p))
@@ -918,9 +917,6 @@ int play_game(dungeon_t *d)
         if (c->living){
             if (c->sd == 0) {
                 pc_next_pos(d);
-                //update monster pathmaking
-                dijkstra_non_tunneling(d);
-                dijkstra_tunneling(d);
                 render_dungeon(d);
                 usleep(250000);
             }

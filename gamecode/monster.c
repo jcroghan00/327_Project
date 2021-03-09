@@ -48,8 +48,7 @@ int gen_monsters(dungeon_t *d)
     int totalArea = 0;
     for(int i = 0; i < d->num_rooms; ++i)
     {
-        if (in_room(d->rooms[i],d->pc))
-        {
+        if (in_room(d->rooms[i],d->pc)){
             pcRoomNum = i;
         } else {
             totalArea += d->rooms[i].size[dim_x] * d->rooms[i].size[dim_y];
