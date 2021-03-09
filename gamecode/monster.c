@@ -188,37 +188,33 @@ void move_monster(character_t *c, dungeon_t *d)
         get_monster_path(c,d);
 
     }
-    if (sees_player || c->monster->intelligent) {
-        if (c->monster->intelligent) {
-            //test if path_to_pc has been filled
-            if (c->monster->path_to_pc[0][0].cost == INT_MAX) {
-                uint32_t cost = INT_MAX;
-                for (int i = -1; i <= 1; i++) {
-                    for (int j = -1; j <= 1; j++) {
-                        if (c->monster->path_to_pc[c->pos[dim_y] + i][c->pos[dim_x] + j].cost < cost) {
-                            dy = i;
-                            dx = j;
-                            cost = c->monster->path_to_pc[c->pos[dim_y] + i][c->pos[dim_x] + j].cost;
-                        }
+    if (c->monster->intelligent) {
+        //test if path_to_pc has been filled
+        if (c->monster->path_to_pc[0][0].cost == INT_MAX) {
+            uint32_t cost = INT_MAX;
+            for (int i = -1; i <= 1; i++) {
+                for (int j = -1; j <= 1; j++) {
+                    if (c->monster->path_to_pc[c->pos[dim_y] + i][c->pos[dim_x] + j].cost < cost) {
+                        dy = i;
+                        dx = j;
+                        cost = c->monster->path_to_pc[c->pos[dim_y] + i][c->pos[dim_x] + j].cost;
                     }
                 }
             }
         }
-        else // non monster->intelligent
-        {
+    }
+    if (sees_player) {
+         // sees player but non monster->intelligent
             if(c->monster->tunneling){
                 bresenham_move(d,c,&dif);
                 dx = dif.x;
-                //printf("dx: %d\n",dif.x);
                 dy = dif.y;
             }
-            else{
-                move_line(d,c,&dif);
+            else {
+                move_line(d, c, &dif);
                 dx = dif.x;
-                //printf("dx: %d\n",dif.x);
                 dy = dif.y;
             }
-        }
         if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) == ter_wall)
         {
             if (c->monster->tunneling)
@@ -227,6 +223,8 @@ void move_monster(character_t *c, dungeon_t *d)
                 hardnessxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) = MAX(0,hardness);
                 if (is_open_space(d,c->pos[dim_x]+dx,c->pos[dim_y]+dy)){
                     mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) = ter_floor_hall;
+                } else {
+                    dx = dy = 0;
                 }
             }
         }
