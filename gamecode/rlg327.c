@@ -1,5 +1,46 @@
 #include <ncurses.h>
+
 #include "dungeon.h"
+#include "monster.h"
+#include "pc.h"
+
+int play_game(dungeon_t *d)
+{
+    heap_t h;
+    heap_init(&h,character_cmp,NULL);
+    for(int i = 0; i < d->num_monsters+1; i++)
+    {
+        d->characters[i]->turn = 0;
+        d->characters[i]->sd = i;
+        heap_insert(&h,d->characters[i]);
+    }
+    int won = 0;
+    character_t *c;
+    while(d->pc.living)
+    {
+        if (!d->num_monsters){won = 1;break;}
+        c = heap_remove_min(&h);
+        if (c->living){
+            if (c->sd == 0) {
+                pc_next_pos(d);
+                render_ncurses(d);
+                refresh(); /* Print it on to the real screen */
+                getch(); /* Wait for user input */
+                usleep(250000);
+            }
+            else{
+                move_monster(c,d);
+            }
+            c->turn = c->turn + (1000/c->speed);
+            heap_insert(&h, c);
+        }
+    }
+    if (won){
+        return 1;
+    } else {
+        return 0;
+    }
+}
 
 int main(int argc, char *argv[])
 {
@@ -32,7 +73,6 @@ int main(int argc, char *argv[])
     else {
         gen_dungeon(&d);
     }
-    render_dungeon(&d);
     if (save) {
         save_dungeon(&d);
     }
@@ -42,6 +82,7 @@ int main(int argc, char *argv[])
     int won = play_game(&d);
 
 	endwin();
+	render_dungeon(&d);
     delete_dungeon(&d);
 
     if (won){
