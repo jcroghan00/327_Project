@@ -52,15 +52,15 @@ int gen_monsters(dungeon_t *d)
         d->characters[i]->living = 1;
         d->characters[i]->monster = malloc (sizeof(monster_t));
 
-        //d->characters[i]->monster->intelligent = rand() % 2;
-        //d->characters[i]->monster->telepath = rand() % 2;
-        //d->characters[i]->monster->tunneling = rand() % 2;
-        //d->characters[i]->monster->erratic = rand() % 2;
+        d->characters[i]->monster->intelligent = rand() % 2;
+        d->characters[i]->monster->telepath = rand() % 2;
+        d->characters[i]->monster->tunneling = rand() % 2;
+        d->characters[i]->monster->erratic = rand() % 2;
 
-        d->characters[i]->monster->intelligent = 1;
-        d->characters[i]->monster->telepath = 1;
-        d->characters[i]->monster->tunneling = 1;
-        d->characters[i]->monster->erratic = 0;
+        //d->characters[i]->monster->intelligent = 0;
+        //d->characters[i]->monster->telepath = 1;
+        //d->characters[i]->monster->tunneling = 0;
+        //d->characters[i]->monster->erratic = 1;
 
         d->characters[i]->speed = rand() % 16 + 5;
         d->characters[i]->display_char = get_monster_char(d->characters[i]);
@@ -147,12 +147,15 @@ void final_move(character_t *c, dungeon_t *d,int dx,int dy)
 }
 
 void tun_rock_check(dungeon_t *d, character_t *c, int *dx, int *dy){
-    if (d->map[c->pos[dim_y]+*dy][c->pos[dim_x]+*dx] == ter_wall &&
-        c->monster->tunneling) {
-        int hardness = (hardnessxy(c->pos[dim_x] + *dx, c->pos[dim_y] + *dy)) - 85;
-        hardnessxy(c->pos[dim_x] + *dx, c->pos[dim_y] + *dy) = MAX(0, hardness);
-        if (is_open_space(d, c->pos[dim_y] + *dy, c->pos[dim_x] + *dx)) {
-            mapxy(c->pos[dim_x] + *dx, c->pos[dim_y] + *dy) = ter_floor_hall;
+    if (d->map[c->pos[dim_y]+*dy][c->pos[dim_x]+*dx] == ter_wall){
+        if (c->monster->tunneling) {
+            int hardness = (hardnessxy(c->pos[dim_x] + *dx, c->pos[dim_y] + *dy)) - 85;
+            hardnessxy(c->pos[dim_x] + *dx, c->pos[dim_y] + *dy) = MAX(0, hardness);
+            if (is_open_space(d, c->pos[dim_y] + *dy, c->pos[dim_x] + *dx)) {
+                mapxy(c->pos[dim_x] + *dx, c->pos[dim_y] + *dy) = ter_floor_hall;
+            } else {
+                *dx = *dy = 0;
+            }
         } else {
             *dx = *dy = 0;
         }
@@ -166,11 +169,10 @@ void erratic_move(character_t *c,dungeon_t *d){
         counter++;
         dx = (rand() % 3) - 1;
         dy = (rand() % 3) - 1;
+        //wall and tunneling check dont need to happen anymore but continue still needs to be present
         if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) == ter_wall) {
             if(c->monster->tunneling) {
-                printf("%d  %d\n",dx,dy);
                 tun_rock_check(d,c,&dx,&dy);
-                printf("%d  %d\n",dx,dy);
             } else {
                 continue;
             }

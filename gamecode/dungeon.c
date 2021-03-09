@@ -919,6 +919,7 @@ int play_game(dungeon_t *d)
             heap_insert(&h, c);
         }
     }
+    render_dungeon(d);
     if (won){
         printf("\nGAME OVER\nYOU WON\n");
     } else {
