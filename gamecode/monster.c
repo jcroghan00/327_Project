@@ -51,10 +51,17 @@ int gen_monsters(dungeon_t *d)
         d->characters[i] = malloc(sizeof(character_t));
         d->characters[i]->living = 1;
         d->characters[i]->monster = malloc (sizeof(monster_t));
-        d->characters[i]->monster->intelligent = rand() % 2;
-        d->characters[i]->monster->telepath = rand() % 2;
-        d->characters[i]->monster->tunneling = rand() % 2;
-        d->characters[i]->monster->erratic = rand() % 2;
+
+        //d->characters[i]->monster->intelligent = rand() % 2;
+        //d->characters[i]->monster->telepath = rand() % 2;
+        //d->characters[i]->monster->tunneling = rand() % 2;
+        //d->characters[i]->monster->erratic = rand() % 2;
+
+        d->characters[i]->monster->intelligent = 1;
+        d->characters[i]->monster->telepath = 1;
+        d->characters[i]->monster->tunneling = 0;
+        d->characters[i]->monster->erratic = 0;
+
         d->characters[i]->speed = rand() % 16 + 5;
         d->characters[i]->display_char = get_monster_char(d->characters[i]);
     }
@@ -158,7 +165,11 @@ void erratic_move(character_t *c,dungeon_t *d){
         dy = (rand() % 3) - 1;
         if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) == ter_wall) {
             if(c->monster->tunneling) {
+                printf("%d  %d\n",dx,dy);
                 tun_rock_check(d,c,&dx,&dy);
+                printf("%d  %d\n",dx,dy);
+            } else {
+                continue;
             }
         }
         if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) != ter_wall_immutable) {
@@ -192,10 +203,12 @@ void move_monster(character_t *c, dungeon_t *d)
     if (c->monster->intelligent) {
         //test if path_to_pc has been filled
         if (c->monster->path_to_pc[0][0].cost == INT_MAX) {
+
             uint32_t cost = INT_MAX;
             for (int i = -1; i <= 1; i++) {
                 for (int j = -1; j <= 1; j++) {
-                    if (c->monster->path_to_pc[c->pos[dim_y] + i][c->pos[dim_x] + j].cost < cost) {
+                    if (c->monster->path_to_pc[c->pos[dim_y] + i][c->pos[dim_x] + j].cost < cost &&
+                        i != 0 && j != 0) {
                         dy = i;
                         dx = j;
                         cost = c->monster->path_to_pc[c->pos[dim_y] + i][c->pos[dim_x] + j].cost;
@@ -204,7 +217,7 @@ void move_monster(character_t *c, dungeon_t *d)
             }
         }
     }
-    if (sees_player) {
+    else if (sees_player) {
          // sees player but non monster->intelligent
             if(c->monster->tunneling){
                 bresenham_move(d,c,&dif);
@@ -222,9 +235,9 @@ void move_monster(character_t *c, dungeon_t *d)
                tun_rock_check(d,c,&dx,&dy);
             }
         }
-        if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) != ter_wall_immutable) {
-            final_move(c, d, dx, dy);
-        }
+    }
+    if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) != ter_wall_immutable) {
+        final_move(c, d, dx, dy);
     }
 }
 
