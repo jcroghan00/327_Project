@@ -59,7 +59,7 @@ int gen_monsters(dungeon_t *d)
 
         d->characters[i]->monster->intelligent = 1;
         d->characters[i]->monster->telepath = 1;
-        d->characters[i]->monster->tunneling = 0;
+        d->characters[i]->monster->tunneling = 1;
         d->characters[i]->monster->erratic = 0;
 
         d->characters[i]->speed = rand() % 16 + 5;
@@ -147,12 +147,15 @@ void final_move(character_t *c, dungeon_t *d,int dx,int dy)
 }
 
 void tun_rock_check(dungeon_t *d, character_t *c, int *dx, int *dy){
-    int hardness = hardnessxy(c->pos[dim_x]+*dx,c->pos[dim_y]+*dy)-85;
-    hardnessxy(c->pos[dim_x]+*dx,c->pos[dim_y]+*dy) = MAX(0,hardness);
-    if (is_open_space(d,c->pos[dim_x]+*dx,c->pos[dim_y]+*dy)){
-        mapxy(c->pos[dim_x]+*dx,c->pos[dim_y]+*dy) = ter_floor_hall;
-    } else {
-        *dx = *dy = 0;
+    if (d->map[c->pos[dim_y]+*dy][c->pos[dim_x]+*dx] == ter_wall &&
+        c->monster->tunneling) {
+        int hardness = (hardnessxy(c->pos[dim_x] + *dx, c->pos[dim_y] + *dy)) - 85;
+        hardnessxy(c->pos[dim_x] + *dx, c->pos[dim_y] + *dy) = MAX(0, hardness);
+        if (is_open_space(d, c->pos[dim_y] + *dy, c->pos[dim_x] + *dx)) {
+            mapxy(c->pos[dim_x] + *dx, c->pos[dim_y] + *dy) = ter_floor_hall;
+        } else {
+            *dx = *dy = 0;
+        }
     }
 }
 //needs to be cleaned up
@@ -213,6 +216,7 @@ void move_monster(character_t *c, dungeon_t *d)
                     }
                 }
             }
+            tun_rock_check(d,c,&dx,&dy);
         }
     }
     else if (sees_player) {
@@ -227,12 +231,7 @@ void move_monster(character_t *c, dungeon_t *d)
                 dx = dif.x;
                 dy = dif.y;
             }
-        if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) == ter_wall)
-        {
-            if (c->monster->tunneling){
-               tun_rock_check(d,c,&dx,&dy);
-            }
-        }
+        tun_rock_check(d,c,&dx,&dy);
     }
     if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) != ter_wall_immutable) {
         final_move(c, d, dx, dy);
