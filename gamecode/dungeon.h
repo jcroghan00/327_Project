@@ -99,6 +99,7 @@ uint32_t in_room(room_t r, character_t c);
 uint32_t is_open_space(dungeon_t *d, int16_t y, int16_t x);
 int gen_dungeon(dungeon_t *d);
 void render_dungeon(dungeon_t *d);
+void render_ncurses(dungeon_t *d);
 void delete_dungeon(dungeon_t *d);
 int load_dungeon(dungeon_t *d);
 void init_dungeon(dungeon_t *d);

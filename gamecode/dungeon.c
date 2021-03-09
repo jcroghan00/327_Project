@@ -1,3 +1,5 @@
+#include <ncurses.h>
+
 #include "dungeon.h"
 #include "heap.h"
 #include "monster.h"
@@ -790,6 +792,46 @@ void render_dungeon(dungeon_t *d)
       }
       putchar('\n');
   }
+}
+
+void render_ncurses(dungeon_t *d)
+{
+    pair_t p;
+    for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
+        for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
+            if (character_mappair(p))
+            {
+                mvaddch(p[dim_y], p[dim_x], (character_mappair(p)->display_char));
+            }
+            else {
+                switch (mappair(p)) {
+                    case ter_wall:
+                    case ter_wall_immutable:
+                        mvaddch(p[dim_y], p[dim_x],' ');
+                        break;
+                    case ter_floor:
+                    case ter_floor_room:
+                        mvaddch(p[dim_y], p[dim_x],'.');
+                        break;
+                    case ter_floor_hall:
+                        mvaddch(p[dim_y], p[dim_x],'#');
+                        break;
+                    case ter_debug:
+                        mvaddch(p[dim_y], p[dim_x],'*');
+                        //fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
+                        break;
+                    case ter_stairs_up:
+                        mvaddch(p[dim_y], p[dim_x],'<');
+                        break;
+                    case ter_stairs_down:
+                        mvaddch(p[dim_y], p[dim_x],'>');
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
 }
 
 void delete_dungeon(dungeon_t *d)

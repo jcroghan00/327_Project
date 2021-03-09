@@ -39,12 +39,9 @@ int main(int argc, char *argv[])
     // play_game(&d);
     // delete_dungeon(&d);
 
-initscr();
-    for(int i =0; i < DUNGEON_Y; i++){
-        for(int j = 0; j < DUNGEON_X; j++){
-            mvaddch(i+2, j+2,     d.character_map[i][j]->display_char);
-        }
-    }
+    initscr();
+    render_ncurses(&d);
+
 	refresh();			/* Print it on to the real screen */
 	getch();			/* Wait for user input */
 	endwin();
