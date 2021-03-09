@@ -35,20 +35,20 @@ int pc_next_pos(dungeon_t *d)
     int hasMoved = 0;
     while(!hasMoved)
     {
-        int x = (rand() % 3) - 1;
-        int y = (rand() % 3) - 1;
+        int dx = (rand() % 3) - 1;
+        int dy = (rand() % 3) - 1;
 
-        if(d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall || d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall_immutable){continue;}
+        if(d->map[d->pc.pos[dim_y] + dy][d->pc.pos[dim_x] + dx] == ter_wall || d->map[d->pc.pos[dim_y] + dy][d->pc.pos[dim_x] + dx] == ter_wall_immutable){continue;}
 
 
-        if (d->character_map[d->pc.pos[dim_y]+y][d->pc.pos[dim_x]+x] != NULL &&
-            d->character_map[d->pc.pos[dim_y]+y][d->pc.pos[dim_x]+x] != &d->pc)
+        if (d->character_map[d->pc.pos[dim_y] + dy][d->pc.pos[dim_x] + dx] != NULL &&
+            d->character_map[d->pc.pos[dim_y] + dy][d->pc.pos[dim_x] + dx] != &d->pc)
         {
-            d->character_map[d->pc.pos[dim_y]+y][d->pc.pos[dim_x]+x]->living = 0;
+            d->character_map[d->pc.pos[dim_y] + dy][d->pc.pos[dim_x] + dx]->living = 0;
         }
         d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = NULL;
-        d->pc.pos[dim_y] += y;
-        d->pc.pos[dim_x] += x;
+        d->pc.pos[dim_y] += dy;
+        d->pc.pos[dim_x] += dx;
         d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = &d->pc;
         //update monster path making
         dijkstra_non_tunneling(d);

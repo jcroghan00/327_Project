@@ -34,6 +34,7 @@ typedef struct monster {
      */
     int erratic;
     pair_t pc_last_loc;
+    monster_path_t path_to_pc[DUNGEON_Y][DUNGEON_X];
 } monster_t;
 
 typedef struct dif{

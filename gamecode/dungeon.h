@@ -40,6 +40,7 @@
 #define hardnessxy(x, y) (d->hardness[y][x])
 #define character_mappair(pair) (d->character_map[pair[dim_y]][pair[dim_x]])
 #define character_mapxy(x, y) (d->character_map[y][x])
+#define MAX(X,Y) (((X) > (Y)) ? (X) : (Y))
 
 typedef enum __attribute__ ((__packed__)) terrain_type {
   ter_debug,
@@ -95,6 +96,7 @@ typedef struct dungeon {
 } dungeon_t;
 
 uint32_t in_room(room_t r, character_t c);
+uint32_t is_open_space(dungeon_t *d, int16_t y, int16_t x);
 int gen_dungeon(dungeon_t *d);
 void render_dungeon(dungeon_t *d);
 void delete_dungeon(dungeon_t *d);

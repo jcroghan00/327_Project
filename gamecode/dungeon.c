@@ -55,7 +55,7 @@ static uint32_t adjacent_to_room(dungeon_t *d, int16_t y, int16_t x)
           mapxy(x, y + 1) == ter_floor_room);
 }
 
-static uint32_t is_open_space(dungeon_t *d, int16_t y, int16_t x)
+uint32_t is_open_space(dungeon_t *d, int16_t y, int16_t x)
 {
   return !hardnessxy(x, y);
 }
