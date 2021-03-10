@@ -1,6 +1,8 @@
 #include "dungeon.h"
 #include "path.h"
 
+#include <ncurses.h>
+
 int is_pc_alive(dungeon_t *d)
 {
     return d->pc.living;
@@ -36,6 +38,7 @@ int pc_next_pos(dungeon_t *d)
         int dx = (rand() % 3) - 1;
         int dy = (rand() % 3) - 1;
 
+   
         if(d->map[d->pc.pos[dim_y] + dy][d->pc.pos[dim_x] + dx] == ter_wall || d->map[d->pc.pos[dim_y] + dy][d->pc.pos[dim_x] + dx] == ter_wall_immutable){continue;}
 
 
@@ -52,7 +55,9 @@ int pc_next_pos(dungeon_t *d)
         //update monster path making
         dijkstra_non_tunneling(d);
         dijkstra_tunneling(d);
+
         hasMoved = 1;
+        
     }
     return 0;
 }
