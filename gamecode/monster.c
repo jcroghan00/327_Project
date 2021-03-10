@@ -5,7 +5,13 @@
 #include "monster.h"
 #include "dungeon.h"
 
-void get_monster_path(character_t *c, dungeon_t *d){
+void monster_list()
+{
+
+}
+
+void get_monster_path(character_t *c, dungeon_t *d)
+{
     int x,y;
     if (c->monster->tunneling) {
         for (y = 0; y < DUNGEON_Y; y++) {

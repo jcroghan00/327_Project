@@ -4,54 +4,6 @@
 #include "monster.h"
 #include "pc.h"
 
-
-void move_pc_ncurses(dungeon_t *d){
-    int x = 0; 
-    int y = 0;
-    mvaddch(x, y, 'i');
-    if(getch() == '\033'){
-        getch();
-        switch(getch())
-        {
-        case 'A':
-            y = -1;
-            x = 0;
-            break;
-        case 'B':
-            y = 1;
-            x = 0;
-            break;
-        case 'C':
-            y = 0;
-            x = -1;
-            break;
-        case 'D':
-            y = 0;
-            x = 1;
-            break;
-        default:
-            x = 0;
-            y = 0;
-            break;
-        }
-
-        if(d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall || d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall_immutable){y = 0, x = 0;}
-
-
-        // if (d->character_map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] != NULL &&
-        //     d->character_map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] != &d->pc)
-        // {
-        //     d->character_map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x]->living = 0;
-        //     d->num_monsters--;
-        // }
-      d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = NULL;
-        d->pc.pos[dim_y] += y;
-        d->pc.pos[dim_x] += x;
-        d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = &d->pc;
-    }
-
-}
-
 int play_game(dungeon_t *d)
 {
     heap_t h;
@@ -72,15 +24,16 @@ int play_game(dungeon_t *d)
             if (c->sd == 0) {
                 move_pc_ncurses(d);
                 // pc_next_pos(d);
-                render_ncurses(d);
-                refresh(); /* Print it on to the real screen */
-                getch(); /* Wait for user input */
             }
             else{
                 move_monster(c,d);
             }
             c->turn = c->turn + (1000/c->speed);
             heap_insert(&h, c);
+
+            usleep(25000); // you cant see the monsters' steps otherwise
+            render_ncurses(d);
+            refresh();
         }
     }
     if (won){
@@ -89,8 +42,6 @@ int play_game(dungeon_t *d)
         return 0;
     }
 }
-
-
 
 int main(int argc, char *argv[])
 {
