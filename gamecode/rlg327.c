@@ -75,7 +75,6 @@ int play_game(dungeon_t *d)
                 render_ncurses(d);
                 refresh(); /* Print it on to the real screen */
                 getch(); /* Wait for user input */
-                usleep(250000);
             }
             else{
                 move_monster(c,d);
