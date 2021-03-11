@@ -14,7 +14,6 @@
 #include <unistd.h>
 
 #include "dim.h"
-#include "character.h"
 
 #define DUNGEON_X              80
 #define DUNGEON_Y              21
@@ -30,6 +29,7 @@
 #define SAVE_FILE              "dungeon"
 #define FILE_VERSION           5
 
+ typedef struct character character_t;
  typedef struct heap_node heap_node_t;
  typedef struct monster monster_t;
  typedef struct pc pc_t;
@@ -78,13 +78,13 @@ typedef struct dungeon {
   terrain_type_t map[DUNGEON_Y][DUNGEON_X];
   character_t *character_map[DUNGEON_Y][DUNGEON_X];
   uint8_t hardness[DUNGEON_Y][DUNGEON_X];
-  character_t pc;
+  character_t *pc;
   int num_monsters;
   monster_path_t non_tun_path[DUNGEON_Y][DUNGEON_X];
   monster_path_t tun_path[DUNGEON_Y][DUNGEON_X];
 } dungeon_t;
 
-uint32_t in_room(room_t r, character_t c);
+uint32_t in_room(room_t r, character_t *c);
 uint32_t is_open_space(dungeon_t *d, int16_t y, int16_t x);
 int gen_dungeon(dungeon_t *d);
 void render_dungeon(dungeon_t *d);

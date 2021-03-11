@@ -2,10 +2,11 @@
 
 #include "dungeon.h"
 #include "path.h"
+#include "character.h"
 
 int is_pc_alive(dungeon_t *d)
 {
-    return d->pc.living;
+    return d->pc->living;
 }
 
 void place_pc(dungeon_t *d)
@@ -14,20 +15,20 @@ void place_pc(dungeon_t *d)
     int x = rand() % d->rooms[randRoom].size[dim_x];
     int y = rand() % d->rooms[randRoom].size[dim_y];
 
-    d->pc.pos[dim_x] = d->rooms[randRoom].position[dim_x] + x;
-    d->pc.pos[dim_y] = d->rooms[randRoom].position[dim_y] + y;
-    character_mapxy(d->pc.pos[dim_x],d->pc.pos[dim_y]) = &d->pc;
-    d->pc.living = 1;
+    d->pc->pos[dim_x] = d->rooms[randRoom].position[dim_x] + x;
+    d->pc->pos[dim_y] = d->rooms[randRoom].position[dim_y] + y;
+    character_mapxy(d->pc->pos[dim_x],d->pc->pos[dim_y]) = d->pc;
+    d->pc->living = 1;
 }
 
 void config_pc(dungeon_t *d)
 {
-    memset(&d->pc, 0, sizeof (d->pc));
-    d->pc.display_char = '@';
-    d->pc.living = 1;
-    d->pc.speed = PC_SPEED;
+    d->pc = malloc(sizeof(character_t));
+    d->pc->display_char = '@';
+    d->pc->living = 1;
+    d->pc->speed = PC_SPEED;
     place_pc(d);
-    d->characters[0] = &d->pc;
+    d->characters[0] = d->pc;
 }
 
 void move_pc_ncurses(dungeon_t *d){
@@ -87,7 +88,7 @@ void move_pc_ncurses(dungeon_t *d){
         /* code */
         break;
     case '>':
-        if(d->map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] == ter_stairs_up){
+        if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_up){
             delete_dungeon(d);
             d->num_monsters = 7;
             init_dungeon(d);
@@ -99,7 +100,7 @@ void move_pc_ncurses(dungeon_t *d){
 
         break;
     case '<':
-        if(d->map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] == ter_stairs_down){
+        if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_down){
             delete_dungeon(d);
             d->num_monsters = 7;
             init_dungeon(d);
@@ -126,16 +127,16 @@ void move_pc_ncurses(dungeon_t *d){
         break;
     }
 
-        if(d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall ||
-           d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall_immutable)
+        if(d->map[d->pc->pos[dim_y] + y][d->pc->pos[dim_x] + x] == ter_wall ||
+           d->map[d->pc->pos[dim_y] + y][d->pc->pos[dim_x] + x] == ter_wall_immutable)
         {y = 0, x = 0;}
 
 
 
-      d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = NULL;
-        d->pc.pos[dim_y] += y;
-        d->pc.pos[dim_x] += x;
-        d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = &d->pc;
+      d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = NULL;
+        d->pc->pos[dim_y] += y;
+        d->pc->pos[dim_x] += x;
+        d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = d->pc;
     }
 
 int pc_next_pos(dungeon_t *d)
@@ -147,19 +148,19 @@ int pc_next_pos(dungeon_t *d)
         int dy = (rand() % 3) - 1;
 
    
-        if(d->map[d->pc.pos[dim_y] + dy][d->pc.pos[dim_x] + dx] == ter_wall || d->map[d->pc.pos[dim_y] + dy][d->pc.pos[dim_x] + dx] == ter_wall_immutable){continue;}
+        if(d->map[d->pc->pos[dim_y] + dy][d->pc->pos[dim_x] + dx] == ter_wall || d->map[d->pc->pos[dim_y] + dy][d->pc->pos[dim_x] + dx] == ter_wall_immutable){continue;}
 
 
-        if (d->character_map[d->pc.pos[dim_y] + dy][d->pc.pos[dim_x] + dx] != NULL &&
-            d->character_map[d->pc.pos[dim_y] + dy][d->pc.pos[dim_x] + dx] != &d->pc)
+        if (d->character_map[d->pc->pos[dim_y] + dy][d->pc->pos[dim_x] + dx] != NULL &&
+            d->character_map[d->pc->pos[dim_y] + dy][d->pc->pos[dim_x] + dx] != d->pc)
         {
-            d->character_map[d->pc.pos[dim_y] + dy][d->pc.pos[dim_x] + dx]->living = 0;
+            d->character_map[d->pc->pos[dim_y] + dy][d->pc->pos[dim_x] + dx]->living = 0;
             d->num_monsters--;
         }
-        d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = NULL;
-        d->pc.pos[dim_y] += dy;
-        d->pc.pos[dim_x] += dx;
-        d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = &d->pc;
+        d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = NULL;
+        d->pc->pos[dim_y] += dy;
+        d->pc->pos[dim_x] += dx;
+        d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = d->pc;
         //update monster path making
         dijkstra_non_tunneling(d);
         dijkstra_tunneling(d);

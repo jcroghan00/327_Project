@@ -1,6 +1,7 @@
 #include "path.h"
 #include "heap.h"
 #include "dungeon.h"
+#include "character.h"
 
 static int32_t monster_path_cmp(const void *key, const void *with) {
     return ((monster_path_t *) key)->cost - ((monster_path_t *) with)->cost;
@@ -34,7 +35,7 @@ void dijkstra_non_tunneling(dungeon_t *d)
         }
     }
 
-    d->non_tun_path[d->pc.pos[dim_y]][d->pc.pos[dim_x]].cost = 0;
+    d->non_tun_path[d->pc->pos[dim_y]][d->pc->pos[dim_x]].cost = 0;
 
     heap_init(&h, monster_path_cmp, NULL);
 
@@ -91,7 +92,7 @@ void dijkstra_tunneling(dungeon_t *d)
         }
     }
     //set PC location cost to 0
-    d->tun_path[d->pc.pos[dim_y]][d->pc.pos[dim_x]].cost = 0;
+    d->tun_path[d->pc->pos[dim_y]][d->pc->pos[dim_x]].cost = 0;
 
     heap_init(&h, monster_path_cmp, NULL);
 

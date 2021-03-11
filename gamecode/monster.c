@@ -4,6 +4,7 @@
 
 #include "monster.h"
 #include "dungeon.h"
+#include "character.h"
 
 void monster_list()
 {
@@ -207,8 +208,8 @@ void move_monster(character_t *c, dungeon_t *d)
     {
         sees_player = 1;
         // can probably rewrite to use current pc location
-        c->monster->pc_last_loc[dim_x] = d->pc.pos[dim_x];
-        c->monster->pc_last_loc[dim_y] = d->pc.pos[dim_y];
+        c->monster->pc_last_loc[dim_x] = d->pc->pos[dim_x];
+        c->monster->pc_last_loc[dim_y] = d->pc->pos[dim_y];
         get_monster_path(c,d);
 
     }
@@ -251,8 +252,8 @@ int bresenham_LOS(dungeon_t *d,character_t *c)
 {
     int x0 = c->pos[dim_x];
     int y0 = c->pos[dim_y];
-    int x1 = d->pc.pos[dim_x];
-    int y1 = d->pc.pos[dim_y];
+    int x1 = d->pc->pos[dim_x];
+    int y1 = d->pc->pos[dim_y];
 
     int dx = abs(x1 - x0);
     int sx = x0<x1 ? 1 : -1;
@@ -286,8 +287,8 @@ void bresenham_move(dungeon_t *d,character_t *c, dif_t *dif)
 {
     int x0 = c->pos[dim_x];
     int y0 = c->pos[dim_y];
-    int x1 = d->pc.pos[dim_x];
-    int y1 = d->pc.pos[dim_y];
+    int x1 = d->pc->pos[dim_x];
+    int y1 = d->pc->pos[dim_y];
 
     int dx = abs(x1 - x0);
     int sx = x0<x1 ? 1 : -1;

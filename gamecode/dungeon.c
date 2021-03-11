@@ -23,10 +23,10 @@
   _tmp;                        \
 })
 
-uint32_t in_room(room_t r, character_t c)
+uint32_t in_room(room_t r, character_t *c)
 {
-    if(c.pos[dim_x] >= r.position[dim_x] && c.pos[dim_x] < r.position[dim_x] + r.size[dim_x]
-       && c.pos[dim_y] >= r.position[dim_y] && c.pos[dim_y] < r.position[dim_y] + r.size[dim_y])
+    if(c->pos[dim_x] >= r.position[dim_x] && c->pos[dim_x] < r.position[dim_x] + r.size[dim_x]
+       && c->pos[dim_y] >= r.position[dim_y] && c->pos[dim_y] < r.position[dim_y] + r.size[dim_y])
     {
         return 1;
     }
@@ -641,8 +641,8 @@ int load_dungeon(dungeon_t *d)
   file_size = be32toh(file_size);
 
   //pc location
-  fread(&d->pc.pos[dim_x], 1, 1, file);
-  fread(&d->pc.pos[dim_y], 1, 1, file);
+  fread(&d->pc->pos[dim_x], 1, 1, file);
+  fread(&d->pc->pos[dim_y], 1, 1, file);
 
   //hardness
   fread(&d->hardness, 1, 1680, file);
@@ -886,8 +886,8 @@ int save_dungeon(dungeon_t *d)
   be32 = htobe32(file_size);
   fwrite(&be32,sizeof(be32),1,file);
 
-  fwrite(&d->pc.pos[dim_x],1,1,file);
-  fwrite(&d->pc.pos[dim_y],1,1,file);
+  fwrite(&d->pc->pos[dim_x],1,1,file);
+  fwrite(&d->pc->pos[dim_y],1,1,file);
 
   
   for (int i=0; i<DUNGEON_Y;i++)

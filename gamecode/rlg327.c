@@ -4,6 +4,7 @@
 #include "monster.h"
 #include "pc.h"
 #include "heap.h"
+#include "character.h"
 
 
 
@@ -72,7 +73,7 @@ int play_game(dungeon_t *d)
     }
     int won = 0;
     character_t *c;
-    while(d->pc.living)
+    while(d->pc->living)
     {
         if (!d->num_monsters){won = 1;break;}
         c = heap_remove_min(&h);
