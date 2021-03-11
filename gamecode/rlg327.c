@@ -145,7 +145,6 @@ int main(int argc, char *argv[])
         render_ncurses(&d);
 
         int won = play_game(&d);
-
         endwin();
         delete_dungeon(&d);
 

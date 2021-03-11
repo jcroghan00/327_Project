@@ -35,7 +35,6 @@ void move_pc_ncurses(dungeon_t *d){
     int y = 0;
 
     char val  = getch();
-    //TODO 5 or 'space' or . should rest for a turn
 
     switch (val)
     {
@@ -118,8 +117,9 @@ void move_pc_ncurses(dungeon_t *d){
         y = 0;
         break;
     case 'Q':
+        endwin();
+        delete_dungeon(d);
         exit(0);
-        break;
     default:
         x = 0;
         y = 0;

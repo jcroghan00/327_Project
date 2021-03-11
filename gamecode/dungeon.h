@@ -74,18 +74,9 @@ typedef struct dungeon {
   uint32_t num_rooms;
   room_t *rooms;
   character_t **characters;
-  //TODO should be malloced
-  stair_t stairs[255];
+  stair_t *stairs;
   terrain_type_t map[DUNGEON_Y][DUNGEON_X];
   character_t *character_map[DUNGEON_Y][DUNGEON_X];
-   /*Since hardness is usually not used, it would be expensive to pull it *
-   * into cache every time we need a map cell, so we store it in a        *
-   * parallel array, rather than using a structure to represent the       *
-   * cells.  We may want a cell structure later, but from a performance   *
-   * perspective, it would be a bad idea to ever have the map be part of  *
-   * that structure.  Pathfinding will require efficient use of the map,  *
-   * and pulling in unnecessary data with each map cell would add a lot   *
-   * of overhead to the memory system.*/
   uint8_t hardness[DUNGEON_Y][DUNGEON_X];
   character_t pc;
   int num_monsters;

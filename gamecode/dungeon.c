@@ -547,9 +547,9 @@ static void place_stairs(dungeon_t *d)
   pair_t p;
   int i = 0;
   stair_t *s;
-  
+  uint16_t stairs_up = rand() % 3 + 1, stairs_down = rand() % 3 + 1;
+    d->stairs = malloc((stairs_up+stairs_down)*sizeof(stair_t));
   do {
-      // while its in the dungeon and not a floor, try again?
     while ((p[dim_y] = rand_range(1, DUNGEON_Y - 2)) &&
            (p[dim_x] = rand_range(1, DUNGEON_X - 2)) &&
            ((mappair(p) < ter_floor) || (mappair(p) > ter_stairs)));
@@ -558,7 +558,7 @@ static void place_stairs(dungeon_t *d)
     s->position[dim_y] = p[dim_y];
     s->position[dim_x] = p[dim_x];
     s->direction = mappair(p) = ter_stairs_down;
-  } while (rand_under(1, 3));
+  } while (i < stairs_down);
 
   do {
     while ((p[dim_y] = rand_range(1, DUNGEON_Y - 2)) &&
@@ -572,7 +572,7 @@ static void place_stairs(dungeon_t *d)
     s->position[dim_y] = p[dim_y];
     s->position[dim_x] = p[dim_x];
     s->direction = mappair(p) = ter_stairs_up;
-  } while (rand_under(2, 4));
+  } while (i < stairs_up + stairs_down);
 }
 
 static int make_rooms(dungeon_t *d)
@@ -686,6 +686,7 @@ int load_dungeon(dungeon_t *d)
   }
 
   //stairs
+  //TODO with stairs being malloced now make need to store stair locations in a buffer so the stairs array can be malloced
     uint16_t stairs_down = 0, stairs_up = 0;
   fread(&stairs_up, 2, 1, file);
   stairs_up = be16toh(stairs_up);
@@ -815,6 +816,7 @@ void render_ncurses(dungeon_t *d)
 void delete_dungeon(dungeon_t *d)
 {
     free(d->rooms);
+    free(d->stairs);
     for(int i = 1; i < d->num_monsters + 1; i++){
       free(d->characters[i]->monster);
     }
