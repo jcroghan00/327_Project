@@ -838,19 +838,20 @@ void render_ncurses(dungeon_t *d)
 
 void delete_dungeon(dungeon_t *d)
 {
-    free(d->rooms);
 
     // maybe memset doesnt need to be freed
     // free(d->pc);
-
-    for(int i = 1; i < d->num_monsters + 1; i++){
+        for(int i = 1; i <= d->num_monsters; i++){
 
       free(d->characters[i]->monster);
-      int j = i-1;
-      free(d->characters[j]);
     }
 
-    free(d->characters);
+    for(int i = 1; i <= d->num_monsters; i++){
+
+      free(d->characters[i]);
+    }
+        
+        free(d->rooms);
 
     //maybe free characters elements?
 }

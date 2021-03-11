@@ -110,6 +110,15 @@ void move_pc_ncurses(dungeon_t *d){
         }
 
         break;
+    case '5':
+    case ' ':
+    case '.':
+        x = 0;
+        y = 0;
+        break;
+    case 'Q':
+        exit(0);
+        break;
     default:
         x = 0;
         y = 0;
