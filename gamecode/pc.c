@@ -136,67 +136,98 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h)
 
             //TODO Display character information
         case 'c':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
             //TODO Drop item
         case 'd':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
             //TODO Display equipment
         case 'e':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
             //TODO Toggle fog-of-war
         case 'f':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
             //TODO Teleport (goto)
         case 'g':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
             //TODO Display inventory
         case 'i':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
             //TODO Display monster list
         case 'm':
             monster_list();
+            move_pc_ncurses(d, h);
             break;
 
             //TODO Display the default (terrain) map
         case 's':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
             //TODO Take off item
         case 't':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
             //TODO Wear item
         case 'w':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
             //TODO Expunge item
         case 'x':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
             //TODO Display the non-tunneling distance map
         case 'D':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
             //TODO Inspect equipped item
         case 'E':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
             //TODO Display the hardness map
         case 'H':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
             //TODO Inspect inventory item
         case 'I':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
             //TODO Look at monster
         case 'L':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
             // Quit the game
@@ -207,10 +238,20 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h)
 
             //TODO Display the tunneling distance map
         case 'T':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
+            break;
+
+            //TODO Print list of controls
+        case 'C':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
         default:
-            move_pc(d, h, 0, 0); break;
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
+            break;
     }
     render_ncurses(d);
     refresh();
