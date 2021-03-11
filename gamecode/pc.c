@@ -4,6 +4,8 @@
 #include "path.h"
 #include "character.h"
 
+typedef struct heap heap_t;
+
 int pc_is_alive(dungeon_t *d)
 {
     return d->pc->living;
