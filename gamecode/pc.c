@@ -1,7 +1,7 @@
+#include <ncurses.h>
+
 #include "dungeon.h"
 #include "path.h"
-
-#include <ncurses.h>
 
 int is_pc_alive(dungeon_t *d)
 {
@@ -29,6 +29,78 @@ void config_pc(dungeon_t *d)
     place_pc(d);
     d->characters[0] = &d->pc;
 }
+
+void move_pc_ncurses(dungeon_t *d){
+    int x = 0; 
+    int y = 0;
+
+    char val  = getch();
+
+    switch (val)
+    {
+    case '9':
+    case 'u':
+        y = -1;
+        x = 1;
+        /* code */
+        break;
+    case '7':
+    case 'y':
+        y = 0;
+        x = -1;
+        /* code */
+        break;
+    case '8':
+    case 'k':
+        y = -1;
+        x = 0;
+        /* code */
+        break;
+    case '6':
+    case 'l':
+        y = 0;
+        x = 1;
+        /* code */
+        break;
+    case '3':
+    case 'n':
+        y = 1;
+        x = 1;
+        /* code */
+        break;
+    case '2':
+    case 'j':
+        y = 1;
+        x = 0;
+        /* code */
+        break;
+    case '1':
+    case 'b':
+        y = 1;
+        x = -1;
+        /* code */
+        break;
+    case '4':
+    case 'h':
+        y = 0;
+        x = -1;
+        /* code */
+        break;
+    default:
+        x = 0;
+        y = 0;
+        break;
+    }
+
+        if(d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall || d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall_immutable){y = 0, x = 0;}
+
+
+
+      d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = NULL;
+        d->pc.pos[dim_y] += y;
+        d->pc.pos[dim_x] += x;
+        d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = &d->pc;
+    }
 
 int pc_next_pos(dungeon_t *d)
 {
