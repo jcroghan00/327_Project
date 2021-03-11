@@ -8,7 +8,7 @@ typedef struct pc {
 }pc_t;
 
 
-int is_pc_alive(dungeon_t *d);
+int pc_is_alive(dungeon_t *d);
 void place_pc(dungeon_t *d);
 void config_pc(dungeon_t *d);
 void move_pc_ncurses(dungeon_t *d);

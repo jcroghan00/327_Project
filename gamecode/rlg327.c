@@ -73,7 +73,7 @@ int play_game(dungeon_t *d)
     }
     int won = 0;
     character_t *c;
-    while(d->pc->living)
+    while(pc_is_alive(d))
     {
         if (!d->num_monsters){won = 1;break;}
         c = heap_remove_min(&h);

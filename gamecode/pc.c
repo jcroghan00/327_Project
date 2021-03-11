@@ -4,7 +4,7 @@
 #include "path.h"
 #include "character.h"
 
-int is_pc_alive(dungeon_t *d)
+int pc_is_alive(dungeon_t *d)
 {
     return d->pc->living;
 }
@@ -107,7 +107,7 @@ void move_pc_ncurses(dungeon_t *d){
             }
             break;
 
-        // go up stairs
+        // Go up stairs
         case '<':
             if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_down){
                 delete_dungeon(d);
@@ -195,9 +195,7 @@ void move_pc_ncurses(dungeon_t *d){
             break;
 
         default:
-            x = 0;
-            y = 0;
-            break;
+            x = 0; y = 0; break;
     }
 
     if(d->map[d->pc->pos[dim_y] + y][d->pc->pos[dim_x] + x] == ter_wall ||
