@@ -96,12 +96,12 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h){
 
         // Go down stairs
         case '>':
-            if(d->map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] == ter_stairs_down){
+            if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_down){
                 new_dungeon(d, h);
             }
             break;
         case '<':
-            if(d->map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] == ter_stairs_up){
+            if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_up){
                 new_dungeon(d, h);
             }
             break;
@@ -173,7 +173,7 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h){
         // Quit the game
         case 'Q':
             endwin();
-            delete_dungeon(d);
+            delete_dungeon(d, h);
             exit(0);
 
         //TODO Display the tunneling distance map
