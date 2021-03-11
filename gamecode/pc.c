@@ -3,6 +3,7 @@
 #include "dungeon.h"
 #include "path.h"
 #include "character.h"
+#include "monster.h"
 
 typedef struct heap heap_t;
 
@@ -36,7 +37,7 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h);
 int move_pc(dungeon_t *d, heap_t *h, int dy, int dx){
 
     if(d->map[d->pc->pos[dim_y] + dy][d->pc->pos[dim_x] + dx] < ter_floor){
-        //add display of error to player saying they can't move there
+        //TODO add display of error to player saying they can't move there
         move_pc_ncurses(d,h);
         return -1;
     }
@@ -46,6 +47,7 @@ int move_pc(dungeon_t *d, heap_t *h, int dy, int dx){
     d->pc->pos[dim_x] += dx;
     if (d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] != NULL){
         d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]]->living = 0;
+        d->num_monsters--;
     }
     d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = d->pc;
     return 0;
@@ -149,6 +151,7 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h){
 
         //TODO Display monster list
         case 'm':
+            monster_list();
             break;
 
         //TODO Display the default (terrain) map
