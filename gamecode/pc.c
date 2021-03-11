@@ -86,6 +86,30 @@ void move_pc_ncurses(dungeon_t *d){
         x = -1;
         /* code */
         break;
+    case '>':
+        if(d->map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] == ter_stairs_up){
+            delete_dungeon(d);
+            d->num_monsters = 7;
+            init_dungeon(d);
+            gen_dungeon(d);
+            clear();
+            render_ncurses(d);
+            refresh();
+        }
+
+        break;
+    case '<':
+        if(d->map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] == ter_stairs_down){
+            delete_dungeon(d);
+            d->num_monsters = 7;
+            init_dungeon(d);
+            gen_dungeon(d);
+            clear();
+            render_ncurses(d);
+            refresh();
+        }
+
+        break;
     default:
         x = 0;
         y = 0;
