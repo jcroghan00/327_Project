@@ -144,7 +144,11 @@ int main(int argc, char *argv[])
     heap_t h;
     if (do_play_game){
         initscr();
-
+        raw();
+        noecho();
+        curs_set(0);
+        keypad(stdscr, TRUE);
+        
         render_ncurses(&d);
 
         int won = play_game(&d);

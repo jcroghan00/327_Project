@@ -32,11 +32,26 @@ void config_pc(dungeon_t *d)
     place_pc(d);
     d->characters[0] = d->pc;
 }
+void move_pc_ncurses(dungeon_t *d, heap_t *h);
+int move_pc(dungeon_t *d, heap_t *h, int dy, int dx){
+
+    if(d->map[d->pc->pos[dim_y] + dy][d->pc->pos[dim_x] + dx] < ter_floor){
+        //add display of error to player saying they can't move there
+        move_pc_ncurses(d,h);
+        return -1;
+    }
+
+    d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = NULL;
+    d->pc->pos[dim_y] += dy;
+    d->pc->pos[dim_x] += dx;
+    if (d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] != NULL){
+        d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]]->living = 0;
+    }
+    d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = d->pc;
+    return 0;
+}
 
 void move_pc_ncurses(dungeon_t *d, heap_t *h){
-    int x = 0; 
-    int y = 0;
-
     int val  = getch();
 
     switch (val)
@@ -45,56 +60,56 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h){
         case KEY_HOME:
         case '7':
         case 'y':
-            y = -1; x = -1; break;
+            move_pc(d, h, -1, -1); break;
 
         // Move up
         case KEY_UP:
         case '8':
         case 'k':
-            y = -1; x = 0; break;
+            move_pc(d, h, -1, 0); break;
 
         // Move up-right
         case KEY_PPAGE:
         case '9':
         case 'u':
-            y = -1; x = 1; break;
-
+            move_pc(d, h, -1, 1); break;
+            
         // Move right
         case KEY_RIGHT:
         case '6':
         case 'l':
-            y = 0; x = 1; break;
+            move_pc(d, h, 0, 1); break;
 
         // Move down-right
         case KEY_NPAGE:
         case '3':
         case 'n':
-            y = 1; x = 1; break;
+            move_pc(d, h, 1, 1); break;
 
         // Move down
         case KEY_DOWN:
         case '2':
         case 'j':
-            y = 1; x = 0; break;
+            move_pc(d, h, 1, 0); break;
 
         // Move down-left
         case KEY_END:
         case '1':
         case 'b':
-            y = 1; x = -1; break;
+            move_pc(d, h, 1, -1); break;
 
         // Move left
         case KEY_LEFT:
         case '4':
         case 'h':
-            y = 0; x = -1; break;
+            move_pc(d, h, 0, -1); break;
 
         // rest
         case KEY_B2:
         case ' ':
         case '.':
         case '5':
-            y = 0; x = 0; break;
+            move_pc(d, h, 0, 0); break;
 
         // Go down stairs
         case '>':
@@ -183,19 +198,8 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h){
             break;
 
         default:
-            x = 0; y = 0; break;
+            move_pc(d, h, 0, 0); break;
     }
-
-    if(d->map[d->pc->pos[dim_y] + y][d->pc->pos[dim_x] + x] == ter_wall ||
-       d->map[d->pc->pos[dim_y] + y][d->pc->pos[dim_x] + x] == ter_wall_immutable)
-    {y = 0, x = 0;}
-
-
-
-    d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = NULL;
-    d->pc->pos[dim_y] += y;
-    d->pc->pos[dim_x] += x;
-    d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = d->pc;
 }
 
 int pc_next_pos(dungeon_t *d)
