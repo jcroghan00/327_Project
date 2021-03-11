@@ -132,7 +132,7 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h)
             if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_up){
                 new_dungeon(d, h);
             } else{
-                mvprintw(0, 0, "You can't go down here!");
+                mvprintw(0, 0, "You can't go up here!");
                 move_pc_ncurses(d,h);
             }
             break;
