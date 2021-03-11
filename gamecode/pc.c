@@ -45,7 +45,7 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h){
         case KEY_HOME:
         case '7':
         case 'y':
-            y = 0; x = -1; break;
+            y = -1; x = -1; break;
 
         // Move up
         case KEY_UP:
