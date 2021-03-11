@@ -11,7 +11,7 @@ CXXFLAGS = -Wall -Werror -ggdb -lncurses -funroll-loops -DTERM=$(TERM)
 LDFLAGS = -lncurses
 
 BIN = rlg327
-OBJS = rlg327.o dungeon.o heap.o monster.o path.o pc.o character.o
+OBJS = rlg327.o dungeon.o heap.o monster.o path.o pc.o character.o windows.o
 
 all: $(BIN) etags
 
