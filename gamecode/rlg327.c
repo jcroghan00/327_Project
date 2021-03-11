@@ -79,7 +79,7 @@ int play_game(dungeon_t *d)
         c = heap_remove_min(&h);
         if (c->living){
             if (c->sd == 0) {
-                move_pc_ncurses(d);
+                move_pc_ncurses(d, &h);
                 // pc_next_pos(d);
                 render_ncurses(d);
                 refresh(); /* Print it on to the real screen */
@@ -91,7 +91,7 @@ int play_game(dungeon_t *d)
             c->turn = c->turn + (1000/c->speed);
             heap_insert(&h, c);
 
-            usleep(25000); // you cant see the monsters' steps otherwise
+            usleep(2500); // you cant see the monsters' steps otherwise
             render_ncurses(d);
             refresh();
         }
@@ -141,14 +141,17 @@ int main(int argc, char *argv[])
     }
 
 
+    heap_t h;
     if (do_play_game){
         initscr();
 
         render_ncurses(&d);
 
         int won = play_game(&d);
-        endwin();
-        delete_dungeon(&d);
+
+	    endwin();
+
+        delete_dungeon(&d, &h);
 
         if (won){
             printf("%s", victory);
@@ -159,7 +162,7 @@ int main(int argc, char *argv[])
     }
     else{
         render_dungeon(&d);
-        delete_dungeon(&d);
+        delete_dungeon(&d, &h);
     }
 
 }

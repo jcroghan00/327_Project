@@ -15,3 +15,14 @@ int32_t character_cmp(const void *key, const void *with) {
         return ((character_t *) key)->sd - ((character_t *) with)->sd;
     }
 }
+
+void delete_characters(character_t **c, dungeon_t *d)
+{
+    free(c[0]);
+    for(int i = 1; i < d->num_monsters + 1; ++i)
+    {
+        character_mappair(c[i]->pos) = NULL;
+        free(c[i]->monster);
+        free(c[i]);
+    }
+}

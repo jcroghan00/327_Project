@@ -31,7 +31,7 @@ void config_pc(dungeon_t *d)
     d->characters[0] = d->pc;
 }
 
-void move_pc_ncurses(dungeon_t *d){
+void move_pc_ncurses(dungeon_t *d, heap_t *h){
     int x = 0; 
     int y = 0;
 
@@ -96,27 +96,13 @@ void move_pc_ncurses(dungeon_t *d){
 
         // Go down stairs
         case '>':
-            if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_up){
-                delete_dungeon(d);
-                d->num_monsters = 7;
-                init_dungeon(d);
-                gen_dungeon(d);
-                clear();
-                render_ncurses(d);
-                refresh();
+            if(d->map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] == ter_stairs_down){
+                new_dungeon(d, h);
             }
             break;
-
-        // Go up stairs
         case '<':
-            if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_down){
-                delete_dungeon(d);
-                d->num_monsters = 7;
-                init_dungeon(d);
-                gen_dungeon(d);
-                clear();
-                render_ncurses(d);
-                refresh();
+            if(d->map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] == ter_stairs_up){
+                new_dungeon(d, h);
             }
             break;
 

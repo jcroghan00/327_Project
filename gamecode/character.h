@@ -20,5 +20,6 @@ typedef struct character {
 
 void define_characters(dungeon_t *d);
 int32_t character_cmp(const void *key, const void *with);
+void delete_characters(character_t **c, dungeon_t *d);
 
 #endif

@@ -813,17 +813,11 @@ void render_ncurses(dungeon_t *d)
     }
 }
 
-void delete_dungeon(dungeon_t *d)
+void delete_dungeon(dungeon_t *d, heap_t *h)
 {
+    heap_delete(h);
     free(d->rooms);
-    free(d->stairs);
-    for(int i = 1; i < d->num_monsters + 1; i++){
-      free(d->characters[i]->monster);
-    }
-    for(int i = 1; i <= d->num_monsters; i++){
-      free(d->characters[i]);
-    }
-    free(d->characters);
+    delete_characters(d->characters, d);
 }
 
 void init_dungeon(dungeon_t *d)
@@ -939,4 +933,24 @@ int save_dungeon(dungeon_t *d)
       }
     }
   return 0;
+}
+
+void new_dungeon(dungeon_t *d, heap_t *h)
+{
+    delete_dungeon(d, h);
+    d->num_monsters = 7;
+    init_dungeon(d);
+    gen_dungeon(d);
+
+    heap_init(h,character_cmp,NULL);
+    for(int i = 0; i < d->num_monsters+1; i++)
+    {
+        d->characters[i]->turn = 0;
+        d->characters[i]->sd = i;
+        heap_insert(h,d->characters[i]);
+    }
+
+    clear();
+    render_ncurses(d);
+    refresh();
 }
