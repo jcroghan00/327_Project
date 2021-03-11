@@ -1,0 +1,229 @@
+* 2282931 - (HEAD -> 1.05, origin/1.05) fixed telepathic dumb monster non tunneling monster for moving trough walls (60 minutes ago) <Ryan>
+* 142829a - fixed movement bug for tunneling smart monsters (69 minutes ago) <Ryan>
+* 67317af - fixed telepathic intelligent monster movement (78 minutes ago) <Ryan>
+* bf83588 - worked on fixing monster behavior (3 hours ago) <Ryan>
+* 548c622 - made tun_rock_check (4 hours ago) <Ryan>
+* 517a2c1 - fixed tunnel jumping bug and cleaned up move_monster (again) (4 hours ago) <Ryan>
+* db2d5a8 - added win condition (4 hours ago) <Ryan>
+* 764bde8 - fixed flash monsters (4 hours ago) <Ryan>
+* 27d7b8b - cleaned up move_monster (4 hours ago) <Ryan>
+* 83cff9c - pc no longer kills themselves (5 hours ago) <Ryan>
+* 23757fe - modified gen_monsters to include in_room from dungeon.c (5 hours ago) <Ryan>
+* 4e7ec5d - fixed play_game. no seg fault when running now (6 hours ago) <Ryan>
+* 0e90108 - moved move_pc to pc_next_pos (23 hours ago) <Ryan>
+* 0647f62 - fixed gen_monsters (23 hours ago) <Ryan>
+* b30ac0e - u suk (23 hours ago) <Ryan>
+* 30086e1 - hmm (24 hours ago) <Ryan>
+* 145900d - added the define_characters function to character.c (24 hours ago) <Jack Croghan>
+* dec4fa4 - formatting (24 hours ago) <Jack Croghan>
+* 8f2c37c - ye (24 hours ago) <Jack Croghan>
+* 3777b5e - added monster char assignment (24 hours ago) <Ryan>
+* e8d4a0e - trying my best (24 hours ago) <Ryan>
+* 227cb23 - made the program compile (24 hours ago) <Ryan>
+* a434106 - bug fixing (25 hours ago) <Ryan>
+* ad19267 - changed moster map to char map (25 hours ago) <Ryan>
+* 7a36d18 - moved main to rlg327.c (25 hours ago) <Jack Croghan>
+*   c6e6347 - Merge branch '1.05' of https://github.com/ryantullis/327_Project into 1.05 (25 hours ago) <Jack Croghan>
+|\  
+| * eb0a8a0 - created dim.h and character.c and .h (25 hours ago) <Ryan>
+* | aed57e7 - yeet (25 hours ago) <Jack Croghan>
+|/  
+*   07385aa - Merge branch '1.05' of https://github.com/ryantullis/327_Project into 1.05 (25 hours ago) <Jack Croghan>
+|\  
+| * 8772795 - added code to pc.c (25 hours ago) <Ryan>
+* | 42beecb - made clobber (25 hours ago) <Jack Croghan>
+* | e725268 - moved the calls to the dijkstra pathmaking algorithms so that they are only called when needed (25 hours ago) <Jack Croghan>
+|/  
+* 88a14a4 - added path.c and path.h and moved the djikstra pathfinding algorithms into them (25 hours ago) <Jack Croghan>
+* 405b199 - removed file_info_t (26 hours ago) <Ryan>
+* 3860958 - fixed save method (26 hours ago) <Ryan>
+* 0faa890 - made "save" and "load" local vars in main and removed rendering of dist map code (27 hours ago) <Ryan>
+* 39a7489 - (1.04) organize (4 days ago) <Ryan>
+* 5f2c20c - (origin/1.04) README updated (4 days ago) <Jack Croghan>
+* 5a134ca - it sorta works except for T H E B U G (4 days ago) <Jack Croghan>
+* 3bfb78b - i forgot make clobber again (4 days ago) <Jack Croghan>
+* 6e7c68c - insta bug fix woohoo (4 days ago) <Jack Croghan>
+* f457c24 - fixed bug with tunneling and added pathmaking for straight lines (4 days ago) <Jack Croghan>
+*   5815299 - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (4 days ago) <Jack Croghan>
+|\  
+| * fa9b06f - whoops (4 days ago) <Ryan>
+| * 5e8f94f - found dif issue (4 days ago) <Ryan>
+* | 25803e9 - made clobber (4 days ago) <Jack Croghan>
+* | ef9fe98 - formatting (4 days ago) <Jack Croghan>
+|/  
+* 2956871 - finished erratic movement (4 days ago) <Ryan>
+* c34e0c8 - forgot to make clobber (4 days ago) <Jack Croghan>
+* 9152dfc - made the line of sight dunction return a sx and dy to move to (4 days ago) <Jack Croghan>
+*   9b54a79 - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (4 days ago) <Jack Croghan>
+|\  
+| * 5c257d7 - boilerplate for move monster (again) (4 days ago) <Ryan>
+* | 4c7db42 - formatting (4 days ago) <Jack Croghan>
+|/  
+*   fd455d4 - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (4 days ago) <Jack Croghan>
+|\  
+| * 76f5203 - ran make clobber (4 days ago) <Ryan>
+| * c425d02 - yes (4 days ago) <Ryan>
+* | 0d46935 - update (4 days ago) <Jack Croghan>
+* | bbe7560 - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (4 days ago) <Jack Croghan>
+|\| 
+| * 0e942a5 - hmmm ball 2 (4 days ago) <Ryan>
+| * 50bd2e5 - hmm ball (4 days ago) <Ryan>
+| * 3e653af - rewrote place_pc to be better (4 days ago) <Jack Croghan>
+| *   f188e26 - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (4 days ago) <Jack Croghan>
+| |\  
+| | * c4a7513 - fixed moving pc for every characters turn (4 days ago) <Ryan>
+| | * d2c3c46 - idk man (4 days ago) <Ryan>
+| * | fcc12a5 - little (4 days ago) <Jack Croghan>
+| |/  
+| *   ef15f9a - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (4 days ago) <Jack Croghan>
+| |\  
+| | * 3d94bf9 - added some more sweet code to move_monster (4 days ago) <Ryan>
+| * | d419052 - made the player walk around all drunk-like (4 days ago) <Jack Croghan>
+| * | 28be403 - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (4 days ago) <Jack Croghan>
+| |\| 
+| | * 283a597 - added move_monster boilerplate (4 days ago) <Ryan>
+* | | 6070fa3 - fixed bug where 2 pc's would be drawn (4 days ago) <Jack Croghan>
+|/ /  
+* | 067fcdf - started to add pc movement (4 days ago) <Jack Croghan>
+* | 1db1daa - minor formatting changes (4 days ago) <Jack Croghan>
+|/  
+* 1cfc92f - cleaned up play_game code (4 days ago) <Ryan>
+* a287b08 - added more boilerplate code in play_game (4 days ago) <Ryan>
+*   083bddf - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (4 days ago) <Jack Croghan>
+|\  
+| * baae75d - added heap to play_game (4 days ago) <Ryan>
+* | bb13976 - reworked how monsters are spawned in the dungeon (now it actually works) (4 days ago) <Jack Croghan>
+|/  
+* 22afb72 - area and monsters (4 days ago) <Jack Croghan>
+* 30daa8b - added the ability to print monsters to a specific hex character based on their stats (4 days ago) <Ryan>
+* f30b038 - tried my best (5 days ago) <Ryan>
+* e5034e2 - added the spawning of monsters (5 days ago) <Jack Croghan>
+* baddcba - preparing for merge (5 days ago) <Jack Croghan>
+* 12c1368 - added boilerplate for get_display_char and intergrated it into dungeon.c (5 days ago) <Ryan>
+*   89f0162 - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (5 days ago) <Jack Croghan>
+|\  
+| * 28c3d53 - redid how monster chars are displayed and remembered to run make clobber (5 days ago) <Ryan>
+| * 8b1fa85 - added the ability for render_dungeon to render monster chars (5 days ago) <Ryan>
+| * 2d1f3fb - add play game function (5 days ago) <Ryan>
+* | f9add2c - modifies the line algorithm to function for line-of-sight (5 days ago) <Jack Croghan>
+|/  
+* 520e9f3 - added random stat generation for the monsters (5 days ago) <Ryan>
+*   80c06da - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (5 days ago) <Jack Croghan>
+|\  
+| * f20bf12 - added gen_monsters to load and generate functions. also sets the num_monsters if not specified on the command line (5 days ago) <Ryan>
+| * 526c4ee - added switch for inputting the number of monsters. used with --nummon followed by an int specifying the number of monsters (5 days ago) <Ryan>
+| * 0d3dca6 - changed initalization of 'f' in main to be more efficent (5 days ago) <Ryan>
+* | e1a09be - added the bresenham line algorithm for pathmaking in straight lines and also to check line of sight (5 days ago) <Jack Croghan>
+|/  
+* 767a57f - added a monster structure to monster.h (5 days ago) <Jack Croghan>
+*   4e11eae - (origin/main, origin/HEAD, main) Merge pull request #7 from ryantullis/1.03 (5 days ago) <jcroghan00>
+|\  
+| * d896e82 - fixed backup.sh (11 days ago) <ryantullis>
+| * 9f66872 - updated the README (11 days ago) <Jack Croghan>
+| * 4b734cd - made delete_dungeon free the memory for rooms (11 days ago) <Jack Croghan>
+| * 762c0d6 - fixed a memory issue with loading files with a large number of rooms (11 days ago) <Jack Croghan>
+| * 3610a56 - fixed a bug with saving and loading with monster pathmaking (11 days ago) <Jack Croghan>
+| *   bb043db - Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03 (11 days ago) <Jack Croghan>
+| |\  
+| | * 557797d - fixed tunneling print statments (11 days ago) <ryantullis>
+| * | e33ec58 - commit for merge (11 days ago) <Jack Croghan>
+| |/  
+| * ad35744 - made clobber (11 days ago) <Jack Croghan>
+| *   a48eae3 - Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03 (11 days ago) <Jack Croghan>
+| |\  
+| | * de8beb6 - forgot to run make clobber im soory (11 days ago) <ryantullis>
+| * | dff132b - Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03 (11 days ago) <Jack Croghan>
+| |\| 
+| | * 208efd3 - fixed indents (11 days ago) <ryantullis>
+| | * cc14030 - tiny error (11 days ago) <ryantullis>
+| * | 9e198b1 - indent (11 days ago) <Jack Croghan>
+| |/  
+| * 6e30f51 - touchups, code cleaning (11 days ago) <ryantullis>
+| *   ad700d1 - Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03 (11 days ago) <Jack Croghan>
+| |\  
+| | * 516296f - added monster path arrays to dungeon (11 days ago) <ryantullis>
+| * | 0585146 - added the print functions for the monster paths (11 days ago) <Jack Croghan>
+| |/  
+| * 7340af7 - moved path struct to dungeon.h (11 days ago) <ryantullis>
+| *   649f213 - Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03 (11 days ago) <Jack Croghan>
+| |\  
+| | * e048ad4 - added placeholder for rendering tun_dist_map (11 days ago) <ryantullis>
+| | * 2a52d4c - fixed header files for dungeon.h and monster.h (11 days ago) <ryantullis>
+| * | 6308d9f - fixed errors in the header files for dungeon and monster (11 days ago) <Jack Croghan>
+| |/  
+| * d04d70f - fixed Makefile linking with monster.c (11 days ago) <ryantullis>
+| * 10e8f3d - fixed a bug in the load function that now allows it to properly function, finally (11 days ago) <Jack Croghan>
+| *   1424c83 - Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03 (11 days ago) <Jack Croghan>
+| |\  
+| | * 8180bfa - removed bad files (sorry) (11 days ago) <ryantullis>
+| * | 4dd08f4 - Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03 (11 days ago) <Jack Croghan>
+| |\| 
+| | * 795b5d6 - broken version, need to fix save and load (11 days ago) <ryantullis>
+| * | 118a84d - added the monster pathfinding functions into the generate and load dungeon functions (11 days ago) <Jack Croghan>
+| |/  
+| * 98c129d - remove unneeded code (11 days ago) <ryantullis>
+| * 2ee797a - converted pc to typedef struct (11 days ago) <ryantullis>
+| * 9f3964c - made dungeon.h and moves struct definitions into it (12 days ago) <Jack Croghan>
+| * 7e6b470 - added monster tunneling code to monster.c (12 days ago) <ryantullis>
+| *   8937393 - Merge branch 'main' into 1.03 bring 1.03 up to date (12 days ago) <ryantullis>
+| |\  
+| |/  
+|/|   
+* |   01864a6 - Merge branch 'main' of https://github.com/ryantullis/327_Project into main (12 days ago) <ryantullis>
+|\ \  
+| * \   bc68530 - Merge pull request #1 from ryantullis/1.03 (12 days ago) <jcroghan00>
+| |\ \  
+| | | * f9dbd96 - added functionality for in monster.c for the non-tunneling pathmaking. added monster.h. added the pc to the dungeon structure so it woks better with the pathfinding in monster.c (12 days ago) <Jack Croghan>
+| | | *   1d28574 - Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03 (12 days ago) <Jack Croghan>
+| | | |\  
+| | | | * 12cfc1c - Merge pull request #2 from ryantullis/1.02 (12 days ago) <jcroghan00>
+| | | |/| 
+| | |/|/  
+| | |/|   
+| |/| |   
+|/| | |   
+* | | |   3448576 - (origin/1.02) Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02 (2 weeks ago) <Jack Croghan>
+|\ \ \ \  
+| * | | | 62cbc2c - and it sweeeeeet sweeeeet sweet victory!                yeah (3 weeks ago) <ryantullis>
+* | | | | 645117e - preparing for a merge (2 weeks ago) <Jack Croghan>
+|/ / / /  
+* | | |   b97a7d4 - Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02 (3 weeks ago) <Jack Croghan>
+|\ \ \ \  
+| * | | | b87a7f1 - fixed bugs and added tears (3 weeks ago) <ryantullis>
+* | | | | 86f544f - updated load_dungeon to hopefully fix some bugs (3 weeks ago) <Jack Croghan>
+|/ / / /  
+* | | |   f0277b7 - Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02 fixed merge conflicts (3 weeks ago) <ryantullis>
+|\ \ \ \  
+| * \ \ \   5a7a6dc - Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02 updated load_dungeon so that it works better when called with save_dungeon (3 weeks ago) <Jack Croghan>
+| |\ \ \ \  
+| * | | | | 5fbc62a - updated load_dungeon so it works better when called along with save_dungeon (3 weeks ago) <Jack Croghan>
+* | | | | | 54062f9 - hopefully finished save (3 weeks ago) <ryantullis>
+| |/ / / /  
+|/| | | |   
+* | | | | c515587 - fleshed out save method (3 weeks ago) <ryantullis>
+|/ / / /  
+* | | | 8b8dc04 - updated the README to reflect the current status of the assignment (3 weeks ago) <Jack Croghan>
+* | | |   c8560e9 - Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02 finished the functionality of the load function. added the ability for the program to keep track of the number of staircases. added the place_pc function that randomly places the player character in a room in the dungeon (3 weeks ago) <Jack Croghan>
+|\ \ \ \  
+| * | | | ec4c6fc - added code to save method (3 weeks ago) <ryantullis>
+* | | | | a89ea51 - finished the load function and added the ability to store the number of stair cases for later use in the save function. allowed the player character to be randomly placed in any room when a dungeon is being generated (3 weeks ago) <Jack Croghan>
+|/ / / /  
+* | | | 4481ca1 - added some of the functionality to both load and save funtions (3 weeks ago) <Jack Croghan>
+* | | | 52860b3 - added the test files for the load function (3 weeks ago) <Jack Croghan>
+* | | | 2f318ce - test for adding .rlg327 (3 weeks ago) <ryantullis>
+* | | | fa114a8 - started adding functionality for save and load. added .rlg327 directory (3 weeks ago) <ryantullis>
+|/ / /  
+| | * bd5eed5 - added monster.h and started to add functions into monster.c (12 days ago) <Jack Croghan>
+| |/  
+| * b47c4a8 - added monster.c to the project files (12 days ago) <Jack Croghan>
+|/  
+*   bd4b46c - Merge branch 'main' of https://github.com/ryantullis/327_Project into main (3 weeks ago) <Jack Croghan>
+|\  
+| * f6649d4 - removed testing2 (3 weeks ago) <ryantullis>
+| * 9e5530c - testing how pushes and pulls work (3 weeks ago) <ryantullis>
+| * 0594984 - Create testingFile (3 weeks ago) <Ryan Tullis>
+* | 6a3b562 - Added assignment-1.01 code to the repository (3 weeks ago) <Jack Croghan>
+|/  
+* 55096bd - moved README and CHANGELOG to top level directory and added game.c (3 weeks ago) <ryantullis>
+* 26056d6 - added gamecode directory to branch and created README and CHANGELOG (3 weeks ago) <ryantullis>
+* 7bf6424 - added backup.sh to tracked files (3 weeks ago) <ryantullis>

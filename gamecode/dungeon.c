@@ -559,18 +559,13 @@ static void place_stairs(dungeon_t *d)
   pair_t p;
   int i = 0;
   stair_t *s;
-
-  //I really don't know why this is needed
-  d->stairs_up = 0;
   
   do {
+      // while its in the dungeon and not a floor, try again?
     while ((p[dim_y] = rand_range(1, DUNGEON_Y - 2)) &&
            (p[dim_x] = rand_range(1, DUNGEON_X - 2)) &&
-           ((mappair(p) < ter_floor)                 ||
-            (mappair(p) > ter_stairs)))
-      ;
+           ((mappair(p) < ter_floor) || (mappair(p) > ter_stairs)));
     s = d->stairs + i;
-    d->stairs_down = d->stairs_down +1;
     i++;
     s->position[dim_y] = p[dim_y];
     s->position[dim_x] = p[dim_x];
@@ -578,7 +573,6 @@ static void place_stairs(dungeon_t *d)
     mappair(p) = ter_stairs_down;
   } while (rand_under(1, 3));
 
-  d->stairs_up = 0;
   do {
     while ((p[dim_y] = rand_range(1, DUNGEON_Y - 2)) &&
            (p[dim_x] = rand_range(1, DUNGEON_X - 2)) &&
@@ -587,7 +581,6 @@ static void place_stairs(dungeon_t *d)
       
       ;
     s = d->stairs + i;
-    d->stairs_up = d->stairs_up +1;
     i++;
     s->position[dim_y] = p[dim_y];
     s->position[dim_x] = p[dim_x];
@@ -636,6 +629,7 @@ int gen_dungeon(dungeon_t *d)
 
 int load_dungeon(dungeon_t *d)
 {
+    // NON FUNCTIONING
     uint32_t version, file_size;
     char semantic[sizeof(SEMANTIC_FILE_MARKER)];
   char *home = getenv("HOME");
@@ -706,11 +700,12 @@ int load_dungeon(dungeon_t *d)
   }
 
   //stairs
-  fread(&d->stairs_up, 2, 1, file);
-  d->stairs_up = be16toh(d->stairs_up);
+    uint16_t stairs_down = 0, stairs_up = 0;
+  fread(&stairs_up, 2, 1, file);
+  stairs_up = be16toh(stairs_up);
 
   int i;
-  for(i = 0; i < d->stairs_up; ++i)
+  for(i = 0; i < stairs_up; ++i)
   {
     uint8_t x;
     uint8_t y;
@@ -725,10 +720,9 @@ int load_dungeon(dungeon_t *d)
     
     mapxy(x, y) = ter_stairs_up;
   }
-  
-  fread(&d->stairs_down, 2, 1, file);
-  d->stairs_down = be16toh(d->stairs_down);
-  for(i = d->stairs_up; i < d->stairs_down+d->stairs_up; ++i)
+  fread(&stairs_down, 2, 1, file);
+  stairs_down = be16toh(stairs_down);
+  for(i = stairs_up; i < stairs_down+stairs_up; ++i)
   {
     uint8_t x;
     uint8_t y;
@@ -838,14 +832,12 @@ void render_ncurses(dungeon_t *d)
 
 void delete_dungeon(dungeon_t *d)
 {
-
+    free(d->rooms);
     // maybe memset doesnt need to be freed
     // free(d->pc);
-        for(int i = 1; i <= d->num_monsters; i++){
-
+    for(int i = 1; i < d->num_monsters + 1; i++){
       free(d->characters[i]->monster);
     }
-
     for(int i = 1; i <= d->num_monsters; i++){
 
       free(d->characters[i]);
@@ -854,6 +846,7 @@ void delete_dungeon(dungeon_t *d)
         free(d->rooms);
 
     //maybe free characters elements?
+    free(d->characters);
 }
 
 void init_dungeon(dungeon_t *d)
@@ -861,11 +854,36 @@ void init_dungeon(dungeon_t *d)
   empty_dungeon(d);
 }
 
+uint16_t count_up_stairs(dungeon_t *d){
+    uint16_t x,y, up_stairs = 0;
+    for (y = 0; y < DUNGEON_Y; y++) {
+        for (x = 0; x < DUNGEON_X; x++) {
+            if (mapxy(x,y) == ter_stairs_up){
+                up_stairs++;
+            }
+        }
+    }
+    return up_stairs;
+}
+
+uint16_t count_down_stairs(dungeon_t *d){
+    uint16_t x,y, down_stairs = 0;
+    for (y = 0; y < DUNGEON_Y; y++) {
+        for (x = 0; x < DUNGEON_X; x++) {
+            if (mapxy(x,y) == ter_stairs_down){
+                down_stairs++;
+            }
+        }
+    }
+    return down_stairs;
+}
 uint32_t calc_file_size(dungeon_t *d){
     return (1708 + (d->num_rooms * 4) +
-            (d->stairs_up * 2)  +
-            (d->stairs_down * 2));
+            (count_up_stairs(d) * 2)  +
+            (count_down_stairs(d) * 2));
 }
+
+
 
 int save_dungeon(dungeon_t *d)
 {
@@ -917,12 +935,13 @@ int save_dungeon(dungeon_t *d)
     }
 
 //im sorry
- int stairs_up2 = d->stairs_up;
- int stairs_down2 = d->stairs_down;
+ uint16_t stairs_up = count_up_stairs(d);
+ uint16_t stairs_down = count_down_stairs(d);
  
-  d->stairs_up = htobe16(d->stairs_up);
-  fwrite(&d->stairs_up,2,1,file);
-  for (int i =0; i <(stairs_up2+stairs_down2);i++)
+  stairs_up = htobe16(stairs_up);
+  fwrite(&stairs_up,2,1,file);
+  //may be issue with stairs being set to size of 255, should be malloced
+  for (int i =0; i <(sizeof(d->stairs));i++)
     {
       //write only the up stairs
       if (d->stairs[i].up_down){
@@ -932,9 +951,9 @@ int save_dungeon(dungeon_t *d)
       }
     }
   
-  d->stairs_down = htobe16(d->stairs_down);
-  fwrite(&d->stairs_down,2,1,file);
-  for (int i =0; i <(stairs_up2+stairs_down2);i++)
+  stairs_down = htobe16(stairs_down);
+  fwrite(&stairs_down,2,1,file);
+  for (int i =0; i <(sizeof(d->stairs));i++)
     {
       //write only the down stairs
       if (!d->stairs[i].up_down){

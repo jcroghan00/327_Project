@@ -35,6 +35,7 @@ void move_pc_ncurses(dungeon_t *d){
     int y = 0;
 
     char val  = getch();
+    //TODO 5 or 'space' or . should rest for a turn
 
     switch (val)
     {
@@ -125,7 +126,9 @@ void move_pc_ncurses(dungeon_t *d){
         break;
     }
 
-        if(d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall || d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall_immutable){y = 0, x = 0;}
+        if(d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall ||
+           d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall_immutable)
+        {y = 0, x = 0;}
 
 
 
