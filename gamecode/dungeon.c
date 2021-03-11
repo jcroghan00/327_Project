@@ -5,6 +5,7 @@
 #include "monster.h"
 #include "pc.h"
 #include "character.h"
+#include "path.h"
 
 
 /* Returns true if random float in [0,1] is less than *
@@ -21,13 +22,6 @@
   assert((_tmp = malloc(size)));		\
   _tmp;                        \
 })
-
-typedef struct corridor_path {
-  heap_node_t *hn;
-  uint8_t pos[2];
-  uint8_t from[2];
-  int32_t cost;
-} corridor_path_t;
 
 uint32_t in_room(room_t r, character_t c)
 {
@@ -378,7 +372,7 @@ static int smooth_hardness(dungeon_t *d)
   fwrite(&hardness, sizeof (hardness), 1, out);
   fclose(out);
 
-  /* Diffuse the vaules to fill the space */
+  /* Diffuse the values to fill the space */
   while (head) {
     x = head->x;
     y = head->y;
@@ -569,8 +563,7 @@ static void place_stairs(dungeon_t *d)
     i++;
     s->position[dim_y] = p[dim_y];
     s->position[dim_x] = p[dim_x];
-    s->up_down = 0;
-    mappair(p) = ter_stairs_down;
+    s->direction = mappair(p) = ter_stairs_down;
   } while (rand_under(1, 3));
 
   do {
@@ -584,8 +577,7 @@ static void place_stairs(dungeon_t *d)
     i++;
     s->position[dim_y] = p[dim_y];
     s->position[dim_x] = p[dim_x];
-    s->up_down = 1;
-    mappair(p) = ter_stairs_up;
+    s->direction = mappair(p) = ter_stairs_up;
   } while (rand_under(2, 4));
 }
 
@@ -716,9 +708,7 @@ int load_dungeon(dungeon_t *d)
     
     d->stairs[i].position[dim_x] = x;
     d->stairs[i].position[dim_y] = y;
-    d->stairs[i].up_down = 1;
-    
-    mapxy(x, y) = ter_stairs_up;
+    d->stairs[i].direction = mapxy(x, y) = ter_stairs_up;
   }
   fread(&stairs_down, 2, 1, file);
   stairs_down = be16toh(stairs_down);
@@ -733,14 +723,12 @@ int load_dungeon(dungeon_t *d)
     
     d->stairs[i].position[dim_x] = x;
     d->stairs[i].position[dim_y] = y;
-    d->stairs[i].up_down = 0;
-    
-    mapxy(x, y) = ter_stairs_down;
+    d->stairs[i].direction = mapxy(x, y) = ter_stairs_down;
   }
     if (d->num_monsters == -1){d->num_monsters = d->num_rooms*2 < 50 ? d->num_rooms*2 : 50;}
     config_pc(d);
 
-  //monster pathmaking
+  //monster path making
   //adds monsters to the dungeon
   gen_monsters(d);
 
@@ -944,7 +932,7 @@ int save_dungeon(dungeon_t *d)
   for (int i =0; i <(sizeof(d->stairs));i++)
     {
       //write only the up stairs
-      if (d->stairs[i].up_down){
+      if (d->stairs[i].direction == ter_stairs_up){
 
       fwrite(&d->stairs[i].position[dim_x],1,1,file);
       fwrite(&d->stairs[i].position[dim_y],1,1,file);
@@ -956,7 +944,7 @@ int save_dungeon(dungeon_t *d)
   for (int i =0; i <(sizeof(d->stairs));i++)
     {
       //write only the down stairs
-      if (!d->stairs[i].up_down){
+      if (d->stairs[i].direction == ter_stairs_down){
       fwrite(&d->stairs[i].position[dim_x],1,1,file);
       fwrite(&d->stairs[i].position[dim_y],1,1,file);
       }

@@ -1,12 +1,18 @@
 #ifndef PATH_H
 # define PATH_H
 
-#include "dungeon.h"
 
-/*I don't know why this doesn't work
-typedef struct dungeon{
-}dungeon_t;
- */
+#include <stdint.h>
+
+typedef struct heap_node heap_node_t;
+typedef struct dungeon dungeon_t;
+
+typedef struct corridor_path {
+    heap_node_t *hn;
+    uint8_t pos[2];
+    uint8_t from[2];
+    int32_t cost;
+} corridor_path_t;
 
 void dijkstra_non_tunneling(dungeon_t *d);
 void dijkstra_tunneling(dungeon_t *d);
