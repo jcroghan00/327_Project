@@ -14,7 +14,6 @@
 #include <unistd.h>
 
 #include "dim.h"
-#include "heap.h"
 
 #define DUNGEON_X              80
 #define DUNGEON_Y              21
