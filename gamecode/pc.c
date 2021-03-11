@@ -33,7 +33,6 @@ void config_pc(dungeon_t *d)
 void move_pc_ncurses(dungeon_t *d){
     int x = 0;
     int y = 0;
-    mvaddch(x, y, 'i');
     if(getch() == '\033'){
         getch();
         switch(getch())
@@ -48,11 +47,11 @@ void move_pc_ncurses(dungeon_t *d){
                 break;
             case 'C':
                 y = 0;
-                x = -1;
+                x = 1;
                 break;
             case 'D':
                 y = 0;
-                x = 1;
+                x = -1;
                 break;
             default:
                 x = 0;
@@ -63,12 +62,12 @@ void move_pc_ncurses(dungeon_t *d){
         if(d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall || d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall_immutable){y = 0, x = 0;}
 
 
-        // if (d->character_map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] != NULL &&
-        //     d->character_map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] != &d->pc)
-        // {
-        //     d->character_map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x]->living = 0;
-        //     d->num_monsters--;
-        // }
+        if (d->character_map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] != NULL &&
+            d->character_map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] != &d->pc)
+        {
+            d->character_map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x]->living = 0;
+            d->num_monsters--;
+        }
         d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = NULL;
         d->pc.pos[dim_y] += y;
         d->pc.pos[dim_x] += x;

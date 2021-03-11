@@ -4,6 +4,58 @@
 #include "monster.h"
 #include "pc.h"
 
+const char *victory =
+        "\n                                       o\n"
+        "                                      $\"\"$o\n"
+        "                                     $\"  $$\n"
+        "                                      $$$$\n"
+        "                                      o \"$o\n"
+        "                                     o\"  \"$\n"
+        "                oo\"$$$\"  oo$\"$ooo   o$    \"$    ooo\"$oo  $$$\"o\n"
+        "   o o o o    oo\"  o\"      \"o    $$o$\"     o o$\"\"  o$      \"$  "
+        "\"oo   o o o o\n"
+        "   \"$o   \"\"$$$\"   $$         $      \"   o   \"\"    o\"         $"
+        "   \"o$$\"    o$$\n"
+        "     \"\"o       o  $          $\"       $$$$$       o          $  ooo"
+        "     o\"\"\n"
+        "        \"o   $$$$o $o       o$        $$$$$\"       $o        \" $$$$"
+        "   o\"\n"
+        "         \"\"o $$$$o  oo o  o$\"         $$$$$\"        \"o o o o\"  "
+        "\"$$$  $\n"
+        "           \"\" \"$\"     \"\"\"\"\"            \"\"$\"            \""
+        "\"\"      \"\"\" \"\n"
+        "            \"oooooooooooooooooooooooooooooooooooooooooooooooooooooo$\n"
+        "             \"$$$$\"$$$$\" $$$$$$$\"$$$$$$ \" \"$$$$$\"$$$$$$\"  $$$\""
+        "\"$$$$\n"
+        "              $$$oo$$$$   $$$$$$o$$$$$$o\" $$$$$$$$$$$$$$ o$$$$o$$$\"\n"
+        "              $\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\""
+        "\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"$\n"
+        "              $\"                                                 \"$\n"
+        "              $\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\""
+        "$\"$\"$\"$\"$\"$\"$\"$\n"
+        "                                   You win!\n\n";
+
+const char *tombstone =
+        "\n\n\n\n                /\"\"\"\"\"/\"\"\"\"\"\"\".\n"
+        "               /     /         \\             __\n"
+        "              /     /           \\            ||\n"
+        "             /____ /   Rest in   \\           ||\n"
+        "            |     |    Pieces     |          ||\n"
+        "            |     |               |          ||\n"
+        "            |     |   A. Luser    |          ||\n"
+        "            |     |               |          ||\n"
+        "            |     |     * *   * * |         _||_\n"
+        "            |     |     *\\/* *\\/* |        | TT |\n"
+        "            |     |     *_\\_  /   ...\"\"\"\"\"\"| |"
+        "| |.\"\"....\"\"\"\"\"\"\"\".\"\"\n"
+        "            |     |         \\/..\"\"\"\"\"...\"\"\""
+        "\\ || /.\"\"\".......\"\"\"\"...\n"
+        "            |     |....\"\"\"\"\"\"\"........\"\"\"\"\""
+        "\"^^^^\".......\"\"\"\"\"\"\"\"..\"\n"
+        "            |......\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"......"
+        "..\"\"\"\"\"....\"\"\"\"\"..\"\"...\"\"\".\n\n"
+        "            You're dead.  Better luck in the next life.\n\n\n";
+
 int play_game(dungeon_t *d)
 {
     heap_t h;
@@ -45,8 +97,6 @@ int play_game(dungeon_t *d)
 
 int main(int argc, char *argv[])
 {
-
-
     dungeon_t d = { .num_monsters = -1};
     struct timeval tv;
     uint32_t seed = 0;
@@ -82,30 +132,17 @@ int main(int argc, char *argv[])
 
     initscr();
 
-    // initscr();
-
-    // while(1){
-    //     move_pc_ncurses();
-    // }
-    // // while(1){
-    // //     int a = getch();
-    // //     printf("%d",a);
-
-        
-    // // }
-    // endwin();
     render_ncurses(&d);
 
     int won = play_game(&d);
 
 	endwin();
-	render_dungeon(&d);
     delete_dungeon(&d);
 
     if (won){
-        printf("\nGAME OVER\nYOU WON\n");
+        printf("%s", victory);
     } else {
-        printf("\nGAME OVER\nYOU LOST\n");
+        printf("%s", tombstone);
     }
     return 0;
 }
