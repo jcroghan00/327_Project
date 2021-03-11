@@ -4,36 +4,126 @@
 #include "monster.h"
 #include "pc.h"
 
+WINDOW *create_newwin(int height, int width, int starty, int startx)
+{	WINDOW *local_win;
+
+	local_win = newwin(height, width, starty, startx);
+	box(local_win, 0 , 0);		/* 0, 0 gives default characters 
+					 * for the vertical and horizontal
+					 * lines			*/
+	wrefresh(local_win);		/* Show that box 		*/
+
+	return local_win;
+}
+
+void destroy_win(WINDOW *local_win)
+{	
+	/* box(local_win, ' ', ' '); : This won't produce the desired
+	 * result of erasing the window. It will leave it's four corners 
+	 * and so an ugly remnant of window. 
+	 */
+	wborder(local_win, ' ', ' ', ' ',' ',' ',' ',' ',' ');
+	/* The parameters taken are 
+	 * 1. win: the window on which to operate
+	 * 2. ls: character to be used for the left side of the window 
+	 * 3. rs: character to be used for the right side of the window 
+	 * 4. ts: character to be used for the top side of the window 
+	 * 5. bs: character to be used for the bottom side of the window 
+	 * 6. tl: character to be used for the top left corner of the window 
+	 * 7. tr: character to be used for the top right corner of the window 
+	 * 8. bl: character to be used for the bottom left corner of the window 
+	 * 9. br: character to be used for the bottom right corner of the window
+	 */
+	wrefresh(local_win);
+	delwin(local_win);
+}
 
 void move_pc_ncurses(dungeon_t *d){
     int x = 0; 
     int y = 0;
-    mvaddch(x, y, 'i');
-    if(getch() == '\033'){
-        getch();
-        switch(getch())
-        {
-        case 'A':
-            y = -1;
-            x = 0;
-            break;
-        case 'B':
-            y = 1;
-            x = 0;
-            break;
-        case 'C':
-            y = 0;
-            x = -1;
-            break;
-        case 'D':
-            y = 0;
-            x = 1;
-            break;
-        default:
-            x = 0;
-            y = 0;
-            break;
-        }
+
+    char val  = getch();
+
+    switch (val)
+    {
+    case '9':
+    case 'u':
+        y = -1;
+        x = 1;
+        /* code */
+        break;
+    case '7':
+    case 'y':
+        y = 0;
+        x = -1;
+        /* code */
+        break;
+    case '8':
+    case 'k':
+        y = -1;
+        x = 0;
+        /* code */
+        break;
+    case '6':
+    case 'l':
+        y = 0;
+        x = 1;
+        /* code */
+        break;
+    case '3':
+    case 'n':
+        y = 1;
+        x = 1;
+        /* code */
+        break;
+    case '2':
+    case 'j':
+        y = 1;
+        x = 0;
+        /* code */
+        break;
+    case '1':
+    case 'b':
+        y = 1;
+        x = -1;
+        /* code */
+        break;
+    case '4':
+    case 'h':
+        y = 0;
+        x = -1;
+        /* code */
+        break;
+    default:
+        x = 0;
+        y = 0;
+        break;
+    }
+    // if(getch() == '\033'){
+    //     getch();
+    //     switch(getch())
+    //     {
+    //     case 'A':
+    //         y = -1;
+    //         x = 0;
+    //         break;
+    //     case 'B':
+    //         y = 1;
+    //         x = 0;
+    //         break;
+    //     case 'C':
+    //         y = 0;
+    //         x = 1;
+    //         break;
+    //     case 'D':
+    //         y = 0;
+    //         x = -1;
+    //         break;
+    //     default:
+    //         x = 0;
+    //         y = 0;
+    //         break;
+    //     }
 
         if(d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall || d->map[d->pc.pos[dim_y] + y][d->pc.pos[dim_x] + x] == ter_wall_immutable){y = 0, x = 0;}
 
@@ -50,7 +140,7 @@ void move_pc_ncurses(dungeon_t *d){
         d->character_map[d->pc.pos[dim_y]][d->pc.pos[dim_x]] = &d->pc;
     }
 
-}
+
 
 int play_game(dungeon_t *d)
 {
@@ -74,7 +164,6 @@ int play_game(dungeon_t *d)
                 // pc_next_pos(d);
                 render_ncurses(d);
                 refresh(); /* Print it on to the real screen */
-                getch(); /* Wait for user input */
                 usleep(250000);
             }
             else{
