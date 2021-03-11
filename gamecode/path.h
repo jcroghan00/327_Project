@@ -14,7 +14,7 @@ typedef struct corridor_path {
     int32_t cost;
 } corridor_path_t;
 
-static int32_t corridor_path_cmp(const void *key, const void *with);
+int32_t corridor_path_cmp(const void *key, const void *with);
 void dijkstra_non_tunneling(dungeon_t *d);
 void dijkstra_tunneling(dungeon_t *d);
 
