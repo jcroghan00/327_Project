@@ -942,7 +942,7 @@ int save_dungeon(dungeon_t *d)
 void new_dungeon(dungeon_t *d, heap_t *h)
 {
     delete_dungeon(d, h);
-    d->num_monsters = 7;
+    d->num_monsters = -1;
     init_dungeon(d);
     gen_dungeon(d);
 

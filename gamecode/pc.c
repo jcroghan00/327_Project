@@ -42,7 +42,6 @@ int move_pc(dungeon_t *d, heap_t *h, int dy, int dx){
         move_pc_ncurses(d,h);
         return -1;
     }
-    clear();
 
     d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = NULL;
     d->pc->pos[dim_y] += dy;
@@ -58,6 +57,10 @@ int move_pc(dungeon_t *d, heap_t *h, int dy, int dx){
 void move_pc_ncurses(dungeon_t *d, heap_t *h)
 {
     int val  = getch();
+
+    clear();
+    render_ncurses(d);
+    refresh();
 
     switch (val)
     {
@@ -121,7 +124,7 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h)
             if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_down){
                 new_dungeon(d, h);
             } else {
-                //TODO print msg saying no stairs
+                mvprintw(0, 0, "You can't go down here!");
                 move_pc_ncurses(d,h);
             }
             break;
@@ -129,7 +132,7 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h)
             if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_up){
                 new_dungeon(d, h);
             } else{
-                //TODO print msg saying no stairs
+                mvprintw(0, 0, "You can't go down here!");
                 move_pc_ncurses(d,h);
             }
             break;
