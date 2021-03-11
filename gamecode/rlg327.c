@@ -3,6 +3,7 @@
 #include "dungeon.h"
 #include "monster.h"
 #include "pc.h"
+#include "heap.h"
 
 
 

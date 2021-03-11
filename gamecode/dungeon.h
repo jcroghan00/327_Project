@@ -15,7 +15,6 @@
 
 #include "dim.h"
 #include "character.h"
-#include "heap.h"
 
 #define DUNGEON_X              80
 #define DUNGEON_Y              21
@@ -31,6 +30,7 @@
 #define SAVE_FILE              "dungeon"
 #define FILE_VERSION           5
 
+ typedef struct heap_node heap_node_t;
  typedef struct monster monster_t;
  typedef struct pc pc_t;
 
