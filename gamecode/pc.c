@@ -33,14 +33,17 @@ void config_pc(dungeon_t *d)
     place_pc(d);
     d->characters[0] = d->pc;
 }
+
 void move_pc_ncurses(dungeon_t *d, heap_t *h);
+
 int move_pc(dungeon_t *d, heap_t *h, int dy, int dx){
 
     if(d->map[d->pc->pos[dim_y] + dy][d->pc->pos[dim_x] + dx] < ter_floor){
-        //TODO add display of error to player saying they can't move there
+        mvprintw(0, 0, "There's a wall there!");
         move_pc_ncurses(d,h);
         return -1;
     }
+    clear();
 
     d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = NULL;
     d->pc->pos[dim_y] += dy;
@@ -53,7 +56,8 @@ int move_pc(dungeon_t *d, heap_t *h, int dy, int dx){
     return 0;
 }
 
-void move_pc_ncurses(dungeon_t *d, heap_t *h){
+void move_pc_ncurses(dungeon_t *d, heap_t *h)
+{
     int val  = getch();
 
     switch (val)
@@ -64,56 +68,56 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h){
         case 'y':
             move_pc(d, h, -1, -1); break;
 
-        // Move up
+            // Move up
         case KEY_UP:
         case '8':
         case 'k':
             move_pc(d, h, -1, 0); break;
 
-        // Move up-right
+            // Move up-right
         case KEY_PPAGE:
         case '9':
         case 'u':
             move_pc(d, h, -1, 1); break;
-            
-        // Move right
+
+            // Move right
         case KEY_RIGHT:
         case '6':
         case 'l':
             move_pc(d, h, 0, 1); break;
 
-        // Move down-right
+            // Move down-right
         case KEY_NPAGE:
         case '3':
         case 'n':
             move_pc(d, h, 1, 1); break;
 
-        // Move down
+            // Move down
         case KEY_DOWN:
         case '2':
         case 'j':
             move_pc(d, h, 1, 0); break;
 
-        // Move down-left
+            // Move down-left
         case KEY_END:
         case '1':
         case 'b':
             move_pc(d, h, 1, -1); break;
 
-        // Move left
+            // Move left
         case KEY_LEFT:
         case '4':
         case 'h':
             move_pc(d, h, 0, -1); break;
 
-        // rest
+            // rest
         case KEY_B2:
         case ' ':
         case '.':
         case '5':
             move_pc(d, h, 0, 0); break;
 
-        // Go down stairs
+            // Go down stairs
         case '>':
             if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_down){
                 new_dungeon(d, h);
@@ -131,84 +135,86 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h){
             }
             break;
 
-        //TODO Display character information
+            //TODO Display character information
         case 'c':
             break;
 
-        //TODO Drop item
+            //TODO Drop item
         case 'd':
             break;
 
-        //TODO Display equipment
+            //TODO Display equipment
         case 'e':
             break;
 
-        //TODO Toggle fog-of-war
+            //TODO Toggle fog-of-war
         case 'f':
             break;
 
-        //TODO Teleport (goto)
+            //TODO Teleport (goto)
         case 'g':
             break;
 
-        //TODO Display inventory
+            //TODO Display inventory
         case 'i':
             break;
 
-        //TODO Display monster list
+            //TODO Display monster list
         case 'm':
             monster_list();
             break;
 
-        //TODO Display the default (terrain) map
+            //TODO Display the default (terrain) map
         case 's':
             break;
 
-        //TODO Take off item
+            //TODO Take off item
         case 't':
             break;
 
-        //TODO Wear item
+            //TODO Wear item
         case 'w':
             break;
 
-        //TODO Expunge item
+            //TODO Expunge item
         case 'x':
             break;
 
-        //TODO Display the non-tunneling distance map
+            //TODO Display the non-tunneling distance map
         case 'D':
             break;
 
-        //TODO Inspect equipped item
+            //TODO Inspect equipped item
         case 'E':
             break;
 
-        //TODO Display the hardness map
+            //TODO Display the hardness map
         case 'H':
             break;
 
-        //TODO Inspect inventory item
+            //TODO Inspect inventory item
         case 'I':
             break;
 
-        //TODO Look at monster
+            //TODO Look at monster
         case 'L':
             break;
 
-        // Quit the game
+            // Quit the game
         case 'Q':
             endwin();
             delete_dungeon(d, h);
             exit(0);
 
-        //TODO Display the tunneling distance map
+            //TODO Display the tunneling distance map
         case 'T':
             break;
 
         default:
             move_pc(d, h, 0, 0); break;
     }
+    render_ncurses(d);
+    refresh();
 }
 
 int pc_next_pos(dungeon_t *d)
