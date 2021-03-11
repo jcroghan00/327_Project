@@ -732,6 +732,7 @@ int load_dungeon(dungeon_t *d)
   return 0;
 }
 
+/*
 void render_dungeon(dungeon_t *d)
 {
   pair_t p;
@@ -772,6 +773,7 @@ void render_dungeon(dungeon_t *d)
       putchar('\n');
   }
 }
+ */
 
 /* A copy of the above code but using ncurses as of
  * assignment 1.05 */

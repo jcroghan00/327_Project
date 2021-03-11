@@ -8,6 +8,7 @@
 
 void monster_list()
 {
+    //update the monsters list
 
 }
 

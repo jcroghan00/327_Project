@@ -3,6 +3,7 @@
 
 #include "dungeon.h"
 
+
 typedef struct monster {
     /*
      *  Intelligent monsters understand the dungeon layout and move on the shortest path (as

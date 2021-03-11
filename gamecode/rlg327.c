@@ -111,14 +111,12 @@ int main(int argc, char *argv[])
 
     int save = 0;
     int load = 0;
-    int do_play_game = 1;
 
     for (int i = 1; i < argc; i++)
     {
         if (!strcmp(argv[i],"--save"))         {save = 1;}
         else if (!strcmp(argv[i],"--load"))    {load = 1;}
         else if (!strcmp(argv[i],"--nummon"))  {d.num_monsters = atoi(argv[++i]);}
-        else if (!strcmp(argv[i],"--genfloor")){do_play_game = 0;}
         else {seed=atoi(argv[i]);}
     }
     if (!seed)
@@ -132,8 +130,7 @@ int main(int argc, char *argv[])
     init_dungeon(&d);
     if (load){
         load_dungeon(&d);
-    }
-    else {
+    } else {
         gen_dungeon(&d);
     }
     if (save) {
@@ -142,31 +139,25 @@ int main(int argc, char *argv[])
 
 
     heap_t h;
-    if (do_play_game){
-        initscr();
-        raw();
-        noecho();
-        curs_set(0);
-        keypad(stdscr, TRUE);
-        
-        render_ncurses(&d);
+    initscr();
+    raw();
+    noecho();
+    curs_set(0);
+    keypad(stdscr, TRUE);
 
-        int won = play_game(&d);
+    render_ncurses(&d);
 
-	    endwin();
+    int won = play_game(&d);
 
-        delete_dungeon(&d, &h);
+    endwin();
 
-        if (won){
-            printf("%s", victory);
-        } else {
-            printf("%s", tombstone);
-        }
-        return 0;
+    delete_dungeon(&d, &h);
+
+    if (won){
+        printf("%s", victory);
+    } else {
+        printf("%s", tombstone);
     }
-    else{
-        render_dungeon(&d);
-        delete_dungeon(&d, &h);
-    }
+    return 0;
 
 }
