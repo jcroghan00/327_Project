@@ -117,11 +117,17 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h){
         case '>':
             if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_down){
                 new_dungeon(d, h);
+            } else {
+                //TODO print msg saying no stairs
+                move_pc_ncurses(d,h);
             }
             break;
         case '<':
             if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_up){
                 new_dungeon(d, h);
+            } else{
+                //TODO print msg saying no stairs
+                move_pc_ncurses(d,h);
             }
             break;
 
