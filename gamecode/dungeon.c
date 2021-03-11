@@ -46,9 +46,6 @@ uint32_t is_open_space(dungeon_t *d, int16_t y, int16_t x)
   return !hardnessxy(x, y);
 }
 
-static int32_t corridor_path_cmp(const void *key, const void *with) {
-  return ((corridor_path_t *) key)->cost - ((corridor_path_t *) with)->cost;
-}
 
 static void dijkstra_corridor(dungeon_t *d, pair_t from, pair_t to)
 {

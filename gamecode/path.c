@@ -5,6 +5,9 @@
 static int32_t monster_path_cmp(const void *key, const void *with) {
     return ((monster_path_t *) key)->cost - ((monster_path_t *) with)->cost;
 }
+static int32_t corridor_path_cmp(const void *key, const void *with) {
+    return ((corridor_path_t *) key)->cost - ((corridor_path_t *) with)->cost;
+}
 
 void dijkstra_non_tunneling(dungeon_t *d)
 {
