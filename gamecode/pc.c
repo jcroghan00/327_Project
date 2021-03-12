@@ -120,6 +120,7 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h)
 
             // Go down stairs
         case '>':
+            //TODO start on up stairs
             if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_down){
                 new_dungeon(d, h);
             } else {
@@ -128,6 +129,7 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h)
             }
             break;
         case '<':
+            //TODO start on down stairs
             if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_up){
                 new_dungeon(d, h);
             } else{

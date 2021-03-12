@@ -13,11 +13,12 @@ void write_monster_list(dungeon_t *d, int index){
     wclear(win);
 
     wmove(win,0,0);
-    wprintw(win, " List of Known Monsters\n\n");
+    wprintw(win, "    List of Known Monsters\n\n");
 
-    for(int i = index; i < index + 17 && i < d->num_monsters + 1; ++i)
+    for(int i = index; i < index + 16 && i < d->num_monsters + 1; ++i)
     {
-        wprintw(win, " %c: ", d->characters[i]->display_char);
+        wprintw(win, " %3i: ", i);
+        wprintw(win, "%c: ", d->characters[i]->display_char);
 
         int dy = d->characters[0]->pos[dim_y] - d->characters[i]->pos[dim_y];
         if(dy < 0) {
@@ -35,6 +36,7 @@ void write_monster_list(dungeon_t *d, int index){
             wprintw(win, "by %2d West\n", abs(dx));
         }
     }
+    wprintw(win,"\n Arrows to scroll Esc to exit");
     wrefresh(win);
 }
 

@@ -9,6 +9,7 @@ typedef struct windows {
     WINDOW *hardness_map_win;
     WINDOW *dist_map_win;
     WINDOW *tun_dist_map_win;
+    WINDOW *game_ending_win;
 
 } windows_t;
 

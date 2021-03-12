@@ -5,10 +5,7 @@
 #include "pc.h"
 #include "heap.h"
 #include "character.h"
-
-
-
-
+#include "windows.h"
 const char *victory =
         "\n                                       o\n"
         "                                      $\"\"$o\n"
@@ -38,8 +35,7 @@ const char *victory =
         "              $\"                                                 \"$\n"
         "              $\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\""
         "$\"$\"$\"$\"$\"$\"$\"$\n"
-        "                                   You win!\n\n";
-
+        "                                   You win!";
 const char *tombstone =
         "\n\n\n\n                /\"\"\"\"\"/\"\"\"\"\"\"\".\n"
         "               /     /         \\             __\n"
@@ -59,7 +55,40 @@ const char *tombstone =
         "\"^^^^\".......\"\"\"\"\"\"\"\"..\"\n"
         "            |......\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"......"
         "..\"\"\"\"\"....\"\"\"\"\"..\"\"...\"\"\".\n\n"
-        "            You're dead.  Better luck in the next life.\n\n\n";
+        "            You're dead.  Better luck in the next life.";
+
+int play_game(dungeon_t *d);
+
+void end_game(dungeon_t *d, heap_t *h){
+    WINDOW *game_win = d->windows->game_ending_win;
+    if (d->pc->living){
+        wprintw(game_win,victory);
+    } else {
+        wprintw(game_win,tombstone);
+    }
+    char *msg = "Game Over! Press \'Q\' to Quit or \'R\' to restart!";
+    mvwprintw(game_win,LINES-2,COLS/2 - strlen(msg)/2, msg);
+    touchwin(game_win);
+    int visible = 1;
+    while (visible) {
+        int val = wgetch(game_win);
+        switch (val) {
+            // Quit the window
+            case 'Q':
+                endwin();
+                delete_dungeon(d, h);
+                exit(0);
+            case 'R':
+                visible = 0;
+                new_dungeon(d,h);
+                play_game(d);
+                touchwin(stdscr);
+            default:
+                break;
+        }
+    }
+}
+
 
 int play_game(dungeon_t *d)
 {
@@ -71,11 +100,10 @@ int play_game(dungeon_t *d)
         d->characters[i]->sd = i;
         heap_insert(&h,d->characters[i]);
     }
-    int won = 0;
     character_t *c;
     while(pc_is_alive(d))
     {
-        if (!d->num_monsters){won = 1;break;}
+        if (!d->num_monsters){break;}
         c = heap_remove_min(&h);
         if (c->living){
             if (c->sd == 0) {
@@ -96,11 +124,8 @@ int play_game(dungeon_t *d)
             refresh();
         }
     }
-    if (won){
-        return 1;
-    } else {
-        return 0;
-    }
+    end_game(d, &h);
+    return 0;
 }
 
 int main(int argc, char *argv[])
