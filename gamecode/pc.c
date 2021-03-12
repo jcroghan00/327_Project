@@ -172,7 +172,7 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h)
             move_pc_ncurses(d, h);
             break;
 
-            //Display monster list
+            // Display monster list
         case 'm':
             monster_list(d);
             move_pc_ncurses(d, h);

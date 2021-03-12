@@ -13,9 +13,9 @@ void write_monster_list(dungeon_t *d, int index){
     wclear(win);
 
     move(0,0);
-    wprintw(win, " List of Known Monsters\n");
+    wprintw(win, " List of Known Monsters\n\n");
 
-    for(int i = index; i < index + 15 && i < d->num_monsters + 1; ++i)
+    for(int i = index; i < index + 17 && i < d->num_monsters + 1; ++i)
     {
         wprintw(win, " %c: ", d->characters[i]->display_char);
 
@@ -35,6 +35,7 @@ void write_monster_list(dungeon_t *d, int index){
             wprintw(win, "by %2d West\n", abs(dx));
         }
     }
+    wrefresh(win);
 }
 
 void monster_list(dungeon_t*d) {
