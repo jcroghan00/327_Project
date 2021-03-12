@@ -14,7 +14,6 @@
 #include <unistd.h>
 
 #include "dim.h"
-#include "heap.h"
 
 #define DUNGEON_X              80
 #define DUNGEON_Y              21
@@ -31,6 +30,7 @@
 #define FILE_VERSION           5
 
  typedef struct character character_t;
+ typedef struct heap heap_t;
  typedef struct heap_node heap_node_t;
  typedef struct monster monster_t;
  typedef struct pc pc_t;

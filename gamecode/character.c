@@ -18,7 +18,11 @@ int32_t character_cmp(const void *key, const void *with) {
 
 void delete_characters(character_t **c, dungeon_t *d)
 {
+<<<<<<< HEAD
     
+=======
+    character_mappair(c[0]->pos) = NULL;
+>>>>>>> 0aac82257dd7a4411886f0b5449ab78325470834
     free(c[0]);
     for(int i = 1; i < d->num_monsters + 1; ++i)
     {

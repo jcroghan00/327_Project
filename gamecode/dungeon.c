@@ -8,6 +8,8 @@
 #include "path.h"
 
 
+
+
 /* Returns true if random float in [0,1] is less than *
  * numerator/denominator.  Uses only integer math.    */
 # define rand_under(numerator, denominator) \
@@ -730,6 +732,7 @@ int load_dungeon(dungeon_t *d)
   return 0;
 }
 
+/*
 void render_dungeon(dungeon_t *d)
 {
   pair_t p;
@@ -770,6 +773,7 @@ void render_dungeon(dungeon_t *d)
       putchar('\n');
   }
 }
+ */
 
 /* A copy of the above code but using ncurses as of
  * assignment 1.05 */
@@ -780,30 +784,30 @@ void render_ncurses(dungeon_t *d)
         for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
             if (character_mappair(p))
             {
-                mvaddch(p[dim_y], p[dim_x], (character_mappair(p)->display_char));
+                mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->display_char));
             }
             else {
                 switch (mappair(p)) {
                     case ter_wall:
                     case ter_wall_immutable:
-                        mvaddch(p[dim_y], p[dim_x],' ');
+                        mvaddch(p[dim_y] + 1, p[dim_x],' ');
                         break;
                     case ter_floor:
                     case ter_floor_room:
-                        mvaddch(p[dim_y], p[dim_x],'.');
+                        mvaddch(p[dim_y] + 1, p[dim_x],'.');
                         break;
                     case ter_floor_hall:
-                        mvaddch(p[dim_y], p[dim_x],'#');
+                        mvaddch(p[dim_y] + 1, p[dim_x],'#');
                         break;
                     case ter_debug:
-                        mvaddch(p[dim_y], p[dim_x],'*');
+                        mvaddch(p[dim_y] + 1, p[dim_x],'*');
                         //fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
                         break;
                     case ter_stairs_up:
-                        mvaddch(p[dim_y], p[dim_x],'<');
+                        mvaddch(p[dim_y] + 1, p[dim_x],'<');
                         break;
                     case ter_stairs_down:
-                        mvaddch(p[dim_y], p[dim_x],'>');
+                        mvaddch(p[dim_y] + 1, p[dim_x],'>');
                         break;
                     default:
                         break;
@@ -818,7 +822,11 @@ void delete_dungeon(dungeon_t *d, heap_t *h)
     heap_delete(h);
     free(d->rooms);
     delete_characters(d->characters, d);
+<<<<<<< HEAD
 
+=======
+    free(d->characters);
+>>>>>>> 0aac82257dd7a4411886f0b5449ab78325470834
 }
 
 void init_dungeon(dungeon_t *d)
@@ -849,13 +857,12 @@ uint16_t count_down_stairs(dungeon_t *d){
     }
     return down_stairs;
 }
+
 uint32_t calc_file_size(dungeon_t *d){
     return (1708 + (d->num_rooms * 4) +
             (count_up_stairs(d) * 2)  +
             (count_down_stairs(d) * 2));
 }
-
-
 
 int save_dungeon(dungeon_t *d)
 {
@@ -939,7 +946,7 @@ int save_dungeon(dungeon_t *d)
 void new_dungeon(dungeon_t *d, heap_t *h)
 {
     delete_dungeon(d, h);
-    d->num_monsters = 7;
+    d->num_monsters = -1;
     init_dungeon(d);
     gen_dungeon(d);
 

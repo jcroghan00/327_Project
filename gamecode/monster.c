@@ -31,6 +31,9 @@ void monster_list(dungeon_t*d)
         
     }
     }
+
+    //update the monsters list
+
 }
 
 

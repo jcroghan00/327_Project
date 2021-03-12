@@ -1,7 +1,6 @@
 #include <ncurses.h>
 
 #include "dungeon.h"
-#include "path.h"
 #include "character.h"
 #include "monster.h"
 typedef struct heap heap_t;
@@ -33,11 +32,34 @@ void config_pc(dungeon_t *d)
     d->characters[0] = d->pc;
 }
 
-void move_pc_ncurses(dungeon_t *d, heap_t *h){
-    int x = 0; 
-    int y = 0;
+void move_pc_ncurses(dungeon_t *d, heap_t *h);
 
+int move_pc(dungeon_t *d, heap_t *h, int dy, int dx){
+
+    if(d->map[d->pc->pos[dim_y] + dy][d->pc->pos[dim_x] + dx] < ter_floor){
+        mvprintw(0, 0, "There's a wall there!");
+        move_pc_ncurses(d,h);
+        return -1;
+    }
+
+    d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = NULL;
+    d->pc->pos[dim_y] += dy;
+    d->pc->pos[dim_x] += dx;
+    if (d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] != NULL){
+        d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]]->living = 0;
+        d->num_monsters--;
+    }
+    d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = d->pc;
+    return 0;
+}
+
+void move_pc_ncurses(dungeon_t *d, heap_t *h)
+{
     int val  = getch();
+
+    clear();
+    render_ncurses(d);
+    refresh();
 
     switch (val)
     {
@@ -45,160 +67,193 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h){
         case KEY_HOME:
         case '7':
         case 'y':
-            y = 0; x = -1; break;
+            move_pc(d, h, -1, -1); break;
 
-        // Move up
+            // Move up
         case KEY_UP:
         case '8':
         case 'k':
-            y = -1; x = 0; break;
+            move_pc(d, h, -1, 0); break;
 
-        // Move up-right
+            // Move up-right
         case KEY_PPAGE:
         case '9':
         case 'u':
-            y = -1; x = 1; break;
+            move_pc(d, h, -1, 1); break;
 
-        // Move right
+            // Move right
         case KEY_RIGHT:
         case '6':
         case 'l':
-            y = 0; x = 1; break;
+            move_pc(d, h, 0, 1); break;
 
-        // Move down-right
+            // Move down-right
         case KEY_NPAGE:
         case '3':
         case 'n':
-            y = 1; x = 1; break;
+            move_pc(d, h, 1, 1); break;
 
-        // Move down
+            // Move down
         case KEY_DOWN:
         case '2':
         case 'j':
-            y = 1; x = 0; break;
+            move_pc(d, h, 1, 0); break;
 
-        // Move down-left
+            // Move down-left
         case KEY_END:
         case '1':
         case 'b':
-            y = 1; x = -1; break;
+            move_pc(d, h, 1, -1); break;
 
-        // Move left
+            // Move left
         case KEY_LEFT:
         case '4':
         case 'h':
-            y = 0; x = -1; break;
+            move_pc(d, h, 0, -1); break;
 
-        // rest
+            // rest
         case KEY_B2:
         case ' ':
         case '.':
         case '5':
-            y = 0; x = 0; break;
+            move_pc(d, h, 0, 0); break;
 
-        // Go down stairs
+            // Go down stairs
         case '>':
             if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_down){
                 new_dungeon(d, h);
+            } else {
+                mvprintw(0, 0, "You can't go down here!");
+                move_pc_ncurses(d,h);
             }
             break;
         case '<':
             if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_up){
                 new_dungeon(d, h);
+            } else{
+                mvprintw(0, 0, "You can't go up here!");
+                move_pc_ncurses(d,h);
             }
             break;
 
-        //TODO Display character information
+            //TODO Display character information
         case 'c':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
-        //TODO Drop item
+            //TODO Drop item
         case 'd':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
-        //TODO Display equipment
+            //TODO Display equipment
         case 'e':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
-        //TODO Toggle fog-of-war
+            //TODO Toggle fog-of-war
         case 'f':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
-        //TODO Teleport (goto)
+            //TODO Teleport (goto)
         case 'g':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
-        //TODO Display inventory
+            //TODO Display inventory
         case 'i':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
-        //TODO Display monster list
+            //TODO Display monster list
         case 'm':
             monster_list();
+<<<<<<< HEAD
+=======
+            move_pc_ncurses(d, h);
+>>>>>>> 0aac82257dd7a4411886f0b5449ab78325470834
             break;
 
-        //TODO Display the default (terrain) map
+            //TODO Display the default (terrain) map
         case 's':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
-        //TODO Take off item
+            //TODO Take off item
         case 't':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
-        //TODO Wear item
+            //TODO Wear item
         case 'w':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
-        //TODO Expunge item
+            //TODO Expunge item
         case 'x':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
-        //TODO Display the non-tunneling distance map
+            //TODO Display the non-tunneling distance map
         case 'D':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
-        //TODO Inspect equipped item
+            //TODO Inspect equipped item
         case 'E':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
-        //TODO Display the hardness map
+            //TODO Display the hardness map
         case 'H':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
-        //TODO Inspect inventory item
+            //TODO Inspect inventory item
         case 'I':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
-        //TODO Look at monster
+            //TODO Look at monster
         case 'L':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
-        // Quit the game
+            // Quit the game
         case 'Q':
             endwin();
             delete_dungeon(d, h);
             exit(0);
 
-        //TODO Display the tunneling distance map
+            //TODO Display the tunneling distance map
         case 'T':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
             break;
 
-        default:
-            x = 0; y = 0; break;
-    }
+            //TODO Print list of controls
+        case 'C':
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
+            break;
 
-    if(d->map[d->pc->pos[dim_y] + y][d->pc->pos[dim_x] + x] == ter_wall ||
-       d->map[d->pc->pos[dim_y] + y][d->pc->pos[dim_x] + x] == ter_wall_immutable)
-    {y = 0, x = 0;}
-
-
-
-    d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = NULL;
-    d->pc->pos[dim_y] += y;
-    d->pc->pos[dim_x] += x;
-    d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = d->pc;
-}
-
+<<<<<<< HEAD
 
 int pc_next_pos(dungeon_t *d)
 {
@@ -228,6 +283,13 @@ int pc_next_pos(dungeon_t *d)
 
         hasMoved = 1;
         
+=======
+        default:
+            mvprintw(0, 0, "Invalid Key!");
+            move_pc_ncurses(d, h);
+            break;
+>>>>>>> 0aac82257dd7a4411886f0b5449ab78325470834
     }
-    return 0;
+    render_ncurses(d);
+    refresh();
 }

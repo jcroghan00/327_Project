@@ -137,7 +137,6 @@ int main(int argc, char *argv[])
         save_dungeon(&d);
     }
 
-
     heap_t h;
     initscr();
     raw();
