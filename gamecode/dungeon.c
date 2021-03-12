@@ -786,6 +786,76 @@ void render_terrain_map(dungeon_t *d)
     }
 }
 
+//TODO Display hardness map
+void render_hardness_map(dungeon_t *d){
+    WINDOW *map_window = d->windows->terrain_map_win;
+    //pair_t p;
+    char *msg = "Hit \"Escape\" to close hardness map";
+    mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
+
+
+    touchwin(map_window);
+    int visible = 1;
+    while (visible) {
+        int val = wgetch(map_window);
+        switch (val) {
+            // Quit the window
+            case 27:
+                visible = 0;
+                touchwin(stdscr);
+                break;
+            default:
+                break;
+        }
+    }
+}
+//TODO Display non tunneling distance map
+void render_dist_map(dungeon_t *d){
+    WINDOW *map_window = d->windows->terrain_map_win;
+    //pair_t p;
+    char *msg = "Hit \"Escape\" to close distance map";
+    mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
+
+
+    touchwin(map_window);
+    int visible = 1;
+    while (visible) {
+        int val = wgetch(map_window);
+        switch (val) {
+            // Quit the window
+            case 27:
+                visible = 0;
+                touchwin(stdscr);
+                break;
+            default:
+                break;
+        }
+    }
+}
+//TODO Display tunneling distance map
+void render_tun_dist_map(dungeon_t *d){
+    WINDOW *map_window = d->windows->terrain_map_win;
+    //pair_t p;
+    char *msg = "Hit \"Escape\" to close tunneling distance map";
+    mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
+
+
+
+    touchwin(map_window);
+    int visible = 1;
+    while (visible) {
+        int val = wgetch(map_window);
+        switch (val) {
+            // Quit the window
+            case 27:
+                visible = 0;
+                touchwin(stdscr);
+                break;
+            default:
+                break;
+        }
+    }
+}
 /* A copy of the above code but using ncurses as of
  * assignment 1.05 */
 void render_ncurses(dungeon_t *d)

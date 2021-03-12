@@ -202,9 +202,9 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h)
             move_pc_ncurses(d, h);
             break;
 
-            //TODO Display the non-tunneling distance map
+            //Display the non-tunneling distance map
         case 'D':
-            mvprintw(0, 0, "Invalid Key!");
+            render_dist_map(d);
             move_pc_ncurses(d, h);
             break;
 
@@ -214,9 +214,9 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h)
             move_pc_ncurses(d, h);
             break;
 
-            //TODO Display the hardness map
+            //Display the hardness map
         case 'H':
-            mvprintw(0, 0, "Invalid Key!");
+            render_hardness_map(d);
             move_pc_ncurses(d, h);
             break;
 
@@ -238,9 +238,9 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h)
             delete_dungeon(d, h);
             exit(0);
 
-            //TODO Display the tunneling distance map
+            //Display the tunneling distance map
         case 'T':
-            mvprintw(0, 0, "Invalid Key!");
+            render_tun_dist_map(d);
             move_pc_ncurses(d, h);
             break;
 
