@@ -174,6 +174,7 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h)
 
             //TODO Display monster list
         case 'm':
+            monster_list(d);
             move_pc_ncurses(d, h);
             break;
 
@@ -248,6 +249,7 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h)
             mvprintw(0, 0, "Invalid Key!");
             move_pc_ncurses(d, h);
             break;
+
         default:
             mvprintw(0, 0, "Invalid Key!");
             move_pc_ncurses(d, h);

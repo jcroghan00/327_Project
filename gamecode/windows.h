@@ -3,6 +3,9 @@
 
 #include <ncurses.h>
 
-WINDOW monster_list;
+typedef struct windows {
+    WINDOW *monster_list_win;
+} windows_t;
 
+void create_monster_list_win(dungeon_t *d);
 #endif

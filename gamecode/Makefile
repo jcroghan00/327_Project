@@ -8,7 +8,7 @@ TERM = "S2021"
 CFLAGS = -Wall -Werror -ggdb -lncurses -funroll-loops -DTERM=$(TERM)
 CXXFLAGS = -Wall -Werror -ggdb -lncurses -funroll-loops -DTERM=$(TERM)
 
-LDFLAGS = -lncurses
+LDFLAGS = -lncurses -lpanel
 
 BIN = rlg327
 OBJS = rlg327.o dungeon.o heap.o monster.o path.o pc.o character.o windows.o

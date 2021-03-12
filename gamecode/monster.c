@@ -2,13 +2,15 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <ncurses.h>
+#include <panel.h>
 
 #include "monster.h"
 #include "dungeon.h"
 #include "character.h"
+#include "windows.h"
 
-void monster_list(dungeon_t*d)
-{
+void monster_list(dungeon_t*d) {
+    /*
     for(int i = 1; i <= d->num_monsters; i++){
         printw("%c\n", d->characters[i]->display_char);
         if(d->characters[i]->pos[dim_x] == d->characters[0]->pos[dim_x]){
@@ -31,20 +33,26 @@ void monster_list(dungeon_t*d)
         
     }
     }
+     */
+    wmove(d->windows->monster_list_win, 0, 0);
+    for(int i = 1; i <= d->num_monsters; i++){
+        wprintw(d->windows->monster_list_win, "%d",i);
+    }
 
-    //update the monsters list
-
+    int visible = 1;
+    while (visible) {
+        int val = wgetch(d->windows->monster_list_win);
+        switch (val) {
+            // Quit the window
+            case 27:
+                visible = 0;
+                touchwin(stdscr);
+                break;
+            default:
+                break;
+        }
+    }
 }
-
-
-    // WINDOW *
-    // window;
-
-	// window = newwin(50, 30, 10, 10);
-	// box(window, 10 , 10);	
-	// wrefresh(window);		/* Show that box 		*/
-
-
 
 void get_monster_path(character_t *c, dungeon_t *d)
 {

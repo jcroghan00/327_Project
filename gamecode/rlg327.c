@@ -126,6 +126,12 @@ int main(int argc, char *argv[])
     }
 
     srand(seed);
+    initscr();
+    start_color();
+    raw();
+    noecho();
+    curs_set(0);
+    keypad(stdscr, TRUE);
 
     init_dungeon(&d);
     if (load){
@@ -138,14 +144,9 @@ int main(int argc, char *argv[])
     }
 
     heap_t h;
-    initscr();
-    raw();
-    noecho();
-    curs_set(0);
-    keypad(stdscr, TRUE);
+
 
     render_ncurses(&d);
-    monster_list(&d);
 
     int won = play_game(&d);
 

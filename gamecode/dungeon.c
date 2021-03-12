@@ -6,6 +6,7 @@
 #include "pc.h"
 #include "character.h"
 #include "path.h"
+#include "windows.h"
 
 
 
@@ -612,6 +613,8 @@ int gen_dungeon(dungeon_t *d)
   define_characters(d);
   config_pc(d);
   gen_monsters(d);
+  d->windows = malloc(sizeof(windows_t));
+  create_monster_list_win(d);
   return 0;
 }
 
@@ -731,49 +734,6 @@ int load_dungeon(dungeon_t *d)
 
   return 0;
 }
-
-/*
-void render_dungeon(dungeon_t *d)
-{
-  pair_t p;
-  for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
-      for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-          if (character_mappair(p))
-          {
-            putchar((character_mappair(p)->display_char));
-          }
-          else {
-              switch (mappair(p)) {
-                  case ter_wall:
-                  case ter_wall_immutable:
-                      putchar(' ');
-                      break;
-                  case ter_floor:
-                  case ter_floor_room:
-                      putchar('.');
-                      break;
-                  case ter_floor_hall:
-                      putchar('#');
-                      break;
-                  case ter_debug:
-                      putchar('*');
-                      //fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
-                      break;
-                  case ter_stairs_up:
-                      putchar('<');
-                      break;
-                  case ter_stairs_down:
-                      putchar('>');
-                      break;
-                  default:
-                      break;
-              }
-          }
-      }
-      putchar('\n');
-  }
-}
- */
 
 /* A copy of the above code but using ncurses as of
  * assignment 1.05 */

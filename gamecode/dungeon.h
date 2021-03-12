@@ -34,6 +34,7 @@
  typedef struct heap_node heap_node_t;
  typedef struct monster monster_t;
  typedef struct pc pc_t;
+typedef struct windows windows_t;
 
 #define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
 #define mapxy(x, y) (d->map[y][x])
@@ -83,6 +84,7 @@ typedef struct dungeon {
   int num_monsters;
   monster_path_t non_tun_path[DUNGEON_Y][DUNGEON_X];
   monster_path_t tun_path[DUNGEON_Y][DUNGEON_X];
+  windows_t *windows;
 } dungeon_t;
 
 uint32_t in_room(room_t r, character_t *c);
