@@ -822,11 +822,7 @@ void delete_dungeon(dungeon_t *d, heap_t *h)
     heap_delete(h);
     free(d->rooms);
     delete_characters(d->characters, d);
-<<<<<<< HEAD
-
-=======
     free(d->characters);
->>>>>>> 0aac82257dd7a4411886f0b5449ab78325470834
 }
 
 void init_dungeon(dungeon_t *d)

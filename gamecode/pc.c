@@ -174,11 +174,7 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h)
 
             //TODO Display monster list
         case 'm':
-            monster_list();
-<<<<<<< HEAD
-=======
             move_pc_ncurses(d, h);
->>>>>>> 0aac82257dd7a4411886f0b5449ab78325470834
             break;
 
             //TODO Display the default (terrain) map
