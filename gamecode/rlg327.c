@@ -145,7 +145,6 @@ int main(int argc, char *argv[])
 
     heap_t h;
 
-
     render_ncurses(&d);
 
     int won = play_game(&d);

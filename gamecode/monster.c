@@ -12,7 +12,7 @@ void write_monster_list(dungeon_t *d, int index){
 
     wclear(win);
 
-    move(0,0);
+    wmove(win,0,0);
     wprintw(win, " List of Known Monsters\n\n");
 
     for(int i = index; i < index + 17 && i < d->num_monsters + 1; ++i)
