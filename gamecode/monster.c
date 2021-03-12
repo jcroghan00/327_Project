@@ -8,10 +8,37 @@
 #include "windows.h"
 
 void write_monster_list(dungeon_t *d, int index){
+    #define win d->windows->monster_list_win
 
+    wclear(win);
+
+    move(0,0);
+    wprintw(win, " List of Known Monsters\n");
+
+    for(int i = index; i < index + 15 && i < d->num_monsters + 1; ++i)
+    {
+        wprintw(win, " %c: ", d->characters[i]->display_char);
+
+        int dy = d->characters[0]->pos[dim_y] - d->characters[i]->pos[dim_y];
+        if(dy < 0) {
+            wprintw(win, "%2d South ", abs(dy));
+        }
+        else{
+            wprintw(win, "%2d North ", abs(dy));
+        }
+
+        int dx = d->characters[0]->pos[dim_x] - d->characters[i]->pos[dim_x];
+        if(dx < 0) {
+            wprintw(win, "by %2d East\n", abs(dx));
+        }
+        else{
+            wprintw(win, "by %2d West\n", abs(dx));
+        }
+    }
 }
 
 void monster_list(dungeon_t*d) {
+
     int index = 1;
     write_monster_list(d,index);
     touchwin(d->windows->monster_list_win);
