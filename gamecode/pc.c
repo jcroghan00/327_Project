@@ -172,13 +172,13 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h)
             move_pc_ncurses(d, h);
             break;
 
-            //TODO Display monster list
+            //Display monster list
         case 'm':
             monster_list(d);
             move_pc_ncurses(d, h);
             break;
 
-            //TODO Display the default (terrain) map
+            //Display the default (terrain) map
         case 's':
             render_terrain_map(d);
             move_pc_ncurses(d, h);
