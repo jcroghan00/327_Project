@@ -57,7 +57,7 @@ const char *tombstone =
         "..\"\"\"\"\"....\"\"\"\"\"..\"\"...\"\"\".\n\n"
         "            You're dead.  Better luck in the next life.";
 
-int play_game(dungeon_t *d);
+int play_game(dungeon_t *d, heap_t *h);
 
 void end_game(dungeon_t *d, heap_t *h){
     WINDOW *game_win = d->windows->game_ending_win;
@@ -81,7 +81,7 @@ void end_game(dungeon_t *d, heap_t *h){
             case 'R':
                 visible = 0;
                 new_dungeon(d,h);
-                play_game(d);
+                play_game(d, h);
                 touchwin(stdscr);
             default:
                 break;
@@ -89,25 +89,23 @@ void end_game(dungeon_t *d, heap_t *h){
     }
 }
 
-
-int play_game(dungeon_t *d)
+int play_game(dungeon_t *d, heap_t *h)
 {
-    heap_t h;
-    heap_init(&h,character_cmp,NULL);
+    heap_init(h,character_cmp,NULL);
     for(int i = 0; i < d->num_monsters+1; i++)
     {
         d->characters[i]->turn = 0;
         d->characters[i]->sd = i;
-        heap_insert(&h,d->characters[i]);
+        heap_insert(h,d->characters[i]);
     }
     character_t *c;
     while(pc_is_alive(d))
     {
         if (!d->num_monsters){break;}
-        c = heap_remove_min(&h);
+        c = heap_remove_min(h);
         if (c->living){
             if (c->sd == 0) {
-                move_pc_ncurses(d, &h);
+                move_pc_ncurses(d, h);
                 // pc_next_pos(d);
                 render_ncurses(d);
                 refresh(); /* Print it on to the real screen */
@@ -117,14 +115,14 @@ int play_game(dungeon_t *d)
                 move_monster(c,d);
             }
             c->turn = c->turn + (1000/c->speed);
-            heap_insert(&h, c);
+            heap_insert(h, c);
 
             usleep(2500); // you cant see the monsters' steps otherwise
             render_ncurses(d);
             refresh();
         }
     }
-    end_game(d, &h);
+    end_game(d, h);
     return 0;
 }
 
@@ -168,11 +166,10 @@ int main(int argc, char *argv[])
         save_dungeon(&d);
     }
 
-    heap_t h;
-
     render_ncurses(&d);
 
-    int won = play_game(&d);
+    heap_t h;
+    int won = play_game(&d, &h);
 
     endwin();
 
