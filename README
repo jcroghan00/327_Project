@@ -1,19 +1,16 @@
-Jack Croghan   jcroghan@iastate.edu
-Ryan Tullis    rctullis@iastate.edu
+Jack Croghan           jcroghan@iastate.edu
+Ryan Tullis            rctullis@iastate.edu
+Aashish Komaragiri     adkoma@iastae.edu 
 
-README assignment-1.04
+README assignment-1.05
 
-     This assignment included the random generation of monsters. Currently
-there are 16 types of monsters and they are represented the the 16
-hexadecimal digits (0-F). Each of these monsters have their behavior set
-by a combination of 4 behavioral traits. Intelligence determines if the
-monster follows the shortest path or that of a straight line. Telepathy
-determines whether the monster can see where the player is no matter what
-or if it needs to have line of sight. Tunneling determines if the monster
-can go through walls or if it must follow the dungeon layout. The erratic
-trait gives the monster a 50% chance to ignore its other traits and just
-move randomly.
-     Currently the player moves around at random. If a monster moves onto
-the player it is game over and the program will end. If the player manages to
-move onto all of the monsters, thus killing them (fools), then victory text
-will appear and the program will end.
+     This assignment involved the conversion of our code over to ncurses.
+     the only significant changes are to the move pc function and the
+     rendering of the dungeon. The rendering of the dungeon mostly just
+     had to print to ncurses instead of the terminal. move pc however has
+     to now  wait for an input from the player and act on that input
+     accordingly. We also added the ability to print the terrrain map and
+     added boilerplate code of future implementations of the hardness,
+     tunneling distance, and non tunneling distance map. our code also
+     prints a win/lose screen and allows a player to quit or restart after
+     a game.
