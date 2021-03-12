@@ -9,6 +9,10 @@
 #include "character.h"
 #include "windows.h"
 
+void write_monster_list(dungeon_t *d, int index){
+
+}
+
 void monster_list(dungeon_t*d) {
     /*
     for(int i = 1; i <= d->num_monsters; i++){
@@ -34,10 +38,9 @@ void monster_list(dungeon_t*d) {
     }
     }
      */
-    wmove(d->windows->monster_list_win, 0, 0);
-    for(int i = 1; i <= d->num_monsters; i++){
-        wprintw(d->windows->monster_list_win, "%d",i);
-    }
+
+    int index = 0;
+    write_monster_list(d,index);
 
     int visible = 1;
     while (visible) {
@@ -47,6 +50,18 @@ void monster_list(dungeon_t*d) {
             case 27:
                 visible = 0;
                 touchwin(stdscr);
+                break;
+
+            case KEY_UP:
+                //add check for hitting top of list
+                index--;
+                write_monster_list(d,index);
+                break;
+
+            case KEY_DOWN:
+                // add check for reaching bottom of list
+                index++;
+                write_monster_list(d,index);
                 break;
             default:
                 break;
