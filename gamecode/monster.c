@@ -12,9 +12,7 @@ void write_monster_list(dungeon_t *d, int index){
 
     wclear(win);
 
-    wmove(win,0,0);
-    wprintw(win, "    List of Known Monsters\n\n");
-
+    wmove(win,2,0);
     for(int i = index; i < index + 16 && i < d->num_monsters + 1; ++i)
     {
         wprintw(win, " %3i: ", i);
@@ -36,7 +34,11 @@ void write_monster_list(dungeon_t *d, int index){
             wprintw(win, "by %2d West\n", abs(dx));
         }
     }
-    wprintw(win,"\n Arrows to scroll Esc to exit");
+
+    box(win,0,0);
+    mvwprintw(win,19,1,"Arrows to scroll Esc to exit");
+    mvwprintw(win,0,4, "List of Known Monsters");
+
     wrefresh(win);
 }
 

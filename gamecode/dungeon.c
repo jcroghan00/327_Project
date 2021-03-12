@@ -8,8 +8,13 @@
 #include "path.h"
 #include "windows.h"
 
-
-
+#define HARD_WALL_PAIR      2
+#define SOFT_WALL_PAIR      3
+#define IMMUTABLE_WALL_PAIR 4
+#define FLOOR_PAIR          5
+#define STAIR_PAIR          6
+#define PLAYER_PAIR         7
+#define MONSTER_PAIR        8
 
 /* Returns true if random float in [0,1] is less than *
  * numerator/denominator.  Uses only integer math.    */
@@ -860,12 +865,31 @@ void render_tun_dist_map(dungeon_t *d){
  * assignment 1.05 */
 void render_ncurses(dungeon_t *d)
 {
+    start_color();
+    init_pair(HARD_WALL_PAIR, COLOR_YELLOW, COLOR_YELLOW);
+    init_pair(SOFT_WALL_PAIR, COLOR_GREEN, COLOR_GREEN);
+    init_pair(IMMUTABLE_WALL_PAIR, COLOR_BLUE, COLOR_BLUE);
+    init_pair(FLOOR_PAIR, COLOR_WHITE, COLOR_BLACK);
+    init_pair(STAIR_PAIR, COLOR_CYAN, COLOR_BLACK);
+    init_pair(PLAYER_PAIR, COLOR_MAGENTA, COLOR_BLACK);
+    init_pair(MONSTER_PAIR, COLOR_RED, COLOR_BLACK);
+
     pair_t p;
     for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
         for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
             if (character_mappair(p))
             {
-                mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->display_char));
+                if(character_mappair(p)->display_char == '@')
+                {
+                    attron(COLOR_PAIR(PLAYER_PAIR));
+                    mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->display_char));
+                    attroff(COLOR_PAIR(PLAYER_PAIR));
+                }
+                else{
+                    attron(COLOR_PAIR(MONSTER_PAIR));
+                    mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->display_char));
+                    attroff(COLOR_PAIR(MONSTER_PAIR));
+                }
             }
             else {
                 switch (mappair(p)) {
@@ -875,20 +899,28 @@ void render_ncurses(dungeon_t *d)
                         break;
                     case ter_floor:
                     case ter_floor_room:
+                        attron(COLOR_PAIR(FLOOR_PAIR));
                         mvaddch(p[dim_y] + 1, p[dim_x],'.');
+                        attroff(COLOR_PAIR(FLOOR_PAIR));
                         break;
                     case ter_floor_hall:
+                        attron(COLOR_PAIR(FLOOR_PAIR));
                         mvaddch(p[dim_y] + 1, p[dim_x],'#');
+                        attroff(COLOR_PAIR(FLOOR_PAIR));
                         break;
                     case ter_debug:
                         mvaddch(p[dim_y] + 1, p[dim_x],'*');
                         //fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
                         break;
                     case ter_stairs_up:
+                        attron(COLOR_PAIR(STAIR_PAIR));
                         mvaddch(p[dim_y] + 1, p[dim_x],'<');
+                        attroff(COLOR_PAIR(STAIR_PAIR));
                         break;
                     case ter_stairs_down:
+                        attron(COLOR_PAIR(STAIR_PAIR));
                         mvaddch(p[dim_y] + 1, p[dim_x],'>');
+                        attroff(COLOR_PAIR(STAIR_PAIR));
                         break;
                     default:
                         break;

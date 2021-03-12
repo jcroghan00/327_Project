@@ -91,7 +91,6 @@ void end_game(dungeon_t *d, heap_t *h){
 
 int play_game(dungeon_t *d, heap_t *h)
 {
-    heap_init(h,character_cmp,NULL);
     for(int i = 0; i < d->num_monsters+1; i++)
     {
         d->characters[i]->turn = 0;
@@ -169,6 +168,7 @@ int main(int argc, char *argv[])
     render_ncurses(&d);
 
     heap_t h;
+    heap_init(&h,character_cmp,NULL);
     int won = play_game(&d, &h);
 
     endwin();
