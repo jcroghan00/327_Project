@@ -55,7 +55,7 @@ int move_pc(dungeon_t *d, heap_t *h, int dy, int dx){
 
 void move_pc_ncurses(dungeon_t *d, heap_t *h)
 {
-    int val  = getch();
+    int val  = wgetch(stdscr);
 
     clear();
     render_ncurses(d);

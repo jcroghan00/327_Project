@@ -47,12 +47,6 @@ void monster_list(dungeon_t*d) {
     while (visible) {
         int val = wgetch(d->windows->monster_list_win);
         switch (val) {
-            // Quit the window
-            case 27:
-                visible = 0;
-                touchwin(stdscr);
-                break;
-
             case KEY_UP:
                 if (index > 1){
                     index--;
@@ -61,10 +55,18 @@ void monster_list(dungeon_t*d) {
                 break;
 
             case KEY_DOWN:
-                // add check for reaching bottom of list
-                index++;
+                if (index < d->num_monsters-15){
+                    index++;
+                }
                 write_monster_list(d,index);
                 break;
+
+            case 27:
+                visible = 0;
+                touchwin(stdscr);
+                break;
+
+
             default:
                 break;
         }
