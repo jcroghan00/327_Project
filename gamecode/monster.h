@@ -46,6 +46,8 @@ int gen_monsters(dungeon_t *d);
 void move_monster(character_t *c, dungeon_t *d);
 int bresenham_LOS(dungeon_t *d,character_t *c);
 void bresenham_move(dungeon_t *d,character_t *c, dif_t *dif);
+void monster_list();
+
 
 
 #endif

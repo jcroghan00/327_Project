@@ -3,7 +3,7 @@
 #include "dungeon.h"
 #include "path.h"
 #include "character.h"
-
+#include "monster.h"
 typedef struct heap heap_t;
 
 int pc_is_alive(dungeon_t *d)
@@ -134,6 +134,7 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h){
 
         //TODO Display monster list
         case 'm':
+            monster_list();
             break;
 
         //TODO Display the default (terrain) map
@@ -197,6 +198,7 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h){
     d->pc->pos[dim_x] += x;
     d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = d->pc;
 }
+
 
 int pc_next_pos(dungeon_t *d)
 {

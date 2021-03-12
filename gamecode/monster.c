@@ -1,15 +1,47 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <ncurses.h>
 
 #include "monster.h"
 #include "dungeon.h"
 #include "character.h"
 
-void monster_list()
+void monster_list(dungeon_t*d)
 {
-
+    for(int i = 1; i <= d->num_monsters; i++){
+        printw("%c\n", d->characters[i]->display_char);
+        if(d->characters[i]->pos[dim_x] == d->characters[0]->pos[dim_x]){
+            printw("Monster has same x cord \n");
+        }
+        if(d->characters[i]->pos[dim_y] == d->characters[0]->pos[dim_y]){
+            printw("Monster has same y cord \n");
+        }
+        if(d->characters[i]->pos[dim_x] < d->characters[0]->pos[dim_x]){
+            printw("Monster is to the left %d\n", d->characters[0]->pos[dim_x] - d->characters[i]->pos[dim_x]);
+        }
+        if(d->characters[i]->pos[dim_x] > d->characters[0]->pos[dim_x]){
+            printw("Monster is to the right %d\n", d->characters[i]->pos[dim_x] - d->characters[0]->pos[dim_x]);
+        }
+        if(d->characters[i]->pos[dim_y] < d->characters[0]->pos[dim_y]){
+            printw("Monster is up %d\n", d->characters[0]->pos[dim_y] - d->characters[i]->pos[dim_y]);
+        }
+        if(d->characters[i]->pos[dim_y] > d->characters[0]->pos[dim_y]){
+            printw("Monster is down %d\n", d->characters[i]->pos[dim_y] - d->characters[0]->pos[dim_y]);
+        
+    }
+    }
 }
+
+
+    // WINDOW *
+    // window;
+
+	// window = newwin(50, 30, 10, 10);
+	// box(window, 10 , 10);	
+	// wrefresh(window);		/* Show that box 		*/
+
+
 
 void get_monster_path(character_t *c, dungeon_t *d)
 {
