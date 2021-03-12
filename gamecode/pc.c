@@ -180,7 +180,7 @@ void move_pc_ncurses(dungeon_t *d, heap_t *h)
 
             //TODO Display the default (terrain) map
         case 's':
-            mvprintw(0, 0, "Invalid Key!");
+            render_terrain_map(d);
             move_pc_ncurses(d, h);
             break;
 

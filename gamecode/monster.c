@@ -1,8 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
-#include <ncurses.h>
-#include <panel.h>
 
 #include "monster.h"
 #include "dungeon.h"
@@ -14,34 +12,9 @@ void write_monster_list(dungeon_t *d, int index){
 }
 
 void monster_list(dungeon_t*d) {
-    /*
-    for(int i = 1; i <= d->num_monsters; i++){
-        printw("%c\n", d->characters[i]->display_char);
-        if(d->characters[i]->pos[dim_x] == d->characters[0]->pos[dim_x]){
-            printw("Monster has same x cord \n");
-        }
-        if(d->characters[i]->pos[dim_y] == d->characters[0]->pos[dim_y]){
-            printw("Monster has same y cord \n");
-        }
-        if(d->characters[i]->pos[dim_x] < d->characters[0]->pos[dim_x]){
-            printw("Monster is to the left %d\n", d->characters[0]->pos[dim_x] - d->characters[i]->pos[dim_x]);
-        }
-        if(d->characters[i]->pos[dim_x] > d->characters[0]->pos[dim_x]){
-            printw("Monster is to the right %d\n", d->characters[i]->pos[dim_x] - d->characters[0]->pos[dim_x]);
-        }
-        if(d->characters[i]->pos[dim_y] < d->characters[0]->pos[dim_y]){
-            printw("Monster is up %d\n", d->characters[0]->pos[dim_y] - d->characters[i]->pos[dim_y]);
-        }
-        if(d->characters[i]->pos[dim_y] > d->characters[0]->pos[dim_y]){
-            printw("Monster is down %d\n", d->characters[i]->pos[dim_y] - d->characters[0]->pos[dim_y]);
-        
-    }
-    }
-     */
-
-    int index = 0;
+    int index = 1;
     write_monster_list(d,index);
-
+    touchwin(d->windows->monster_list_win);
     int visible = 1;
     while (visible) {
         int val = wgetch(d->windows->monster_list_win);
@@ -53,8 +26,9 @@ void monster_list(dungeon_t*d) {
                 break;
 
             case KEY_UP:
-                //add check for hitting top of list
-                index--;
+                if (index > 1){
+                    index--;
+                }
                 write_monster_list(d,index);
                 break;
 

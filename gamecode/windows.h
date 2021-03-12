@@ -5,7 +5,8 @@
 
 typedef struct windows {
     WINDOW *monster_list_win;
+    WINDOW *terrain_map_win;
 } windows_t;
 
-void create_monster_list_win(dungeon_t *d);
+void create_windows(dungeon_t *d);
 #endif

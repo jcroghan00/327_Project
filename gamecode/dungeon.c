@@ -614,7 +614,7 @@ int gen_dungeon(dungeon_t *d)
   config_pc(d);
   gen_monsters(d);
   d->windows = malloc(sizeof(windows_t));
-  create_monster_list_win(d);
+  create_windows(d);
   return 0;
 }
 
@@ -733,6 +733,57 @@ int load_dungeon(dungeon_t *d)
   gen_monsters(d);
 
   return 0;
+}
+
+void render_terrain_map(dungeon_t *d)
+{
+    WINDOW *map_window = d->windows->terrain_map_win;
+    pair_t p;
+    char *msg = "Hit \"Escape\" to close terrain map";
+    mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
+    for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
+        for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
+            switch (mappair(p)) {
+                case ter_wall:
+                case ter_wall_immutable:
+                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],' ');
+                    break;
+                case ter_floor:
+                case ter_floor_room:
+                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'.');
+                    break;
+                case ter_floor_hall:
+                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'#');
+                    break;
+                case ter_debug:
+                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'*');
+                    //fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
+                    break;
+                case ter_stairs_up:
+                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'<');
+                    break;
+                case ter_stairs_down:
+                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'>');
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    touchwin(map_window);
+    int visible = 1;
+    while (visible) {
+        int val = wgetch(map_window);
+        switch (val) {
+            // Quit the window
+            case 27:
+                visible = 0;
+                touchwin(stdscr);
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 /* A copy of the above code but using ncurses as of
