@@ -24,7 +24,7 @@ void place_pc(dungeon_t *d)
 
 void config_pc(dungeon_t *d)
 {
-    d->pc = malloc(sizeof(character_t));
+    d->pc = (character_t*)malloc(sizeof(character_t));
     d->pc->display_char = '@';
     d->pc->living = 1;
     d->pc->speed = PC_SPEED;

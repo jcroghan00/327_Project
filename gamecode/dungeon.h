@@ -69,7 +69,7 @@ typedef struct stair{
 typedef struct monster_path {
     heap_node_t *hn;
     uint8_t pos[2];
-    int32_t cost;
+    uint32_t cost;
 } monster_path_t;
 
 typedef struct dungeon {

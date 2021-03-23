@@ -1,4 +1,5 @@
 #include <ncurses.h>
+#include <string>
 
 #include "dungeon.h"
 #include "monster.h"
@@ -36,6 +37,7 @@ const char *victory =
         "              $\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\""
         "$\"$\"$\"$\"$\"$\"$\"$\n"
         "                                   You win!";
+
 const char *tombstone =
         "\n\n\n\n                /\"\"\"\"\"/\"\"\"\"\"\"\".\n"
         "               /     /         \\             __\n"
@@ -57,6 +59,8 @@ const char *tombstone =
         "..\"\"\"\"\"....\"\"\"\"\"..\"\"...\"\"\".\n\n"
         "            You're dead.  Better luck in the next life.";
 
+const char* msg = "Game Over! Press \'Q\' to Quit or \'R\' to restart!";
+
 int play_game(dungeon_t *d, heap_t *h);
 
 void end_game(dungeon_t *d, heap_t *h){
@@ -64,9 +68,8 @@ void end_game(dungeon_t *d, heap_t *h){
     if (d->pc->living){
         wprintw(game_win,victory);
     } else {
-        wprintw(game_win,tombstone);
+        wprintw(game_win, tombstone);
     }
-    char *msg = "Game Over! Press \'Q\' to Quit or \'R\' to restart!";
     mvwprintw(game_win,LINES-2,COLS/2 - strlen(msg)/2, msg);
     touchwin(game_win);
     int visible = 1;
@@ -101,7 +104,7 @@ int play_game(dungeon_t *d, heap_t *h)
     while(pc_is_alive(d))
     {
         if (!d->num_monsters){break;}
-        c = heap_remove_min(h);
+        c = (character_t*)heap_remove_min(h);
         if (c->living){
             if (c->sd == 0) {
                 move_pc_ncurses(d, h);

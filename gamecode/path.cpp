@@ -50,7 +50,7 @@ void dijkstra_non_tunneling(dungeon_t *d)
         }
     }
 
-    while ((p = heap_remove_min(&h))) {
+    while ((p = (monster_path_t*)heap_remove_min(&h))) {
         p->hn = NULL;
 
         for(int i = -1; i <= 1; ++i){
@@ -107,7 +107,7 @@ void dijkstra_tunneling(dungeon_t *d)
         }
     }
 
-    while ((p = heap_remove_min(&h))) {
+    while ((p = (monster_path_t*)heap_remove_min(&h))) {
         p->hn = NULL;
 
 

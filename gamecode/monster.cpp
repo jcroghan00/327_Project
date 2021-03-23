@@ -97,10 +97,10 @@ void get_monster_path(character_t *c, dungeon_t *d)
 
 char get_monster_char(character_t *c)
 {
-    char binary_char[4] = {'0'+(char)c->monster->erratic,
-                           '0'+(char)c->monster->tunneling,
-                           '0'+(char)c->monster->telepath,
-                           '0'+(char)c->monster->intelligent};
+    char binary_char[4] = {(char)('0'+(char)c->monster->erratic),
+                           (char)('0'+(char)c->monster->tunneling),
+                           (char)('0'+(char)c->monster->telepath),
+                           (char)('0'+(char)c->monster->intelligent)};
 
     int binary = atoi(binary_char),decimal = 0,base = 1,rem;
     while (binary > 0){
@@ -121,9 +121,9 @@ int gen_monsters(dungeon_t *d)
 {
     for(int i = 1; i <= d->num_monsters; i++)
     {
-        d->characters[i] = malloc(sizeof(character_t));
+        d->characters[i] = (character_t*)malloc(sizeof(character_t));
         d->characters[i]->living = 1;
-        d->characters[i]->monster = malloc (sizeof(monster_t));
+        d->characters[i]->monster = (monster_t*)malloc (sizeof(monster_t));
 
         d->characters[i]->monster->intelligent = rand() % 2;
         d->characters[i]->monster->telepath = rand() % 2;
@@ -140,7 +140,7 @@ int gen_monsters(dungeon_t *d)
     }
     int pcRoomNum;
     int totalArea = 0;
-    for(int i = 0; i < d->num_rooms; ++i)
+    for(uint32_t i = 0; i < d->num_rooms; ++i)
     {
         if (in_room(d->rooms[i],d->pc)){
             pcRoomNum = i;
