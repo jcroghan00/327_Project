@@ -614,10 +614,12 @@ int gen_dungeon(Dungeon *d)
     make_rooms(d);
   } while (place_rooms(d));
   connect_rooms(d);
+  initPcMap(d);
   place_stairs(d);
   define_characters(d);
   config_pc(d);
   gen_monsters(d);
+  updatePcMap(d);
   d->windows = (Windows*)malloc(sizeof(Windows));
   create_windows(d);
   return 0;
@@ -863,6 +865,7 @@ void render_tun_dist_map(Dungeon *d){
 }
 /* A copy of the above code but using ncurses as of
  * assignment 1.05 */
+/*
 void render_ncurses(Dungeon *d)
 {
     start_color();
@@ -893,6 +896,77 @@ void render_ncurses(Dungeon *d)
             }
             else {
                 switch (mappair(p)) {
+                    case ter_wall:
+                    case ter_wall_immutable:
+                        mvaddch(p[dim_y] + 1, p[dim_x],' ');
+                        break;
+                    case ter_floor:
+                    case ter_floor_room:
+                        attron(COLOR_PAIR(FLOOR_PAIR));
+                        mvaddch(p[dim_y] + 1, p[dim_x],'.');
+                        attroff(COLOR_PAIR(FLOOR_PAIR));
+                        break;
+                    case ter_floor_hall:
+                        attron(COLOR_PAIR(FLOOR_PAIR));
+                        mvaddch(p[dim_y] + 1, p[dim_x],'#');
+                        attroff(COLOR_PAIR(FLOOR_PAIR));
+                        break;
+                    case ter_debug:
+                        mvaddch(p[dim_y] + 1, p[dim_x],'*');
+                        //fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
+                        break;
+                    case ter_stairs_up:
+                        attron(COLOR_PAIR(STAIR_PAIR));
+                        mvaddch(p[dim_y] + 1, p[dim_x],'<');
+                        attroff(COLOR_PAIR(STAIR_PAIR));
+                        break;
+                    case ter_stairs_down:
+                        attron(COLOR_PAIR(STAIR_PAIR));
+                        mvaddch(p[dim_y] + 1, p[dim_x],'>');
+                        attroff(COLOR_PAIR(STAIR_PAIR));
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+}
+*/
+
+void render_ncurses(Dungeon *d)
+{
+    start_color();
+    init_pair(HARD_WALL_PAIR, COLOR_YELLOW, COLOR_YELLOW);
+    init_pair(SOFT_WALL_PAIR, COLOR_GREEN, COLOR_GREEN);
+    init_pair(IMMUTABLE_WALL_PAIR, COLOR_BLUE, COLOR_BLUE);
+    init_pair(FLOOR_PAIR, COLOR_WHITE, COLOR_BLACK);
+    init_pair(STAIR_PAIR, COLOR_CYAN, COLOR_BLACK);
+    init_pair(PLAYER_PAIR, COLOR_MAGENTA, COLOR_BLACK);
+    init_pair(MONSTER_PAIR, COLOR_RED, COLOR_BLACK);
+
+    pair_t p;
+    for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
+        for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
+            if (character_mappair(p))
+            {
+                if(character_mappair(p)->display_char == '@')
+                {
+                    attron(COLOR_PAIR(PLAYER_PAIR));
+                    mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->display_char));
+                    attroff(COLOR_PAIR(PLAYER_PAIR));
+                }
+                else if(character_mappair(p)->pos[dim_x] >= d->pc->pos[dim_x] - 2 &&
+                        character_mappair(p)->pos[dim_x] <= d->pc->pos[dim_x] + 2 &&
+                        character_mappair(p)->pos[dim_y] >= d->pc->pos[dim_y] - 2 &&
+                        character_mappair(p)->pos[dim_y] <= d->pc->pos[dim_y] + 2){
+                    attron(COLOR_PAIR(MONSTER_PAIR));
+                    mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->display_char));
+                    attroff(COLOR_PAIR(MONSTER_PAIR));
+                }
+            }
+            else {
+                switch (pcmappair(p)) {
                     case ter_wall:
                     case ter_wall_immutable:
                         mvaddch(p[dim_y] + 1, p[dim_x],' ');

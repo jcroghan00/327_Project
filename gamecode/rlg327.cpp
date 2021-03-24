@@ -61,7 +61,7 @@ const char *tombstone =
 
 const char* msg = "Game Over! Press \'Q\' to Quit or \'R\' to restart!";
 
-int play_game(Dungeon *d, heap_t *h);
+void play_game(Dungeon *d, heap_t *h);
 
 void end_game(Dungeon *d, heap_t *h){
     WINDOW *game_win = d->windows->game_ending_win;
@@ -92,7 +92,7 @@ void end_game(Dungeon *d, heap_t *h){
     }
 }
 
-int play_game(Dungeon *d, heap_t *h)
+void play_game(Dungeon *d, heap_t *h)
 {
     for(int i = 0; i < d->num_monsters+1; i++)
     {
@@ -125,7 +125,6 @@ int play_game(Dungeon *d, heap_t *h)
         }
     }
     end_game(d, h);
-    return 0;
 }
 
 int main(int argc, char *argv[])
@@ -172,17 +171,19 @@ int main(int argc, char *argv[])
 
     heap_t h;
     heap_init(&h,character_cmp,NULL);
-    int won = play_game(&d, &h);
+    play_game(&d, &h);
 
     endwin();
 
     delete_dungeon(&d, &h);
 
+    /*
     if (won){
         printf("%s", victory);
     } else {
         printf("%s", tombstone);
     }
+     */
     return 0;
 
 }
