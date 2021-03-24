@@ -86,6 +86,7 @@ public:
   terrain_type_t map[DUNGEON_Y][DUNGEON_X];
   Character *character_map[DUNGEON_Y][DUNGEON_X];
   uint8_t hardness[DUNGEON_Y][DUNGEON_X];
+  uint8_t pcMap[DUNGEON_Y][DUNGEON_X];
   Character *pc;
   int num_monsters;
   Monster_Path non_tun_path[DUNGEON_Y][DUNGEON_X];
