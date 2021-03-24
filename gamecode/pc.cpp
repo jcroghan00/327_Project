@@ -58,7 +58,7 @@ void rand_pc_move(Dungeon *d){
     character_mapxy(d->pc->pos[dim_x],d->pc->pos[dim_y]) = d->pc;
     character_mapxy(x, y) = NULL;
 
-    updatePcMap(d);
+    update_pc_map(d);
 
 
 }
@@ -180,7 +180,7 @@ void teleport(Dungeon *d){
             break;  
         case 'r':
             rand_pc_move(d);
-            updatePcMap(d);
+            update_pc_map(d);
             move = 1;
         case 'g':
             updateTargetPc(d, x, y);
@@ -205,7 +205,7 @@ void teleport(Dungeon *d){
         y = y + dy;
     }
     clear();
-        updatePcMap(d);
+        update_pc_map(d);
         d->fow = 1;
         render(d);
 
