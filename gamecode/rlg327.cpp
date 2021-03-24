@@ -109,7 +109,7 @@ void play_game(Dungeon *d, heap_t *h)
             if (c->sd == 0) {
                 move_pc_ncurses(d, h);
                 // pc_next_pos(d);
-                render_ncurses(d);
+                render(d);
                 refresh(); /* Print it on to the real screen */
                 usleep(250000);
             }
@@ -120,7 +120,7 @@ void play_game(Dungeon *d, heap_t *h)
             heap_insert(h, c);
 
             usleep(2500); // you cant see the monsters' steps otherwise
-            render_ncurses(d);
+            render(d);
             refresh();
         }
     }
@@ -167,7 +167,7 @@ int main(int argc, char *argv[])
         save_dungeon(&d);
     }
 
-    render_ncurses(&d);
+    render(&d);
 
     heap_t h;
     heap_init(&h,character_cmp,NULL);

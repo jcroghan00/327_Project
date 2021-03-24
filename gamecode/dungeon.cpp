@@ -622,6 +622,7 @@ int gen_dungeon(Dungeon *d)
   updatePcMap(d);
   d->windows = (Windows*)malloc(sizeof(Windows));
   create_windows(d);
+  d->fow = 1;
   return 0;
 }
 
@@ -865,7 +866,6 @@ void render_tun_dist_map(Dungeon *d){
 }
 /* A copy of the above code but using ncurses as of
  * assignment 1.05 */
-/*
 void render_ncurses(Dungeon *d)
 {
     start_color();
@@ -932,9 +932,8 @@ void render_ncurses(Dungeon *d)
         }
     }
 }
-*/
 
-void render_ncurses(Dungeon *d)
+void render_fow(Dungeon *d)
 {
     start_color();
     init_pair(HARD_WALL_PAIR, COLOR_YELLOW, COLOR_YELLOW);
@@ -964,8 +963,12 @@ void render_ncurses(Dungeon *d)
                     mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->display_char));
                     attroff(COLOR_PAIR(MONSTER_PAIR));
                 }
+                else{
+                    goto switch_statement;
+                }
             }
             else {
+                switch_statement:
                 switch (pcmappair(p)) {
                     case ter_wall:
                     case ter_wall_immutable:
@@ -1001,6 +1004,16 @@ void render_ncurses(Dungeon *d)
                 }
             }
         }
+    }
+}
+
+void render(Dungeon *d)
+{
+    if(d->fow){
+        render_fow(d);
+    }
+    else{
+        render_ncurses(d);
     }
 }
 

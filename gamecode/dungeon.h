@@ -93,6 +93,7 @@ public:
   Monster_Path non_tun_path[DUNGEON_Y][DUNGEON_X];
   Monster_Path tun_path[DUNGEON_Y][DUNGEON_X];
   Windows *windows;
+  int fow;
 };
 
 uint32_t in_room(Room r, Character *c);
@@ -103,7 +104,7 @@ void render_terrain_map(Dungeon *d);
 void render_hardness_map(Dungeon *d);
 void render_dist_map(Dungeon *d);
 void render_tun_dist_map(Dungeon *d);
-void render_ncurses(Dungeon *d);
+void render(Dungeon *d);
 void delete_dungeon(Dungeon *d, heap_t *h);
 int load_dungeon(Dungeon *d);
 void init_dungeon(Dungeon *d);

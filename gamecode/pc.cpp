@@ -21,21 +21,7 @@ void initPcMap(Dungeon *d){
 void updatePcMap(Dungeon *d){
     int x = d->pc->pos[dim_x];
     int y = d->pc->pos[dim_y];
-    mvprintw(0, 0, "%d %d", x, y);
-    /*
-    for(int i = y-2; i <= y + 2; i++){
-        for(int j = x-2; j < x+2; j++){
-            if(i < 0 || i >= DUNGEON_Y || j < 0 || j>= DUNGEON_X){
-                continue;
-            }
-            else{
-                if(d->pcMap[i][j] == 0){
-                    d->pcMap[i][j] = 1;
-                }S
-            }
-        }
-    }
-     */
+
     for(int i = -2; i <= 2; ++i){
         for(int j = -2; j <= 2; ++j){
             if((x + i >= 0 && x + i < DUNGEON_X) && (y + j >= 0 && y + j < DUNGEON_Y)){
@@ -96,7 +82,7 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
     int val  = wgetch(stdscr);
 
     clear();
-    render_ncurses(d);
+    render(d);
     refresh();
 
     switch (val)
@@ -196,7 +182,19 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
 
             //TODO Toggle fog-of-war
         case 'f':
-            mvprintw(0, 0, "Invalid Key!");
+            clear();
+            if(d->fow){
+                mvprintw(0, 0, "Fog-of-war off!");
+                d->fow = 0;
+            }
+            else{
+                mvprintw(0, 0, "Fog-of-war on!");
+                d->fow = 1;
+            }
+
+            render(d);
+            refresh();
+
             move_pc_ncurses(d, h);
             break;
 
@@ -295,6 +293,6 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
             move_pc_ncurses(d, h);
             break;
     }
-    render_ncurses(d);
+    render(d);
     refresh();
 }
