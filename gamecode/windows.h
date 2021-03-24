@@ -3,15 +3,15 @@
 
 #include <ncurses.h>
 
-typedef struct windows {
+class Windows {
+public:
     WINDOW *monster_list_win;
     WINDOW *terrain_map_win;
     WINDOW *hardness_map_win;
     WINDOW *dist_map_win;
     WINDOW *tun_dist_map_win;
     WINDOW *game_ending_win;
+};
 
-} windows_t;
-
-void create_windows(dungeon_t *d);
+void create_windows(Dungeon *d);
 #endif

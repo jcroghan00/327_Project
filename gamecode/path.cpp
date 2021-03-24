@@ -4,15 +4,15 @@
 #include "character.h"
 
 static int32_t monster_path_cmp(const void *key, const void *with) {
-    return ((monster_path_t *) key)->cost - ((monster_path_t *) with)->cost;
+    return ((Monster_Path *) key)->cost - ((Monster_Path *) with)->cost;
 }
 int32_t corridor_path_cmp(const void *key, const void *with) {
-    return ((corridor_path_t *) key)->cost - ((corridor_path_t *) with)->cost;
+    return ((Corridor_Path *) key)->cost - ((Corridor_Path *) with)->cost;
 }
 
-void dijkstra_non_tunneling(dungeon_t *d)
+void dijkstra_non_tunneling(Dungeon *d)
 {
-    static monster_path_t *p;
+    static Monster_Path *p;
     static uint32_t initialized = 0;
     heap_t h;
     uint32_t x, y;
@@ -50,7 +50,7 @@ void dijkstra_non_tunneling(dungeon_t *d)
         }
     }
 
-    while ((p = (monster_path_t*)heap_remove_min(&h))) {
+    while ((p = (Monster_Path*)heap_remove_min(&h))) {
         p->hn = NULL;
 
         for(int i = -1; i <= 1; ++i){
@@ -68,9 +68,9 @@ void dijkstra_non_tunneling(dungeon_t *d)
     }
 }
 
-void dijkstra_tunneling(dungeon_t *d)
+void dijkstra_tunneling(Dungeon *d)
 {
-    static monster_path_t *p;
+    static Monster_Path *p;
     static uint32_t initialized = 0;
     heap_t h;
     uint32_t x, y;
@@ -107,7 +107,7 @@ void dijkstra_tunneling(dungeon_t *d)
         }
     }
 
-    while ((p = (monster_path_t*)heap_remove_min(&h))) {
+    while ((p = (Monster_Path*)heap_remove_min(&h))) {
         p->hn = NULL;
 
 

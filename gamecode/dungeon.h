@@ -29,12 +29,14 @@
 #define SAVE_FILE              "dungeon"
 #define FILE_VERSION           5
 
- typedef struct character character_t;
- typedef struct heap heap_t;
- typedef struct heap_node heap_node_t;
- typedef struct monster monster_t;
- typedef struct pc pc_t;
-typedef struct windows windows_t;
+ class Character;
+ class Monster;
+ class Pc;
+ class Windows;
+
+typedef struct heap heap_t;
+typedef struct heap_node heap_node_t;
+
 
 #define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
 #define mapxy(x, y) (d->map[y][x])
@@ -56,50 +58,54 @@ typedef enum __attribute__ ((__packed__)) terrain_type {
   ter_stairs_down
 } terrain_type_t;
 
-typedef struct room {
+class Room {
+public:
   pair_t position;
   pair_t size;
-} room_t;
+};
 
-typedef struct stair{
+class Stair{
+public:
   pair_t position;
   terrain_type_t direction;
-}stair_t;
+};
 
-typedef struct monster_path {
+class Monster_Path {
+public:
     heap_node_t *hn;
     uint8_t pos[2];
     uint32_t cost;
-} monster_path_t;
+};
 
-typedef struct dungeon {
+class Dungeon {
+public:
   uint32_t num_rooms;
-  room_t *rooms;
-  character_t **characters;
-  stair_t *stairs;
+  Room *rooms;
+  Character **characters;
+  Stair *stairs;
   terrain_type_t map[DUNGEON_Y][DUNGEON_X];
-  character_t *character_map[DUNGEON_Y][DUNGEON_X];
+  Character *character_map[DUNGEON_Y][DUNGEON_X];
   uint8_t hardness[DUNGEON_Y][DUNGEON_X];
-  character_t *pc;
+  Character *pc;
   int num_monsters;
-  monster_path_t non_tun_path[DUNGEON_Y][DUNGEON_X];
-  monster_path_t tun_path[DUNGEON_Y][DUNGEON_X];
-  windows_t *windows;
-} dungeon_t;
+  Monster_Path non_tun_path[DUNGEON_Y][DUNGEON_X];
+  Monster_Path tun_path[DUNGEON_Y][DUNGEON_X];
+  Windows *windows;
+};
 
-uint32_t in_room(room_t r, character_t *c);
-uint32_t is_open_space(dungeon_t *d, int16_t y, int16_t x);
-int gen_dungeon(dungeon_t *d);
-void render_dungeon(dungeon_t *d);
-void render_terrain_map(dungeon_t *d);
-void render_hardness_map(dungeon_t *d);
-void render_dist_map(dungeon_t *d);
-void render_tun_dist_map(dungeon_t *d);
-void render_ncurses(dungeon_t *d);
-void delete_dungeon(dungeon_t *d, heap_t *h);
-int load_dungeon(dungeon_t *d);
-void init_dungeon(dungeon_t *d);
-int save_dungeon(dungeon_t *d);
-void new_dungeon(dungeon_t *d, heap_t *h);
+uint32_t in_room(Room r, Character *c);
+uint32_t is_open_space(Dungeon *d, int16_t y, int16_t x);
+int gen_dungeon(Dungeon *d);
+void render_dungeon(Dungeon *d);
+void render_terrain_map(Dungeon *d);
+void render_hardness_map(Dungeon *d);
+void render_dist_map(Dungeon *d);
+void render_tun_dist_map(Dungeon *d);
+void render_ncurses(Dungeon *d);
+void delete_dungeon(Dungeon *d, heap_t *h);
+int load_dungeon(Dungeon *d);
+void init_dungeon(Dungeon *d);
+int save_dungeon(Dungeon *d);
+void new_dungeon(Dungeon *d, heap_t *h);
 
 #endif

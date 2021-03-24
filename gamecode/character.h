@@ -4,22 +4,24 @@
 #include <stdint.h>
 #include "dim.h"
 
-typedef struct dungeon dungeon_t;
-typedef struct pc pc_t;
-typedef struct monster monster_t;
-typedef struct character {
+class Dungeon;
+class Pc;
+class Monster;
+
+class Character {
+public:
     char display_char;
     pair_t pos;
-    pc_t *pc;
-    monster_t *monster;
+    Pc *pc;
+    Monster *monster;
     uint32_t turn;
     uint32_t sd;
     int living;
     uint32_t speed;
-}character_t;
+};
 
-void define_characters(dungeon_t *d);
+void define_characters(Dungeon *d);
 int32_t character_cmp(const void *key, const void *with);
-void delete_characters(character_t **c, dungeon_t *d);
+void delete_characters(Character **c, Dungeon *d);
 
 #endif

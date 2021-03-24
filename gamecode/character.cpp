@@ -1,22 +1,22 @@
 #include "character.h"
 #include "dungeon.h"
 
-void define_characters(dungeon_t *d)
+void define_characters(Dungeon *d)
 {
     if (d->num_monsters == -1) {d->num_monsters = d->num_rooms * 2 < 50 ? d->num_rooms * 2 : 50;}
-    d->characters = (character_t**)calloc((d->num_monsters+1),sizeof(character_t) * (d->num_monsters + 1));
+    d->characters = (Character**)calloc((d->num_monsters+1),sizeof(Character) * (d->num_monsters + 1));
 }
 
 int32_t character_cmp(const void *key, const void *with) {
-    if (((character_t *) key)->turn != ((character_t *) with)->turn){
-        return ((character_t *) key)->turn - ((character_t *) with)->turn;
+    if (((Character *) key)->turn != ((Character *) with)->turn){
+        return ((Character *) key)->turn - ((Character *) with)->turn;
     }
     else{
-        return ((character_t *) key)->sd - ((character_t *) with)->sd;
+        return ((Character *) key)->sd - ((Character *) with)->sd;
     }
 }
 
-void delete_characters(character_t **c, dungeon_t *d)
+void delete_characters(Character **c, Dungeon *d)
 {
     character_mappair(c[0]->pos) = NULL;
     free(c[0]);

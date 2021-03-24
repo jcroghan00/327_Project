@@ -5,12 +5,12 @@
 #include "monster.h"
 typedef struct heap heap_t;
 
-int pc_is_alive(dungeon_t *d)
+int pc_is_alive(Dungeon *d)
 {
     return d->pc->living;
 }
 
-void place_pc(dungeon_t *d)
+void place_pc(Dungeon *d)
 {
     int randRoom = rand() % d->num_rooms;
     int x = rand() % d->rooms[randRoom].size[dim_x];
@@ -22,9 +22,9 @@ void place_pc(dungeon_t *d)
     d->pc->living = 1;
 }
 
-void config_pc(dungeon_t *d)
+void config_pc(Dungeon *d)
 {
-    d->pc = (character_t*)malloc(sizeof(character_t));
+    d->pc = (Character*)malloc(sizeof(Character));
     d->pc->display_char = '@';
     d->pc->living = 1;
     d->pc->speed = PC_SPEED;
@@ -32,9 +32,9 @@ void config_pc(dungeon_t *d)
     d->characters[0] = d->pc;
 }
 
-void move_pc_ncurses(dungeon_t *d, heap_t *h);
+void move_pc_ncurses(Dungeon *d, heap_t *h);
 
-int move_pc(dungeon_t *d, heap_t *h, int dy, int dx){
+int move_pc(Dungeon *d, heap_t *h, int dy, int dx){
 
     if(d->map[d->pc->pos[dim_y] + dy][d->pc->pos[dim_x] + dx] < ter_floor){
         mvprintw(0, 0, "There's a wall there!");
@@ -53,7 +53,7 @@ int move_pc(dungeon_t *d, heap_t *h, int dy, int dx){
     return 0;
 }
 
-void move_pc_ncurses(dungeon_t *d, heap_t *h)
+void move_pc_ncurses(Dungeon *d, heap_t *h)
 {
     int val  = wgetch(stdscr);
 

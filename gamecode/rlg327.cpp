@@ -61,9 +61,9 @@ const char *tombstone =
 
 const char* msg = "Game Over! Press \'Q\' to Quit or \'R\' to restart!";
 
-int play_game(dungeon_t *d, heap_t *h);
+int play_game(Dungeon *d, heap_t *h);
 
-void end_game(dungeon_t *d, heap_t *h){
+void end_game(Dungeon *d, heap_t *h){
     WINDOW *game_win = d->windows->game_ending_win;
     if (d->pc->living){
         wprintw(game_win,victory);
@@ -92,7 +92,7 @@ void end_game(dungeon_t *d, heap_t *h){
     }
 }
 
-int play_game(dungeon_t *d, heap_t *h)
+int play_game(Dungeon *d, heap_t *h)
 {
     for(int i = 0; i < d->num_monsters+1; i++)
     {
@@ -100,11 +100,11 @@ int play_game(dungeon_t *d, heap_t *h)
         d->characters[i]->sd = i;
         heap_insert(h,d->characters[i]);
     }
-    character_t *c;
+    Character *c;
     while(pc_is_alive(d))
     {
         if (!d->num_monsters){break;}
-        c = (character_t*)heap_remove_min(h);
+        c = (Character*)heap_remove_min(h);
         if (c->living){
             if (c->sd == 0) {
                 move_pc_ncurses(d, h);
@@ -130,7 +130,7 @@ int play_game(dungeon_t *d, heap_t *h)
 
 int main(int argc, char *argv[])
 {
-    dungeon_t d = { .num_monsters = -1};
+    Dungeon d = { .num_monsters = -1};
     struct timeval tv;
     uint32_t seed = 0;
 

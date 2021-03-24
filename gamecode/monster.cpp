@@ -7,7 +7,7 @@
 #include "character.h"
 #include "windows.h"
 
-void write_monster_list(dungeon_t *d, int index){
+void write_monster_list(Dungeon *d, int index){
     #define win d->windows->monster_list_win
 
     wclear(win);
@@ -42,7 +42,7 @@ void write_monster_list(dungeon_t *d, int index){
     wrefresh(win);
 }
 
-void monster_list(dungeon_t*d) {
+void monster_list(Dungeon *d) {
 
     int index = 1;
     write_monster_list(d,index);
@@ -77,7 +77,7 @@ void monster_list(dungeon_t*d) {
     }
 }
 
-void get_monster_path(character_t *c, dungeon_t *d)
+void get_monster_path(Character *c, Dungeon *d)
 {
     int x,y;
     if (c->monster->tunneling) {
@@ -95,7 +95,7 @@ void get_monster_path(character_t *c, dungeon_t *d)
     }
 }
 
-char get_monster_char(character_t *c)
+char get_monster_char(Character *c)
 {
     char binary_char[4] = {(char)('0'+(char)c->monster->erratic),
                            (char)('0'+(char)c->monster->tunneling),
@@ -117,13 +117,13 @@ char get_monster_char(character_t *c)
     }
 }
 
-int gen_monsters(dungeon_t *d)
+int gen_monsters(Dungeon *d)
 {
     for(int i = 1; i <= d->num_monsters; i++)
     {
-        d->characters[i] = (character_t*)malloc(sizeof(character_t));
+        d->characters[i] = (Character*)malloc(sizeof(Character));
         d->characters[i]->living = 1;
-        d->characters[i]->monster = (monster_t*)malloc (sizeof(monster_t));
+        d->characters[i]->monster = (Monster*)malloc (sizeof(Monster));
 
         d->characters[i]->monster->intelligent = rand() % 2;
         d->characters[i]->monster->telepath = rand() % 2;
@@ -173,7 +173,7 @@ int gen_monsters(dungeon_t *d)
     return 0;
 }
 
-void move_line(dungeon_t *d, character_t *c, dif_t *dif)
+void move_line(Dungeon *d, Character *c, Dif *dif)
 {
     if(c->pos[dim_x] < c->monster->pc_last_loc[dim_x]){
         dif->x = 1;
@@ -206,7 +206,7 @@ void move_line(dungeon_t *d, character_t *c, dif_t *dif)
     }
 }
 
-void final_move(character_t *c, dungeon_t *d,int dx,int dy)
+void final_move(Character *c, Dungeon *d,int dx,int dy)
 {
     //set current space to null
     d->character_map[c->pos[dim_y]][c->pos[dim_x]] = NULL;
@@ -220,7 +220,7 @@ void final_move(character_t *c, dungeon_t *d,int dx,int dy)
     d->character_map[c->pos[dim_y]][c->pos[dim_x]] = c;
 }
 
-void tun_rock_check(dungeon_t *d, character_t *c, int *dx, int *dy){
+void tun_rock_check(Dungeon *d, Character *c, int *dx, int *dy){
     if (d->map[c->pos[dim_y]+*dy][c->pos[dim_x]+*dx] == ter_wall){
         if (c->monster->tunneling) {
             int hardness = (hardnessxy(c->pos[dim_x] + *dx, c->pos[dim_y] + *dy)) - 85;
@@ -236,7 +236,7 @@ void tun_rock_check(dungeon_t *d, character_t *c, int *dx, int *dy){
     }
 }
 //needs to be cleaned up
-void erratic_move(character_t *c,dungeon_t *d){
+void erratic_move(Character *c,Dungeon *d){
     int moved = 0,counter = 0,dx,dy;
     while(!moved) {
         if (counter > 500) {return;} //if it cant find a move, give up
@@ -258,11 +258,11 @@ void erratic_move(character_t *c,dungeon_t *d){
     }
 }
 
-void move_monster(character_t *c, dungeon_t *d)
+void move_monster(Character *c, Dungeon *d)
 {
     int sees_player = 0,dx = 0,dy = 0;
 
-    dif_t dif;
+    Dif dif;
     dif.x = 0;
     dif.y = 0;
     // 50% that if a monster is erratic it make an erratic move
@@ -314,7 +314,7 @@ void move_monster(character_t *c, dungeon_t *d)
     }
 }
 
-int bresenham_LOS(dungeon_t *d,character_t *c)
+int bresenham_LOS(Dungeon *d,Character *c)
 {
     int x0 = c->pos[dim_x];
     int y0 = c->pos[dim_y];
@@ -349,7 +349,7 @@ int bresenham_LOS(dungeon_t *d,character_t *c)
     }
 }
 
-void bresenham_move(dungeon_t *d,character_t *c, dif_t *dif)
+void bresenham_move(Dungeon *d,Character *c, Dif *dif)
 {
     int x0 = c->pos[dim_x];
     int y0 = c->pos[dim_y];

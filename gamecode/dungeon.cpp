@@ -31,7 +31,7 @@
   _tmp;                        \
 })
 
-uint32_t in_room(room_t r, character_t *c)
+uint32_t in_room(Room r, Character *c)
 {
     if(c->pos[dim_x] >= r.position[dim_x] && c->pos[dim_x] < r.position[dim_x] + r.size[dim_x]
        && c->pos[dim_y] >= r.position[dim_y] && c->pos[dim_y] < r.position[dim_y] + r.size[dim_y])
@@ -41,7 +41,7 @@ uint32_t in_room(room_t r, character_t *c)
     return 0;
 }
 
-static uint32_t adjacent_to_room(dungeon_t *d, int16_t y, int16_t x)
+static uint32_t adjacent_to_room(Dungeon *d, int16_t y, int16_t x)
 {
   return (mapxy(x - 1, y) == ter_floor_room ||
           mapxy(x + 1, y) == ter_floor_room ||
@@ -49,12 +49,12 @@ static uint32_t adjacent_to_room(dungeon_t *d, int16_t y, int16_t x)
           mapxy(x, y + 1) == ter_floor_room);
 }
 
-uint32_t is_open_space(dungeon_t *d, int16_t y, int16_t x){return !hardnessxy(x, y);}
+uint32_t is_open_space(Dungeon *d, int16_t y, int16_t x){return !hardnessxy(x, y);}
 
 
-static void dijkstra_corridor(dungeon_t *d, pair_t from, pair_t to)
+static void dijkstra_corridor(Dungeon *d, pair_t from, pair_t to)
 {
-  static corridor_path_t path[DUNGEON_Y][DUNGEON_X], *p;
+  static Corridor_Path path[DUNGEON_Y][DUNGEON_X], *p;
   static uint32_t initialized = 0;
   heap_t h;
   uint32_t x, y;
@@ -89,7 +89,7 @@ static void dijkstra_corridor(dungeon_t *d, pair_t from, pair_t to)
     }
   }
 
-  while ((p = (corridor_path_t*)heap_remove_min(&h))) {
+  while ((p = (Corridor_Path*)heap_remove_min(&h))) {
     p->hn = NULL;
 
     if ((p->pos[dim_y] == to[dim_y]) && p->pos[dim_x] == to[dim_x]) {
@@ -151,9 +151,9 @@ static void dijkstra_corridor(dungeon_t *d, pair_t from, pair_t to)
 /* This is a cut-and-paste of the above.  The code is modified to  *
  * calculate paths based on inverse hardnesses so that we get a    *
  * high probability of creating at least one cycle in the dungeon. */
-static void dijkstra_corridor_inv(dungeon_t *d, pair_t from, pair_t to)
+static void dijkstra_corridor_inv(Dungeon *d, pair_t from, pair_t to)
 {
-  static corridor_path_t path[DUNGEON_Y][DUNGEON_X], *p;
+  static Corridor_Path path[DUNGEON_Y][DUNGEON_X], *p;
   static uint32_t initialized = 0;
   heap_t h;
   uint32_t x, y;
@@ -188,7 +188,7 @@ static void dijkstra_corridor_inv(dungeon_t *d, pair_t from, pair_t to)
     }
   }
 
-  while ((p = (corridor_path_t*)heap_remove_min(&h))) {
+  while ((p = (Corridor_Path*)heap_remove_min(&h))) {
     p->hn = NULL;
 
     if ((p->pos[dim_y] == to[dim_y]) && p->pos[dim_x] == to[dim_x]) {
@@ -254,7 +254,7 @@ static void dijkstra_corridor_inv(dungeon_t *d, pair_t from, pair_t to)
 /* Chooses a random point inside each room and connects them with a *
  * corridor.  Random internal points prevent corridors from exiting *
  * rooms in predictable locations.                                  */
-static int connect_two_rooms(dungeon_t *d, room_t *r1, room_t *r2)
+static int connect_two_rooms(Dungeon *d, Room *r1, Room *r2)
 {
   pair_t e1, e2;
 
@@ -273,7 +273,7 @@ static int connect_two_rooms(dungeon_t *d, room_t *r1, room_t *r2)
   return 0;
 }
 
-static int create_cycle(dungeon_t *d)
+static int create_cycle(Dungeon *d)
 {
   /* Find the (approximately) farthest two rooms, then connect *
    * them by the shortest path using inverted hardnesses.      */
@@ -315,7 +315,7 @@ static int create_cycle(dungeon_t *d)
   return 0;
 }
 
-static int connect_rooms(dungeon_t *d)
+static int connect_rooms(Dungeon *d)
 {
   uint32_t i;
 
@@ -341,7 +341,7 @@ typedef struct queue_node {
   struct queue_node *next;
 } queue_node_t;
 
-static int smooth_hardness(dungeon_t *d)
+static int smooth_hardness(Dungeon *d)
 {
   int32_t i, x, y;
   int32_t s, t, p, q;
@@ -495,7 +495,7 @@ static int smooth_hardness(dungeon_t *d)
   return 0;
 }
 
-static int empty_dungeon(dungeon_t *d)
+static int empty_dungeon(Dungeon *d)
 {
   uint8_t x, y;
 
@@ -513,12 +513,12 @@ static int empty_dungeon(dungeon_t *d)
   return 0;
 }
 
-static int place_rooms(dungeon_t *d)
+static int place_rooms(Dungeon *d)
 {
   pair_t p;
   uint32_t i;
   int success;
-  room_t *r;
+  Room *r;
 
   for (success = 0; !success; ) {
     success = 1;
@@ -550,13 +550,13 @@ static int place_rooms(dungeon_t *d)
   return 0;
 }
 
-static void place_stairs(dungeon_t *d)
+static void place_stairs(Dungeon *d)
 {
   pair_t p;
   int i = 0;
-  stair_t *s;
+  Stair *s;
   uint16_t stairs_up = rand() % 3 + 1, stairs_down = rand() % 3 + 1;
-  d->stairs = (stair_t*)malloc((stairs_up+stairs_down)*sizeof(stair_t));
+  d->stairs = (Stair*)malloc((stairs_up+stairs_down)*sizeof(Stair));
   do {
     while ((p[dim_y] = rand_range(1, DUNGEON_Y - 2)) &&
            (p[dim_x] = rand_range(1, DUNGEON_X - 2)) &&
@@ -583,14 +583,14 @@ static void place_stairs(dungeon_t *d)
   } while (i < stairs_up + stairs_down);
 }
 
-static int make_rooms(dungeon_t *d)
+static int make_rooms(Dungeon *d)
 {
   uint32_t i;
 
   for (i = MIN_ROOMS; i < MAX_ROOMS && rand_under(5, 8); i++)
     ;
   d->num_rooms = i;
-  d->rooms = (room_t*)malloc(sizeof (*d->rooms) * d->num_rooms);
+  d->rooms = (Room*)malloc(sizeof (*d->rooms) * d->num_rooms);
 
   for (i = 0; i < d->num_rooms; i++) {
     d->rooms[i].size[dim_x] = ROOM_MIN_X;
@@ -606,7 +606,7 @@ static int make_rooms(dungeon_t *d)
   return 0;
 }
 
-int gen_dungeon(dungeon_t *d)
+int gen_dungeon(Dungeon *d)
 {
   empty_dungeon(d);
 
@@ -618,12 +618,12 @@ int gen_dungeon(dungeon_t *d)
   define_characters(d);
   config_pc(d);
   gen_monsters(d);
-  d->windows = (windows_t*)malloc(sizeof(windows_t));
+  d->windows = (Windows*)malloc(sizeof(Windows));
   create_windows(d);
   return 0;
 }
 
-int load_dungeon(dungeon_t *d)
+int load_dungeon(Dungeon *d)
 {
     // NON FUNCTIONING
     uint32_t version, file_size;
@@ -661,7 +661,7 @@ int load_dungeon(dungeon_t *d)
   fread(&d->num_rooms, 2, 1, file);
   d->num_rooms = be16toh(d->num_rooms);
 
-  d->rooms = (room_t*)malloc(sizeof (*d->rooms) * d->num_rooms);
+  d->rooms = (Room*)malloc(sizeof (*d->rooms) * d->num_rooms);
 
   for(uint32_t i = 0; i < d->num_rooms; ++i)
   {
@@ -740,7 +740,7 @@ int load_dungeon(dungeon_t *d)
   return 0;
 }
 
-void render_terrain_map(dungeon_t *d)
+void render_terrain_map(Dungeon *d)
 {
     WINDOW *map_window = d->windows->terrain_map_win;
     pair_t p;
@@ -792,7 +792,7 @@ void render_terrain_map(dungeon_t *d)
 }
 
 //TODO Display hardness map
-void render_hardness_map(dungeon_t *d){
+void render_hardness_map(Dungeon *d){
     WINDOW *map_window = d->windows->terrain_map_win;
     //pair_t p;
     const char *msg = "Hit \"Escape\" to close hardness map";
@@ -815,7 +815,7 @@ void render_hardness_map(dungeon_t *d){
     }
 }
 //TODO Display non tunneling distance map
-void render_dist_map(dungeon_t *d){
+void render_dist_map(Dungeon *d){
     WINDOW *map_window = d->windows->terrain_map_win;
     //pair_t p;
     const char *msg = "Hit \"Escape\" to close distance map";
@@ -838,7 +838,7 @@ void render_dist_map(dungeon_t *d){
     }
 }
 //TODO Display tunneling distance map
-void render_tun_dist_map(dungeon_t *d){
+void render_tun_dist_map(Dungeon *d){
     WINDOW *map_window = d->windows->terrain_map_win;
     //pair_t p;
     const char *msg = "Hit \"Escape\" to close tunneling distance map";
@@ -863,7 +863,7 @@ void render_tun_dist_map(dungeon_t *d){
 }
 /* A copy of the above code but using ncurses as of
  * assignment 1.05 */
-void render_ncurses(dungeon_t *d)
+void render_ncurses(Dungeon *d)
 {
     start_color();
     init_pair(HARD_WALL_PAIR, COLOR_YELLOW, COLOR_YELLOW);
@@ -930,7 +930,7 @@ void render_ncurses(dungeon_t *d)
     }
 }
 
-void delete_dungeon(dungeon_t *d, heap_t *h)
+void delete_dungeon(Dungeon *d, heap_t *h)
 {
     heap_delete(h);
     free(d->rooms);
@@ -938,12 +938,12 @@ void delete_dungeon(dungeon_t *d, heap_t *h)
     free(d->characters);
 }
 
-void init_dungeon(dungeon_t *d)
+void init_dungeon(Dungeon *d)
 {
   empty_dungeon(d);
 }
 
-uint16_t count_up_stairs(dungeon_t *d){
+uint16_t count_up_stairs(Dungeon *d){
     uint16_t x,y, up_stairs = 0;
     for (y = 0; y < DUNGEON_Y; y++) {
         for (x = 0; x < DUNGEON_X; x++) {
@@ -955,7 +955,7 @@ uint16_t count_up_stairs(dungeon_t *d){
     return up_stairs;
 }
 
-uint16_t count_down_stairs(dungeon_t *d){
+uint16_t count_down_stairs(Dungeon *d){
     uint16_t x,y, down_stairs = 0;
     for (y = 0; y < DUNGEON_Y; y++) {
         for (x = 0; x < DUNGEON_X; x++) {
@@ -967,13 +967,13 @@ uint16_t count_down_stairs(dungeon_t *d){
     return down_stairs;
 }
 
-uint32_t calc_file_size(dungeon_t *d){
+uint32_t calc_file_size(Dungeon *d){
     return (1708 + (d->num_rooms * 4) +
             (count_up_stairs(d) * 2)  +
             (count_down_stairs(d) * 2));
 }
 
-int save_dungeon(dungeon_t *d)
+int save_dungeon(Dungeon *d)
 {
     FILE *file;
     uint32_t version, file_size, be32;
@@ -1052,7 +1052,7 @@ int save_dungeon(dungeon_t *d)
   return 0;
 }
 
-void new_dungeon(dungeon_t *d, heap_t *h)
+void new_dungeon(Dungeon *d, heap_t *h)
 {
     delete_dungeon(d, h);
     d->num_monsters = -1;

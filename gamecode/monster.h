@@ -4,7 +4,8 @@
 #include "dungeon.h"
 
 
-typedef struct monster {
+class Monster {
+public:
     /*
      *  Intelligent monsters understand the dungeon layout and move on the shortest path (as
      *  per path finding) toward the PC. Unintelligent monsters move in a straight line toward the PC (which
@@ -35,19 +36,20 @@ typedef struct monster {
      */
     int erratic;
     pair_t pc_last_loc;
-    monster_path_t path_to_pc[DUNGEON_Y][DUNGEON_X];
-} monster_t;
+    Monster_Path path_to_pc[DUNGEON_Y][DUNGEON_X];
+};
 
-typedef struct dif{
+class Dif{
+public:
     int x;
     int y;
-}dif_t;
+};
 
-void monster_list(dungeon_t *d);
-int gen_monsters(dungeon_t *d);
-void move_monster(character_t *c, dungeon_t *d);
-int bresenham_LOS(dungeon_t *d,character_t *c);
-void bresenham_move(dungeon_t *d,character_t *c, dif_t *dif);
+void monster_list(Dungeon *d);
+int gen_monsters(Dungeon *d);
+void move_monster(Character *c, Dungeon *d);
+int bresenham_LOS(Dungeon *d,Character *c);
+void bresenham_move(Dungeon *d,Character *c, Dif *dif);
 
 
 
