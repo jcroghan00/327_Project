@@ -13,25 +13,36 @@ int pc_is_alive(Dungeon *d)
 void initPcMap(Dungeon *d){
     for(int i = 0; i < DUNGEON_Y; i++){
         for(int j = 0; j < DUNGEON_X; j++){
-            d->pcMap[i][j] = 0;
+            d->pcMap[i][j] = ter_wall;
         }
     }
 }
 
 void updatePcMap(Dungeon *d){
-    int x;
-    x = *d->pc[dim_x].pos;
-    int y; 
-    y = *d->pc[dim_y].pos;
+    int x = d->pc->pos[dim_x];
+    int y = d->pc->pos[dim_y];
+    mvprintw(0, 0, "%d %d", x, y);
+    /*
     for(int i = y-2; i <= y + 2; i++){
         for(int j = x-2; j < x+2; j++){
             if(i < 0 || i >= DUNGEON_Y || j < 0 || j>= DUNGEON_X){
-
+                continue;
             }
             else{
-                if(d->pcMap[j][i] == 0){
-                    d->pcMap[j][i] = 1;
-                }
+                if(d->pcMap[i][j] == 0){
+                    d->pcMap[i][j] = 1;
+                }S
+            }
+        }
+    }
+     */
+    for(int i = -2; i <= 2; ++i){
+        for(int j = -2; j <= 2; ++j){
+            if((x + i >= 0 && x + i < DUNGEON_X) && (y + j >= 0 && y + j < DUNGEON_Y)){
+                d->pcMap[y + j][x + i] = d->map[y + j][x + i];
+            }
+            else{
+                continue;
             }
         }
     }
