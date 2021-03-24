@@ -130,11 +130,6 @@ int gen_monsters(Dungeon *d)
         d->characters[i]->monster->tunneling = rand() % 2;
         d->characters[i]->monster->erratic = rand() % 2;
 
-        //d->characters[i]->monster->intelligent = 0;
-        //d->characters[i]->monster->telepath = 1;
-        //d->characters[i]->monster->tunneling = 0;
-        //d->characters[i]->monster->erratic = 1;
-
         d->characters[i]->speed = rand() % 16 + 5;
         d->characters[i]->display_char = get_monster_char(d->characters[i]);
     }
