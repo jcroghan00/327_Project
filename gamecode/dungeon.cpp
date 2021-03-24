@@ -619,7 +619,7 @@ int gen_dungeon(Dungeon *d)
   define_characters(d);
   config_pc(d);
   gen_monsters(d);
-  updatePcMap(d);
+  //updatePcMap(d);
   d->windows = (Windows*)malloc(sizeof(Windows));
   create_windows(d);
   return 0;
@@ -879,7 +879,7 @@ void render_ncurses(Dungeon *d)
     pair_t p;
     for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
         for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-          if(d->pcMap[p[dim_y]][p[dim_x]] == 1){
+          //if(d->pcMap[p[dim_y]][p[dim_x]] == 1){
             if (character_mappair(p))
             {
                 if(character_mappair(p)->display_char == '@')
@@ -929,7 +929,7 @@ void render_ncurses(Dungeon *d)
                         break;
                 }
             }
-        }
+        //}
         }
     }
 }

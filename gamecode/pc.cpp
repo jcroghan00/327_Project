@@ -9,13 +9,15 @@ int pc_is_alive(Dungeon *d)
 {
     return d->pc->living;
 }
+
 void initPcMap(Dungeon *d){
     for(int i = 0; i < DUNGEON_Y; i++){
         for(int j = 0; j < DUNGEON_X; j++){
-            d->pcMap[j][i] = 0;
+            d->pcMap[i][j] = 0;
         }
     }
 }
+
 void updatePcMap(Dungeon *d){
     int x;
     x = *d->pc[dim_x].pos;
