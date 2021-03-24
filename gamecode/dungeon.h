@@ -37,9 +37,9 @@
 typedef struct heap heap_t;
 typedef struct heap_node heap_node_t;
 
-
 #define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
-#define pcmappair(pair) (d->pcMap[pair[dim_y]][pair[dim_x]])
+#define pcmappair(pair) (d->pc_map[pair[dim_y]][pair[dim_x]])
+#define pcmonsterpair(pair) (d->pc_monster_map[pair[dim_y]][pair[dim_x]])
 #define mapxy(x, y) (d->map[y][x])
 #define hardnesspair(pair) (d->hardness[pair[dim_y]][pair[dim_x]])
 #define hardnessxy(x, y) (d->hardness[y][x])
@@ -87,7 +87,7 @@ public:
   terrain_type_t map[DUNGEON_Y][DUNGEON_X];
   Character *character_map[DUNGEON_Y][DUNGEON_X];
   uint8_t hardness[DUNGEON_Y][DUNGEON_X];
-  terrain_type_t pcMap[DUNGEON_Y][DUNGEON_X];
+  terrain_type_t pc_map[DUNGEON_Y][DUNGEON_X];
   Character *pc;
   int num_monsters;
   Monster_Path non_tun_path[DUNGEON_Y][DUNGEON_X];

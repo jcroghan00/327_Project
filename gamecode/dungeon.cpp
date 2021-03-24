@@ -614,12 +614,12 @@ int gen_dungeon(Dungeon *d)
     make_rooms(d);
   } while (place_rooms(d));
   connect_rooms(d);
-  initPcMap(d);
+  init_pc_map(d);
   place_stairs(d);
   define_characters(d);
   config_pc(d);
   gen_monsters(d);
-  updatePcMap(d);
+  update_pc_map(d);
   d->windows = (Windows*)malloc(sizeof(Windows));
   create_windows(d);
   d->fow = 1;
