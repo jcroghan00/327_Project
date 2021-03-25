@@ -11,6 +11,7 @@ public:
     WINDOW *dist_map_win;
     WINDOW *tun_dist_map_win;
     WINDOW *game_ending_win;
+    WINDOW *teleport_win;
 };
 
 void create_windows(Dungeon *d);

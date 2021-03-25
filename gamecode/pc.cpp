@@ -45,35 +45,6 @@ void place_pc(Dungeon *d)
     d->pc->living = 1;
 }
 
-void rand_pc_move(Dungeon *d){
-    int x = d->pc->pos[dim_x];
-    int y = d->pc->pos[dim_y];
-    
-    int randRoom = rand() % d->num_rooms;
-    int dx = rand() % d->rooms[randRoom].size[dim_x];
-    int dy = rand() % d->rooms[randRoom].size[dim_y];
-
-    d->pc->pos[dim_x] = d->rooms[randRoom].position[dim_x] + dx;
-    d->pc->pos[dim_y] = d->rooms[randRoom].position[dim_y] + dy;
-    character_mapxy(d->pc->pos[dim_x],d->pc->pos[dim_y]) = d->pc;
-    character_mapxy(x, y) = NULL;
-
-    update_pc_map(d);
-
-
-}
-
-void updateTargetPc(Dungeon *d, int x, int y){
-    int dx = d->pc->pos[dim_x];
-    int dy = d->pc->pos[dim_y];
-    d->pc->pos[dim_x] = d->pc->pos[dim_x]  + x;
-    d->pc->pos[dim_y] = d->pc->pos[dim_y] + y;
-    character_mapxy(d->pc->pos[dim_x],d->pc->pos[dim_y]) = d->pc;
-    character_mapxy(dx, dy) = NULL;
-}
-
-
-
 void config_pc(Dungeon *d)
 {
     d->pc = (Character*)malloc(sizeof(Character));
@@ -84,13 +55,12 @@ void config_pc(Dungeon *d)
     d->characters[0] = d->pc;
 }
 
-
-
 void move_pc_ncurses(Dungeon *d, heap_t *h);
 
-int move_pc(Dungeon *d, heap_t *h, int dy, int dx){
+int move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
 
-    if(d->map[d->pc->pos[dim_y] + dy][d->pc->pos[dim_x] + dx] < ter_floor){
+    if(d->map[d->pc->pos[dim_y] + dy][d->pc->pos[dim_x] + dx] < ter_floor &&
+    !teleport){
         mvprintw(0, 0, "There's a wall there!");
         move_pc_ncurses(d,h);
         return -1;
@@ -106,109 +76,6 @@ int move_pc(Dungeon *d, heap_t *h, int dy, int dx){
     d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = d->pc;
     update_pc_map(d);
     return 0;
-}
-
-void teleport(Dungeon *d){
-    int move = 0;
-    int dx = 0;
-    int dy = 0;
-    int x = 0;
-    int y = 0;
-
-    while(!move){
-        d->fow = 0;
-        render(d);
-    int val = wgetch(stdscr);
-    switch (val){
-        // Move up-left
-        case KEY_HOME:
-        case '7':
-        case 'y':
-            dy = -1;
-            dx = -1;
-            break;
-            // Move up
-        case KEY_UP:
-        case '8':
-        case 'k':
-            dy = -1;
-            dx = 0;
-            break;
-            // Move up-right
-        case KEY_PPAGE:
-        case '9':
-        case 'u':
-            dy = -1;
-            dx = 1;
-            break;
-            // Move right
-        case KEY_RIGHT:
-        case '6':
-        case 'l':
-            dy = 0;
-            dx = 1;
-            break;
-
-            // Move down-right
-        case KEY_NPAGE:
-        case '3':
-        case 'n':
-            dy = 1;
-            dx = 1;
-            break;
-
-            // Move down
-        case KEY_DOWN:
-        case '2':
-        case 'j':
-            dy = 1;
-            dx = 0;
-            break;
-            // Move down-left
-        case KEY_END:
-        case '1':
-        case 'b':
-            dy = 1;
-            dx = -1;
-            break;
-            // Move left
-        case KEY_LEFT:
-        case '4':
-        case 'h':
-            dy = 0;
-            dx = -1;
-            break;  
-        case 'r':
-            rand_pc_move(d);
-            update_pc_map(d);
-            move = 1;
-        case 'g':
-            updateTargetPc(d, x, y);
-            move = 1;
-            break;
-
-        // char a = wgetch(stdscr);
-
-        // if(a == 'r'){
-        //     rand_pc_move(d);
-        //     move =1;
-        // }
-        // if(a == 'g'){
-
-        // }
-
-
-
-
-    }
-        x = x + dx;
-        y = y + dy;
-    }
-    clear();
-        update_pc_map(d);
-        d->fow = 1;
-        render(d);
-
 }
 
 void move_pc_ncurses(Dungeon *d, heap_t *h)
@@ -332,9 +199,10 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
             move_pc_ncurses(d, h);
             break;
 
-            //TODO Teleport (goto)
+            //Teleport (goto)
         case 'g':
-            teleport(d);
+            render_teleport_select(d,h);
+            render(d);
             move_pc_ncurses(d, h);
             break;
 

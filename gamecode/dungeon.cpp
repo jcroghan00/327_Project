@@ -743,134 +743,12 @@ int load_dungeon(Dungeon *d)
   return 0;
 }
 
-void render_terrain_map(Dungeon *d)
-{
-    WINDOW *map_window = d->windows->terrain_map_win;
-    pair_t p;
-    const char *msg = "Hit \"Escape\" to close terrain map";
-    mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
-    for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
-        for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-            switch (mappair(p)) {
-                case ter_wall:
-                case ter_wall_immutable:
-                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],' ');
-                    break;
-                case ter_floor:
-                case ter_floor_room:
-                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'.');
-                    break;
-                case ter_floor_hall:
-                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'#');
-                    break;
-                case ter_debug:
-                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'*');
-                    //fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
-                    break;
-                case ter_stairs_up:
-                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'<');
-                    break;
-                case ter_stairs_down:
-                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'>');
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-    touchwin(map_window);
-    int visible = 1;
-    while (visible) {
-        int val = wgetch(map_window);
-        switch (val) {
-            // Quit the window
-            case 27:
-                visible = 0;
-                touchwin(stdscr);
-                break;
-            default:
-                break;
-        }
-    }
-}
-
-//TODO Display hardness map
-void render_hardness_map(Dungeon *d){
-    WINDOW *map_window = d->windows->terrain_map_win;
-    //pair_t p;
-    const char *msg = "Hit \"Escape\" to close hardness map";
-    mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
-
-
-    touchwin(map_window);
-    int visible = 1;
-    while (visible) {
-        int val = wgetch(map_window);
-        switch (val) {
-            // Quit the window
-            case 27:
-                visible = 0;
-                touchwin(stdscr);
-                break;
-            default:
-                break;
-        }
-    }
-}
-//TODO Display non tunneling distance map
-void render_dist_map(Dungeon *d){
-    WINDOW *map_window = d->windows->terrain_map_win;
-    //pair_t p;
-    const char *msg = "Hit \"Escape\" to close distance map";
-    mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
-
-
-    touchwin(map_window);
-    int visible = 1;
-    while (visible) {
-        int val = wgetch(map_window);
-        switch (val) {
-            // Quit the window
-            case 27:
-                visible = 0;
-                touchwin(stdscr);
-                break;
-            default:
-                break;
-        }
-    }
-}
-//TODO Display tunneling distance map
-void render_tun_dist_map(Dungeon *d){
-    WINDOW *map_window = d->windows->terrain_map_win;
-    //pair_t p;
-    const char *msg = "Hit \"Escape\" to close tunneling distance map";
-    mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
-
-
-
-    touchwin(map_window);
-    int visible = 1;
-    while (visible) {
-        int val = wgetch(map_window);
-        switch (val) {
-            // Quit the window
-            case 27:
-                visible = 0;
-                touchwin(stdscr);
-                break;
-            default:
-                break;
-        }
-    }
-}
-/* A copy of the above code but using ncurses as of
- * assignment 1.05 */
-void render_ncurses(Dungeon *d)
+//renders the entire game board to a a given screen, stdscr by default
+void render_ncurses(Dungeon *d, WINDOW *scr=stdscr)
 {
     start_color();
-    init_pair(HARD_WALL_PAIR, COLOR_YELLOW, COLOR_YELLOW);
-    init_pair(SOFT_WALL_PAIR, COLOR_GREEN, COLOR_GREEN);
+    init_pair(HARD_WALL_PAIR, COLOR_YELLOW, COLOR_YELLOW); //??
+    init_pair(SOFT_WALL_PAIR, COLOR_GREEN, COLOR_GREEN);   //??
     init_pair(IMMUTABLE_WALL_PAIR, COLOR_BLUE, COLOR_BLUE);
     init_pair(FLOOR_PAIR, COLOR_WHITE, COLOR_BLACK);
     init_pair(STAIR_PAIR, COLOR_CYAN, COLOR_BLACK);
@@ -884,13 +762,13 @@ void render_ncurses(Dungeon *d)
             {
                 if(character_mappair(p)->display_char == '@')
                 {
-                    attron(COLOR_PAIR(PLAYER_PAIR));
-                    mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->display_char));
+                    wattron(scr,COLOR_PAIR(PLAYER_PAIR));
+                    mvwaddch(scr,p[dim_y] + 1, p[dim_x], (character_mappair(p)->display_char));
                     attroff(COLOR_PAIR(PLAYER_PAIR));
                 }
                 else{
-                    attron(COLOR_PAIR(MONSTER_PAIR));
-                    mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->display_char));
+                    wattron(scr,COLOR_PAIR(MONSTER_PAIR));
+                    mvwaddch(scr,p[dim_y] + 1, p[dim_x], (character_mappair(p)->display_char));
                     attroff(COLOR_PAIR(MONSTER_PAIR));
                 }
             }
@@ -898,31 +776,31 @@ void render_ncurses(Dungeon *d)
                 switch (mappair(p)) {
                     case ter_wall:
                     case ter_wall_immutable:
-                        mvaddch(p[dim_y] + 1, p[dim_x],' ');
+                        mvwaddch(scr,p[dim_y] + 1, p[dim_x],' ');
                         break;
                     case ter_floor:
                     case ter_floor_room:
-                        attron(COLOR_PAIR(FLOOR_PAIR));
-                        mvaddch(p[dim_y] + 1, p[dim_x],'.');
+                        wattron(scr,COLOR_PAIR(FLOOR_PAIR));
+                        mvwaddch(scr,p[dim_y] + 1, p[dim_x],'.');
                         attroff(COLOR_PAIR(FLOOR_PAIR));
                         break;
                     case ter_floor_hall:
-                        attron(COLOR_PAIR(FLOOR_PAIR));
-                        mvaddch(p[dim_y] + 1, p[dim_x],'#');
+                        wattron(scr,COLOR_PAIR(FLOOR_PAIR));
+                        mvwaddch(scr,p[dim_y] + 1, p[dim_x],'#');
                         attroff(COLOR_PAIR(FLOOR_PAIR));
                         break;
                     case ter_debug:
-                        mvaddch(p[dim_y] + 1, p[dim_x],'*');
+                        mvwaddch(scr,p[dim_y] + 1, p[dim_x],'*');
                         //fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
                         break;
                     case ter_stairs_up:
-                        attron(COLOR_PAIR(STAIR_PAIR));
-                        mvaddch(p[dim_y] + 1, p[dim_x],'<');
+                        wattron(scr,COLOR_PAIR(STAIR_PAIR));
+                        mvwaddch(scr,p[dim_y] + 1, p[dim_x],'<');
                         attroff(COLOR_PAIR(STAIR_PAIR));
                         break;
                     case ter_stairs_down:
-                        attron(COLOR_PAIR(STAIR_PAIR));
-                        mvaddch(p[dim_y] + 1, p[dim_x],'>');
+                        wattron(scr,COLOR_PAIR(STAIR_PAIR));
+                        mvwaddch(scr,p[dim_y] + 1, p[dim_x],'>');
                         attroff(COLOR_PAIR(STAIR_PAIR));
                         break;
                     default:
@@ -1003,6 +881,224 @@ void render_fow(Dungeon *d)
                         break;
                 }
             }
+        }
+    }
+}
+//TODO add color to terrain map
+void render_terrain_map(Dungeon *d)
+{
+    WINDOW *map_window = d->windows->terrain_map_win;
+    pair_t p;
+    const char *msg = "Hit \"Q\" to close terrain map";
+    mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
+    for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
+        for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
+            switch (mappair(p)) {
+                case ter_wall:
+                case ter_wall_immutable:
+                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],' ');
+                    break;
+                case ter_floor:
+                case ter_floor_room:
+                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'.');
+                    break;
+                case ter_floor_hall:
+                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'#');
+                    break;
+                case ter_debug:
+                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'*');
+                    //fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
+                    break;
+                case ter_stairs_up:
+                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'<');
+                    break;
+                case ter_stairs_down:
+                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'>');
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    touchwin(map_window);
+    int visible = 1;
+    while (visible) {
+        int val = wgetch(map_window);
+        switch (val) {
+            // Quit the window
+            case 'Q':
+                visible = 0;
+                touchwin(stdscr);
+                break;
+            default:
+                break;
+        }
+    }
+}
+//TODO move teleport screen to here
+void render_teleport_select(Dungeon *d, heap_t *h){
+    pair_t cursor;
+    cursor[dim_x] = d->pc->pos[dim_x];
+    cursor[dim_y] = d->pc->pos[dim_y];
+    WINDOW *teleport_win = d->windows->teleport_win;
+    const char *msg = "Hit \"Q\" to cancel teleport";
+    mvwprintw(teleport_win,0, (COLS/2 - strlen(msg)/2), msg);
+    touchwin(teleport_win);
+    int visible = 1;
+    while (visible) {
+        cursor[dim_x] = 0 < cursor[dim_x] ? cursor[dim_x] : 1;
+        cursor[dim_y] = 0 < cursor[dim_y] ? cursor[dim_y] : 1;
+        cursor[dim_x] = cursor[dim_x] < DUNGEON_X ? cursor[dim_x] : DUNGEON_X-1;
+        cursor[dim_y] = cursor[dim_y] < DUNGEON_Y ? cursor[dim_y] : DUNGEON_Y-1;
+        mvwprintw(teleport_win,0, (COLS/2 - strlen(msg)/2), msg);
+        render_ncurses(d, teleport_win);
+        mvwaddch(teleport_win,cursor[dim_y] + 1, cursor[dim_x],'*');
+        int val = wgetch(teleport_win);
+        switch (val) {
+            // Quit the window
+            case 'Q':
+                visible = 0;
+                touchwin(stdscr);
+                break;
+                // Move up-left
+            case KEY_HOME:
+            case '7':
+            case 'y':
+                cursor[dim_y]--;
+                cursor[dim_x]--;
+                break;
+                // Move up
+            case KEY_UP:
+            case '8':
+            case 'k':
+                cursor[dim_y]--;
+                break;
+                // Move up-right
+            case KEY_PPAGE:
+            case '9':
+            case 'u':
+                cursor[dim_y]--;
+                cursor[dim_x]++;
+                break;
+                // Move right
+            case KEY_RIGHT:
+            case '6':
+            case 'l':
+                cursor[dim_x]++;
+                break;
+
+                // Move down-right
+            case KEY_NPAGE:
+            case '3':
+            case 'n':
+                cursor[dim_y]++;
+                cursor[dim_x]++;
+                break;
+
+                // Move down
+            case KEY_DOWN:
+            case '2':
+            case 'j':
+                cursor[dim_y]++;
+                break;
+                // Move down-left
+            case KEY_END:
+            case '1':
+            case 'b':
+                cursor[dim_y]++;
+                cursor[dim_x]--;
+                break;
+                // Move left
+            case KEY_LEFT:
+            case '4':
+            case 'h':
+                cursor[dim_x]--;
+                break;
+            case 'r':
+                visible = 0;
+                touchwin(stdscr);
+                cursor[dim_x] = rand() % (DUNGEON_X-1) + 1;
+                cursor[dim_y] = rand() % (DUNGEON_Y-1) + 1;
+                move_pc(d, h,cursor[dim_y]-d->pc->pos[dim_y],cursor[dim_x]-d->pc->pos[dim_x],1);
+                break;
+            case 'g':
+                visible = 0;
+                touchwin(stdscr);
+                move_pc(d, h,cursor[dim_y] - d->pc->pos[dim_y],cursor[dim_x]- d->pc->pos[dim_x],1);
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+//TODO Display hardness map
+void render_hardness_map(Dungeon *d){
+    WINDOW *map_window = d->windows->terrain_map_win;
+    //pair_t p;
+    const char *msg = "Hit \"Q\" to close hardness map";
+    mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
+
+
+    touchwin(map_window);
+    int visible = 1;
+    while (visible) {
+        int val = wgetch(map_window);
+        switch (val) {
+            // Quit the window
+            case 'Q':
+                visible = 0;
+                touchwin(stdscr);
+                break;
+            default:
+                break;
+        }
+    }
+}
+//TODO Display non tunneling distance map
+void render_dist_map(Dungeon *d){
+    WINDOW *map_window = d->windows->terrain_map_win;
+    //pair_t p;
+    const char *msg = "Hit \"Q\" to close distance map";
+    mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
+
+
+    touchwin(map_window);
+    int visible = 1;
+    while (visible) {
+        int val = wgetch(map_window);
+        switch (val) {
+            // Quit the window
+            case 'Q':
+                visible = 0;
+                touchwin(stdscr);
+                break;
+            default:
+                break;
+        }
+    }
+}
+//TODO Display tunneling distance map
+void render_tun_dist_map(Dungeon *d){
+    WINDOW *map_window = d->windows->terrain_map_win;
+    //pair_t p;
+    const char *msg = "Hit \"Q\" to close tunneling distance map";
+    mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
+
+
+
+    touchwin(map_window);
+    int visible = 1;
+    while (visible) {
+        int val = wgetch(map_window);
+        switch (val) {
+            // Quit the window
+            case 'Q':
+                visible = 0;
+                touchwin(stdscr);
+                break;
+            default:
+                break;
         }
     }
 }

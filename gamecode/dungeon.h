@@ -101,6 +101,7 @@ uint32_t is_open_space(Dungeon *d, int16_t y, int16_t x);
 int gen_dungeon(Dungeon *d);
 void render_dungeon(Dungeon *d);
 void render_terrain_map(Dungeon *d);
+void render_teleport_select(Dungeon *d, heap_t *h);
 void render_hardness_map(Dungeon *d);
 void render_dist_map(Dungeon *d);
 void render_tun_dist_map(Dungeon *d);

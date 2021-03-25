@@ -1,812 +1,293 @@
-commit 5a134caa27366170c20c4858846837a9886f9201
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Fri Mar 5 02:37:41 2021 -0600
-
-    it sorta works except for T H E B U G
-
-commit 3bfb78b5f2a78572508582004c85c84829b28c71
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 21:11:14 2021 -0600
-
-    i forgot make clobber again
-
-commit 6e7c68ca8bd97d6d71c91397aba092269a0a9146
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 21:10:36 2021 -0600
-
-    insta bug fix woohoo
-
-commit f457c243b319a7807fc014bce9683f14c7e0ed1a
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 21:04:50 2021 -0600
-
-    fixed bug with tunneling and added pathmaking for straight lines
-
-commit 581529949f4dfe6d4519703c49e1a67c3dc7b234
-Merge: 25803e9 fa9b06f
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 20:02:47 2021 -0600
-
-    Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04
-
-commit fa9b06fb24945bdda84ddf5fe2e52a5b8a9ed521
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Thu Mar 4 20:00:40 2021 -0600
-
-    whoops
-
-commit 25803e9ed6a6798f7fe48979f6a12e386e4d4934
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 19:57:01 2021 -0600
-
-    made clobber
-
-commit ef9fe98f491731ba45a4280e20acf705c5e82550
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 19:55:45 2021 -0600
-
-    formatting
-
-commit 5e8f94f5bf0dbeab94f606c6ea9e376ee9c4e06c
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Thu Mar 4 19:54:43 2021 -0600
-
-    found dif issue
-
-commit 29568719b4f6a12e520ac76b06365684ec74f2ad
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Thu Mar 4 19:40:19 2021 -0600
-
-    finished erratic movement
-
-commit c34e0c8b05bfed5ad1aa12e4b6baf403fd08bbc3
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 19:23:51 2021 -0600
-
-    forgot to make clobber
-
-commit 9152dfc261799e1dc67f3a98d8c1182645857270
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 19:23:17 2021 -0600
-
-    made the line of sight dunction return a sx and dy to move to
-
-commit 9b54a79e5ac6ca107069cee19cbaddddc63c91bd
-Merge: 4c7db42 5c257d7
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 18:53:28 2021 -0600
-
-    Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04
-
-commit 4c7db4241773367c093d257ce557ba9ec16834f8
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 18:51:23 2021 -0600
-
-    formatting
-
-commit 5c257d7679034ace7e27d3970a2107ecc5799250
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Thu Mar 4 18:49:17 2021 -0600
-
-    boilerplate for move monster (again)
-
-commit fd455d4757bf6b82d4871d9c94361afe83c2df5d
-Merge: 0d46935 76f5203
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 17:52:55 2021 -0600
-
-    Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04
-
-commit 0d469354baa977a9bbe5b217f4b1a33033f84ade
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 17:51:57 2021 -0600
-
-    update
-
-commit 76f5203e3305752d85b0175f6df55f3351919e1b
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Thu Mar 4 17:51:50 2021 -0600
-
-    ran make clobber
-
-commit c425d02126adefab57ff77f87b39b1f4f75a70fc
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Thu Mar 4 17:49:56 2021 -0600
-
-    yes
-
-commit bbe7560d2eef152421120df11f5818955aa09a01
-Merge: 6070fa3 0e942a5
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 17:49:36 2021 -0600
-
-    Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04
-
-commit 6070fa3241ab450c78ec2c7a565fd6bccdb25680
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 17:48:33 2021 -0600
-
-    fixed bug where 2 pc's would be drawn
-
-commit 0e942a523388cc4680e039b3ce1daa5c270ffaac
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Thu Mar 4 17:18:18 2021 -0600
-
-    hmmm ball 2
-
-commit 50bd2e56f646623aa2aa0eafbd2e63f523c273fb
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Thu Mar 4 17:17:50 2021 -0600
-
-    hmm ball
-
-commit 3e653af2c9468e1ac44ace42174797c14e9bdaa5
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 17:17:13 2021 -0600
-
-    rewrote place_pc to be better
-
-commit f188e26c730c5e99b516ffcdcbac5c5253a4216b
-Merge: fcc12a5 c4a7513
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 16:46:19 2021 -0600
-
-    Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04
-
-commit fcc12a5f7182fafd95a79e7abe9c4228017309ed
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 16:45:31 2021 -0600
-
-    little
-
-commit c4a75134340a1362e569ff87ec4f7a45f87b8a6b
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Thu Mar 4 16:44:23 2021 -0600
-
-    fixed moving pc for every characters turn
-
-commit d2c3c46ec610f147a6ca611a880446145c205afe
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Thu Mar 4 16:22:35 2021 -0600
-
-    idk man
-
-commit ef15f9a1066b86a35784de53777915efb816d81b
-Merge: d419052 3d94bf9
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 16:21:10 2021 -0600
-
-    Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04
-
-commit d4190526e7742a0b8ccbc46dabeee0044626fa7a
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 16:18:35 2021 -0600
-
-    made the player walk around all drunk-like
-
-commit 3d94bf9b8233e780c9fb7dede1a97df687fa441f
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Thu Mar 4 16:07:04 2021 -0600
-
-    added some more sweet code to move_monster
-
-commit 28be40362e6412b0075b7469758fe768ae4355cb
-Merge: 067fcdf 283a597
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 15:38:44 2021 -0600
-
-    Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04
-
-commit 067fcdf9677d01c295fa714f7f280a38023a4403
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 15:35:34 2021 -0600
-
-    started to add pc movement
-
-commit 283a59797395f0ea7c27e8ca2e0eaaace6d093c6
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Thu Mar 4 15:35:04 2021 -0600
-
-    added move_monster boilerplate
-
-commit 1db1daaa0830984e4d017d34b8b11399fee0b9a3
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 15:11:27 2021 -0600
-
-    minor formatting changes
-
-commit 1cfc92f545714a7f4e17d1a2e139de5bc28b017c
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Thu Mar 4 15:07:23 2021 -0600
-
-    cleaned up play_game code
-
-commit a287b089daea5fa32204de5b30d907f450af65bf
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Thu Mar 4 14:59:18 2021 -0600
-
-    added more boilerplate code in play_game
-
-commit 083bddf8e5e63fce508aa1968ef19cd2bbdc8b4c
-Merge: bb13976 baae75d
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 14:55:13 2021 -0600
-
-    Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04
-
-commit bb13976e104c75b2fbb5eac716443bb5b2decf33
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 14:53:51 2021 -0600
-
-    reworked how monsters are spawned in the dungeon (now it actually works)
-
-commit baae75d68b98fdb8e1285c67e1c4e35c5b7f1feb
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Thu Mar 4 14:15:17 2021 -0600
-
-    added heap to play_game
-
-commit 22afb721ea28756d5ba6a8fdbd44ba9b4e14ad32
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Mar 4 14:03:09 2021 -0600
-
-    area and monsters
-
-commit 30daa8b0959288a4de4c2f5881cfb017eec51735
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Thu Mar 4 11:59:56 2021 -0600
-
-    added the ability to print monsters to a specific hex character based on their stats
-
-commit f30b0381badd0faed811ec4779471002b495fff3
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Wed Mar 3 22:00:12 2021 -0600
-
-    tried my best
-
-commit e5034e2b53f5e1b409413f978cb53d30c25bb1d6
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Wed Mar 3 21:53:55 2021 -0600
-
-    added the spawning of monsters
-
-commit baddcba908950795c1607f488197de55585eb6f4
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Wed Mar 3 20:50:31 2021 -0600
-
-    preparing for merge
-
-commit 12c1368d5d5c3f3b14daf8686c0336c7aa98f202
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Wed Mar 3 20:47:26 2021 -0600
-
-    added boilerplate for get_display_char and intergrated it into dungeon.c
-
-commit 89f016276de5c0444e0a28d7f62649052b32e4b6
-Merge: f9add2c 28c3d53
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Wed Mar 3 20:42:22 2021 -0600
-
-    Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04
-
-commit f9add2c96512d5fb241ceb7e1632e2df4b98a9c3
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Wed Mar 3 20:40:17 2021 -0600
-
-    modifies the line algorithm to function for line-of-sight
-
-commit 28c3d53c11c83a27294b437dc14c72c5f8ed3b68
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Wed Mar 3 20:36:16 2021 -0600
-
-    redid how monster chars are displayed and remembered to run make clobber
-
-commit 8b1fa85c2a51f704c6c7df861287395df71a6891
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Wed Mar 3 20:33:32 2021 -0600
-
-    added the ability for render_dungeon to render monster chars
-
-commit 2d1f3fb5d24ea40b3c3fad5554764dcde189c6b8
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Wed Mar 3 19:50:40 2021 -0600
-
-    add play game function
-
-commit 520e9f38883281ac1041ab08630ac5af0212715d
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Wed Mar 3 19:36:32 2021 -0600
-
-    added random stat generation for the monsters
-
-commit 80c06da36be7f14a8367a4ecc8e514da71db5a62
-Merge: e1a09be f20bf12
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Wed Mar 3 19:22:38 2021 -0600
-
-    Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04
-
-commit e1a09be99adf8705f55369a76f17208a04f493a6
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Wed Mar 3 19:07:47 2021 -0600
-
-    added the bresenham line algorithm for pathmaking in straight lines and also to check line of sight
-
-commit f20bf12dcea1a182fb3e5157ebdeb1b2c762f239
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Wed Mar 3 19:04:00 2021 -0600
-
-    added gen_monsters to load and generate functions. also sets the num_monsters if not specified on the command line
-
-commit 526c4ee20f9c68fa5b4cdd0f7ddfd931dfca3004
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Wed Mar 3 18:48:17 2021 -0600
-
-    added switch for inputting the number of monsters. used with --nummon followed by an int specifying the number of monsters
-
-commit 0d3dca6ac8185ea8b9fec54cee85da04c8b832f6
-Author: Ryan <tulliscryan@gmail.com>
-Date:   Wed Mar 3 18:38:54 2021 -0600
-
-    changed initalization of 'f' in main to be more efficent
-
-commit 767a57f30fd10a74ce7a76ae92da38f6e4061412
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Wed Mar 3 18:20:04 2021 -0600
-
-    added a monster structure to monster.h
-
-commit 4e11eaebc094b01d1394f92d26fa4bf4f4ac394e
-Merge: 01864a6 d896e82
-Author: jcroghan00 <55817940+jcroghan00@users.noreply.github.com>
-Date:   Wed Mar 3 17:10:44 2021 -0600
-
-    Merge pull request #7 from ryantullis/1.03
-    
-    1.03
-
-commit d896e825e4552db2e25d7cb2020869fdb5a6b77e
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 25 23:07:24 2021 -0600
-
-    fixed backup.sh
-
-commit 9f66872cc5d3d288d0a4f633d1af7102e30e70cf
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 25 23:02:36 2021 -0600
-
-    updated the README
-
-commit 4b734cdba90a46974aca166c3b81153c9acf0ea6
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 25 18:53:39 2021 -0600
-
-    made delete_dungeon free the memory for rooms
-
-commit 762c0d63ae194148fd03f4c758c096d4f8793a10
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 25 18:50:48 2021 -0600
-
-    fixed a memory issue with loading files with a large number of rooms
-
-commit 3610a56d6d603aa29e9185e49ef219cc66ea2292
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 25 16:55:22 2021 -0600
-
-    fixed a bug with saving and loading with monster pathmaking
-
-commit bb043dbd3389b2621bbf25e417ab38935a787408
-Merge: e33ec58 557797d
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 25 16:38:01 2021 -0600
-
-    Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03
-
-commit e33ec582ffbc8c749bb1d960ca4be49a3ff0d180
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 25 16:37:27 2021 -0600
-
-    commit for merge
-
-commit 557797dec115c5403af3adf1e01a546015970d08
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 25 16:36:11 2021 -0600
-
-    fixed tunneling print statments
-
-commit ad35744506370c8f70ffeb4884050ca995ea3c8a
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 25 16:25:41 2021 -0600
-
-    made clobber
-
-commit a48eae316dbbce7ec5b380b9a4b615f12edd2c09
-Merge: dff132b de8beb6
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 25 16:24:40 2021 -0600
-
-    Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03
-
-commit dff132bd7652a3bb5a0f07b72743564b882590a0
-Merge: 9e198b1 208efd3
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 25 16:23:44 2021 -0600
-
-    Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03
-
-commit de8beb639583334812dd8be6de87ce02667820a0
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 25 16:22:21 2021 -0600
-
-    forgot to run make clobber im soory
-
-commit 9e198b13c273f5105ab4f149b09604f0497aff90
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 25 16:17:20 2021 -0600
-
-    indent
-
-commit 208efd3afa1d4fcacfe724ddd3ceb3d7cd4e2af6
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 25 16:15:22 2021 -0600
-
-    fixed indents
-
-commit cc14030f014d944b09225c130e6e8966dd0371e5
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 25 16:12:09 2021 -0600
-
-    tiny error
-
-commit 6e30f519a90876d5374664214e011503827019ef
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 25 16:09:36 2021 -0600
-
-    touchups, code cleaning
-
-commit ad700d1f35bd72a95fdff83e8fdcd9a8d5b121ad
-Merge: 0585146 516296f
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 25 16:07:42 2021 -0600
-
-    Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03
-
-commit 058514629a85114de9ef7377596ce560989d1325
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 25 16:07:04 2021 -0600
-
-    added the print functions for the monster paths
-
-commit 516296f0e589d66598bc7e2ac8a5d07b6ffae8e5
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 25 16:02:59 2021 -0600
-
-    added monster path arrays to dungeon
-
-commit 7340af7b1ebb4178646348dc54962821c651101c
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 25 15:50:56 2021 -0600
-
-    moved path struct to dungeon.h
-
-commit 649f2131336f96aea7e607b636f42660fe36e860
-Merge: 6308d9f e048ad4
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 25 15:49:47 2021 -0600
-
-    Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03
-
-commit 6308d9f9d48131255746196a2a8d62c4a5272a0b
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 25 15:44:17 2021 -0600
-
-    fixed errors in the header files for dungeon and monster
-
-commit e048ad43822d7a0675d27daff37e80ca41a87683
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 25 15:42:29 2021 -0600
-
-    added placeholder for rendering tun_dist_map
-
-commit 2a52d4c461bf8d6eb9858e5e8823b3db9278cff4
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 25 15:39:20 2021 -0600
-
-    fixed header files for dungeon.h and monster.h
-
-commit d04d70fc3a3932f99379cb9d4f964fb1b1c2f5b0
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 25 15:27:42 2021 -0600
-
-    fixed Makefile linking with monster.c
-
-commit 10e8f3d30893701f804dc15939770e22061bcd34
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 25 15:25:57 2021 -0600
-
-    fixed a bug in the load function that now allows it to properly function, finally
-
-commit 1424c83bed38f6289677af6b45277e2d323dc44b
-Merge: 4dd08f4 8180bfa
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 25 14:44:58 2021 -0600
-
-    Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03
-
-commit 4dd08f4aaeee1b85c4894fb481edcffd56b53dcd
-Merge: 118a84d 795b5d6
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 25 14:44:03 2021 -0600
-
-    Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03
-
-commit 8180bfaeb9ab4af62c06b6402c100ca15ea374c5
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 25 14:39:11 2021 -0600
-
-    removed bad files (sorry)
-
-commit 118a84df6603588f0ed93bb445bcdd4c220e6e76
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 25 14:32:34 2021 -0600
-
-    added the monster pathfinding functions into the generate and load dungeon functions
-
-commit 795b5d69008acdfb130948eafdf298c778341892
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 25 14:31:51 2021 -0600
-
-    broken version, need to fix save and load
-
-commit 98c129d1e40e06f5ab484ee7358fc26f486b64b8
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 25 13:43:36 2021 -0600
-
-    remove unneeded code
-
-commit 2ee797afaebd30b63442497ee6e5a97e9e2a669d
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 25 13:38:10 2021 -0600
-
-    converted pc to typedef struct
-
-commit 9f3964c0652bbf05155d4c9b8682423d54b709e7
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Wed Feb 24 20:54:57 2021 -0600
-
-    made dungeon.h and moves struct definitions into it
-
-commit 7e6b470417f748080bab8078d6b05cec49f77359
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Wed Feb 24 20:41:08 2021 -0600
-
-    added monster tunneling code to monster.c
-
-commit 8937393e6dc98b21ed0fe69ec3cef672c0774eb0
-Merge: f9dbd96 01864a6
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Wed Feb 24 19:36:21 2021 -0600
-
-    Merge branch 'main' into 1.03
-    bring 1.03 up to date
-
-commit 01864a63bc1f7f5edc3d8aa70c4c6a4b77458208
-Merge: 3448576 bc68530
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Wed Feb 24 19:34:29 2021 -0600
-
-    Merge branch 'main' of https://github.com/ryantullis/327_Project into main
-
-commit f9dbd96ee7f608cb912bd792bf26ec43603c7637
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Wed Feb 24 19:31:54 2021 -0600
-
-    added functionality for in monster.c for the non-tunneling pathmaking. added monster.h. added the pc to the dungeon structure so it woks better with the pathfinding in monster.c
-
-commit 1d28574a30076cf56c4218dde971da1c47e0b5eb
-Merge: bd5eed5 12cfc1c
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Wed Feb 24 17:30:39 2021 -0600
-
-    Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03
-
-commit bd5eed51493c00e80b45f1e19ca61c963917a71d
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Wed Feb 24 17:30:00 2021 -0600
-
-    added monster.h and started to add functions into monster.c
-
-commit 12cfc1cb0b0f7343f286778030f36d297ee7e89a
-Merge: b47c4a8 3448576
-Author: jcroghan00 <55817940+jcroghan00@users.noreply.github.com>
-Date:   Wed Feb 24 17:28:09 2021 -0600
-
-    Merge pull request #2 from ryantullis/1.02
-    
-    1.02
-
-commit bc68530cf19f403bcd92fb7cefa9420774701b2f
-Merge: bd4b46c b47c4a8
-Author: jcroghan00 <55817940+jcroghan00@users.noreply.github.com>
-Date:   Wed Feb 24 17:26:56 2021 -0600
-
-    Merge pull request #1 from ryantullis/1.03
-    
-    added monster.c to the project files
-
-commit b47c4a84e43b21cbcf731ad58bc7fa2bbbe098ce
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Wed Feb 24 14:05:01 2021 -0600
-
-    added monster.c to the project files
-
-commit 3448576c02f76dc1dd714a0805fa2273ba0524ca
-Merge: 645117e 62cbc2c
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Fri Feb 19 15:17:26 2021 -0600
-
-    Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02
-
-commit 645117e63a65dc528e3cf31394e9c3cf25f26526
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Fri Feb 19 15:09:10 2021 -0600
-
-    preparing for a merge
-
-commit 62cbc2ccc4295e4d140c03f2f19facc3aacc1b19
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Fri Feb 19 04:51:32 2021 -0600
-
-    and it sweeeeeet sweeeeet sweet victory!                yeah
-
-commit b97a7d4c32f3d94a7c8a512e55d7b42d7f41259e
-Merge: 86f544f b87a7f1
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Fri Feb 19 03:53:02 2021 -0600
-
-    Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02
-
-commit 86f544f8f2642c553246ad398b6a6f926d81ac0b
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Fri Feb 19 03:48:56 2021 -0600
-
-    updated load_dungeon to hopefully fix some bugs
-
-commit b87a7f14bee1e1a3d651943d5efd55d6dc7861ab
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Fri Feb 19 03:31:53 2021 -0600
-
-    fixed bugs and added tears
-
-commit f0277b71ab9705f1ca52ed07770346305e239765
-Merge: 54062f9 5a7a6dc
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Fri Feb 19 02:42:30 2021 -0600
-
-    Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02
-    fixed merge conflicts
-
-commit 54062f9d67814c823ac3ec6635c471538987d0e4
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Fri Feb 19 02:38:57 2021 -0600
-
-    hopefully finished save
-
-commit 5a7a6dcf4c47463c584b7b8a874689571e959275
-Merge: 5fbc62a c515587
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Fri Feb 19 02:34:08 2021 -0600
-
-    Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02
-    updated load_dungeon so that it works better when called with save_dungeon
-
-commit 5fbc62aa446e51c8bb17a3a93f3e8bb4924a14f1
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Fri Feb 19 02:27:05 2021 -0600
-
-    updated load_dungeon so it works better when called along with save_dungeon
-
-commit c5155879ce9b8db6d39630fa1550c1eef94c6066
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Fri Feb 19 01:25:23 2021 -0600
-
-    fleshed out save method
-
-commit 8b8dc04aec533a6228d0c64ca2df1711bbb8973f
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Fri Feb 19 00:07:36 2021 -0600
-
-    updated the README to reflect the current status of the assignment
-
-commit c8560e9994c01d2170eb230a90d0adf035a75173
-Merge: a89ea51 ec4c6fc
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 18 23:45:14 2021 -0600
-
-    Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02
-    finished the functionality of the load function. added the ability for the program to keep track of the number of staircases. added the place_pc function that randomly places the player character in a room in the dungeon
-
-commit a89ea513917de4b7046111a342ac513ab8556ebf
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 18 23:39:40 2021 -0600
-
-    finished the load function and added the ability to store the number of stair cases for later use in the save function. allowed the player character to be randomly placed in any room when a dungeon is being generated
-
-commit ec4c6fc72a90829578cfdc91e3489f45048c8851
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 18 21:36:46 2021 -0600
-
-    added code to save method
-
-commit 4481ca1605d740e2c1b210821fb90d4c5633f816
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 18 20:10:21 2021 -0600
-
-    added some of the functionality to both load and save funtions
-
-commit 52860b3e3cebc7ed484ac88021af7c3feba0b100
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 18 18:21:55 2021 -0600
-
-    added the test files for the load function
-
-commit 2f318ce904ef564ea98adc15e1198e1fec720f0e
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 18 18:15:45 2021 -0600
-
-    test for adding .rlg327
-
-commit fa114a8640e696c6360624eda6852ca915b4c836
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 18 17:58:46 2021 -0600
-
-    started adding functionality for save and load. added .rlg327 directory
-
-commit bd4b46cd800fd9c4b2442530706aef3e29a41e3f
-Merge: 6a3b562 f6649d4
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 18 15:19:13 2021 -0600
-
-    Merge branch 'main' of https://github.com/ryantullis/327_Project into main
-
-commit 6a3b562b9afd4b2e4ffac5043e6fe8f2b2497625
-Author: Jack Croghan <jcroghan00@gmail.com>
-Date:   Thu Feb 18 15:16:56 2021 -0600
-
-    Added assignment-1.01 code to the repository
-
-commit f6649d4d3b39669664613dacde8787d81b2cba79
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 18 15:10:35 2021 -0600
-
-    removed testing2
-
-commit 9e5530c7d4eb11bc8e0f77d811f894230c44681f
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Thu Feb 18 14:57:50 2021 -0600
-
-    testing how pushes and pulls work
-
-commit 05949849a1c0e2b8c06bac3785004e55dad15194
-Author: Ryan Tullis <70613555+ryantullis@users.noreply.github.com>
-Date:   Thu Feb 18 14:53:06 2021 -0600
-
-    Create testingFile
-
-commit 55096bde3a70d160bbafcf5f00253d69730f3f43
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Wed Feb 17 17:13:34 2021 -0600
-
-    moved README and CHANGELOG to top level directory and added game.c
-
-commit 26056d6f6837c89fd7363812bacd53d658e955e5
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Wed Feb 17 16:35:00 2021 -0600
-
-    added gamecode directory to branch and created README and CHANGELOG
-
-commit 7bf64243aae62217b52b5666919ed6e38908c22f
-Author: ryantullis <tulliscryan@gmail.com>
-Date:   Wed Feb 17 16:16:26 2021 -0600
-
-    added backup.sh to tracked files
+* 8065398 - (HEAD -> 1.05, origin/1.05) ball (43 seconds ago) <Ryan>
+* fa6ac13 - fixed bug with heap reinitialization (2 minutes ago) <Jack Croghan>
+* 6b6ffa9 - added end game screen to ncurses (15 minutes ago) <Ryan>
+* 901b112 - yea (50 minutes ago) <Ryan>
+* 309d84d - formatting (55 minutes ago) <Jack Croghan>
+* ff116a0 - buggy (73 minutes ago) <Jack Croghan>
+* d7cd845 - buggy (73 minutes ago) <Jack Croghan>
+* 8b32631 - added displays for all maps (75 minutes ago) <Ryan>
+* 6597866 - added windows for all maps (89 minutes ago) <Ryan>
+* 2641be7 - made clobber (2 hours ago) <Jack Croghan>
+* 6c942af - added the ability for the monster map to print the current location of the monsters (2 hours ago) <Jack Croghan>
+* ceacb20 - added terran map (2 hours ago) <Ryan>
+* 9b3c3c1 - added function to write monster_list (2 hours ago) <Ryan>
+* f1e39a0 - fuck windows (2 hours ago) <Ryan>
+* a14532e - better merge (4 hours ago) <Jack Croghan>
+* 12b4867 - merge (4 hours ago) <Jack Croghan>
+*   880d54f - Merge branch '1.05' of https://github.com/ryantullis/327_Project into 1.05 Description of Player mov ement (4 hours ago) <Aashish Komaragiri>
+|\  
+| * 0aac822 - typo (4 hours ago) <Jack Croghan>
+| * 9ec0060 - created windows.c and .h (4 hours ago) <Ryan>
+| * 869ce34 - added more messages and fixed some bugs (4 hours ago) <Jack Croghan>
+| * 970a0bd - added default option for movement and allows players to try again (4 hours ago) <Ryan>
+| * 949ab46 - removed unused functions (5 hours ago) <Ryan>
+| * fc50431 - made clobber (5 hours ago) <Jack Croghan>
+| * d772205 - started working on status updates (5 hours ago) <Jack Croghan>
+| * fc8d3b8 - added else statments to move up and down stairs (5 hours ago) <Ryan>
+| * a23c88e - added call to monster list (5 hours ago) <Ryan>
+| * c999dfa - added ncurses settings after init and made move_pc (5 hours ago) <Ryan>
+| * 803b52d - made clobber (5 hours ago) <Jack Croghan>
+| * 1376081 - made the dungeon render 1 down so a status message can be displayed at the top (5 hours ago) <Jack Croghan>
+| * 1e39353 - idk (6 hours ago) <Jack Croghan>
+* | 0f2fd60 - MOnster description movement (4 hours ago) <Aashish Komaragiri>
+|/  
+* 185e148 - fix (6 hours ago) <Ryan>
+* 3484edc - make clobber (6 hours ago) <Jack Croghan>
+* 400715a - quick push (6 hours ago) <Jack Croghan>
+* 82839d2 - changed a bit, still need to complete delete dungeon (6 hours ago) <Jack Croghan>
+* afb0f17 - found use for pc_is_alive (6 hours ago) <Ryan>
+* d8f7d4f - added all reserved keys to switch statment (6 hours ago) <Ryan>
+* 03c4af9 - removed character.h from dungeon.h and converted pc in dungeon_t to a pointer (6 hours ago) <Ryan>
+* 120519f - removed heap.h from dungeon.h (6 hours ago) <Ryan>
+* 56cefc4 - fixed terminal corruption on quit (7 hours ago) <Ryan>
+* 845a442 - fixed rooms being freed twice (7 hours ago) <Ryan>
+* c8d14f8 - moved corridor_path_cmp to path.c from dungeon.c (7 hours ago) <Ryan>
+* 2f13adf - removed up_down from stair_t and moved corridor_path to path.h from dungeon.h (7 hours ago) <Ryan>
+* 2bda522 - removed storage of stairs_up and stairs_down (7 hours ago) <Ryan>
+* b5811b3 - We need to figure out how to fix dungeon (9 hours ago) <Aashish Komaragiri>
+* b90b5c2 - Need to fix delete dingeon (22 hours ago) <Aashish Komaragiri>
+*   85a4220 - Merge branch '1.05' of https://github.com/ryantullis/327_Project into 1.05 (23 hours ago) <Aashish Komaragiri>
+|\  
+| * 9dc79f7 - added new game over messages (26 hours ago) <Jack Croghan>
+| * 73174a4 - spacing (26 hours ago) <Jack Croghan>
+| * 92509fb - moved move_pc_ncurses into pc.c made some changes with when a dungeon is rendered (29 hours ago) <Jack Croghan>
+| * 4eafccb - guess i had changes (2 days ago) <Jack Croghan>
+* | b815eb6 - Player movement  update (26 hours ago) <Aashish Komaragiri>
+* | af613c0 - Player movement is working perfectly now. (26 hours ago) <Aashish Komaragiri>
+|/  
+* 87d1232 - Updated code so that user can control pc movement (2 days ago) <Aashish Komaragiri>
+* 85f1ce0 - moved play_game to rlg327.c (2 days ago) <Jack Croghan>
+* 6aaf540 - made the dungeon render update with ncurses for each turn (you need to input something for a turn to progress) (2 days ago) <Jack Croghan>
+* 7e51a8b - fixed ncurses displaying the dungeon (2 days ago) <Jack Croghan>
+* 986e9fe - merging hell yeah (2 days ago) <Jack Croghan>
+* 2624e23 - merge (2 days ago) <Jack Croghan>
+* dbffcf8 - Working wiht ncurse (2 days ago) <Aashish Komaragiri>
+* 2282931 - fixed telepathic dumb monster non tunneling monster for moving trough walls (3 days ago) <Ryan>
+* 142829a - fixed movement bug for tunneling smart monsters (3 days ago) <Ryan>
+* 67317af - fixed telepathic intelligent monster movement (3 days ago) <Ryan>
+* bf83588 - worked on fixing monster behavior (3 days ago) <Ryan>
+* 548c622 - made tun_rock_check (3 days ago) <Ryan>
+* 517a2c1 - fixed tunnel jumping bug and cleaned up move_monster (again) (3 days ago) <Ryan>
+* db2d5a8 - added win condition (3 days ago) <Ryan>
+* 764bde8 - fixed flash monsters (3 days ago) <Ryan>
+* 27d7b8b - cleaned up move_monster (3 days ago) <Ryan>
+* 83cff9c - pc no longer kills themselves (3 days ago) <Ryan>
+* 23757fe - modified gen_monsters to include in_room from dungeon.c (3 days ago) <Ryan>
+* 4e7ec5d - fixed play_game. no seg fault when running now (3 days ago) <Ryan>
+* 0e90108 - moved move_pc to pc_next_pos (4 days ago) <Ryan>
+* 0647f62 - fixed gen_monsters (4 days ago) <Ryan>
+* b30ac0e - u suk (4 days ago) <Ryan>
+* 30086e1 - hmm (4 days ago) <Ryan>
+* 145900d - added the define_characters function to character.c (4 days ago) <Jack Croghan>
+* dec4fa4 - formatting (4 days ago) <Jack Croghan>
+* 8f2c37c - ye (4 days ago) <Jack Croghan>
+* 3777b5e - added monster char assignment (4 days ago) <Ryan>
+* e8d4a0e - trying my best (4 days ago) <Ryan>
+* 227cb23 - made the program compile (4 days ago) <Ryan>
+* a434106 - bug fixing (4 days ago) <Ryan>
+* ad19267 - changed moster map to char map (4 days ago) <Ryan>
+* 7a36d18 - moved main to rlg327.c (4 days ago) <Jack Croghan>
+*   c6e6347 - Merge branch '1.05' of https://github.com/ryantullis/327_Project into 1.05 (4 days ago) <Jack Croghan>
+|\  
+| * eb0a8a0 - created dim.h and character.c and .h (4 days ago) <Ryan>
+* | aed57e7 - yeet (4 days ago) <Jack Croghan>
+|/  
+*   07385aa - Merge branch '1.05' of https://github.com/ryantullis/327_Project into 1.05 (4 days ago) <Jack Croghan>
+|\  
+| * 8772795 - added code to pc.c (4 days ago) <Ryan>
+* | 42beecb - made clobber (4 days ago) <Jack Croghan>
+* | e725268 - moved the calls to the dijkstra pathmaking algorithms so that they are only called when needed (4 days ago) <Jack Croghan>
+|/  
+* 88a14a4 - added path.c and path.h and moved the djikstra pathfinding algorithms into them (4 days ago) <Jack Croghan>
+* 405b199 - removed file_info_t (4 days ago) <Ryan>
+* 3860958 - fixed save method (4 days ago) <Ryan>
+* 0faa890 - made "save" and "load" local vars in main and removed rendering of dist map code (4 days ago) <Ryan>
+* 39a7489 - (1.04) organize (7 days ago) <Ryan>
+* 5f2c20c - (origin/1.04) README updated (7 days ago) <Jack Croghan>
+* 5a134ca - it sorta works except for T H E B U G (7 days ago) <Jack Croghan>
+* 3bfb78b - i forgot make clobber again (7 days ago) <Jack Croghan>
+* 6e7c68c - insta bug fix woohoo (7 days ago) <Jack Croghan>
+* f457c24 - fixed bug with tunneling and added pathmaking for straight lines (7 days ago) <Jack Croghan>
+*   5815299 - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (7 days ago) <Jack Croghan>
+|\  
+| * fa9b06f - whoops (7 days ago) <Ryan>
+| * 5e8f94f - found dif issue (7 days ago) <Ryan>
+* | 25803e9 - made clobber (7 days ago) <Jack Croghan>
+* | ef9fe98 - formatting (7 days ago) <Jack Croghan>
+|/  
+* 2956871 - finished erratic movement (7 days ago) <Ryan>
+* c34e0c8 - forgot to make clobber (7 days ago) <Jack Croghan>
+* 9152dfc - made the line of sight dunction return a sx and dy to move to (7 days ago) <Jack Croghan>
+*   9b54a79 - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (7 days ago) <Jack Croghan>
+|\  
+| * 5c257d7 - boilerplate for move monster (again) (7 days ago) <Ryan>
+* | 4c7db42 - formatting (7 days ago) <Jack Croghan>
+|/  
+*   fd455d4 - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (7 days ago) <Jack Croghan>
+|\  
+| * 76f5203 - ran make clobber (7 days ago) <Ryan>
+| * c425d02 - yes (7 days ago) <Ryan>
+* | 0d46935 - update (7 days ago) <Jack Croghan>
+* | bbe7560 - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (7 days ago) <Jack Croghan>
+|\| 
+| * 0e942a5 - hmmm ball 2 (7 days ago) <Ryan>
+| * 50bd2e5 - hmm ball (7 days ago) <Ryan>
+| * 3e653af - rewrote place_pc to be better (7 days ago) <Jack Croghan>
+| *   f188e26 - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (7 days ago) <Jack Croghan>
+| |\  
+| | * c4a7513 - fixed moving pc for every characters turn (7 days ago) <Ryan>
+| | * d2c3c46 - idk man (7 days ago) <Ryan>
+| * | fcc12a5 - little (7 days ago) <Jack Croghan>
+| |/  
+| *   ef15f9a - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (7 days ago) <Jack Croghan>
+| |\  
+| | * 3d94bf9 - added some more sweet code to move_monster (7 days ago) <Ryan>
+| * | d419052 - made the player walk around all drunk-like (7 days ago) <Jack Croghan>
+| * | 28be403 - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (7 days ago) <Jack Croghan>
+| |\| 
+| | * 283a597 - added move_monster boilerplate (7 days ago) <Ryan>
+* | | 6070fa3 - fixed bug where 2 pc's would be drawn (7 days ago) <Jack Croghan>
+|/ /  
+* | 067fcdf - started to add pc movement (7 days ago) <Jack Croghan>
+* | 1db1daa - minor formatting changes (7 days ago) <Jack Croghan>
+|/  
+* 1cfc92f - cleaned up play_game code (7 days ago) <Ryan>
+* a287b08 - added more boilerplate code in play_game (7 days ago) <Ryan>
+*   083bddf - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (7 days ago) <Jack Croghan>
+|\  
+| * baae75d - added heap to play_game (7 days ago) <Ryan>
+* | bb13976 - reworked how monsters are spawned in the dungeon (now it actually works) (7 days ago) <Jack Croghan>
+|/  
+* 22afb72 - area and monsters (7 days ago) <Jack Croghan>
+* 30daa8b - added the ability to print monsters to a specific hex character based on their stats (7 days ago) <Ryan>
+* f30b038 - tried my best (8 days ago) <Ryan>
+* e5034e2 - added the spawning of monsters (8 days ago) <Jack Croghan>
+* baddcba - preparing for merge (8 days ago) <Jack Croghan>
+* 12c1368 - added boilerplate for get_display_char and intergrated it into dungeon.c (8 days ago) <Ryan>
+*   89f0162 - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (8 days ago) <Jack Croghan>
+|\  
+| * 28c3d53 - redid how monster chars are displayed and remembered to run make clobber (8 days ago) <Ryan>
+| * 8b1fa85 - added the ability for render_dungeon to render monster chars (8 days ago) <Ryan>
+| * 2d1f3fb - add play game function (8 days ago) <Ryan>
+* | f9add2c - modifies the line algorithm to function for line-of-sight (8 days ago) <Jack Croghan>
+|/  
+* 520e9f3 - added random stat generation for the monsters (8 days ago) <Ryan>
+*   80c06da - Merge branch '1.04' of https://github.com/ryantullis/327_Project into 1.04 (8 days ago) <Jack Croghan>
+|\  
+| * f20bf12 - added gen_monsters to load and generate functions. also sets the num_monsters if not specified on the command line (8 days ago) <Ryan>
+| * 526c4ee - added switch for inputting the number of monsters. used with --nummon followed by an int specifying the number of monsters (8 days ago) <Ryan>
+| * 0d3dca6 - changed initalization of 'f' in main to be more efficent (8 days ago) <Ryan>
+* | e1a09be - added the bresenham line algorithm for pathmaking in straight lines and also to check line of sight (8 days ago) <Jack Croghan>
+|/  
+* 767a57f - added a monster structure to monster.h (8 days ago) <Jack Croghan>
+*   4e11eae - (origin/main, origin/HEAD, main) Merge pull request #7 from ryantullis/1.03 (8 days ago) <jcroghan00>
+|\  
+| * d896e82 - fixed backup.sh (2 weeks ago) <ryantullis>
+| * 9f66872 - updated the README (2 weeks ago) <Jack Croghan>
+| * 4b734cd - made delete_dungeon free the memory for rooms (2 weeks ago) <Jack Croghan>
+| * 762c0d6 - fixed a memory issue with loading files with a large number of rooms (2 weeks ago) <Jack Croghan>
+| * 3610a56 - fixed a bug with saving and loading with monster pathmaking (2 weeks ago) <Jack Croghan>
+| *   bb043db - Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03 (2 weeks ago) <Jack Croghan>
+| |\  
+| | * 557797d - fixed tunneling print statments (2 weeks ago) <ryantullis>
+| * | e33ec58 - commit for merge (2 weeks ago) <Jack Croghan>
+| |/  
+| * ad35744 - made clobber (2 weeks ago) <Jack Croghan>
+| *   a48eae3 - Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03 (2 weeks ago) <Jack Croghan>
+| |\  
+| | * de8beb6 - forgot to run make clobber im soory (2 weeks ago) <ryantullis>
+| * | dff132b - Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03 (2 weeks ago) <Jack Croghan>
+| |\| 
+| | * 208efd3 - fixed indents (2 weeks ago) <ryantullis>
+| | * cc14030 - tiny error (2 weeks ago) <ryantullis>
+| * | 9e198b1 - indent (2 weeks ago) <Jack Croghan>
+| |/  
+| * 6e30f51 - touchups, code cleaning (2 weeks ago) <ryantullis>
+| *   ad700d1 - Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03 (2 weeks ago) <Jack Croghan>
+| |\  
+| | * 516296f - added monster path arrays to dungeon (2 weeks ago) <ryantullis>
+| * | 0585146 - added the print functions for the monster paths (2 weeks ago) <Jack Croghan>
+| |/  
+| * 7340af7 - moved path struct to dungeon.h (2 weeks ago) <ryantullis>
+| *   649f213 - Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03 (2 weeks ago) <Jack Croghan>
+| |\  
+| | * e048ad4 - added placeholder for rendering tun_dist_map (2 weeks ago) <ryantullis>
+| | * 2a52d4c - fixed header files for dungeon.h and monster.h (2 weeks ago) <ryantullis>
+| * | 6308d9f - fixed errors in the header files for dungeon and monster (2 weeks ago) <Jack Croghan>
+| |/  
+| * d04d70f - fixed Makefile linking with monster.c (2 weeks ago) <ryantullis>
+| * 10e8f3d - fixed a bug in the load function that now allows it to properly function, finally (2 weeks ago) <Jack Croghan>
+| *   1424c83 - Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03 (2 weeks ago) <Jack Croghan>
+| |\  
+| | * 8180bfa - removed bad files (sorry) (2 weeks ago) <ryantullis>
+| * | 4dd08f4 - Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03 (2 weeks ago) <Jack Croghan>
+| |\| 
+| | * 795b5d6 - broken version, need to fix save and load (2 weeks ago) <ryantullis>
+| * | 118a84d - added the monster pathfinding functions into the generate and load dungeon functions (2 weeks ago) <Jack Croghan>
+| |/  
+| * 98c129d - remove unneeded code (2 weeks ago) <ryantullis>
+| * 2ee797a - converted pc to typedef struct (2 weeks ago) <ryantullis>
+| * 9f3964c - made dungeon.h and moves struct definitions into it (2 weeks ago) <Jack Croghan>
+| * 7e6b470 - added monster tunneling code to monster.c (2 weeks ago) <ryantullis>
+| *   8937393 - Merge branch 'main' into 1.03 bring 1.03 up to date (2 weeks ago) <ryantullis>
+| |\  
+| |/  
+|/|   
+* |   01864a6 - Merge branch 'main' of https://github.com/ryantullis/327_Project into main (2 weeks ago) <ryantullis>
+|\ \  
+| * \   bc68530 - Merge pull request #1 from ryantullis/1.03 (2 weeks ago) <jcroghan00>
+| |\ \  
+| | | * f9dbd96 - added functionality for in monster.c for the non-tunneling pathmaking. added monster.h. added the pc to the dungeon structure so it woks better with the pathfinding in monster.c (2 weeks ago) <Jack Croghan>
+| | | *   1d28574 - Merge branch '1.03' of https://github.com/ryantullis/327_Project into 1.03 (2 weeks ago) <Jack Croghan>
+| | | |\  
+| | | | * 12cfc1c - Merge pull request #2 from ryantullis/1.02 (2 weeks ago) <jcroghan00>
+| | | |/| 
+| | |/|/  
+| | |/|   
+| |/| |   
+|/| | |   
+* | | |   3448576 - (origin/1.02) Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02 (3 weeks ago) <Jack Croghan>
+|\ \ \ \  
+| * | | | 62cbc2c - and it sweeeeeet sweeeeet sweet victory!                yeah (3 weeks ago) <ryantullis>
+* | | | | 645117e - preparing for a merge (3 weeks ago) <Jack Croghan>
+|/ / / /  
+* | | |   b97a7d4 - Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02 (3 weeks ago) <Jack Croghan>
+|\ \ \ \  
+| * | | | b87a7f1 - fixed bugs and added tears (3 weeks ago) <ryantullis>
+* | | | | 86f544f - updated load_dungeon to hopefully fix some bugs (3 weeks ago) <Jack Croghan>
+|/ / / /  
+* | | |   f0277b7 - Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02 fixed merge conflicts (3 weeks ago) <ryantullis>
+|\ \ \ \  
+| * \ \ \   5a7a6dc - Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02 updated load_dungeon so that it works better when called with save_dungeon (3 weeks ago) <Jack Croghan>
+| |\ \ \ \  
+| * | | | | 5fbc62a - updated load_dungeon so it works better when called along with save_dungeon (3 weeks ago) <Jack Croghan>
+* | | | | | 54062f9 - hopefully finished save (3 weeks ago) <ryantullis>
+| |/ / / /  
+|/| | | |   
+* | | | | c515587 - fleshed out save method (3 weeks ago) <ryantullis>
+|/ / / /  
+* | | | 8b8dc04 - updated the README to reflect the current status of the assignment (3 weeks ago) <Jack Croghan>
+* | | |   c8560e9 - Merge branch '1.02' of https://github.com/ryantullis/327_Project into 1.02 finished the functionality of the load function. added the ability for the program to keep track of the number of staircases. added the place_pc function that randomly places the player character in a room in the dungeon (3 weeks ago) <Jack Croghan>
+|\ \ \ \  
+| * | | | ec4c6fc - added code to save method (3 weeks ago) <ryantullis>
+* | | | | a89ea51 - finished the load function and added the ability to store the number of stair cases for later use in the save function. allowed the player character to be randomly placed in any room when a dungeon is being generated (3 weeks ago) <Jack Croghan>
+|/ / / /  
+* | | | 4481ca1 - added some of the functionality to both load and save funtions (3 weeks ago) <Jack Croghan>
+* | | | 52860b3 - added the test files for the load function (3 weeks ago) <Jack Croghan>
+* | | | 2f318ce - test for adding .rlg327 (3 weeks ago) <ryantullis>
+* | | | fa114a8 - started adding functionality for save and load. added .rlg327 directory (3 weeks ago) <ryantullis>
+|/ / /  
+| | * bd5eed5 - added monster.h and started to add functions into monster.c (2 weeks ago) <Jack Croghan>
+| |/  
+| * b47c4a8 - added monster.c to the project files (2 weeks ago) <Jack Croghan>
+|/  
+*   bd4b46c - Merge branch 'main' of https://github.com/ryantullis/327_Project into main (3 weeks ago) <Jack Croghan>
+|\  
+| * f6649d4 - removed testing2 (3 weeks ago) <ryantullis>
+| * 9e5530c - testing how pushes and pulls work (3 weeks ago) <ryantullis>
+| * 0594984 - Create testingFile (3 weeks ago) <Ryan Tullis>
+* | 6a3b562 - Added assignment-1.01 code to the repository (3 weeks ago) <Jack Croghan>
+|/  
+* 55096bd - moved README and CHANGELOG to top level directory and added game.c (3 weeks ago) <ryantullis>
+* 26056d6 - added gamecode directory to branch and created README and CHANGELOG (3 weeks ago) <ryantullis>
+* 7bf6424 - added backup.sh to tracked files (3 weeks ago) <ryantullis>
