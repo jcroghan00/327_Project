@@ -99,7 +99,8 @@ int move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
 
     if(d->map[d->pc->pos[dim_y] + dy][d->pc->pos[dim_x] + dx] < ter_floor &&
     !teleport){
-        mvprintw(0, 0, "There's a wall there!");
+        const char *msg = "There's a wall there!";
+        mvprintw(0, (COLS/2 - strlen(msg)/2), msg);
         move_pc_ncurses(d,h);
         return -1;
     }
@@ -187,7 +188,8 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
             if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_down){
                 new_dungeon(d, h);
             } else {
-                mvprintw(0, 0, "You can't go down here!");
+                const char *down_msg = "You can't go down here!";
+                mvprintw(0, (COLS/2 - strlen(down_msg)/2), down_msg);
                 move_pc_ncurses(d,h);
             }
             break;
@@ -196,7 +198,8 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
             if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_up){
                 new_dungeon(d, h);
             } else{
-                mvprintw(0, 0, "You can't go up here!");
+                const char *up_msg = "You can't go up here!";
+                mvprintw(0, (COLS/2 - strlen(up_msg)/2), up_msg);
                 move_pc_ncurses(d,h);
             }
             break;
@@ -209,25 +212,23 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
 
             //TODO Drop item
         case 'd':
-            mvprintw(0, 0, "Invalid Key!");
-            move_pc_ncurses(d, h);
-            break;
+            goto jump;
 
             //TODO Display equipment
         case 'e':
-            mvprintw(0, 0, "Invalid Key!");
-            move_pc_ncurses(d, h);
-            break;
+            goto jump;
 
             //Toggle fog-of-war
         case 'f':
             clear();
             if(d->fow){
-                mvprintw(0, 0, "Fog-of-war off!");
+                const char *fog_off = "Fog-of-war off!";
+                mvprintw(0, (COLS/2 - strlen(fog_off)/2), fog_off);
                 d->fow = 0;
             }
             else{
-                mvprintw(0, 0, "Fog-of-war on!");
+                const char *fog_on = "Fog-of-war on!";
+                mvprintw(0, (COLS/2 - strlen(fog_on)/2), fog_on);
                 d->fow = 1;
             }
 
@@ -264,21 +265,15 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
 
             //TODO Take off item
         case 't':
-            mvprintw(0, 0, "Invalid Key!");
-            move_pc_ncurses(d, h);
-            break;
+            goto jump;
 
             //TODO Wear item
         case 'w':
-            mvprintw(0, 0, "Invalid Key!");
-            move_pc_ncurses(d, h);
-            break;
+            goto jump;
 
             //TODO Expunge item
         case 'x':
-            mvprintw(0, 0, "Invalid Key!");
-            move_pc_ncurses(d, h);
-            break;
+            goto jump;
 
             //Display the non-tunneling distance map
         case 'D':
@@ -288,9 +283,7 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
 
             //TODO Inspect equipped item
         case 'E':
-            mvprintw(0, 0, "Invalid Key!");
-            move_pc_ncurses(d, h);
-            break;
+            goto jump;
 
             //Display the hardness map
         case 'H':
@@ -300,15 +293,11 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
 
             //TODO Inspect inventory item
         case 'I':
-            mvprintw(0, 0, "Invalid Key!");
-            move_pc_ncurses(d, h);
-            break;
+            goto jump;
 
             //TODO Look at monster
         case 'L':
-            mvprintw(0, 0, "Invalid Key!");
-            move_pc_ncurses(d, h);
-            break;
+            goto jump;
 
             // Quit the game
         case 'Q':
@@ -324,12 +313,12 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
 
             //TODO Print list of controls
         case 'C':
-            mvprintw(0, 0, "Invalid Key!");
-            move_pc_ncurses(d, h);
-            break;
+            goto jump;
 
+            jump:
         default:
-            mvprintw(0, 0, "Invalid Key!");
+            const char *invalid_msg = "Invalid Key!";
+            mvprintw(0, (COLS/2 - strlen(invalid_msg)/2), invalid_msg);
             move_pc_ncurses(d, h);
             break;
     }

@@ -869,6 +869,7 @@ void render_fow(Dungeon *d)
         }
     }
 }
+
 void render_terrain_map(Dungeon *d)
 {
     WINDOW *map_window = d->windows->terrain_map_win;
@@ -927,6 +928,7 @@ void render_terrain_map(Dungeon *d)
         }
     }
 }
+
 void render_teleport_select(Dungeon *d, heap_t *h){
     pair_t cursor;
     cursor[dim_x] = d->pc->pos[dim_x];
