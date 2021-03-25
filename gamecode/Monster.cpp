@@ -7,6 +7,34 @@
 #include "Character.h"
 #include "windows.h"
 
+void update_last_seen(Dungeon *d)
+{
+    for(int i = 1; i < d->num_monsters + 1; ++i){
+
+        if(d->characters[i]->living &&
+                d->characters[i]->pos[dim_x] >= d->pc->pos[dim_x] - 2 &&
+                d->characters[i]->pos[dim_x] <= d->pc->pos[dim_x] + 2 &&
+                d->characters[i]->pos[dim_y] >= d->pc->pos[dim_y] - 2 &&
+                d->characters[i]->pos[dim_y] <= d->pc->pos[dim_y] + 2)
+        {
+            if(d->characters[i]->monster->last_seen[dim_x] == -1){
+                d->vis_monsters[d->characters[i]->pos[dim_y]][d->characters[i]->pos[dim_x]] = d->characters[i];
+
+                d->characters[i]->monster->last_seen[dim_x] = d->characters[i]->pos[dim_x];
+                d->characters[i]->monster->last_seen[dim_y] = d->characters[i]->pos[dim_y];
+            }
+            else{
+                d->vis_monsters[d->characters[i]->monster->last_seen[dim_y]][d->characters[i]->monster->last_seen[dim_x]] = NULL;
+
+                d->characters[i]->monster->last_seen[dim_x] = d->characters[i]->pos[dim_x];
+                d->characters[i]->monster->last_seen[dim_y] = d->characters[i]->pos[dim_y];
+
+                d->vis_monsters[d->characters[i]->pos[dim_y]][d->characters[i]->pos[dim_x]] = d->characters[i];
+            }
+        }
+    }
+}
+
 void write_monster_list(Dungeon *d, int index){
 #define win d->windows->monster_list_win
 
@@ -36,7 +64,7 @@ void write_monster_list(Dungeon *d, int index){
     }
 
     box(win,0,0);
-    mvwprintw(win,19,1,"Arrows to scroll Q to exit");
+    mvwprintw(win,19,2,"Arrows to scroll Q to exit");
     mvwprintw(win,0,4, "List of Known Monsters");
 
     wrefresh(win);
@@ -132,6 +160,9 @@ int gen_monsters(Dungeon *d)
 
         d->characters[i]->setSpeed(rand() % 16 + 5);
         d->characters[i]->setDisplayChar(get_monster_char(d->characters[i]));
+
+        d->characters[i]->monster->last_seen[dim_x] = -1;
+        d->characters[i]->monster->last_seen[dim_x] = -1;
     }
     int pcRoomNum;
     int totalArea = 0;

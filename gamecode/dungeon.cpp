@@ -810,28 +810,30 @@ void render_fow(Dungeon *d)
     pair_t p;
     for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
         for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-            if (character_mappair(p))
+            if(p[dim_x] == d->pc->pos[dim_x] && p[dim_y] == d->pc->pos[dim_y])
             {
-                if(character_mappair(p)->getDisplayChar() == '@')
+                attron(COLOR_PAIR(PLAYER_PAIR));
+                mvaddch(p[dim_y] + 1, p[dim_x], '@');
+                attroff(COLOR_PAIR(PLAYER_PAIR));
+            }
+            else if (vismonsterpair(p))
+            {
+                if(p[dim_x] >= d->pc->pos[dim_x] - 2 &&
+                        p[dim_x] <= d->pc->pos[dim_x] + 2 &&
+                        p[dim_y] >= d->pc->pos[dim_y] - 2 &&
+                        p[dim_y] <= d->pc->pos[dim_y] + 2)
                 {
-                    attron(COLOR_PAIR(PLAYER_PAIR));
-                    mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->getDisplayChar()));
-                    attroff(COLOR_PAIR(PLAYER_PAIR));
-                }
-                else if(character_mappair(p)->pos[dim_x] >= d->pc->pos[dim_x] - 2 &&
-                        character_mappair(p)->pos[dim_x] <= d->pc->pos[dim_x] + 2 &&
-                        character_mappair(p)->pos[dim_y] >= d->pc->pos[dim_y] - 2 &&
-                        character_mappair(p)->pos[dim_y] <= d->pc->pos[dim_y] + 2){
                     attron(COLOR_PAIR(MONSTER_PAIR));
-                    mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->getDisplayChar()));
+                    mvaddch(p[dim_y] + 1, p[dim_x], (vismonsterpair(p)->getDisplayChar()));
                     attroff(COLOR_PAIR(MONSTER_PAIR));
                 }
                 else{
-                    goto switch_statement;
+                    attron(COLOR_PAIR(FLOOR_PAIR));
+                    mvaddch(p[dim_y] + 1, p[dim_x], (vismonsterpair(p)->getDisplayChar()));
+                    attroff(COLOR_PAIR(FLOOR_PAIR));
                 }
             }
             else {
-                switch_statement:
                 switch (pcmappair(p)) {
                     case ter_wall:
                     case ter_wall_immutable:
@@ -1076,6 +1078,7 @@ void render_dist_map(Dungeon *d){
     dijkstra_non_tunneling(d);
     WINDOW *map_window = d->windows->terrain_map_win;
     //pair_t p;
+    clear();
     const char *msg = "Press \'Q\' to close distance map";
     mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
     pair_t p;

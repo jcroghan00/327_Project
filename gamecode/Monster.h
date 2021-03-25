@@ -11,6 +11,7 @@ public:
     int erratic;
     pair_t pc_last_loc;
     Monster_Path path_to_pc[DUNGEON_Y][DUNGEON_X];
+    pair_t last_seen;
 };
 
 class Dif{
@@ -19,6 +20,7 @@ public:
     int y;
 };
 
+void update_last_seen(Dungeon *d);
 void monster_list(Dungeon *d);
 int gen_monsters(Dungeon *d);
 void move_monster(Character *c, Dungeon *d);

@@ -13,7 +13,6 @@ class Character {
 protected:
     uint32_t sd;
     char display_char;
-    int living;
     uint32_t turn;
     uint32_t speed;
 public:
@@ -28,6 +27,7 @@ public:
     uint32_t getTurn();
     void setSpeed(int speed);
     uint32_t getSpeed();
+    int living;
 
     pair_t pos;
     Pc *pc;

@@ -106,6 +106,7 @@ int move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
     }
 
     d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = NULL;
+    d->vis_monsters[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = NULL;
     d->pc->pos[dim_y] += dy;
     d->pc->pos[dim_x] += dx;
     if (d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] != NULL){
@@ -241,6 +242,7 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
             //Teleport (goto)
         case 'g':
             render_teleport_select(d,h);
+            update_last_seen(d);
             render(d);
             move_pc_ncurses(d, h);
             break;

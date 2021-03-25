@@ -115,6 +115,7 @@ void play_game(Dungeon *d, heap_t *h)
             }
             else{
                 move_monster(c,d);
+                update_last_seen(d);
             }
             c->setTurn(c->getTurn()+ (1000/c->getSpeed()));
             heap_insert(h, c);
