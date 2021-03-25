@@ -11,7 +11,6 @@ WINDOW* create_window(){
 
 void create_monster_list_win(Dungeon *d){
     d->windows->monster_list_win = create_window();
-    //scrollok(d->windows->monster_list_win, TRUE);
     wresize(d->windows->monster_list_win, LINES-4, 30);
     mvwin(d->windows->monster_list_win, 2, COLS/2 - 15);
     init_pair(1,COLOR_WHITE, COLOR_BLUE);

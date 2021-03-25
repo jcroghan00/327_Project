@@ -82,6 +82,7 @@ public:
 class Monster_Path {
 public:
     heap_node_t *hn;
+    //TODO change to a pair_t
     uint8_t pos[2];
     uint32_t cost;
 };

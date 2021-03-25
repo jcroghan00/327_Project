@@ -749,12 +749,12 @@ void render_ncurses(Dungeon *d, WINDOW *scr=stdscr)
                 {
                     wattron(scr,COLOR_PAIR(PLAYER_PAIR));
                     mvwaddch(scr,p[dim_y] + 1, p[dim_x], (character_mappair(p)->display_char));
-                    attroff(COLOR_PAIR(PLAYER_PAIR));
+                    wattroff(scr,COLOR_PAIR(PLAYER_PAIR));
                 }
                 else{
                     wattron(scr,COLOR_PAIR(MONSTER_PAIR));
                     mvwaddch(scr,p[dim_y] + 1, p[dim_x], (character_mappair(p)->display_char));
-                    attroff(COLOR_PAIR(MONSTER_PAIR));
+                    wattroff(scr,COLOR_PAIR(MONSTER_PAIR));
                 }
             }
             else {
@@ -767,12 +767,12 @@ void render_ncurses(Dungeon *d, WINDOW *scr=stdscr)
                     case ter_floor_room:
                         wattron(scr,COLOR_PAIR(FLOOR_PAIR));
                         mvwaddch(scr,p[dim_y] + 1, p[dim_x],'.');
-                        attroff(COLOR_PAIR(FLOOR_PAIR));
+                        wattroff(scr,COLOR_PAIR(FLOOR_PAIR));
                         break;
                     case ter_floor_hall:
                         wattron(scr,COLOR_PAIR(FLOOR_PAIR));
                         mvwaddch(scr,p[dim_y] + 1, p[dim_x],'#');
-                        attroff(COLOR_PAIR(FLOOR_PAIR));
+                        wattroff(scr,COLOR_PAIR(FLOOR_PAIR));
                         break;
                     case ter_debug:
                         mvwaddch(scr,p[dim_y] + 1, p[dim_x],'*');
@@ -781,12 +781,12 @@ void render_ncurses(Dungeon *d, WINDOW *scr=stdscr)
                     case ter_stairs_up:
                         wattron(scr,COLOR_PAIR(STAIR_PAIR));
                         mvwaddch(scr,p[dim_y] + 1, p[dim_x],'<');
-                        attroff(COLOR_PAIR(STAIR_PAIR));
+                        wattroff(scr,COLOR_PAIR(STAIR_PAIR));
                         break;
                     case ter_stairs_down:
                         wattron(scr,COLOR_PAIR(STAIR_PAIR));
                         mvwaddch(scr,p[dim_y] + 1, p[dim_x],'>');
-                        attroff(COLOR_PAIR(STAIR_PAIR));
+                        wattroff(scr,COLOR_PAIR(STAIR_PAIR));
                         break;
                     default:
                         break;
@@ -869,12 +869,11 @@ void render_fow(Dungeon *d)
         }
     }
 }
-//TODO add color to terrain map
 void render_terrain_map(Dungeon *d)
 {
     WINDOW *map_window = d->windows->terrain_map_win;
     pair_t p;
-    const char *msg = "Hit \"Q\" to close terrain map";
+    const char *msg = "Press \'Q\' to close terrain map";
     mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
     for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
         for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
@@ -885,20 +884,28 @@ void render_terrain_map(Dungeon *d)
                     break;
                 case ter_floor:
                 case ter_floor_room:
+                    wattron(map_window,COLOR_PAIR(FLOOR_PAIR));
                     mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'.');
+                    wattroff(map_window,COLOR_PAIR(FLOOR_PAIR));
                     break;
                 case ter_floor_hall:
+                    wattron(map_window,COLOR_PAIR(FLOOR_PAIR));
                     mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'#');
+                    wattroff(map_window,COLOR_PAIR(FLOOR_PAIR));
                     break;
                 case ter_debug:
                     mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'*');
                     //fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
                     break;
                 case ter_stairs_up:
+                    wattron(map_window,COLOR_PAIR(STAIR_PAIR));
                     mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'<');
+                    wattroff(map_window,COLOR_PAIR(STAIR_PAIR));
                     break;
                 case ter_stairs_down:
+                    wattron(map_window,COLOR_PAIR(STAIR_PAIR));
                     mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'>');
+                    wattroff(map_window,COLOR_PAIR(STAIR_PAIR));
                     break;
                 default:
                     break;
@@ -920,13 +927,12 @@ void render_terrain_map(Dungeon *d)
         }
     }
 }
-//TODO move teleport screen to here
 void render_teleport_select(Dungeon *d, heap_t *h){
     pair_t cursor;
     cursor[dim_x] = d->pc->pos[dim_x];
     cursor[dim_y] = d->pc->pos[dim_y];
     WINDOW *teleport_win = d->windows->teleport_win;
-    const char *msg = "Hit \"Q\" to cancel teleport";
+    const char *msg = "Press \'Q\' to cancel teleport";
     mvwprintw(teleport_win,0, (COLS/2 - strlen(msg)/2), msg);
     touchwin(teleport_win);
     int visible = 1;
@@ -1017,12 +1023,28 @@ void render_teleport_select(Dungeon *d, heap_t *h){
     }
 }
 
-//TODO Display hardness map
+//TODO add cursor functionality to view targeted squares hardness
 void render_hardness_map(Dungeon *d){
+    init_pair(21, COLOR_RED, COLOR_BLACK);
+    init_pair(22, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(23, COLOR_GREEN, COLOR_BLACK);
     WINDOW *map_window = d->windows->terrain_map_win;
-    //pair_t p;
-    const char *msg = "Hit \"Q\" to close hardness map";
+    pair_t p;
+    const char *msg = "Press \'Q\' to close hardness map";
     mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
+
+    for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
+        for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
+            uint8_t hardness = d->hardness[p[dim_y]][p[dim_x]];
+            if (hardness && hardness != 255){
+                char display = '0' + 1 + hardness/85;
+                int color = (1+ hardness/85) + 20;
+                wattron(map_window,COLOR_PAIR(color));
+                mvwaddch(map_window,p[dim_y] + 1, p[dim_x],display);
+                wattroff(map_window,COLOR_PAIR(color));
+            }
+        }
+    }
 
 
     touchwin(map_window);
@@ -1040,14 +1062,40 @@ void render_hardness_map(Dungeon *d){
         }
     }
 }
-//TODO Display non tunneling distance map
+
 void render_dist_map(Dungeon *d){
+    init_pair(20, COLOR_WHITE, COLOR_BLACK);
+    init_pair(21, COLOR_RED, COLOR_BLACK);
+    init_pair(22, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(23, COLOR_GREEN, COLOR_BLACK);
+    init_pair(24, COLOR_CYAN, COLOR_BLACK);
+    init_pair(25, COLOR_BLUE, COLOR_BLACK);
+    init_pair(26, COLOR_MAGENTA, COLOR_BLACK);
+    dijkstra_non_tunneling(d);
     WINDOW *map_window = d->windows->terrain_map_win;
     //pair_t p;
-    const char *msg = "Hit \"Q\" to close distance map";
+    const char *msg = "Press \'Q\' to close distance map";
     mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
-
-
+    pair_t p;
+    Monster_Path path;
+    for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
+        for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
+            path = d->non_tun_path[p[dim_y]][p[dim_x]];
+            if (path.cost != INT_MAX){
+                if (!path.cost){
+                    wattron(map_window,COLOR_PAIR(PLAYER_PAIR));
+                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'@');
+                    wattroff(map_window,COLOR_PAIR(PLAYER_PAIR));
+                } else {
+                    char display = '0' + path.cost % 10;
+                    int color = ((path.cost / 10) % 7) + 20;
+                    wattron(map_window,COLOR_PAIR(color));
+                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],display);
+                    wattroff(map_window,COLOR_PAIR(color));
+                }
+            }
+        }
+    }
     touchwin(map_window);
     int visible = 1;
     while (visible) {
@@ -1063,12 +1111,40 @@ void render_dist_map(Dungeon *d){
         }
     }
 }
-//TODO Display tunneling distance map
+
 void render_tun_dist_map(Dungeon *d){
+    init_pair(20, COLOR_WHITE, COLOR_BLACK);
+    init_pair(21, COLOR_RED, COLOR_BLACK);
+    init_pair(22, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(23, COLOR_GREEN, COLOR_BLACK);
+    init_pair(24, COLOR_CYAN, COLOR_BLACK);
+    init_pair(25, COLOR_BLUE, COLOR_BLACK);
+    init_pair(26, COLOR_MAGENTA, COLOR_BLACK);
+    dijkstra_tunneling(d);
     WINDOW *map_window = d->windows->terrain_map_win;
-    //pair_t p;
-    const char *msg = "Hit \"Q\" to close tunneling distance map";
+    const char *msg = "Press \'Q\' to close tunneling distance map";
     mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
+    pair_t p;
+    Monster_Path path;
+    for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
+        for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
+            path = d->tun_path[p[dim_y]][p[dim_x]];
+            if (path.cost != INT_MAX){
+                if (!path.cost){
+                    wattron(map_window,COLOR_PAIR(PLAYER_PAIR));
+                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'@');
+                    wattroff(map_window,COLOR_PAIR(PLAYER_PAIR));
+                } else {
+                    char display = '0' + path.cost % 10;
+                    int color = ((path.cost / 10) % 7) + 20;
+                    wattron(map_window,COLOR_PAIR(color));
+                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],display);
+                    wattroff(map_window,COLOR_PAIR(color));
+                }
+            }
+        }
+    }
+
 
 
 
