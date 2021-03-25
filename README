@@ -2,15 +2,12 @@ Jack Croghan           jcroghan@iastate.edu
 Ryan Tullis            rctullis@iastate.edu
 Aashish Komaragiri     adkoma@iastae.edu 
 
-README assignment-1.05
+README assignment-1.06
 
-     This assignment involved the conversion of our code over to ncurses.
-     the only significant changes are to the move pc function and the
-     rendering of the dungeon. The rendering of the dungeon mostly just
-     had to print to ncurses instead of the terminal. move pc however has
-     to now  wait for an input from the player and act on that input
-     accordingly. We also added the ability to print the terrrain map and
-     added boilerplate code of future implementations of the hardness,
-     tunneling distance, and non tunneling distance map. our code also
-     prints a win/lose screen and allows a player to quit or restart after
-     a game.
+Assignment 1.06 focused on converting our C Dungeon Generator game into C++, and make all .c files into .cpp files. We had to change all the type def structs into classes. 
+
+Also we had to change the view of the PC to “night vision” which made the PC able to see only 2 grid spots from any direction. But whenever the PC moved, we made sure to update the spots the PC can see , while adding the spots the PC already remembers. 
+
+We also created a toggle function, which lets us change the map to “night vision” or allow us to view the entire map. 
+
+For teleporting we decided to add another window which had a cursor that allowed the user to move wherever in the dungeon (except immutable wall) and let the user make the pc teleport to a desired target location. The user can also choose to set the pc to a random location, and that would teleport the pc to a random location. 
