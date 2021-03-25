@@ -2,9 +2,9 @@
 
 #include "dungeon.h"
 #include "heap.h"
-#include "monster.h"
+#include "Monster.h"
 #include "pc.h"
-#include "character.h"
+#include "Character.h"
 #include "path.h"
 #include "windows.h"
 
@@ -745,15 +745,15 @@ void render_ncurses(Dungeon *d, WINDOW *scr=stdscr)
         for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
             if (character_mappair(p))
             {
-                if(character_mappair(p)->display_char == '@')
+                if(character_mappair(p)->getDisplayChar() == '@')
                 {
                     wattron(scr,COLOR_PAIR(PLAYER_PAIR));
-                    mvwaddch(scr,p[dim_y] + 1, p[dim_x], (character_mappair(p)->display_char));
+                    mvwaddch(scr,p[dim_y] + 1, p[dim_x], (character_mappair(p)->getDisplayChar()));
                     wattroff(scr,COLOR_PAIR(PLAYER_PAIR));
                 }
                 else{
                     wattron(scr,COLOR_PAIR(MONSTER_PAIR));
-                    mvwaddch(scr,p[dim_y] + 1, p[dim_x], (character_mappair(p)->display_char));
+                    mvwaddch(scr,p[dim_y] + 1, p[dim_x], (character_mappair(p)->getDisplayChar()));
                     wattroff(scr,COLOR_PAIR(MONSTER_PAIR));
                 }
             }
@@ -812,10 +812,10 @@ void render_fow(Dungeon *d)
         for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
             if (character_mappair(p))
             {
-                if(character_mappair(p)->display_char == '@')
+                if(character_mappair(p)->getDisplayChar() == '@')
                 {
                     attron(COLOR_PAIR(PLAYER_PAIR));
-                    mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->display_char));
+                    mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->getDisplayChar()));
                     attroff(COLOR_PAIR(PLAYER_PAIR));
                 }
                 else if(character_mappair(p)->pos[dim_x] >= d->pc->pos[dim_x] - 2 &&
@@ -823,7 +823,7 @@ void render_fow(Dungeon *d)
                         character_mappair(p)->pos[dim_y] >= d->pc->pos[dim_y] - 2 &&
                         character_mappair(p)->pos[dim_y] <= d->pc->pos[dim_y] + 2){
                     attron(COLOR_PAIR(MONSTER_PAIR));
-                    mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->display_char));
+                    mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->getDisplayChar()));
                     attroff(COLOR_PAIR(MONSTER_PAIR));
                 }
                 else{
@@ -1306,8 +1306,8 @@ void new_dungeon(Dungeon *d, heap_t *h)
     heap_init(h,character_cmp,NULL);
     for(int i = 0; i < d->num_monsters+1; i++)
     {
-        d->characters[i]->turn = 0;
-        d->characters[i]->sd = i;
+        d->characters[i]->setTurn(0);
+        d->characters[i]->setSd(i);
         heap_insert(h,d->characters[i]);
     }
 

@@ -1,7 +1,7 @@
 #include "path.h"
 #include "heap.h"
 #include "dungeon.h"
-#include "character.h"
+#include "Character.h"
 
 static int32_t monster_path_cmp(const void *key, const void *with) {
     return ((Monster_Path *) key)->cost - ((Monster_Path *) with)->cost;

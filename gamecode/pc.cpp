@@ -1,15 +1,11 @@
 #include <ncurses.h>
 
 #include "dungeon.h"
-#include "character.h"
-#include "monster.h"
+#include "Character.h"
+#include "Monster.h"
 #include "windows.h"
 typedef struct heap heap_t;
 
-int pc_is_alive(Dungeon *d)
-{
-    return d->pc->living;
-}
 
 void init_pc_map(Dungeon *d){
     for(int i = 0; i < DUNGEON_Y; i++){
@@ -43,15 +39,15 @@ void place_pc(Dungeon *d)
     d->pc->pos[dim_x] = d->rooms[randRoom].position[dim_x] + x;
     d->pc->pos[dim_y] = d->rooms[randRoom].position[dim_y] + y;
     character_mapxy(d->pc->pos[dim_x],d->pc->pos[dim_y]) = d->pc;
-    d->pc->living = 1;
+    d->pc->setLiving(1);
 }
 
 void config_pc(Dungeon *d)
 {
     d->pc = (Character*)malloc(sizeof(Character));
-    d->pc->display_char = '@';
-    d->pc->living = 1;
-    d->pc->speed = PC_SPEED;
+    d->pc->setDisplayChar('@');
+    d->pc->setLiving(1);
+    d->pc->setSpeed(PC_SPEED);
     place_pc(d);
     d->characters[0] = d->pc;
 }
@@ -112,7 +108,7 @@ int move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
     d->pc->pos[dim_y] += dy;
     d->pc->pos[dim_x] += dx;
     if (d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] != NULL){
-        d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]]->living = 0;
+        d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]]->setLiving(0);
         d->num_monsters--;
     }
     d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = d->pc;

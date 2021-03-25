@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include "monster.h"
+#include "Monster.h"
 #include "dungeon.h"
-#include "character.h"
+#include "Character.h"
 #include "windows.h"
 
 void write_monster_list(Dungeon *d, int index){
-    #define win d->windows->monster_list_win
+#define win d->windows->monster_list_win
 
     wclear(win);
 
@@ -16,7 +16,7 @@ void write_monster_list(Dungeon *d, int index){
     for(int i = index; i < index + 16 && i < d->num_monsters + 1; ++i)
     {
         wprintw(win, " %3i: ", i);
-        wprintw(win, "%c: ", d->characters[i]->display_char);
+        wprintw(win, "%c: ", d->characters[i]->getDisplayChar());
 
         int dy = d->characters[0]->pos[dim_y] - d->characters[i]->pos[dim_y];
         if(dy < 0) {
@@ -122,7 +122,7 @@ int gen_monsters(Dungeon *d)
     for(int i = 1; i <= d->num_monsters; i++)
     {
         d->characters[i] = (Character*)malloc(sizeof(Character));
-        d->characters[i]->living = 1;
+        d->characters[i]->setLiving(1);
         d->characters[i]->monster = (Monster*)malloc (sizeof(Monster));
 
         d->characters[i]->monster->intelligent = rand() % 2;
@@ -130,8 +130,8 @@ int gen_monsters(Dungeon *d)
         d->characters[i]->monster->tunneling = rand() % 2;
         d->characters[i]->monster->erratic = rand() % 2;
 
-        d->characters[i]->speed = rand() % 16 + 5;
-        d->characters[i]->display_char = get_monster_char(d->characters[i]);
+        d->characters[i]->setSpeed(rand() % 16 + 5);
+        d->characters[i]->setDisplayChar(get_monster_char(d->characters[i]));
     }
     int pcRoomNum;
     int totalArea = 0;
@@ -207,7 +207,7 @@ void final_move(Character *c, Dungeon *d,int dx,int dy)
     d->character_map[c->pos[dim_y]][c->pos[dim_x]] = NULL;
     // if there's another character in destination, kill it
     if (d->character_map[c->pos[dim_y]+dy][c->pos[dim_x]+dx]){
-        d->character_map[c->pos[dim_y]+dy][c->pos[dim_x]+dx]->living = 0;
+        d->character_map[c->pos[dim_y]+dy][c->pos[dim_x]+dx]->setLiving(0);
     }
     //set future position and update the map
     c->pos[dim_y] = c->pos[dim_y]+dy;
@@ -291,17 +291,17 @@ void move_monster(Character *c, Dungeon *d)
         }
     }
     else if (sees_player) {
-         // sees player but non monster->intelligent
-            if(c->monster->tunneling){
-                bresenham_move(d,c,&dif);
-                dx = dif.x;
-                dy = dif.y;
-            }
-            else {
-                move_line(d, c, &dif);
-                dx = dif.x;
-                dy = dif.y;
-            }
+        // sees player but non monster->intelligent
+        if(c->monster->tunneling){
+            bresenham_move(d,c,&dif);
+            dx = dif.x;
+            dy = dif.y;
+        }
+        else {
+            move_line(d, c, &dif);
+            dx = dif.x;
+            dy = dif.y;
+        }
         tun_rock_check(d,c,&dx,&dy);
     }
     if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) != ter_wall_immutable) {

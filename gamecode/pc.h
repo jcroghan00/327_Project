@@ -1,10 +1,12 @@
 #ifndef PC_H
 # define PC_H
+#include "Character.h"
 
 class Dungeon;
 
-class Pc {
+class PC: public Character{
 public:
+
 };
 
 int pc_is_alive(Dungeon *d);

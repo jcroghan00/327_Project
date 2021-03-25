@@ -2,10 +2,10 @@
 #include <string>
 
 #include "dungeon.h"
-#include "monster.h"
+#include "Monster.h"
 #include "pc.h"
 #include "heap.h"
-#include "character.h"
+#include "Character.h"
 #include "windows.h"
 const char *victory =
         "\n                                       o\n"
@@ -65,7 +65,7 @@ void play_game(Dungeon *d, heap_t *h);
 
 void end_game(Dungeon *d, heap_t *h){
     WINDOW *game_win = d->windows->game_ending_win;
-    if (d->pc->living){
+    if (d->pc->isLiving()){
         wprintw(game_win,victory);
     } else {
         wprintw(game_win, tombstone);
@@ -96,17 +96,17 @@ void play_game(Dungeon *d, heap_t *h)
 {
     for(int i = 0; i < d->num_monsters+1; i++)
     {
-        d->characters[i]->turn = 0;
-        d->characters[i]->sd = i;
+        d->characters[i]->setTurn(0);
+        d->characters[i]->setSd(i);
         heap_insert(h,d->characters[i]);
     }
     Character *c;
-    while(pc_is_alive(d))
+    while(d->pc->isLiving())
     {
         if (!d->num_monsters){break;}
         c = (Character*)heap_remove_min(h);
-        if (c->living){
-            if (c->sd == 0) {
+        if (c->isLiving()){
+            if (c->getSd() == 0) {
                 move_pc_ncurses(d, h);
                 // pc_next_pos(d);
                 render(d);
@@ -116,7 +116,7 @@ void play_game(Dungeon *d, heap_t *h)
             else{
                 move_monster(c,d);
             }
-            c->turn = c->turn + (1000/c->speed);
+            c->setTurn(c->getTurn()+ (1000/c->getSpeed()));
             heap_insert(h, c);
 
             usleep(2500); // you cant see the monsters' steps otherwise
