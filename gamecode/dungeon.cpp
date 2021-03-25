@@ -1028,7 +1028,7 @@ void render_hardness_map(Dungeon *d){
     init_pair(21, COLOR_RED, COLOR_BLACK);
     init_pair(22, COLOR_YELLOW, COLOR_BLACK);
     init_pair(23, COLOR_GREEN, COLOR_BLACK);
-    WINDOW *map_window = d->windows->terrain_map_win;
+    WINDOW *map_window = d->windows->hardness_map_win;
     pair_t p;
     const char *msg = "Press \'Q\' to close hardness map";
     mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
