@@ -181,7 +181,7 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
             move_pc_ncurses(d, h);
             break;
 
-            //TODO Toggle fog-of-war
+            //Toggle fog-of-war
         case 'f':
             clear();
             if(d->fow){

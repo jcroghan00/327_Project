@@ -8,14 +8,6 @@
 #include "path.h"
 #include "windows.h"
 
-#define HARD_WALL_PAIR      2
-#define SOFT_WALL_PAIR      3
-#define IMMUTABLE_WALL_PAIR 4
-#define FLOOR_PAIR          5
-#define STAIR_PAIR          6
-#define PLAYER_PAIR         7
-#define MONSTER_PAIR        8
-
 /* Returns true if random float in [0,1] is less than *
  * numerator/denominator.  Uses only integer math.    */
 # define rand_under(numerator, denominator) \
@@ -746,14 +738,7 @@ int load_dungeon(Dungeon *d)
 //renders the entire game board to a a given screen, stdscr by default
 void render_ncurses(Dungeon *d, WINDOW *scr=stdscr)
 {
-    start_color();
-    init_pair(HARD_WALL_PAIR, COLOR_YELLOW, COLOR_YELLOW); //??
-    init_pair(SOFT_WALL_PAIR, COLOR_GREEN, COLOR_GREEN);   //??
-    init_pair(IMMUTABLE_WALL_PAIR, COLOR_BLUE, COLOR_BLUE);
-    init_pair(FLOOR_PAIR, COLOR_WHITE, COLOR_BLACK);
-    init_pair(STAIR_PAIR, COLOR_CYAN, COLOR_BLACK);
-    init_pair(PLAYER_PAIR, COLOR_MAGENTA, COLOR_BLACK);
-    init_pair(MONSTER_PAIR, COLOR_RED, COLOR_BLACK);
+
 
     pair_t p;
     for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {

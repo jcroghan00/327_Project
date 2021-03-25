@@ -152,6 +152,13 @@ int main(int argc, char *argv[])
     srand(seed);
     initscr();
     start_color();
+    init_pair(HARD_WALL_PAIR, COLOR_YELLOW, COLOR_YELLOW); //??
+    init_pair(SOFT_WALL_PAIR, COLOR_GREEN, COLOR_GREEN);   //??
+    init_pair(IMMUTABLE_WALL_PAIR, COLOR_BLUE, COLOR_BLUE);
+    init_pair(FLOOR_PAIR, COLOR_WHITE, COLOR_BLACK);
+    init_pair(STAIR_PAIR, COLOR_CYAN, COLOR_BLACK);
+    init_pair(PLAYER_PAIR, COLOR_MAGENTA, COLOR_BLACK);
+    init_pair(MONSTER_PAIR, COLOR_RED, COLOR_BLACK);
     raw();
     noecho();
     curs_set(0);

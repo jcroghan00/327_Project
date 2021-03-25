@@ -36,7 +36,7 @@ void write_monster_list(Dungeon *d, int index){
     }
 
     box(win,0,0);
-    mvwprintw(win,19,1,"Arrows to scroll Esc to exit");
+    mvwprintw(win,19,1,"Arrows to scroll Q to exit");
     mvwprintw(win,0,4, "List of Known Monsters");
 
     wrefresh(win);
@@ -65,7 +65,7 @@ void monster_list(Dungeon *d) {
                 write_monster_list(d,index);
                 break;
 
-            case 27:
+            case 'Q':
                 visible = 0;
                 touchwin(stdscr);
                 break;

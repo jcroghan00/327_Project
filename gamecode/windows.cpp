@@ -5,6 +5,7 @@
 
 WINDOW* create_window(){
     WINDOW *new_win = newwin(0, 0, 0, 0);
+    keypad(new_win, TRUE);
     return new_win;
 }
 
@@ -15,7 +16,6 @@ void create_monster_list_win(Dungeon *d){
     mvwin(d->windows->monster_list_win, 2, COLS/2 - 15);
     init_pair(1,COLOR_WHITE, COLOR_BLUE);
     wbkgd(d->windows->monster_list_win, COLOR_PAIR(1));
-    keypad(d->windows->monster_list_win, TRUE);
 }
 
 void create_terrain_map_win(Dungeon *d){
