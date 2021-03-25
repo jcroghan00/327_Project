@@ -35,6 +35,12 @@ void create_game_ending_win(Dungeon *d){
 void create_teleport_win(Dungeon *d){
     d->windows->teleport_win = create_window();
 }
+void create_character_info_win(Dungeon *d){
+    d->windows->character_info_win = create_window();
+}
+void create_inventory_win(Dungeon *d){
+    d->windows->inventory_win = create_window();
+}
 
 void create_windows(Dungeon *d){
     create_monster_list_win(d);
@@ -44,4 +50,6 @@ void create_windows(Dungeon *d){
     create_tun_dist_map_win(d);
     create_game_ending_win(d);
     create_teleport_win(d);
+    create_character_info_win(d);
+    create_inventory_win(d);
 }

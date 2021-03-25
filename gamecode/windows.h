@@ -12,6 +12,8 @@ public:
     WINDOW *tun_dist_map_win;
     WINDOW *game_ending_win;
     WINDOW *teleport_win;
+    WINDOW *character_info_win;
+    WINDOW *inventory_win;
 };
 
 void create_windows(Dungeon *d);
