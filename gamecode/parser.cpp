@@ -3,17 +3,18 @@
 #include <cstdio>
 #include <iostream>
 #include <fstream>
-#include <string>
+#include <cstring>
 
 using namespace std;
 
 void monster_parser(){
-    int num_monster_types = count_monster_types();
-    cout << num_monster_types << endl;
-    ifstream inFile("monsters.txt");
+    char *filepath = (char *)malloc(sizeof(getenv("HOME")) + sizeof("/.rlg327/monster_desc.txt"));
+    strcat(filepath, getenv("HOME"));
+    strcat(filepath, "/.rlg327/monster_desc.txt");
+    ifstream inFile(filepath);
 
     if(!inFile){
-        cerr << "cannot open \"monster.txt\" for output\n";
+        cerr << "cannot open \"monster_desc.txt\" for output\n";
         return;
     }
 
