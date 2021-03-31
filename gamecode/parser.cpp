@@ -4,15 +4,28 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <functional>
 
 using namespace std;
 
-int count_types(std::string filepath, std::string delimiter)
+//hash values for use with the case statement
+//the case statement must be able to see the values at compile time so now we have this.. yay
+#define name 1052782581
+#define symb -1147521460
+#define color -1272051187
+#define desc 1285376905
+#define speed -1876027316
+#define dam 2061701898
+#define hp -941208014
+#define abil -813300525
+#define rrty -1614022120
+
+int count_types(string filepath, string delimiter)
 {
     int num_types = 0;
     ifstream inFile(filepath);
 
-    std::string line;
+    string line;
     while(getline(inFile, line))
     {
         if(!line.compare(delimiter)){
@@ -29,8 +42,7 @@ void monster_parser(){
     strcat(filepath, getenv("HOME"));
     strcat(filepath, "/.rlg327/monster_desc.txt");
 
-    int num_monster_types = count_types(filepath, "BEGIN MONSTER");
-    cout << num_monster_types << endl;
+    //int num_monster_types = count_types(filepath, "BEGIN MONSTER");
 
     ifstream inFile(filepath);
 
@@ -39,26 +51,112 @@ void monster_parser(){
         return;
     }
 
-    std::string metadata;
+    string metadata;
     getline(inFile, metadata);
-
-    if(!metadata.compare("RLG327 MONSTER DESCRIPTION 1\n")){
-        inFile.close();
-        return;
-    } else {
+    if(!metadata.compare("RLG327 MONSTER DESCRIPTION 1\n")) {
         cerr << "metadata does not match \"RLG327 MONSTER DESCRIPTION 1\"";
         inFile.close();
         return;
     }
 
+    hash<string> hasher;
 
-    /*
-    std::string line;
+    string line;
     while(getline(inFile, line))
     {
-        cout << line << endl;
+        if(!line.compare("END")){
+            cout << "\n";
+            continue;
+        }
+        else if(!line.compare("\n"))
+        {
+            continue;
+        }
+
+        string token = line.substr(0,line.find(" "));
+
+        switch(static_cast<int>(hasher(token)))
+        {
+            case name:
+            {
+                string monster_name = line.substr(line.find(" ") + 1, line.find("\n"));
+
+                cout << "Name: " + monster_name << endl;
+                break;
+            }
+
+            case symb:
+            {
+                string monster_symb = line.substr(line.find(" ") + 1, line.find("\n"));
+
+                cout << "Symbol: " + monster_symb << endl;
+                break;
+            }
+
+            case color:
+            {
+                string monster_color = line.substr(line.find(" ") + 1, line.find("\n"));
+
+                cout << "Color: " + monster_color << endl;
+                break;
+            }
+
+            case desc:
+            {
+                string monster_desc;
+
+                cout << "Description: " << endl;
+                getline(inFile, line);
+                while(line.compare("."))
+                {
+                    monster_desc = monster_desc + line + "\n";
+                    getline(inFile, line);
+                }
+                cout << monster_desc;
+                break;
+            }
+
+            case speed:
+            {
+                string monster_speed = line.substr(line.find(" ") + 1, line.find("\n"));
+
+                cout << "Speed: " + monster_speed << endl;
+                break;
+            }
+
+            case dam:
+            {
+                string monster_dam = line.substr(line.find(" ") + 1, line.find("\n"));
+
+                cout << "Damage: : " + monster_dam << endl;
+                break;
+            }
+
+            case hp:
+            {
+                string monster_hp = line.substr(line.find(" ") + 1, line.find("\n"));
+
+                cout << "Health Points: " + monster_hp << endl;
+                break;
+            }
+
+            case abil:
+            {
+                string monster_abil = line.substr(line.find(" ") + 1, line.find("\n"));
+
+                cout << "Ability(s): " + monster_abil << endl;
+                break;
+            }
+
+            case rrty:
+            {
+                string monster_rrty = line.substr(line.find(" ") + 1, line.find("\n"));
+
+                cout << "Rarity: " + monster_rrty << endl;
+                break;
+            }
+        }
     }
-     */
 }
 void item_parser(){
     char *filepath = (char *)malloc(sizeof(getenv("HOME")) + sizeof("/.rlg327/monster_desc.txt"));
