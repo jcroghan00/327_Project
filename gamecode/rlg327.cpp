@@ -7,6 +7,7 @@
 #include "heap.h"
 #include "Character.h"
 #include "windows.h"
+#include "parser.h"
 const char *victory =
         "\n                                       o\n"
         "                                      $\"\"$o\n"
@@ -136,11 +137,13 @@ int main(int argc, char *argv[])
 
     int save = 0;
     int load = 0;
+    int parse = 1;
 
     for (int i = 1; i < argc; i++)
     {
         if (!strcmp(argv[i],"--save"))         {save = 1;}
         else if (!strcmp(argv[i],"--load"))    {load = 1;}
+        else if (!strcmp(argv[i],"--parseoff"))    {parse = 0;}
         else if (!strcmp(argv[i],"--nummon"))  {d.num_monsters = atoi(argv[++i]);}
         else {seed=atoi(argv[i]);}
     }
@@ -165,6 +168,7 @@ int main(int argc, char *argv[])
     curs_set(0);
     keypad(stdscr, TRUE);
 
+
     init_dungeon(&d);
     if (load){
         load_dungeon(&d);
@@ -175,9 +179,18 @@ int main(int argc, char *argv[])
         save_dungeon(&d);
     }
 
+    heap_t h;
+
+    if(parse){
+        endwin();
+        monster_parser();
+        delete_dungeon(&d, &h);
+        return 0;
+    }
+
     render(&d);
 
-    heap_t h;
+
     heap_init(&h,character_cmp,NULL);
     play_game(&d, &h);
 
