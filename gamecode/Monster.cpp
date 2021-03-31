@@ -6,30 +6,38 @@
 #include "dungeon.h"
 #include "Character.h"
 #include "windows.h"
-
+Monster:: Monster()
+    :Character(rand() % 16 + 5){
+    intelligent = rand() % 2;
+    telepath = rand() % 2;
+    tunneling = rand() % 2;
+    erratic = rand() % 2;
+    last_seen[dim_x] = -1;
+    last_seen[dim_y] = -1;
+}
 void update_last_seen(Dungeon *d)
 {
-    for(int i = 1; i < d->num_monsters + 1; ++i){
+    for(int i = 0; i < d->num_monsters; ++i){
 
-        if(d->characters[i]->living &&
-                d->characters[i]->pos[dim_x] >= d->pc->pos[dim_x] - 2 &&
-                d->characters[i]->pos[dim_x] <= d->pc->pos[dim_x] + 2 &&
-                d->characters[i]->pos[dim_y] >= d->pc->pos[dim_y] - 2 &&
-                d->characters[i]->pos[dim_y] <= d->pc->pos[dim_y] + 2)
+        if(d->monsters[i]->living &&
+                d->monsters[i]->pos[dim_x] >= d->pc->pos[dim_x] - 2 &&
+                d->monsters[i]->pos[dim_x] <= d->pc->pos[dim_x] + 2 &&
+                d->monsters[i]->pos[dim_y] >= d->pc->pos[dim_y] - 2 &&
+                d->monsters[i]->pos[dim_y] <= d->pc->pos[dim_y] + 2)
         {
-            if(d->characters[i]->monster->last_seen[dim_x] == -1){
-                d->vis_monsters[d->characters[i]->pos[dim_y]][d->characters[i]->pos[dim_x]] = d->characters[i];
+            if(d->monsters[i]->last_seen[dim_x] == -1){
+                d->vis_monsters[d->monsters[i]->pos[dim_y]][d->monsters[i]->pos[dim_x]] = d->monsters[i];
 
-                d->characters[i]->monster->last_seen[dim_x] = d->characters[i]->pos[dim_x];
-                d->characters[i]->monster->last_seen[dim_y] = d->characters[i]->pos[dim_y];
+                d->monsters[i]->last_seen[dim_x] = d->monsters[i]->pos[dim_x];
+                d->monsters[i]->last_seen[dim_y] = d->monsters[i]->pos[dim_y];
             }
             else{
-                d->vis_monsters[d->characters[i]->monster->last_seen[dim_y]][d->characters[i]->monster->last_seen[dim_x]] = NULL;
+                d->vis_monsters[d->monsters[i]->last_seen[dim_y]][d->monsters[i]->last_seen[dim_x]] = NULL;
 
-                d->characters[i]->monster->last_seen[dim_x] = d->characters[i]->pos[dim_x];
-                d->characters[i]->monster->last_seen[dim_y] = d->characters[i]->pos[dim_y];
+                d->monsters[i]->last_seen[dim_x] = d->monsters[i]->pos[dim_x];
+                d->monsters[i]->last_seen[dim_y] = d->monsters[i]->pos[dim_y];
 
-                d->vis_monsters[d->characters[i]->pos[dim_y]][d->characters[i]->pos[dim_x]] = d->characters[i];
+                d->vis_monsters[d->monsters[i]->pos[dim_y]][d->monsters[i]->pos[dim_x]] = d->monsters[i];
             }
         }
     }
@@ -44,9 +52,9 @@ void write_monster_list(Dungeon *d, int index){
     for(int i = index; i < index + 16 && i < d->num_monsters + 1; ++i)
     {
         wprintw(win, " %3i: ", i);
-        wprintw(win, "%c: ", d->characters[i]->getDisplayChar());
+        wprintw(win, "%c: ", d->monsters[i]->getDisplayChar());
 
-        int dy = d->characters[0]->pos[dim_y] - d->characters[i]->pos[dim_y];
+        int dy = d->pc->pos[dim_y] - d->pc->pos[dim_y];
         if(dy < 0) {
             wprintw(win, "%2d South ", abs(dy));
         }
@@ -54,7 +62,7 @@ void write_monster_list(Dungeon *d, int index){
             wprintw(win, "%2d North ", abs(dy));
         }
 
-        int dx = d->characters[0]->pos[dim_x] - d->characters[i]->pos[dim_x];
+        int dx = d->pc->pos[dim_x] - d->pc->pos[dim_x];
         if(dx < 0) {
             wprintw(win, "by %2d East\n", abs(dx));
         }
@@ -105,30 +113,30 @@ void monster_list(Dungeon *d) {
     }
 }
 
-void get_monster_path(Character *c, Dungeon *d)
+void get_monster_path(Monster *m, Dungeon *d)
 {
     int x,y;
-    if (c->monster->tunneling) {
+    if (m->tunneling) {
         for (y = 0; y < DUNGEON_Y; y++) {
             for (x = 0; x < DUNGEON_X; x++) {
-                c->monster->path_to_pc[y][x] = d->tun_path[y][x];
+                m->path_to_pc[y][x] = d->tun_path[y][x];
             }
         }
     } else {
         for (y = 0; y < DUNGEON_Y; y++) {
             for (x = 0; x < DUNGEON_X; x++) {
-                c->monster->path_to_pc[y][x] = d->non_tun_path[y][x];
+                m->path_to_pc[y][x] = d->non_tun_path[y][x];
             }
         }
     }
 }
 
-char get_monster_char(Character *c)
+char get_monster_char(Monster *m)
 {
-    char binary_char[4] = {(char)('0'+(char)c->monster->erratic),
-                           (char)('0'+(char)c->monster->tunneling),
-                           (char)('0'+(char)c->monster->telepath),
-                           (char)('0'+(char)c->monster->intelligent)};
+    char binary_char[4] = {(char)('0'+(char)m->erratic),
+                           (char)('0'+(char)m->tunneling),
+                           (char)('0'+(char)m->telepath),
+                           (char)('0'+(char)m->intelligent)};
 
     int binary = atoi(binary_char),decimal = 0,base = 1,rem;
     while (binary > 0){
@@ -147,22 +155,29 @@ char get_monster_char(Character *c)
 
 int gen_monsters(Dungeon *d)
 {
-    for(int i = 1; i <= d->num_monsters; i++)
+    if (d->num_monsters == -1) {d->num_monsters = d->num_rooms * 2 < 50 ? d->num_rooms * 2 : 50;}
+    d->monsters = (Monster**)calloc((d->num_monsters),sizeof(Monster) * (d->num_monsters));
+
+    for(int i = 0; i < d->num_monsters; i++)
     {
-        d->characters[i] = (Character*)malloc(sizeof(Character));
-        d->characters[i]->setLiving(1);
-        d->characters[i]->monster = (Monster*)malloc (sizeof(Monster));
+        d->monsters[i] = new Monster();
+        d->monsters[i]->setDisplayChar(get_monster_char(d->monsters[i]));
 
-        d->characters[i]->monster->intelligent = rand() % 2;
-        d->characters[i]->monster->telepath = rand() % 2;
-        d->characters[i]->monster->tunneling = rand() % 2;
-        d->characters[i]->monster->erratic = rand() % 2;
 
-        d->characters[i]->setSpeed(rand() % 16 + 5);
-        d->characters[i]->setDisplayChar(get_monster_char(d->characters[i]));
+        //d->characters[i] = (Character*)malloc(sizeof(Character));
+        //d->characters[i]->setLiving(1);
+        //d->characters[i]->monster = (Monster*)malloc (sizeof(Monster));
 
-        d->characters[i]->monster->last_seen[dim_x] = -1;
-        d->characters[i]->monster->last_seen[dim_x] = -1;
+        //d->characters[i]->monster->intelligent = rand() % 2;
+        //d->characters[i]->monster->telepath = rand() % 2;
+        //d->characters[i]->monster->tunneling = rand() % 2;
+       // d->characters[i]->monster->erratic = rand() % 2;
+
+        //d->characters[i]->setSpeed(rand() % 16 + 5);
+        //d->characters[i]->setDisplayChar(get_monster_char(d->characters[i]));
+
+        //d->characters[i]->monster->last_seen[dim_x] = -1;
+        //d->characters[i]->monster->last_seen[dim_x] = -1;
     }
     int pcRoomNum;
     int totalArea = 0;
@@ -175,8 +190,8 @@ int gen_monsters(Dungeon *d)
         }
     }
 
-    int totalMonsters = 1;
-    while(totalMonsters <= d->num_monsters)
+    int totalMonsters = 0;
+    while(totalMonsters < d->num_monsters)
     {
         if(totalMonsters == totalArea){break;}
 
@@ -189,70 +204,70 @@ int gen_monsters(Dungeon *d)
 
         if(d->character_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] != NULL){continue;}
 
-        d->character_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] = d->characters[totalMonsters];
+        d->character_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] = d->monsters[totalMonsters];
 
-        d->characters[totalMonsters]->pos[dim_y] = d->rooms[randRoom].position[dim_y] + y;
-        d->characters[totalMonsters]->pos[dim_x] = d->rooms[randRoom].position[dim_x] + x;
+        d->monsters[totalMonsters]->pos[dim_y] = d->rooms[randRoom].position[dim_y] + y;
+        d->monsters[totalMonsters]->pos[dim_x] = d->rooms[randRoom].position[dim_x] + x;
 
         ++totalMonsters;
     }
     return 0;
 }
 
-void move_line(Dungeon *d, Character *c, Dif *dif)
+void move_line(Dungeon *d, Monster *m, Dif *dif)
 {
-    if(c->pos[dim_x] < c->monster->pc_last_loc[dim_x]){
+    if(m->pos[dim_x] < m->pc_last_loc[dim_x]){
         dif->x = 1;
     }
-    else if(c->pos[dim_x] > c->monster->pc_last_loc[dim_x]){
+    else if(m->pos[dim_x] > m->pc_last_loc[dim_x]){
         dif->x = -1;
     }
     else{
         dif->x = 0;
     }
 
-    if(c->pos[dim_y] < c->monster->pc_last_loc[dim_y]){
+    if(m->pos[dim_y] < m->pc_last_loc[dim_y]){
         dif->y = 1;
     }
-    else if(c->pos[dim_y] > c->monster->pc_last_loc[dim_y]){
+    else if(m->pos[dim_y] > m->pc_last_loc[dim_y]){
         dif->y = -1;
     }
     else{
         dif->y = 0;
     }
 
-    if(d->map[c->pos[dim_y] + dif->y][c->pos[dim_x] + dif->x] == ter_wall || d->map[c->pos[dim_y] + dif->y][c->pos[dim_x] + dif->x] == ter_wall_immutable)
+    if(d->map[m->pos[dim_y] + dif->y][m->pos[dim_x] + dif->x] == ter_wall || d->map[m->pos[dim_y] + dif->y][m->pos[dim_x] + dif->x] == ter_wall_immutable)
     {
-        if(d->map[c->pos[dim_y]][c->pos[dim_x] + dif->x] == ter_wall || d->map[c->pos[dim_y]][c->pos[dim_x] + dif->x] == ter_wall_immutable){
+        if(d->map[m->pos[dim_y]][m->pos[dim_x] + dif->x] == ter_wall || d->map[m->pos[dim_y]][m->pos[dim_x] + dif->x] == ter_wall_immutable){
             dif->x = 0;
         }
-        if(d->map[c->pos[dim_y] + dif->y][c->pos[dim_x] ] == ter_wall || d->map[c->pos[dim_y] + dif->y][c->pos[dim_x]] == ter_wall_immutable){
+        if(d->map[m->pos[dim_y] + dif->y][m->pos[dim_x] ] == ter_wall || d->map[m->pos[dim_y] + dif->y][m->pos[dim_x]] == ter_wall_immutable){
             dif->y = 0;
         }
     }
 }
 
-void final_move(Character *c, Dungeon *d,int dx,int dy)
+void final_move(Monster *m, Dungeon *d,int dx,int dy)
 {
     //set current space to null
-    d->character_map[c->pos[dim_y]][c->pos[dim_x]] = NULL;
+    d->character_map[m->pos[dim_y]][m->pos[dim_x]] = NULL;
     // if there's another character in destination, kill it
-    if (d->character_map[c->pos[dim_y]+dy][c->pos[dim_x]+dx]){
-        d->character_map[c->pos[dim_y]+dy][c->pos[dim_x]+dx]->setLiving(0);
+    if (d->character_map[m->pos[dim_y]+dy][m->pos[dim_x]+dx]){
+        d->character_map[m->pos[dim_y]+dy][m->pos[dim_x]+dx]->setLiving(0);
     }
     //set future position and update the map
-    c->pos[dim_y] = c->pos[dim_y]+dy;
-    c->pos[dim_x] = c->pos[dim_x]+dx;
-    d->character_map[c->pos[dim_y]][c->pos[dim_x]] = c;
+    m->pos[dim_y] = m->pos[dim_y]+dy;
+    m->pos[dim_x] = m->pos[dim_x]+dx;
+    d->character_map[m->pos[dim_y]][m->pos[dim_x]] = m;
 }
 
-void tun_rock_check(Dungeon *d, Character *c, int *dx, int *dy){
-    if (d->map[c->pos[dim_y]+*dy][c->pos[dim_x]+*dx] == ter_wall){
-        if (c->monster->tunneling) {
-            int hardness = (hardnessxy(c->pos[dim_x] + *dx, c->pos[dim_y] + *dy)) - 85;
-            hardnessxy(c->pos[dim_x] + *dx, c->pos[dim_y] + *dy) = MAX(0, hardness);
-            if (is_open_space(d, c->pos[dim_y] + *dy, c->pos[dim_x] + *dx)) {
-                mapxy(c->pos[dim_x] + *dx, c->pos[dim_y] + *dy) = ter_floor_hall;
+void tun_rock_check(Dungeon *d, Monster *m, int *dx, int *dy){
+    if (d->map[m->pos[dim_y]+*dy][m->pos[dim_x]+*dx] == ter_wall){
+        if (m->tunneling) {
+            int hardness = (hardnessxy(m->pos[dim_x] + *dx, m->pos[dim_y] + *dy)) - 85;
+            hardnessxy(m->pos[dim_x] + *dx, m->pos[dim_y] + *dy) = MAX(0, hardness);
+            if (is_open_space(d, m->pos[dim_y] + *dy, m->pos[dim_x] + *dx)) {
+                mapxy(m->pos[dim_x] + *dx, m->pos[dim_y] + *dy) = ter_floor_hall;
             } else {
                 *dx = *dy = 0;
             }
@@ -262,7 +277,7 @@ void tun_rock_check(Dungeon *d, Character *c, int *dx, int *dy){
     }
 }
 //needs to be cleaned up
-void erratic_move(Character *c,Dungeon *d){
+void erratic_move(Monster *m,Dungeon *d){
     int moved = 0,counter = 0,dx,dy;
     while(!moved) {
         if (counter > 500) {return;} //if it cant find a move, give up
@@ -270,21 +285,21 @@ void erratic_move(Character *c,Dungeon *d){
         dx = (rand() % 3) - 1;
         dy = (rand() % 3) - 1;
         //wall and tunneling check dont need to happen anymore but continue still needs to be present
-        if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) == ter_wall) {
-            if(c->monster->tunneling) {
-                tun_rock_check(d,c,&dx,&dy);
+        if (mapxy(m->pos[dim_x]+dx,m->pos[dim_y]+dy) == ter_wall) {
+            if(m->tunneling) {
+                tun_rock_check(d,m,&dx,&dy);
             } else {
                 continue;
             }
         }
-        if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) != ter_wall_immutable) {
-            final_move(c, d, dx, dy);
+        if (mapxy(m->pos[dim_x]+dx,m->pos[dim_y]+dy) != ter_wall_immutable) {
+            final_move(m, d, dx, dy);
             moved = 1;
         }
     }
 }
 
-void move_monster(Character *c, Dungeon *d)
+void move_monster(Monster *m, Dungeon *d)
 {
     int sees_player = 0,dx = 0,dy = 0;
 
@@ -292,51 +307,51 @@ void move_monster(Character *c, Dungeon *d)
     dif.x = 0;
     dif.y = 0;
     // 50% that if a monster is erratic it make an erratic move
-    if (c->monster->erratic && rand() % 2) {
-        erratic_move(c,d);
+    if (m->erratic && rand() % 2) {
+        erratic_move(m,d);
     }
     //if the player is seen
-    if (c->monster->telepath || bresenham_LOS(d,c))
+    if (m->telepath || bresenham_LOS(d,m))
     {
         sees_player = 1;
         // can probably rewrite to use current pc location
-        c->monster->pc_last_loc[dim_x] = d->pc->pos[dim_x];
-        c->monster->pc_last_loc[dim_y] = d->pc->pos[dim_y];
-        get_monster_path(c,d);
+        m->pc_last_loc[dim_x] = d->pc->pos[dim_x];
+        m->pc_last_loc[dim_y] = d->pc->pos[dim_y];
+        get_monster_path(m,d);
 
     }
-    if (c->monster->intelligent) {
+    if (m->intelligent) {
         //test if path_to_pc has been filled
-        if (c->monster->path_to_pc[0][0].cost == INT_MAX) {
+        if (m->path_to_pc[0][0].cost == INT_MAX) {
             uint32_t cost = INT_MAX;
             for (int y = -1; y <= 1; y++) {
                 for (int x = -1; x <= 1; x++) {
-                    if (c->monster->path_to_pc[c->pos[dim_y] + y][c->pos[dim_x] + x].cost < cost) {
+                    if (m->path_to_pc[m->pos[dim_y] + y][m->pos[dim_x] + x].cost < cost) {
                         dy = y;
                         dx = x;
-                        cost = c->monster->path_to_pc[c->pos[dim_y] + y][c->pos[dim_x] + x].cost;
+                        cost = m->path_to_pc[m->pos[dim_y] + y][m->pos[dim_x] + x].cost;
                     }
                 }
             }
-            tun_rock_check(d,c,&dx,&dy);
+            tun_rock_check(d,m,&dx,&dy);
         }
     }
     else if (sees_player) {
         // sees player but non monster->intelligent
-        if(c->monster->tunneling){
-            bresenham_move(d,c,&dif);
+        if(m->tunneling){
+            bresenham_move(d,m,&dif);
             dx = dif.x;
             dy = dif.y;
         }
         else {
-            move_line(d, c, &dif);
+            move_line(d, m, &dif);
             dx = dif.x;
             dy = dif.y;
         }
-        tun_rock_check(d,c,&dx,&dy);
+        tun_rock_check(d,m,&dx,&dy);
     }
-    if (mapxy(c->pos[dim_x]+dx,c->pos[dim_y]+dy) != ter_wall_immutable) {
-        final_move(c, d, dx, dy);
+    if (mapxy(m->pos[dim_x]+dx,m->pos[dim_y]+dy) != ter_wall_immutable) {
+        final_move(m, d, dx, dy);
     }
 }
 
@@ -399,3 +414,4 @@ void bresenham_move(Dungeon *d,Character *c, Dif *dif)
         dif->y = sy;
     }
 }
+

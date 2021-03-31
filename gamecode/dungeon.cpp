@@ -608,7 +608,6 @@ int gen_dungeon(Dungeon *d)
   connect_rooms(d);
   init_pc_map(d);
   place_stairs(d);
-  define_characters(d);
   config_pc(d);
   gen_monsters(d);
   update_pc_map(d);
@@ -1183,8 +1182,12 @@ void delete_dungeon(Dungeon *d, heap_t *h)
 {
     heap_delete(h);
     free(d->rooms);
-    delete_characters(d->characters, d);
-    free(d->characters);
+    for (int i = 0; i < d->num_monsters;i++){
+        delete d->monsters[i];
+    }
+    delete d->pc;
+    //delete_characters(d->characters, d);
+    free(d->monsters);
 }
 
 void init_dungeon(Dungeon *d)
@@ -1309,11 +1312,10 @@ void new_dungeon(Dungeon *d, heap_t *h)
     gen_dungeon(d);
 
     heap_init(h,character_cmp,NULL);
-    for(int i = 0; i < d->num_monsters+1; i++)
+    for(int i = 0; i < d->num_monsters; i++)
     {
-        d->characters[i]->setTurn(0);
-        d->characters[i]->setSd(i);
-        heap_insert(h,d->characters[i]);
+        d->monsters[i]->setSd(i);
+        heap_insert(h,d->monsters[i]);
     }
 
     clear();

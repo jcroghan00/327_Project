@@ -4,6 +4,7 @@
 #include "Character.h"
 #include "Monster.h"
 #include "windows.h"
+#include "pc.h"
 typedef struct heap heap_t;
 
 
@@ -44,12 +45,11 @@ void place_pc(Dungeon *d)
 
 void config_pc(Dungeon *d)
 {
-    d->pc = (Character*)malloc(sizeof(Character));
+    d->pc = new PC();
     d->pc->setDisplayChar('@');
-    d->pc->setLiving(1);
+    //d->pc->setLiving(1);
     d->pc->setSpeed(PC_SPEED);
     place_pc(d);
-    d->characters[0] = d->pc;
 }
 
 void render_character_info(Dungeon *d){

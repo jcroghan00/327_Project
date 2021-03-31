@@ -91,7 +91,8 @@ class Dungeon {
 public:
   uint32_t num_rooms;
   Room *rooms;
-  Character **characters;
+  //Character **characters;
+  Monster **monsters;
   Stair *stairs;
   terrain_type_t map[DUNGEON_Y][DUNGEON_X];
   Character *character_map[DUNGEON_Y][DUNGEON_X];

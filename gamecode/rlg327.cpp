@@ -95,11 +95,10 @@ void end_game(Dungeon *d, heap_t *h){
 
 void play_game(Dungeon *d, heap_t *h)
 {
-    for(int i = 0; i < d->num_monsters+1; i++)
+    for(int i = 0; i < d->num_monsters; i++)
     {
-        d->characters[i]->setTurn(0);
-        d->characters[i]->setSd(i);
-        heap_insert(h,d->characters[i]);
+        d->monsters[i]->setSd(i);
+        heap_insert(h,d->monsters[i]);
     }
     Character *c;
     while(d->pc->isLiving())
@@ -115,7 +114,7 @@ void play_game(Dungeon *d, heap_t *h)
                 usleep(250000);
             }
             else{
-                move_monster(c,d);
+                move_monster((Monster*)c,d);
                 update_last_seen(d);
             }
             c->setTurn(c->getTurn()+ (1000/c->getSpeed()));
@@ -168,11 +167,6 @@ int main(int argc, char *argv[])
     curs_set(0);
     keypad(stdscr, TRUE);
 
-    if(parse){
-        endwin();
-        monster_parser();
-        return 0;
-    }
 
     init_dungeon(&d);
     if (load){
@@ -184,7 +178,12 @@ int main(int argc, char *argv[])
         save_dungeon(&d);
     }
 
-
+    if(parse){
+        endwin();
+        //printf("%d",d.monsters[1]->living);
+        //monster_parser();
+        return 0;
+    }
 
     render(&d);
 

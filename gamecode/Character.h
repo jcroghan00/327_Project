@@ -17,6 +17,7 @@ protected:
     uint32_t speed;
 public:
     Character();
+    Character(int speed);
     uint32_t getSd();
     void setSd(uint32_t sd);
     void setDisplayChar(char c);
@@ -31,7 +32,6 @@ public:
 
     pair_t pos;
     Pc *pc;
-    Monster *monster;
 };
 
 void define_characters(Dungeon *d);
