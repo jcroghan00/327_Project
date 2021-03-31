@@ -1,6 +1,3 @@
-//
-// Created by ryan on 3/31/21.
-//
 
 #include "parser.h"
 #include <cstdio>

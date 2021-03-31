@@ -1,6 +1,3 @@
-//
-// Created by ryan on 3/31/21.
-//
 
 #ifndef GAMECODE_PARSER_H
 #define GAMECODE_PARSER_H

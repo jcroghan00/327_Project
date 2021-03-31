@@ -168,6 +168,11 @@ int main(int argc, char *argv[])
     curs_set(0);
     keypad(stdscr, TRUE);
 
+    if(parse){
+        endwin();
+        monster_parser();
+        return 0;
+    }
 
     init_dungeon(&d);
     if (load){
@@ -179,18 +184,11 @@ int main(int argc, char *argv[])
         save_dungeon(&d);
     }
 
-    heap_t h;
 
-    if(parse){
-        endwin();
-        monster_parser();
-        delete_dungeon(&d, &h);
-        return 0;
-    }
 
     render(&d);
 
-
+    heap_t h;
     heap_init(&h,character_cmp,NULL);
     play_game(&d, &h);
 
