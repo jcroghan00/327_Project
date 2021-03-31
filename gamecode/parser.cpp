@@ -35,18 +35,22 @@ void monster_parser(){
     ifstream inFile(filepath);
 
     if(!inFile){
-        cerr << "cannot open \"monster_desc.txt\" for output\n";
+        cerr << "cannot open \"monster_desc.txt\"\n are you sure it's located in HOME/.rlg327/?";
         return;
     }
 
     std::string metadata;
     getline(inFile, metadata);
-    if(metadata.compare("RLG327 MONSTER DESCRIPTION 1")){
+
+    if(!metadata.compare("RLG327 MONSTER DESCRIPTION 1\n")){
+        inFile.close();
+        return;
+    } else {
+        cerr << "metadata does not match \"RLG327 MONSTER DESCRIPTION 1\"";
         inFile.close();
         return;
     }
 
-    cout << metadata << endl;
 
     /*
     std::string line;
@@ -55,8 +59,16 @@ void monster_parser(){
         cout << line << endl;
     }
      */
-    inFile.close();
 }
 void item_parser(){
+    char *filepath = (char *)malloc(sizeof(getenv("HOME")) + sizeof("/.rlg327/monster_desc.txt"));
+    strcat(filepath, getenv("HOME"));
+    strcat(filepath, "/.rlg327/object_desc.txt");
+    ifstream inFile(filepath);
+
+    if(!inFile){
+        cerr << "cannot open \"object_desc.txt\"\n are you sure it's located in HOME/.rlg327/?";
+        return;
+    }
 
 }
