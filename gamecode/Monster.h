@@ -20,7 +20,6 @@ public:
     int y;
 };
 
-void read_monsters();
 void update_last_seen(Dungeon *d);
 void monster_list(Dungeon *d);
 int gen_monsters(Dungeon *d);

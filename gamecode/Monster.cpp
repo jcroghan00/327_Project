@@ -1,11 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
-#include <iostream>
-#include <fstream>
-#include <string>
-
-using namespace std;
 
 #include "Monster.h"
 #include "dungeon.h"

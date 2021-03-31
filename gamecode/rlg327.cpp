@@ -131,7 +131,6 @@ void play_game(Dungeon *d, heap_t *h)
 
 int main(int argc, char *argv[])
 {
-    /*
     Dungeon d = { .num_monsters = -1};
     struct timeval tv;
     uint32_t seed = 0;
@@ -198,7 +197,6 @@ int main(int argc, char *argv[])
     endwin();
 
     delete_dungeon(&d, &h);
-    */
     /*
     if (won){
         printf("%s", victory);
@@ -206,8 +204,6 @@ int main(int argc, char *argv[])
         printf("%s", tombstone);
     }
      */
-
-    read_monsters();
     return 0;
 
 }
