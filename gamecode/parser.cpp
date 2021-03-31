@@ -10,7 +10,7 @@ using namespace std;
 int count_types(std::string filepath, std::string delimiter)
 {
     int num_types = 0;
-    ifstream inFile(filename);
+    ifstream inFile(filepath);
 
     std::string line;
     while(getline(inFile, line))
