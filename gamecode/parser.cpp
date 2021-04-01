@@ -47,14 +47,14 @@ void monster_parser(){
     ifstream inFile(filepath);
 
     if(!inFile){
-        cerr << "cannot open \"monster_desc.txt\"\n are you sure it's located in HOME/.rlg327/?";
+        cerr << "cannot open \"monster_desc.txt\", are you sure it's located in HOME/.rlg327/?" << endl;
         return;
     }
 
     string metadata;
     getline(inFile, metadata);
     if(!metadata.compare("RLG327 MONSTER DESCRIPTION 1\n")) {
-        cerr << "metadata does not match \"RLG327 MONSTER DESCRIPTION 1\"";
+        cerr << "metadata does not match \"RLG327 MONSTER DESCRIPTION 1\"" << endl;
         inFile.close();
         return;
     }
