@@ -23,6 +23,9 @@ void Character::setTurn(int t){turn = t;}
 uint32_t Character::getTurn(){return turn;}
 void Character::setSpeed(int s){speed = s;}
 uint32_t Character::getSpeed(){return speed;}
+void Character::setNextTurn(){
+    turn += (1000/speed);
+}
 
 int Character::bresenham_LOS(Dungeon *d)
 {
@@ -92,15 +95,3 @@ int32_t character_cmp(const void *key, const void *with) {
         return ((Character *) key)->getSd() - ((Character *) with)->getSd();
     }
 }
-/*
-void delete_characters(Character **c, Dungeon *d)
-{
-    character_mappair(c[0]->pos) = NULL;
-    free(c[0]);
-    for(int i = 1; i < d->num_monsters + 1; ++i)
-    {
-        character_mappair(c[i]->pos) = NULL;
-        free(c[i]);
-    }
-}
- */

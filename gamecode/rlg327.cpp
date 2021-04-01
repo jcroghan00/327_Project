@@ -8,96 +8,15 @@
 #include "Character.h"
 #include "windows.h"
 #include "parser.h"
-const char *victory =
-        "\n                                       o\n"
-        "                                      $\"\"$o\n"
-        "                                     $\"  $$\n"
-        "                                      $$$$\n"
-        "                                      o \"$o\n"
-        "                                     o\"  \"$\n"
-        "                oo\"$$$\"  oo$\"$ooo   o$    \"$    ooo\"$oo  $$$\"o\n"
-        "   o o o o    oo\"  o\"      \"o    $$o$\"     o o$\"\"  o$      \"$  "
-        "\"oo   o o o o\n"
-        "   \"$o   \"\"$$$\"   $$         $      \"   o   \"\"    o\"         $"
-        "   \"o$$\"    o$$\n"
-        "     \"\"o       o  $          $\"       $$$$$       o          $  ooo"
-        "     o\"\"\n"
-        "        \"o   $$$$o $o       o$        $$$$$\"       $o        \" $$$$"
-        "   o\"\n"
-        "         \"\"o $$$$o  oo o  o$\"         $$$$$\"        \"o o o o\"  "
-        "\"$$$  $\n"
-        "           \"\" \"$\"     \"\"\"\"\"            \"\"$\"            \""
-        "\"\"      \"\"\" \"\n"
-        "            \"oooooooooooooooooooooooooooooooooooooooooooooooooooooo$\n"
-        "             \"$$$$\"$$$$\" $$$$$$$\"$$$$$$ \" \"$$$$$\"$$$$$$\"  $$$\""
-        "\"$$$$\n"
-        "              $$$oo$$$$   $$$$$$o$$$$$$o\" $$$$$$$$$$$$$$ o$$$$o$$$\"\n"
-        "              $\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\""
-        "\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"$\n"
-        "              $\"                                                 \"$\n"
-        "              $\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\"$\""
-        "$\"$\"$\"$\"$\"$\"$\"$\n"
-        "                                   You win!";
 
-const char *tombstone =
-        "\n\n\n\n                /\"\"\"\"\"/\"\"\"\"\"\"\".\n"
-        "               /     /         \\             __\n"
-        "              /     /           \\            ||\n"
-        "             /____ /   Rest in   \\           ||\n"
-        "            |     |    Pieces     |          ||\n"
-        "            |     |               |          ||\n"
-        "            |     |   A. Luser    |          ||\n"
-        "            |     |               |          ||\n"
-        "            |     |     * *   * * |         _||_\n"
-        "            |     |     *\\/* *\\/* |        | TT |\n"
-        "            |     |     *_\\_  /   ...\"\"\"\"\"\"| |"
-        "| |.\"\"....\"\"\"\"\"\"\"\".\"\"\n"
-        "            |     |         \\/..\"\"\"\"\"...\"\"\""
-        "\\ || /.\"\"\".......\"\"\"\"...\n"
-        "            |     |....\"\"\"\"\"\"\"........\"\"\"\"\""
-        "\"^^^^\".......\"\"\"\"\"\"\"\"..\"\n"
-        "            |......\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"......"
-        "..\"\"\"\"\"....\"\"\"\"\"..\"\"...\"\"\".\n\n"
-        "            You're dead.  Better luck in the next life.";
-
-const char* msg = "Game Over! Press \'Q\' to Quit or \'R\' to restart!";
-
-void play_game(Dungeon *d, heap_t *h);
-
-void end_game(Dungeon *d, heap_t *h){
-    WINDOW *game_win = d->windows->game_ending_win;
-    if (d->pc->isLiving()){
-        wprintw(game_win,victory);
-    } else {
-        wprintw(game_win, tombstone);
-    }
-    mvwprintw(game_win,LINES-2,COLS/2 - strlen(msg)/2, msg);
-    touchwin(game_win);
-    int visible = 1;
-    while (visible) {
-        int val = wgetch(game_win);
-        switch (val) {
-            // Quit the window
-            case 'Q':
-                endwin();
-                delete_dungeon(d, h);
-                exit(0);
-            case 'R':
-                visible = 0;
-                new_dungeon(d,h);
-                play_game(d, h);
-                touchwin(stdscr);
-            default:
-                break;
-        }
-    }
-}
 
 void play_game(Dungeon *d, heap_t *h)
 {
+    d->pc->setSd(0);
+    heap_insert(h,d->pc);
     for(int i = 0; i < d->num_monsters; i++)
     {
-        d->monsters[i]->setSd(i);
+        d->monsters[i]->setSd(i+1);
         heap_insert(h,d->monsters[i]);
     }
     Character *c;
@@ -108,7 +27,6 @@ void play_game(Dungeon *d, heap_t *h)
         if (c->isLiving()){
             if (c->getSd() == 0) {
                 move_pc_ncurses(d, h);
-                // pc_next_pos(d);
                 render(d);
                 refresh(); /* Print it on to the real screen */
                 usleep(250000);
@@ -117,7 +35,7 @@ void play_game(Dungeon *d, heap_t *h)
                 ((Monster*)c)->move_monster(d);
                 update_last_seen(d);
             }
-            c->setTurn(c->getTurn()+ (1000/c->getSpeed()));
+            c->setNextTurn();
             heap_insert(h, c);
 
             usleep(2500); // you cant see the monsters' steps otherwise
@@ -125,7 +43,7 @@ void play_game(Dungeon *d, heap_t *h)
             refresh();
         }
     }
-    end_game(d, h);
+    render_end_game(d, h);
 }
 
 int main(int argc, char *argv[])
@@ -158,6 +76,7 @@ int main(int argc, char *argv[])
 
     srand(seed);
     initscr();
+    resizeterm(24,81);
     start_color();
     init_pair(HARD_WALL_PAIR, COLOR_YELLOW, COLOR_BLACK); //??
     init_pair(SOFT_WALL_PAIR, COLOR_GREEN, COLOR_BLACK);   //??
@@ -189,15 +108,7 @@ int main(int argc, char *argv[])
     play_game(&d, &h);
 
     endwin();
-
     delete_dungeon(&d, &h);
-    /*
-    if (won){
-        printf("%s", victory);
-    } else {
-        printf("%s", tombstone);
-    }
-     */
     return 0;
 
 }

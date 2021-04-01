@@ -32,6 +32,7 @@ public:
     uint32_t getTurn();
     void setSpeed(int speed);
     uint32_t getSpeed();
+    void setNextTurn();
     int living;
 
     pair_t pos;
