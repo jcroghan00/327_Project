@@ -7,6 +7,11 @@
 #include "pc.h"
 typedef struct heap heap_t;
 
+PC::PC(){
+    setDisplayChar('@');
+    setSpeed(PC_SPEED);
+}
+
 
 void init_pc_map(Dungeon *d){
     for(int i = 0; i < DUNGEON_Y; i++){
@@ -36,19 +41,14 @@ void place_pc(Dungeon *d)
     int randRoom = rand() % d->num_rooms;
     int x = rand() % d->rooms[randRoom].size[dim_x];
     int y = rand() % d->rooms[randRoom].size[dim_y];
-
     d->pc->pos[dim_x] = d->rooms[randRoom].position[dim_x] + x;
     d->pc->pos[dim_y] = d->rooms[randRoom].position[dim_y] + y;
     character_mapxy(d->pc->pos[dim_x],d->pc->pos[dim_y]) = d->pc;
-    d->pc->setLiving(1);
 }
 
 void config_pc(Dungeon *d)
 {
     d->pc = new PC();
-    d->pc->setDisplayChar('@');
-    //d->pc->setLiving(1);
-    d->pc->setSpeed(PC_SPEED);
     place_pc(d);
 }
 

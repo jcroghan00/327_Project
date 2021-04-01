@@ -11,14 +11,15 @@ public:
 class Monster: public Character {
 public:
     Monster();
+    pair_t last_seen;
+    void move_monster(Dungeon *d);
+protected:
     int intelligent;
     int telepath;
     int tunneling;
     int erratic;
     pair_t pc_last_loc;
     Monster_Path path_to_pc[DUNGEON_Y][DUNGEON_X];
-    pair_t last_seen;
-    void move_monster(Dungeon *d);
 
 private:
     void set_monster_char();
