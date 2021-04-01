@@ -5,9 +5,11 @@
 #include <stdint.h>
 #include "dim.h"
 
+
 class Dungeon;
 class Pc;
 class Monster;
+class Dif;
 
 class Character {
 protected:
@@ -15,6 +17,8 @@ protected:
     char display_char;
     uint32_t turn;
     uint32_t speed;
+    int bresenham_LOS(Dungeon *d);
+    void bresenham_move(Dungeon *d, Dif *dif);
 public:
     Character();
     Character(int speed);
@@ -34,7 +38,6 @@ public:
     Pc *pc;
 };
 
-void define_characters(Dungeon *d);
 int32_t character_cmp(const void *key, const void *with);
 void delete_characters(Character **c, Dungeon *d);
 

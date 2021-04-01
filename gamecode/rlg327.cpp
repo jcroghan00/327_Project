@@ -114,7 +114,7 @@ void play_game(Dungeon *d, heap_t *h)
                 usleep(250000);
             }
             else{
-                move_monster((Monster*)c,d);
+                ((Monster*)c)->move_monster(d);
                 update_last_seen(d);
             }
             c->setTurn(c->getTurn()+ (1000/c->getSpeed()));
@@ -180,8 +180,7 @@ int main(int argc, char *argv[])
 
     if(parse){
         endwin();
-        //printf("%d",d.monsters[1]->living);
-        //monster_parser();
+        monster_parser();
         return 0;
     }
 

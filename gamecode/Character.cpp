@@ -1,7 +1,7 @@
 #include "Character.h"
 #include "dungeon.h"
+#include "Monster.h"
 
-using namespace std;
 Character:: Character(){
     living = 1;
     turn = 0;
@@ -22,7 +22,65 @@ void Character::setTurn(int t){turn = t;}
 uint32_t Character::getTurn(){return turn;}
 void Character::setSpeed(int s){speed = s;}
 uint32_t Character::getSpeed(){return speed;}
-using namespace std;
+
+int Character::bresenham_LOS(Dungeon *d)
+{
+    int x0 = pos[dim_x];
+    int y0 = pos[dim_y];
+    int x1 = d->pc->pos[dim_x];
+    int y1 = d->pc->pos[dim_y];
+
+    int dx = abs(x1 - x0);
+    int sx = x0<x1 ? 1 : -1;
+
+    int dy = -abs(y1 - y0);
+    int sy = y0<y1 ? 1 : -1;
+
+    int err = dx + dy;
+    int e2 = 0;
+
+    while(1)
+    {
+        if(mapxy(x0, y0) == ter_wall || mapxy(x0, y0) == ter_wall_immutable)
+        {
+            return 0;
+        }
+        if(x0 == x1 && y0 == y1) {return 1;}
+        e2 = err * 2;
+        if(e2 >= dy){
+            err += dy;
+            x0 += sx;
+        }
+        if(e2 <= dx){
+            err += dx;
+            y0 += sy;
+        }
+    }
+}
+void Character::bresenham_move(Dungeon *d, Dif *dif)
+{
+    int x0 = pos[dim_x];
+    int y0 = pos[dim_y];
+    int x1 = d->pc->pos[dim_x];
+    int y1 = d->pc->pos[dim_y];
+
+    int dx = abs(x1 - x0);
+    int sx = x0<x1 ? 1 : -1;
+
+    int dy = -abs(y1 - y0);
+    int sy = y0<y1 ? 1 : -1;
+
+    int err = dx + dy;
+    int e2 = 0;
+
+    e2 = err * 2;
+    if(e2 >= dy){
+        dif->x = sx;
+    }
+    if(e2 <= dx){
+        dif->y = sy;
+    }
+}
 
 
 int32_t character_cmp(const void *key, const void *with) {
