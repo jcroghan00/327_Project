@@ -37,7 +37,8 @@ int count_types(string filepath, string delimiter)
     return num_types;
 }
 
-void monster_parser(){
+void monster_parser()
+{
     char *filepath = (char *)malloc(sizeof(getenv("HOME")) + sizeof("/.rlg327/monster_desc.txt"));
     strcat(filepath, getenv("HOME"));
     strcat(filepath, "/.rlg327/monster_desc.txt");
@@ -160,14 +161,16 @@ void monster_parser(){
         }
     }
 }
-void item_parser(){
+
+void item_parser()
+{
     char *filepath = (char *)malloc(sizeof(getenv("HOME")) + sizeof("/.rlg327/monster_desc.txt"));
     strcat(filepath, getenv("HOME"));
     strcat(filepath, "/.rlg327/object_desc.txt");
     ifstream inFile(filepath);
 
     if(!inFile){
-        cerr << "cannot open \"object_desc.txt\"\n are you sure it's located in HOME/.rlg327/?";
+        cerr << "cannot open \"object_desc.txt\", are you sure it's located in HOME/.rlg327/?";
         return;
     }
 
