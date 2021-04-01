@@ -42,12 +42,14 @@ void monster_parser(){
     strcat(filepath, getenv("HOME"));
     strcat(filepath, "/.rlg327/monster_desc.txt");
 
-    //int num_monster_types = count_types(filepath, "BEGIN MONSTER");
+    int num_monster_types = count_types(filepath, "BEGIN MONSTER");
+    cout << num_monster_types << endl;
 
     ifstream inFile(filepath);
 
     if(!inFile){
         cerr << "cannot open \"monster_desc.txt\", are you sure it's located in HOME/.rlg327/?" << endl;
+        inFile.close();
         return;
     }
 

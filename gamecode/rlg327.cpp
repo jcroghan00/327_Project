@@ -146,6 +146,10 @@ int main(int argc, char *argv[])
         else if (!strcmp(argv[i],"--nummon"))  {d.num_monsters = atoi(argv[++i]);}
         else {seed=atoi(argv[i]);}
     }
+    if(parse){
+        monster_parser();
+        return 0;
+    }
     if (!seed)
     {
         gettimeofday(&tv, NULL);
@@ -176,12 +180,6 @@ int main(int argc, char *argv[])
     }
     if (save) {
         save_dungeon(&d);
-    }
-
-    if(parse){
-        endwin();
-        monster_parser();
-        return 0;
     }
 
     render(&d);
