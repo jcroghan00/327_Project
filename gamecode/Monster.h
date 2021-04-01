@@ -2,6 +2,12 @@
 #define GAMECODE_MONSTER_H
 #include "dungeon.h"
 #include "Character.h"
+#include <cstdio>
+#include <iostream>
+#include <fstream>
+#include <cstring>
+#include <functional>
+using namespace std;
 
 class Dif{
 public:
@@ -28,6 +34,22 @@ private:
     void tun_rock_check(Dungeon *d, int *dx, int *dy);
     void move_line(Dungeon *d, Dif *dif);
     void final_move(Dungeon *d,int dx,int dy);
+};
+class Monster_Background{
+    public:
+        string desc;
+        string abil;
+        string name;
+        char symb;
+        int speed;
+        int dam;
+        int hp;
+        int rrty;
+        dice fspeed;
+        dice fhp;
+        dice fdam;
+
+
 };
 
 void update_last_seen(Dungeon *d);

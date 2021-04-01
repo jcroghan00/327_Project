@@ -37,11 +37,13 @@ int count_types(string filepath, string delimiter)
     return num_types;
 }
 
+
 void monster_parser()
 {
     char *filepath = (char *)malloc(sizeof(getenv("HOME")) + sizeof("/.rlg327/monster_desc.txt"));
     strcat(filepath, getenv("HOME"));
     strcat(filepath, "/.rlg327/monster_desc.txt");
+    string delimiter = "d";
 
     int num_monster_types = count_types(filepath, "BEGIN MONSTER");
     cout << num_monster_types << endl;
@@ -99,7 +101,7 @@ void monster_parser()
             case color:
             {
                 string monster_color = line.substr(line.find(" ") + 1, line.find("\n"));
-
+                
                 cout << "Color: " + monster_color << endl;
                 break;
             }
@@ -122,6 +124,17 @@ void monster_parser()
             case speed:
             {
                 string monster_speed = line.substr(line.find(" ") + 1, line.find("\n"));
+                int position = monster_speed.find("+");
+                int baseSpeed = stoi(monster_speed.substr(0, position));
+                monster_speed.erase(0, position + 1);
+                position = monster_speed.find(delimiter);
+                int numDice = stoi(monster_speed.substr(0, position));
+                monster_speed.erase(0, position + 1);
+                int numSides = stoi(monster_speed);
+
+                cout << "Base Speed: " +baseSpeed << endl;
+                cout << "Num Dice: " + numDice << endl;
+                cout << "Num Sides: " + numSides<< endl;
 
                 cout << "Speed: " + monster_speed << endl;
                 break;
@@ -161,6 +174,7 @@ void monster_parser()
         }
     }
 }
+
 
 void item_parser()
 {
