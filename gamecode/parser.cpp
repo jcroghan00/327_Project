@@ -124,17 +124,19 @@ void monster_parser()
             case speed:
             {
                 string monster_speed = line.substr(line.find(" ") + 1, line.find("\n"));
-                int position = monster_speed.find("+");
-                int baseSpeed = stoi(monster_speed.substr(0, position));
-                monster_speed.erase(0, position + 1);
-                position = monster_speed.find(delimiter);
-                int numDice = stoi(monster_speed.substr(0, position));
-                monster_speed.erase(0, position + 1);
-                int numSides = stoi(monster_speed);
 
-                cout << "Base Speed: " +baseSpeed << endl;
+                int delim1 = monster_speed.find("+");
+                int delim2 = monster_speed.find("d");
+                int delim3 = monster_speed.find("\n");
+
+                string baseSpeed = monster_speed.substr(0, delim1);
+                string numDice = monster_speed.substr(delim1 + 1, delim2 - (delim1 + 1));
+                string numSides = monster_speed.substr(delim2 + 1, delim3);
+
+                cout << "Base Speed: " + baseSpeed << endl;
                 cout << "Num Dice: " + numDice << endl;
                 cout << "Num Sides: " + numSides<< endl;
+
 
                 cout << "Speed: " + monster_speed << endl;
                 break;
@@ -144,6 +146,18 @@ void monster_parser()
             {
                 string monster_dam = line.substr(line.find(" ") + 1, line.find("\n"));
 
+                int delim1 = monster_dam.find("+");
+                int delim2 = monster_dam.find("d");
+                int delim3 = monster_dam.find("\n");
+
+                string baseDam = monster_dam.substr(0, delim1);
+                string numDice = monster_dam.substr(delim1 + 1, delim2 - (delim1 + 1));
+                string numSides = monster_dam.substr(delim2 + 1, delim3);
+
+                cout << "Base Damage: " + baseDam << endl;
+                cout << "Num Dice: " + numDice << endl;
+                cout << "Num Sides: " + numSides<< endl;
+
                 cout << "Damage: : " + monster_dam << endl;
                 break;
             }
@@ -151,6 +165,18 @@ void monster_parser()
             case hp:
             {
                 string monster_hp = line.substr(line.find(" ") + 1, line.find("\n"));
+
+                int delim1 = monster_hp.find("+");
+                int delim2 = monster_hp.find("d");
+                int delim3 = monster_hp.find("\n");
+
+                string baseHp = monster_hp.substr(0, delim1);
+                string numDice = monster_hp.substr(delim1 + 1, delim2 - (delim1 + 1));
+                string numSides = monster_hp.substr(delim2 + 1, delim3);
+
+                cout << "Base Hp: " + baseHp << endl;
+                cout << "Num Dice: " + numDice << endl;
+                cout << "Num Sides: " + numSides<< endl;
 
                 cout << "Health Points: " + monster_hp << endl;
                 break;
