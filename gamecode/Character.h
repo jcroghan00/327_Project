@@ -17,6 +17,8 @@ protected:
     char display_char;
     uint32_t turn;
     uint32_t speed;
+    uint32_t hitpoints;
+    uint32_t damage;
     int bresenham_LOS(Dungeon *d);
     void bresenham_move(Dungeon *d, Dif *dif);
 public:
