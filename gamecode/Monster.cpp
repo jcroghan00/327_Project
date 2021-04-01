@@ -6,6 +6,7 @@
 #include "dungeon.h"
 #include "Character.h"
 #include "windows.h"
+#include "pc.h"
 
 //default constructor to make a new random monster
 Monster:: Monster()

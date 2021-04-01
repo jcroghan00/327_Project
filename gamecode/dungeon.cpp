@@ -610,7 +610,7 @@ int gen_dungeon(Dungeon *d)
   place_stairs(d);
   config_pc(d);
   gen_monsters(d);
-  update_pc_map(d);
+  d->pc->update_pc_map(d);
   d->windows = (Windows*)malloc(sizeof(Windows));
   create_windows(d);
   d->fow = 1;
@@ -1013,12 +1013,12 @@ void render_teleport_select(Dungeon *d, heap_t *h){
                 touchwin(stdscr);
                 cursor[dim_x] = rand() % (DUNGEON_X-1) + 1;
                 cursor[dim_y] = rand() % (DUNGEON_Y-1) + 1;
-                move_pc(d, h,cursor[dim_y]-d->pc->pos[dim_y],cursor[dim_x]-d->pc->pos[dim_x],1);
+                d->pc->move_pc(d, h,cursor[dim_y]-d->pc->pos[dim_y],cursor[dim_x]-d->pc->pos[dim_x],1);
                 break;
             case 'g':
                 visible = 0;
                 touchwin(stdscr);
-                move_pc(d, h,cursor[dim_y] - d->pc->pos[dim_y],cursor[dim_x]- d->pc->pos[dim_x],1);
+                d->pc->move_pc(d, h,cursor[dim_y] - d->pc->pos[dim_y],cursor[dim_x]- d->pc->pos[dim_x],1);
                 break;
             default:
                 break;

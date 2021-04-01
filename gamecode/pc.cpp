@@ -12,18 +12,9 @@ PC::PC(){
     setSpeed(PC_SPEED);
 }
 
-
-void init_pc_map(Dungeon *d){
-    for(int i = 0; i < DUNGEON_Y; i++){
-        for(int j = 0; j < DUNGEON_X; j++){
-            d->pc_map[i][j] = ter_wall;
-        }
-    }
-}
-
-void update_pc_map(Dungeon *d){
-    int x = d->pc->pos[dim_x];
-    int y = d->pc->pos[dim_y];
+void PC::update_pc_map(Dungeon *d){
+    int x = pos[dim_x];
+    int y = pos[dim_y];
 
     for(int i = -2; i <= 2; ++i){
         for(int j = -2; j <= 2; ++j){
@@ -36,6 +27,38 @@ void update_pc_map(Dungeon *d){
         }
     }
 }
+int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
+
+    if(d->map[pos[dim_y] + dy][pos[dim_x] + dx] < ter_floor &&
+       !teleport){
+        const char *msg = "There's a wall there!";
+        mvprintw(0, (COLS/2 - strlen(msg)/2), msg);
+        move_pc_ncurses(d,h);
+        return -1;
+    }
+
+    d->character_map[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
+    d->vis_monsters[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
+    pos[dim_y] += dy;
+    pos[dim_x] += dx;
+    if (d->character_map[pos[dim_y]][pos[dim_x]] != NULL){
+        d->character_map[pos[dim_y]][pos[dim_x]]->setLiving(0);
+        d->num_monsters--;
+    }
+    d->character_map[pos[dim_y]][pos[dim_x]] = this;
+    update_pc_map(d);
+    return 0;
+}
+
+void init_pc_map(Dungeon *d){
+    for(int i = 0; i < DUNGEON_Y; i++){
+        for(int j = 0; j < DUNGEON_X; j++){
+            d->pc_map[i][j] = ter_wall;
+        }
+    }
+}
+
+
 void place_pc(Dungeon *d)
 {
     int randRoom = rand() % d->num_rooms;
@@ -52,71 +75,9 @@ void config_pc(Dungeon *d)
     place_pc(d);
 }
 
-void render_character_info(Dungeon *d){
-    WINDOW *info_win = d->windows->character_info_win;
-    const char *msg = "Press \'Q\' to close character info";
-    mvwprintw(info_win,0, (COLS/2 - strlen(msg)/2), msg);
-
-    touchwin(info_win);
-    int visible = 1;
-    while (visible) {
-        int val = wgetch(info_win);
-        switch (val) {
-            // Quit the window
-            case 'Q':
-                visible = 0;
-                touchwin(stdscr);
-                break;
-            default:
-                break;
-        }
-    }
-}
-
-void render_inventory(Dungeon *d){
-    WINDOW *inventory_win = d->windows->inventory_win;
-    const char *msg = "Press \'Q\' to close inventory";
-    mvwprintw(inventory_win,0, (COLS/2 - strlen(msg)/2), msg);
-    touchwin(inventory_win);
-    int visible = 1;
-    while (visible) {
-        int val = wgetch(inventory_win);
-        switch (val) {
-            // Quit the window
-            case 'Q':
-                visible = 0;
-                touchwin(stdscr);
-                break;
-            default:
-                break;
-        }
-    }
-}
-
 void move_pc_ncurses(Dungeon *d, heap_t *h);
 
-int move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
 
-    if(d->map[d->pc->pos[dim_y] + dy][d->pc->pos[dim_x] + dx] < ter_floor &&
-    !teleport){
-        const char *msg = "There's a wall there!";
-        mvprintw(0, (COLS/2 - strlen(msg)/2), msg);
-        move_pc_ncurses(d,h);
-        return -1;
-    }
-
-    d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = NULL;
-    d->vis_monsters[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = NULL;
-    d->pc->pos[dim_y] += dy;
-    d->pc->pos[dim_x] += dx;
-    if (d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] != NULL){
-        d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]]->setLiving(0);
-        d->num_monsters--;
-    }
-    d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = d->pc;
-    update_pc_map(d);
-    return 0;
-}
 
 void move_pc_ncurses(Dungeon *d, heap_t *h)
 {
@@ -132,56 +93,56 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
         case KEY_HOME:
         case '7':
         case 'y':
-            move_pc(d, h, -1, -1); break;
+            d->pc->move_pc(d, h, -1, -1); break;
 
             // Move up
         case KEY_UP:
         case '8':
         case 'k':
-            move_pc(d, h, -1, 0); break;
+            d->pc->move_pc(d, h, -1, 0); break;
 
             // Move up-right
         case KEY_PPAGE:
         case '9':
         case 'u':
-            move_pc(d, h, -1, 1); break;
+            d->pc->move_pc(d, h, -1, 1); break;
 
             // Move right
         case KEY_RIGHT:
         case '6':
         case 'l':
-            move_pc(d, h, 0, 1); break;
+            d->pc->move_pc(d, h, 0, 1); break;
 
             // Move down-right
         case KEY_NPAGE:
         case '3':
         case 'n':
-            move_pc(d, h, 1, 1); break;
+            d->pc->move_pc(d, h, 1, 1); break;
 
             // Move down
         case KEY_DOWN:
         case '2':
         case 'j':
-            move_pc(d, h, 1, 0); break;
+            d->pc->move_pc(d, h, 1, 0); break;
 
             // Move down-left
         case KEY_END:
         case '1':
         case 'b':
-            move_pc(d, h, 1, -1); break;
+            d->pc->move_pc(d, h, 1, -1); break;
 
             // Move left
         case KEY_LEFT:
         case '4':
         case 'h':
-            move_pc(d, h, 0, -1); break;
+            d->pc->move_pc(d, h, 0, -1); break;
 
             // rest
         case KEY_B2:
         case ' ':
         case '.':
         case '5':
-            move_pc(d, h, 0, 0); break;
+            d->pc->move_pc(d, h, 0, 0); break;
 
             // Go down stairs
         case '>':

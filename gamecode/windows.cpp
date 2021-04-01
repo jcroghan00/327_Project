@@ -38,8 +38,47 @@ void create_teleport_win(Dungeon *d){
 void create_character_info_win(Dungeon *d){
     d->windows->character_info_win = create_window();
 }
+void render_character_info(Dungeon *d){
+    WINDOW *info_win = d->windows->character_info_win;
+    const char *msg = "Press \'Q\' to close character info";
+    mvwprintw(info_win,0, (COLS/2 - strlen(msg)/2), msg);
+
+    touchwin(info_win);
+    int visible = 1;
+    while (visible) {
+        int val = wgetch(info_win);
+        switch (val) {
+            // Quit the window
+            case 'Q':
+                visible = 0;
+                touchwin(stdscr);
+                break;
+            default:
+                break;
+        }
+    }
+}
 void create_inventory_win(Dungeon *d){
     d->windows->inventory_win = create_window();
+}
+void render_inventory(Dungeon *d){
+    WINDOW *inventory_win = d->windows->inventory_win;
+    const char *msg = "Press \'Q\' to close inventory";
+    mvwprintw(inventory_win,0, (COLS/2 - strlen(msg)/2), msg);
+    touchwin(inventory_win);
+    int visible = 1;
+    while (visible) {
+        int val = wgetch(inventory_win);
+        switch (val) {
+            // Quit the window
+            case 'Q':
+                visible = 0;
+                touchwin(stdscr);
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 void create_windows(Dungeon *d){

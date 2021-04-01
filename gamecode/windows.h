@@ -17,4 +17,6 @@ public:
 };
 
 void create_windows(Dungeon *d);
+void render_character_info(Dungeon *d);
+void render_inventory(Dungeon *d);
 #endif

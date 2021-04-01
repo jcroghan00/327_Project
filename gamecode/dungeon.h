@@ -39,7 +39,7 @@
 
  class Character;
  class Monster;
- class Pc;
+ class PC;
  class Windows;
 
 typedef struct heap heap_t;
@@ -99,7 +99,7 @@ public:
   Character *vis_monsters[DUNGEON_Y][DUNGEON_X];
   uint8_t hardness[DUNGEON_Y][DUNGEON_X];
   terrain_type_t pc_map[DUNGEON_Y][DUNGEON_X];
-  Character *pc;
+  PC *pc;
   int num_monsters;
   Monster_Path non_tun_path[DUNGEON_Y][DUNGEON_X];
   Monster_Path tun_path[DUNGEON_Y][DUNGEON_X];

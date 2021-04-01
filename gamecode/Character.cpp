@@ -1,6 +1,7 @@
 #include "Character.h"
 #include "dungeon.h"
 #include "Monster.h"
+#include "pc.h"
 
 Character:: Character(){
     living = 1;
