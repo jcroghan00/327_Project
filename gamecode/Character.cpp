@@ -95,3 +95,17 @@ int32_t character_cmp(const void *key, const void *with) {
         return ((Character *) key)->getSd() - ((Character *) with)->getSd();
     }
 }
+
+int Dice::roll()
+{
+    return 0;
+}
+
+void Dice::print()
+{
+    cout << this->base;
+    cout << "+";
+    cout << this->numDice;
+    cout << "d";
+    cout << this->numSides << endl;
+}

@@ -1,5 +1,6 @@
 #ifndef GAMECODE_MONSTER_H
 #define GAMECODE_MONSTER_H
+
 #include "dungeon.h"
 #include "Character.h"
 #include <cstdio>
@@ -7,6 +8,8 @@
 #include <fstream>
 #include <cstring>
 #include <functional>
+#include <vector>
+
 using namespace std;
 
 class Dif{
@@ -35,22 +38,23 @@ private:
     void move_line(Dungeon *d, Dif *dif);
     void final_move(Dungeon *d,int dx,int dy);
 };
-class Monster_Background{
-    public:
-        string desc;
-        string abil;
-        string name;
-        char symb;
-        int speed;
-        int dam;
-        int hp;
-        int rrty;
-        dice fspeed;
-        dice fhp;
-        dice fdam;
 
+class Monstertype{
+public:
+    string name;
+    string desc;
+    string color;
+    Dice speed;
+    Dice hp;
+    Dice dam;
+    string abil;
+    string symb;
+    int rrty;
 
+    void print();
 };
+
+extern vector<Monstertype> monster_types();
 
 void update_last_seen(Dungeon *d);
 void monster_list(Dungeon *d);

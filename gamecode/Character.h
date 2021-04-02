@@ -5,7 +5,6 @@
 #include <stdint.h>
 #include "dim.h"
 
-
 class Dungeon;
 class Pc;
 class Monster;
@@ -41,10 +40,14 @@ public:
     Pc *pc;
 };
 
-class dice{
+class Dice{
     public:
-    int dice;
+    int base;
+    int numDice;
     int numSides;
+
+    int roll();
+    void print();
 };
 
 int32_t character_cmp(const void *key, const void *with);

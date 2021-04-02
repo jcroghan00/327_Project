@@ -332,6 +332,26 @@ int gen_monsters(Dungeon *d)
     return 0;
 }
 
+void Monstertype::print()
+{
+    cout << "NAME: " + this->name << endl;
+    cout << "DESC: " << endl;
+    cout << this->desc;
+    cout << "COLOR: " + this->color << endl;
 
+    cout << "SPEED: ";
+    this->speed.print();
 
+    cout << "ABIL: " + this->abil << endl;
 
+    cout << "HP: ";
+    this->hp.print();
+
+    cout << "DAM: ";
+    this->dam.print();
+
+    cout << "SYMB: " + this->symb << endl;
+    cout << "RRTY: ";
+    cout << this->rrty << endl;
+    cout << "\n";
+}
