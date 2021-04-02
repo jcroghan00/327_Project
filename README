@@ -1,13 +1,17 @@
 Jack Croghan           jcroghan@iastate.edu
 Ryan Tullis            rctullis@iastate.edu
-Aashish Komaragiri     adkoma@iastae.edu 
+Aashish Komaragiri     adkoma@iastate.edu 
 
-README assignment-1.06
+README assignment-1.07
 
-Assignment 1.06 focused on converting our C Dungeon Generator game into C++, and make all .c files into .cpp files. We had to change all the type def structs into classes. 
+Assignment 1.07 focused on parsing monster descriptions from the monster.txt file. We had to make sure that we got all the attributes
 
-Also we had to change the view of the PC to “night vision” which made the PC able to see only 2 grid spots from any direction. But whenever the PC moved, we made sure to update the spots the PC can see , while adding the spots the PC already remembers. 
+describing each monster, and parse it properly so that we can print it to the terminal. Some difficulties that we went through is finding 
 
-We also created a toggle function, which lets us change the map to “night vision” or allow us to view the entire map. 
+ways to actually retrieve the information. We decided to scan the file line by line. With each line that we retrieve, we convert it to a string
 
-For teleporting we decided to add another window which had a cursor that allowed the user to move wherever in the dungeon (except immutable wall) and let the user make the pc teleport to a desired target location. The user can also choose to set the pc to a random location, and that would teleport the pc to a random location. 
+and use a delimiter to break apart the string. This allowed us to find certain words that allowed us to know the monster, and correct attributes. 
+
+Other than that this assignment was very straight forward, and being able to implement these certain monsters in further assignments will allow
+
+us to know a little more about each monster. 
