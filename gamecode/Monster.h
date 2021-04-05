@@ -17,11 +17,29 @@ public:
     int x;
     int y;
 };
+class Monstertype{
+public:
+    string name;
+    string desc;
+    string color;
+    Dice speed;
+    Dice hp;
+    Dice dam;
+    string abil;
+    string symb;
+    int rrty;
+
+    void print();
+    Monster* createMonster();
+    int pickColor();
+};
+
 class Monster: public Character {
 public:
     Monster();
     pair_t last_seen;
     void move_monster(Dungeon *d);
+    int create_monster(Monstertype *t);
 protected:
     int intelligent;
     int telepath;
@@ -39,20 +57,6 @@ private:
     void final_move(Dungeon *d,int dx,int dy);
 };
 
-class Monstertype{
-public:
-    string name;
-    string desc;
-    string color;
-    Dice speed;
-    Dice hp;
-    Dice dam;
-    string abil;
-    string symb;
-    int rrty;
-
-    void print();
-};
 
 extern vector<Monstertype> monster_types();
 

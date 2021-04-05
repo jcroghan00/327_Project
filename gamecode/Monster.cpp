@@ -8,6 +8,7 @@
 #include "windows.h"
 #include "pc.h"
 
+
 //default constructor to make a new random monster
 Monster:: Monster()
     :Character(rand() % 16 + 5){
@@ -189,6 +190,18 @@ void Monster::move_monster(Dungeon *d)
         final_move(d, dx, dy);
     }
 }
+int Monster::create_monster(Monstertype *t){
+    name = t->name;
+    desc = t->desc;
+    dispColor = t->pickColor();
+    speed = t->speed.roll();
+    //TODO set monster abilities
+    hitpoints = t->hp.roll();
+    damage = t->dam;
+    display_char = t->symb[0];
+
+return 0;
+}
 
 void update_last_seen(Dungeon *d)
 {
@@ -329,6 +342,21 @@ int gen_monsters(Dungeon *d)
 
         ++totalMonsters;
     }
+    return 0;
+}
+
+
+
+
+Monster* Monstertype::createMonster(){
+    Monster *monster = new Monster();
+    monster->create_monster(this);
+    return monster;
+}
+//TODO pick a color from the monsters color list
+// note things like COLOR_CYAN is technically an int so return that
+// Color are already defined in rlg327.cpp
+int Monstertype::pickColor(){
     return 0;
 }
 

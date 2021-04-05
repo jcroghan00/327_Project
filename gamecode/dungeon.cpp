@@ -798,38 +798,25 @@ void render_ncurses(Dungeon *d, WINDOW *scr=stdscr)
 void render_fow(Dungeon *d)
 {
     start_color();
-    init_pair(HARD_WALL_PAIR, COLOR_YELLOW, COLOR_YELLOW);
-    init_pair(SOFT_WALL_PAIR, COLOR_GREEN, COLOR_GREEN);
-    init_pair(IMMUTABLE_WALL_PAIR, COLOR_BLUE, COLOR_BLUE);
-    init_pair(FLOOR_PAIR, COLOR_WHITE, COLOR_BLACK);
-    init_pair(STAIR_PAIR, COLOR_CYAN, COLOR_BLACK);
-    init_pair(PLAYER_PAIR, COLOR_MAGENTA, COLOR_BLACK);
-    init_pair(MONSTER_PAIR, COLOR_RED, COLOR_BLACK);
 
     pair_t p;
     for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
         for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
             if(p[dim_x] == d->pc->pos[dim_x] && p[dim_y] == d->pc->pos[dim_y])
             {
-                attron(COLOR_PAIR(PLAYER_PAIR));
                 mvaddch(p[dim_y] + 1, p[dim_x], '@');
-                attroff(COLOR_PAIR(PLAYER_PAIR));
             }
             else if (vismonsterpair(p))
             {
+                //TODO render with monster color if currently visible, else white
                 if(p[dim_x] >= d->pc->pos[dim_x] - 2 &&
                         p[dim_x] <= d->pc->pos[dim_x] + 2 &&
                         p[dim_y] >= d->pc->pos[dim_y] - 2 &&
                         p[dim_y] <= d->pc->pos[dim_y] + 2)
                 {
-                    attron(COLOR_PAIR(MONSTER_PAIR));
                     mvaddch(p[dim_y] + 1, p[dim_x], (vismonsterpair(p)->getDisplayChar()));
-                    attroff(COLOR_PAIR(MONSTER_PAIR));
-                }
-                else{
-                    attron(COLOR_PAIR(FLOOR_PAIR));
+                } else{
                     mvaddch(p[dim_y] + 1, p[dim_x], (vismonsterpair(p)->getDisplayChar()));
-                    attroff(COLOR_PAIR(FLOOR_PAIR));
                 }
             }
             else {
@@ -840,28 +827,20 @@ void render_fow(Dungeon *d)
                         break;
                     case ter_floor:
                     case ter_floor_room:
-                        attron(COLOR_PAIR(FLOOR_PAIR));
                         mvaddch(p[dim_y] + 1, p[dim_x],'.');
-                        attroff(COLOR_PAIR(FLOOR_PAIR));
                         break;
                     case ter_floor_hall:
-                        attron(COLOR_PAIR(FLOOR_PAIR));
                         mvaddch(p[dim_y] + 1, p[dim_x],'#');
-                        attroff(COLOR_PAIR(FLOOR_PAIR));
                         break;
                     case ter_debug:
                         mvaddch(p[dim_y] + 1, p[dim_x],'*');
                         //fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
                         break;
                     case ter_stairs_up:
-                        attron(COLOR_PAIR(STAIR_PAIR));
                         mvaddch(p[dim_y] + 1, p[dim_x],'<');
-                        attroff(COLOR_PAIR(STAIR_PAIR));
                         break;
                     case ter_stairs_down:
-                        attron(COLOR_PAIR(STAIR_PAIR));
                         mvaddch(p[dim_y] + 1, p[dim_x],'>');
-                        attroff(COLOR_PAIR(STAIR_PAIR));
                         break;
                     default:
                         break;

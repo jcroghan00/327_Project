@@ -3,6 +3,7 @@
 #define GAMECODE_CHARACTER_H
 
 #include <stdint.h>
+#include <string>
 #include "dim.h"
 
 class Dungeon;
@@ -10,14 +11,27 @@ class Pc;
 class Monster;
 class Dif;
 
+class Dice{
+public:
+    int base;
+    int numDice;
+    int numSides;
+
+    int roll();
+    void print();
+};
+using namespace std;
 class Character {
 protected:
-    uint32_t sd;
-    char display_char;
-    uint32_t turn;
+    string name;
+    string desc;
+    int dispColor;
     uint32_t speed;
     uint32_t hitpoints;
-    uint32_t damage;
+    Dice damage;
+    char display_char;
+    uint32_t sd;
+    uint32_t turn;
     int bresenham_LOS(Dungeon *d);
     void bresenham_move(Dungeon *d, Dif *dif);
 public:
@@ -38,16 +52,6 @@ public:
 
     pair_t pos;
     Pc *pc;
-};
-
-class Dice{
-    public:
-    int base;
-    int numDice;
-    int numSides;
-
-    int roll();
-    void print();
 };
 
 int32_t character_cmp(const void *key, const void *with);
