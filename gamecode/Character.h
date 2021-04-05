@@ -25,7 +25,6 @@ class Character {
 protected:
     string name;
     string desc;
-    int dispColor;
     uint32_t speed;
     uint32_t hitpoints;
     Dice damage;
@@ -48,6 +47,7 @@ public:
     void setSpeed(int speed);
     uint32_t getSpeed();
     void setNextTurn();
+    int dispColor;
     int living;
 
     pair_t pos;

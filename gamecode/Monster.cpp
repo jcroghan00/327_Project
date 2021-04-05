@@ -190,12 +190,15 @@ void Monster::move_monster(Dungeon *d)
         final_move(d, dx, dy);
     }
 }
+void Monster::setAbilities(string abil){
+    //TODO parse abil and set monster abilities
+}
 int Monster::create_monster(Monstertype *t){
     name = t->name;
     desc = t->desc;
     dispColor = t->pickColor();
     speed = t->speed.roll();
-    //TODO set monster abilities
+    setAbilities(t->abil);
     hitpoints = t->hp.roll();
     damage = t->dam;
     display_char = t->symb[0];
@@ -230,7 +233,7 @@ void update_last_seen(Dungeon *d)
         }
     }
 }
-
+//TODO update monster list with new fields
 void write_monster_list(Dungeon *d, int index){
 #define win d->windows->monster_list_win
 
@@ -301,6 +304,14 @@ void monster_list(Dungeon *d) {
     }
 }
 
+int new_gen_monster(Dungeon *d){
+    //TODO add new monster gen rules
+
+    //same rules for determining number of monsters in dungeon
+    if (d->num_monsters == -1) {d->num_monsters = d->num_rooms * 2 < 50 ? d->num_rooms * 2 : 50;}
+    d->monsters = (Monster**)calloc((d->num_monsters),sizeof(Monster) * (d->num_monsters));
+    return 0;
+}
 int gen_monsters(Dungeon *d)
 {
     if (d->num_monsters == -1) {d->num_monsters = d->num_rooms * 2 < 50 ? d->num_rooms * 2 : 50;}
@@ -353,10 +364,11 @@ Monster* Monstertype::createMonster(){
     monster->create_monster(this);
     return monster;
 }
-//TODO pick a color from the monsters color list
-// note things like COLOR_CYAN is technically an int so return that
-// Color are already defined in rlg327.cpp
+
 int Monstertype::pickColor(){
+    //TODO pick a color from the monsters color list
+    // note things like COLOR_CYAN is technically an int so return that
+    // Color are already defined in rlg327.cpp
     return 0;
 }
 

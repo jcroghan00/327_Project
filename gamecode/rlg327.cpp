@@ -54,13 +54,13 @@ int main(int argc, char *argv[])
 
     int save = 0;
     int load = 0;
-    int parse = 1;
+    int parse = 0;
 
     for (int i = 1; i < argc; i++)
     {
         if (!strcmp(argv[i],"--save"))         {save = 1;}
         else if (!strcmp(argv[i],"--load"))    {load = 1;}
-        else if (!strcmp(argv[i],"--parseoff"))    {parse = 0;}
+        else if (!strcmp(argv[i],"--parseon"))    {parse = 1;}
         else if (!strcmp(argv[i],"--nummon"))  {d.num_monsters = atoi(argv[++i]);}
         else {seed=atoi(argv[i]);}
     }
@@ -78,6 +78,8 @@ int main(int argc, char *argv[])
     initscr();
     resizeterm(24,81);
     start_color();
+
+    //TODO remove at some point
     init_pair(HARD_WALL_PAIR, COLOR_YELLOW, COLOR_BLACK); //??
     init_pair(SOFT_WALL_PAIR, COLOR_GREEN, COLOR_BLACK);   //??
     init_pair(IMMUTABLE_WALL_PAIR, COLOR_BLUE, COLOR_BLACK);

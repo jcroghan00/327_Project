@@ -746,14 +746,11 @@ void render_ncurses(Dungeon *d, WINDOW *scr=stdscr)
             {
                 if(character_mappair(p)->getDisplayChar() == '@')
                 {
-                    wattron(scr,COLOR_PAIR(PLAYER_PAIR));
                     mvwaddch(scr,p[dim_y] + 1, p[dim_x], (character_mappair(p)->getDisplayChar()));
-                    wattroff(scr,COLOR_PAIR(PLAYER_PAIR));
-                }
-                else{
-                    wattron(scr,COLOR_PAIR(MONSTER_PAIR));
+                } else{
+                    attron(COLOR_PAIR(character_mappair(p)->dispColor));
                     mvwaddch(scr,p[dim_y] + 1, p[dim_x], (character_mappair(p)->getDisplayChar()));
-                    wattroff(scr,COLOR_PAIR(MONSTER_PAIR));
+                    attroff(COLOR_PAIR(character_mappair(p)->dispColor));
                 }
             }
             else {
@@ -764,28 +761,20 @@ void render_ncurses(Dungeon *d, WINDOW *scr=stdscr)
                         break;
                     case ter_floor:
                     case ter_floor_room:
-                        wattron(scr,COLOR_PAIR(FLOOR_PAIR));
                         mvwaddch(scr,p[dim_y] + 1, p[dim_x],'.');
-                        wattroff(scr,COLOR_PAIR(FLOOR_PAIR));
                         break;
                     case ter_floor_hall:
-                        wattron(scr,COLOR_PAIR(FLOOR_PAIR));
                         mvwaddch(scr,p[dim_y] + 1, p[dim_x],'#');
-                        wattroff(scr,COLOR_PAIR(FLOOR_PAIR));
                         break;
                     case ter_debug:
                         mvwaddch(scr,p[dim_y] + 1, p[dim_x],'*');
                         //fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
                         break;
                     case ter_stairs_up:
-                        wattron(scr,COLOR_PAIR(STAIR_PAIR));
                         mvwaddch(scr,p[dim_y] + 1, p[dim_x],'<');
-                        wattroff(scr,COLOR_PAIR(STAIR_PAIR));
                         break;
                     case ter_stairs_down:
-                        wattron(scr,COLOR_PAIR(STAIR_PAIR));
                         mvwaddch(scr,p[dim_y] + 1, p[dim_x],'>');
-                        wattroff(scr,COLOR_PAIR(STAIR_PAIR));
                         break;
                     default:
                         break;
@@ -816,7 +805,9 @@ void render_fow(Dungeon *d)
                 {
                     mvaddch(p[dim_y] + 1, p[dim_x], (vismonsterpair(p)->getDisplayChar()));
                 } else{
-                    mvaddch(p[dim_y] + 1, p[dim_x], (vismonsterpair(p)->getDisplayChar()));
+                    attron(COLOR_PAIR(character_mappair(p)->dispColor));
+                    mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->getDisplayChar()));
+                    attroff(COLOR_PAIR(character_mappair(p)->dispColor));
                 }
             }
             else {
