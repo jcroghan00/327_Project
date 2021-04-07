@@ -12,6 +12,18 @@
 
 using namespace std;
 
+typedef struct abil{
+    int SMART;
+    int TELE;
+    int TUNNEL;
+    int ERRATIC;
+    int PASS;
+    int PICKUP;
+    int DESTROY;
+    int UNIQ;
+    int BOSS;
+}abil_t;
+
 class Dif{
 public:
     int x;
@@ -41,6 +53,8 @@ public:
     void move_monster(Dungeon *d);
     int create_monster(Monstertype *t);
 protected:
+    //struct of the monsters abilities
+    abil_t abil;
     int intelligent;
     int telepath;
     int tunneling;
