@@ -221,10 +221,12 @@ void monster_parser()
             }
         }
     }
-    // for(int j = 0; j < num_monster_types; ++j)
-    // {
-    //     monster_types.at(j).print();
-    // }
+    inFile.close();
+
+    for(int j = 0; j < num_monster_types; ++j)
+    {
+        monster_types.at(j).print();
+    }
 }
 
 #define typeid 1896164134
@@ -284,7 +286,9 @@ void object_parser()
                 break;
             }
 
-            case typeid:
+            case typeid: {
+                break;
+            }
 
             case colorid: {
                 object_types.at(i).color = line.substr(line.find(" ") + 1, line.find("\n"));
@@ -438,6 +442,9 @@ void object_parser()
             }
         }
     }
+
+    inFile.close();
+
     for(size_t i = 0; i < object_types.size(); ++i){
         object_types.at(i).print();
     }

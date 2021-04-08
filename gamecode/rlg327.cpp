@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
         else {seed=atoi(argv[i]);}
     }
     if(parse){
-        //monster_parser();
+        monster_parser();
         object_parser();
         return 0;
     }
