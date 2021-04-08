@@ -1,6 +1,8 @@
 
 #include "parser.h"
 #include "Monster.h"
+#include "object.h"
+#include "rlg327.h"
 #include <iostream>
 #include <fstream>
 #include <cstring>
@@ -45,7 +47,7 @@ void monster_parser()
 
     int num_monster_types = count_types(filepath, "BEGIN MONSTER");
 
-    vector<Monstertype> monster_types(num_monster_types);
+    monster_types.resize(num_monster_types);
 
     ifstream inFile(filepath);
 
@@ -213,7 +215,7 @@ void monster_parser()
         monster_types.at(j).print();
     }
 }
-
+/*
 void object_parser()
 {
     char *filepath = (char *)malloc(sizeof(getenv("HOME")) + sizeof("/.rlg327/object_desc.txt"));
@@ -423,3 +425,4 @@ void object_parser()
         monster_types.at(j).print();
     }
 }
+*/

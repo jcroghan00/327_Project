@@ -43,7 +43,7 @@ class ObjectType {
     Dice val;
     int art;
     int rrty;
-}
+};
 
 class Object{
     string name;

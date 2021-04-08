@@ -606,11 +606,14 @@ int gen_dungeon(Dungeon *d)
     make_rooms(d);
   } while (place_rooms(d));
   connect_rooms(d);
+  //TODO can probably be intergrated into the PC class
   init_pc_map(d);
   place_stairs(d);
   config_pc(d);
   gen_monsters(d);
+  // add gen_objects
   d->pc->update_pc_map(d);
+  //TODO should be moved outside of dungeon so windows can be game wide not dungeon specific
   d->windows = (Windows*)malloc(sizeof(Windows));
   create_windows(d);
   d->fow = 1;
@@ -955,7 +958,6 @@ void delete_dungeon(Dungeon *d, heap_t *h)
         delete d->monsters[i];
     }
     delete d->pc;
-    //delete_characters(d->characters, d);
     free(d->monsters);
 }
 

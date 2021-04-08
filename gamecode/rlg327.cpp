@@ -9,6 +9,7 @@
 #include "windows.h"
 #include "parser.h"
 
+vector<Monstertype> monster_types;
 
 void play_game(Dungeon *d, heap_t *h)
 {

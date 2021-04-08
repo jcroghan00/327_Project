@@ -7,6 +7,7 @@
 #include "Character.h"
 #include "windows.h"
 #include "pc.h"
+#include "rlg327.h"
 
 
 //default constructor to make a new random monster
@@ -310,6 +311,16 @@ int new_gen_monster(Dungeon *d){
     //same rules for determining number of monsters in dungeon
     if (d->num_monsters == -1) {d->num_monsters = d->num_rooms * 2 < 50 ? d->num_rooms * 2 : 50;}
     d->monsters = (Monster**)calloc((d->num_monsters),sizeof(Monster) * (d->num_monsters));
+    Monstertype mon;
+    do {
+        mon = monster_types.at(rand() % monster_types.size());
+
+    } while (mon.rrty < rand() % 100);
+    //1. pick a random monster description
+    //2. check if able to be generated
+    //3. choose a random int from 0-99 to check against rarity
+    //4. generate the monster
+
     return 0;
 }
 int gen_monsters(Dungeon *d)
