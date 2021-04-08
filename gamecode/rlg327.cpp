@@ -7,8 +7,10 @@
 #include "Character.h"
 #include "windows.h"
 #include "parser.h"
+#include "object.h"
 
 vector<Monstertype> monster_types;
+vector<ObjectType> object_types;
 
 void play_game(Dungeon *d, heap_t *h)
 {

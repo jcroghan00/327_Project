@@ -15,7 +15,6 @@
 
 /* Returns random integer in [min, max]. */
 # define rand_range(min, max) ((rand() % (((max) + 1) - (min))) + (min))
-# define UNUSED(f) ((void) f)
 
 #define malloc(size) ({        \
   void *_tmp;                  \
@@ -53,7 +52,7 @@ int gen_dungeon(Dungeon *d)
 {
   config_pc(d);
   // gen_monsters(d);
-  new_gen_monster(d);
+  gen_monsters(d);
   // add gen_objects
   d->pc->update_pc_map(d);
   //TODO should be moved outside of dungeon so windows can be game wide not dungeon specific

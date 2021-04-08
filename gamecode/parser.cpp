@@ -7,6 +7,7 @@
 #include <fstream>
 #include <cstring>
 #include <functional>
+#include <sstream>
 
 using namespace std;
 
@@ -41,17 +42,17 @@ int count_types(string filepath, string delimiter)
 
 void monster_parser()
 {
-    char *filepath = (char *)malloc(sizeof(getenv("HOME")) + sizeof("/.rlg327/monster_desc.txt"));
-    strcat(filepath, getenv("HOME"));
-    strcat(filepath, "/.rlg327/monster_desc.txt");
+    stringstream filepath;
+    filepath << getenv("HOME");
+    filepath << "/.rlg327/monster_desc.txt";
 
-    int num_monster_types = count_types(filepath, "BEGIN MONSTER");
+    int num_monster_types = count_types(filepath.str(), "BEGIN MONSTER");
 
     monster_types.resize(num_monster_types);
 
-    ifstream inFile(filepath);
+    ifstream inFile(filepath.str());
 
-    free(filepath);
+
     if(!inFile){
         cerr << "cannot open \"monster_desc.txt\", are you sure it's located in HOME/.rlg327/?" << endl;
         inFile.close();
@@ -240,17 +241,17 @@ void monster_parser()
 
 void object_parser()
 {
-    char *filepath = (char *) malloc(sizeof(getenv("HOME")) + sizeof("/.rlg327/object_desc.txt"));
-    strcat(filepath, getenv("HOME"));
-    strcat(filepath, "/.rlg327/object_desc.txt");
+    stringstream filepath;
+    filepath << getenv("HOME");
+    filepath << "/.rlg327/object_desc.txt";
 
-    int num_object_types = count_types(filepath, "BEGIN OBJECT");
+    int num_object_types = count_types(filepath.str(), "BEGIN OBJECT");
 
-    vector<ObjectType> object_types(num_object_types);
+    object_types.resize(num_object_types);
 
-    ifstream inFile(filepath);
+    ifstream inFile(filepath.str());
 
-    free(filepath);
+
     if (!inFile) {
         cerr << "cannot open \"object_desc.txt\", are you sure it's located in HOME/.rlg327/?" << endl;
         inFile.close();
