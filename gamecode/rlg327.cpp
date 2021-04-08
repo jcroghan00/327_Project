@@ -103,7 +103,6 @@ int main(int argc, char *argv[])
     curs_set(0);
     keypad(stdscr, TRUE);
 
-
     init_dungeon(&d);
     if (load){
         load_dungeon(&d);
