@@ -40,16 +40,7 @@ public:
     string abil;
     abil_t abilities;
     string symb;
-    int tunneling;
-    int boss;
-    int destroy;
-    int erratic;
-    int tele;
-    int uniq;
-    int pickup;
     int rrty;
-    int smart;
-    int path;
     int inUse;
 
     void print();
@@ -70,6 +61,11 @@ protected:
     int telepath;
     int tunneling;
     int erratic;
+    int pass;
+    int uniq;
+    int boss;
+    int destroy;
+    int pickup;
     pair_t pc_last_loc;
     Monster_Path path_to_pc[DUNGEON_Y][DUNGEON_X];
 

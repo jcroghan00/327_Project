@@ -180,32 +180,32 @@ void monster_parser()
                     cout << temp.substr(0, position) << endl;
                     cout << temp.substr(0, position).compare("SMART") << endl;
                     if(!temp.substr(0, position).compare("PICKUP")){
-                        monster_types.at(i).pickup = 1;
+                        monster_types.at(i).abilities.PICKUP = 1;
                     }
                     else if(!temp.substr(0, position).compare("ERRATIC")){
-                        monster_types.at(i).erratic = 1;
+                        monster_types.at(i).abilities.ERRATIC = 1;
                     }
                     else if(!temp.substr(0, position).compare("TELE")){
-                        monster_types.at(i).tele = 1;
+                        monster_types.at(i).abilities.TELE = 1;
                     }
                     else if(!temp.substr(0, position).compare("UNIQ")){
-                        monster_types.at(i).uniq = 1;                        
+                        monster_types.at(i).abilities.UNIQ = 1;
                     }
                     else if(!temp.substr(0, position).compare("DESTROY")){
-                        monster_types.at(i).destroy = 1;     
+                        monster_types.at(i).abilities.DESTROY = 1;
                     }
                     else if(!temp.substr(0, position).compare("TUNNEL")){
-                        monster_types.at(i).tunneling = 1;                        
+                        monster_types.at(i).abilities.TUNNEL = 1;
                     }
                     else if(!temp.substr(0, position).compare("BOSS")){
-                        monster_types.at(i).boss= 1;                        
+                        monster_types.at(i).abilities.BOSS = 1;
                     }
                     else if(temp.substr(0, position).compare("SMART") == 0){
                         cout << "HELLO" << endl;
-                        monster_types.at(i).smart= 1;                        
+                        monster_types.at(i).abilities.SMART = 1;
                     }
-                    else if(!temp.substr(0, position).compare("PATH")){
-                        monster_types.at(i).path= 1;                        
+                    else if(!temp.substr(0, position).compare("PASS")){
+                        monster_types.at(i).abilities.PASS = 1;
                     }
                     temp.erase(0, position + 1);
 

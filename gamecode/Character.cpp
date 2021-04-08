@@ -95,7 +95,6 @@ int32_t character_cmp(const void *key, const void *with) {
     }
 }
 
-//TODO roll the dice and return the number
 int Dice::roll()
 {
     int roll = this->base;

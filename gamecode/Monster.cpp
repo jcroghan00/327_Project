@@ -196,7 +196,17 @@ int Monster::create_monster(Monstertype *t){
     desc = t->desc;
     dispColor = t->getColor();
     speed = t->speed.roll();
-    setAbilities(t->abil);
+
+    intelligent = t->abilities.SMART;
+    tunneling = t->abilities.TUNNEL;
+    telepath = t->abilities.TELE;
+    erratic = t->abilities.ERRATIC;
+    pass = t->abilities.PASS;
+    uniq = t->abilities.UNIQ;
+    boss = t->abilities.BOSS;
+    destroy = t->abilities.DESTROY;
+    pickup = t->abilities.PICKUP;
+
     hitpoints = t->hp.roll();
     damage = t->dam;
     display_char = t->symb[0];
@@ -315,7 +325,7 @@ int new_gen_monster(Dungeon *d){
 
         mon = monster_types.at(rand() % monster_types.size());
 
-        if(mon.uniq == 1 && mon.inUse == 1){
+        if(mon.abilities.UNIQ && mon.inUse){
             mon.rrty = -1;
         }
         mon.inUse = 1;
@@ -436,6 +446,7 @@ int Monstertype::getColor(){
 
 void Monstertype::print()
 {
+    /*
     cout << "NAME: " + this->name << endl;
     cout << "DESC: " << endl;
     cout << this->desc;
@@ -484,4 +495,5 @@ void Monstertype::print()
     cout << "RRTY: ";
     cout << this->rrty << endl;
     cout << "\n";
+     */
 }
