@@ -312,15 +312,36 @@ int new_gen_monster(Dungeon *d){
     if (d->num_monsters == -1) {d->num_monsters = d->num_rooms * 2 < 50 ? d->num_rooms * 2 : 50;}
     d->monsters = (Monster**)calloc((d->num_monsters),sizeof(Monster) * (d->num_monsters));
     Monstertype mon;
+    for(int i = 0; i < d->num_monsters; i++)
+    {
     do {
+
         mon = monster_types.at(rand() % monster_types.size());
+
+        if(mon.uniq == 1 && mon.inUse == 1){
+            mon.rrty = 0;
+        }
+        mon.inUse = 1;
         //TODO if its a uniq monster, make it not gen again
     } while (mon.rrty < rand() % 100);
 
-    for(int i = 0; i < d->num_monsters; i++)
-    {
         d->monsters[i] = mon.createMonster();
+        cout<<"hello"<<endl;
+        // d->monsters[i]->setDisplayChar(mon.symb);
+
     }
+    // do {
+    //     mon = monster_types.at(rand() % monster_types.size());
+    //     //TODO if its a uniq monster, make it not gen again
+    // } while (mon.rrty < rand() % 100);
+
+    // for(int i = 0; i < d->num_monsters; i++)
+    // {
+    //     d->monsters[i] = mon.createMonster();
+
+    //     // d->monsters[i]->setDisplayChar(mon.symb);
+
+    // }
 
     int pcRoomNum;
     int totalArea = 0;

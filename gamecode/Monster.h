@@ -50,6 +50,7 @@ public:
     int rrty;
     int smart;
     int path;
+    int inUse;
 
     void print();
     Monster* createMonster();
@@ -86,5 +87,6 @@ void update_last_seen(Dungeon *d);
 void monster_list(Dungeon *d);
 int gen_monsters(Dungeon *d);
 extern vector<Monstertype> monster_types;
+int new_gen_monster(Dungeon *d);
 
 #endif

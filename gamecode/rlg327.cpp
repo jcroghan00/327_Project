@@ -107,6 +107,7 @@ int main(int argc, char *argv[])
     if (load){
         load_dungeon(&d);
     } else {
+        monster_parser();
         gen_dungeon(&d);
     }
     if (save) {

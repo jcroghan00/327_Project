@@ -610,7 +610,8 @@ int gen_dungeon(Dungeon *d)
   init_pc_map(d);
   place_stairs(d);
   config_pc(d);
-  gen_monsters(d);
+  // gen_monsters(d);
+  new_gen_monster(d);
   // add gen_objects
   d->pc->update_pc_map(d);
   //TODO should be moved outside of dungeon so windows can be game wide not dungeon specific

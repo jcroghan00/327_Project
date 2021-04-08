@@ -221,10 +221,10 @@ void monster_parser()
             }
         }
     }
-    for(int j = 0; j < num_monster_types; ++j)
-    {
-        monster_types.at(j).print();
-    }
+    // for(int j = 0; j < num_monster_types; ++j)
+    // {
+    //     monster_types.at(j).print();
+    // }
 }
 /*
 void object_parser()
