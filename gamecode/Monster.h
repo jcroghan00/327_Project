@@ -48,6 +48,8 @@ public:
     int uniq;
     int pickup;
     int rrty;
+    int smart;
+    int path;
 
     void print();
     Monster* createMonster();

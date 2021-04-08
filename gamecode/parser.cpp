@@ -169,29 +169,40 @@ void monster_parser()
                 monster_types.at(i).abil = line.substr(line.find(" ") + 1, line.find("\n"));
                 string temp = monster_types.at(i).abil ;
                 int position;
-                while(!temp.empty()){
+                while(temp.size() > 0){
                      position = temp.find(" ");
-
-                    if(line.substr(0, position).compare("PICKUP")){
+                     if(position == -1){
+                         position = temp.size() +1;
+                     }
+                    cout << temp.substr(0, position) << endl;
+                    cout << temp.substr(0, position).compare("SMART") << endl;
+                    if(!temp.substr(0, position).compare("PICKUP")){
                         monster_types.at(i).pickup = 1;
                     }
-                    if(line.substr(0, position).compare("ERRATIC")){
+                    else if(!temp.substr(0, position).compare("ERRATIC")){
                         monster_types.at(i).erratic = 1;
                     }
-                    if(line.substr(0, position).compare("TELE")){
+                    else if(!temp.substr(0, position).compare("TELE")){
                         monster_types.at(i).tele = 1;
                     }
-                    if(line.substr(0, position).compare("UNIQ")){
+                    else if(!temp.substr(0, position).compare("UNIQ")){
                         monster_types.at(i).uniq = 1;                        
                     }
-                    if(line.substr(0, position).compare("DESTROY")){
+                    else if(!temp.substr(0, position).compare("DESTROY")){
                         monster_types.at(i).destroy = 1;     
                     }
-                    if(line.substr(0, position).compare("TUNNEL")){
+                    else if(!temp.substr(0, position).compare("TUNNEL")){
                         monster_types.at(i).tunneling = 1;                        
                     }
-                    if(line.substr(0, position).compare("BOSS")){
+                    else if(!temp.substr(0, position).compare("BOSS")){
                         monster_types.at(i).boss= 1;                        
+                    }
+                    else if(temp.substr(0, position).compare("SMART") == 0){
+                        cout << "HELLO" << endl;
+                        monster_types.at(i).smart= 1;                        
+                    }
+                    else if(!temp.substr(0, position).compare("PATH")){
+                        monster_types.at(i).path= 1;                        
                     }
                     temp.erase(0, position + 1);
 
