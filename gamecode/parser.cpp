@@ -288,6 +288,72 @@ void object_parser()
             }
 
             case typeid: {
+                string temp = line.substr(line.find(" ") + 1, line.find("\n"));
+                int position;
+                while(temp.size() > 0) {
+                    position = temp.find(" ");
+                    if(position == -1){
+                        position = temp.size() +1;
+                    }
+                    if(!temp.substr(0, position).compare("WEAPON")){
+                        object_types.at(i).type.WEAPON = 1;
+                    }
+                    else if(!temp.substr(0, position).compare("OFFHAND")){
+                        object_types.at(i).type.OFFHAND = 1;
+                    }
+                    else if(!temp.substr(0, position).compare("RANGED")){
+                        object_types.at(i).type.RANGED = 1;
+                    }
+                    else if(!temp.substr(0, position).compare("ARMOR")){
+                        object_types.at(i).type.ARMOR = 1;
+                    }
+                    else if(!temp.substr(0, position).compare("HELMET")){
+                        object_types.at(i).type.HELMET = 1;
+                    }
+                    else if(!temp.substr(0, position).compare("CLOAK")){
+                        object_types.at(i).type.CLOAK = 1;
+                    }
+                    else if(!temp.substr(0, position).compare("GLOVES")){
+                        object_types.at(i).type.GLOVES = 1;
+                    }
+                    else if(!temp.substr(0, position).compare("BOOTS")){
+                        object_types.at(i).type.BOOTS = 1;
+                    }
+                    else if(!temp.substr(0, position).compare("RING")){
+                        object_types.at(i).type.RING = 1;
+                    }
+                    else if(!temp.substr(0, position).compare("AMULET")){
+                        object_types.at(i).type.AMULET = 1;
+                    }
+                    else if(!temp.substr(0, position).compare("LIGHT")){
+                        object_types.at(i).type.LIGHT = 1;
+                    }
+                    else if(!temp.substr(0, position).compare("SCROLL")){
+                        object_types.at(i).type.SCROLL = 1;
+                    }
+                    else if(!temp.substr(0, position).compare("BOOK")){
+                        object_types.at(i).type.BOOK = 1;
+                    }
+                    else if(!temp.substr(0, position).compare("FLASK")){
+                        object_types.at(i).type.FLASK = 1;
+                    }
+                    else if(!temp.substr(0, position).compare("GOLD")){
+                        object_types.at(i).type.GOLD = 1;
+                    }
+                    else if(!temp.substr(0, position).compare("AMMUNITION")){
+                        object_types.at(i).type.AMMUNITION = 1;
+                    }
+                    else if(!temp.substr(0, position).compare("FOOD")){
+                        object_types.at(i).type.FOOD = 1;
+                    }
+                    else if(!temp.substr(0, position).compare("WAND")){
+                        object_types.at(i).type.WAND = 1;
+                    }
+                    else if(!temp.substr(0, position).compare("CONTAINER")){
+                        object_types.at(i).type.CONTAINER = 1;
+                    }
+                    temp.erase(0, position + 1);
+                }
                 break;
             }
 

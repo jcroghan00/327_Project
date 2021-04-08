@@ -446,39 +446,10 @@ int Monstertype::getColor(){
 
 void Monstertype::print()
 {
-    /*
     cout << "NAME: " + this->name << endl;
     cout << "DESC: " << endl;
     cout << this->desc;
     cout << "COLOR: " + this->color << endl;
-
-    cout<< "SMART:  " << endl;
-    cout<< this->smart << endl;
-
-    cout<< "TUNNELING:  " << endl;
-    cout<< this->tunneling << endl;
-
-    cout<< "PICKUP:  " << endl;
-    cout<< this->pickup << endl;
-
-    cout<< "UNIQUE:  " << endl;
-    cout<< this->uniq << endl;
-
-    cout<< "ERRATIC:  " << endl;
-    cout<< this->erratic << endl;
-
-    cout<< "DESTROY:  " << endl;
-    cout<< this->destroy << endl;
-
-    cout<< "TELE:  " << endl;
-    cout<< this->tele << endl;
-
-    cout<< "PATH:  " << endl;
-    cout<< this->path << endl;
-
-    cout<< "BOSS:  " << endl;
-    cout<< this->boss << endl;
-
 
     cout << "SPEED: ";
     this->speed.print();
@@ -495,5 +466,4 @@ void Monstertype::print()
     cout << "RRTY: ";
     cout << this->rrty << endl;
     cout << "\n";
-     */
 }
