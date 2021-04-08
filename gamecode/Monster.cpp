@@ -319,7 +319,7 @@ int new_gen_monster(Dungeon *d){
         mon = monster_types.at(rand() % monster_types.size());
 
         if(mon.uniq == 1 && mon.inUse == 1){
-            mon.rrty = 0;
+            mon.rrty = -1;
         }
         mon.inUse = 1;
         //TODO if its a uniq monster, make it not gen again

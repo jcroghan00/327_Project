@@ -42,7 +42,6 @@ public:
     char getDisplayChar();
     void setLiving(int l);
     int isLiving();
-    void setTurn(int turn);
     uint32_t getTurn();
     void setSpeed(int speed);
     uint32_t getSpeed();

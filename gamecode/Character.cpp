@@ -19,7 +19,6 @@ void Character::setDisplayChar(char c) {display_char = c;}
 char Character::getDisplayChar() {return display_char;}
 void Character::setLiving(int l){living = l;}
 int Character::isLiving(){return living;}
-void Character::setTurn(int t){turn = t;}
 uint32_t Character::getTurn(){return turn;}
 void Character::setSpeed(int s){speed = s;}
 uint32_t Character::getSpeed(){return speed;}
@@ -99,7 +98,7 @@ int32_t character_cmp(const void *key, const void *with) {
 //TODO roll the dice and return the number
 int Dice::roll()
 {
-    return 0;
+    return 1;
 }
 
 void Dice::print()
