@@ -4,6 +4,6 @@
 
 
 void monster_parser();
-void item_parser();
+void object_parser();
 
 #endif //GAMECODE_PARSER_H
