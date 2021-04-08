@@ -85,7 +85,7 @@ void Monster::tun_rock_check(Dungeon *d, int *dx, int *dy){
         if (tunneling) {
             int hardness = (hardnessxy(pos[dim_x] + *dx, pos[dim_y] + *dy)) - 85;
             hardnessxy(pos[dim_x] + *dx, pos[dim_y] + *dy) = MAX(0, hardness);
-            if (is_open_space(d, pos[dim_y] + *dy, pos[dim_x] + *dx)) {
+            if (d->is_open_space(pos[dim_y] + *dy, pos[dim_x] + *dx)) {
                 mapxy(pos[dim_x] + *dx, pos[dim_y] + *dy) = ter_floor_hall;
             } else {
                 *dx = *dy = 0;

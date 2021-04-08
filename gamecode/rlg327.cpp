@@ -1,5 +1,4 @@
 #include <ncurses.h>
-#include <string>
 
 #include "dungeon.h"
 #include "Monster.h"
@@ -49,20 +48,20 @@ void play_game(Dungeon *d, heap_t *h)
 
 int main(int argc, char *argv[])
 {
-    Dungeon d = { .num_monsters = -1};
+    Dungeon* d = new Dungeon();
     struct timeval tv;
     uint32_t seed = 0;
 
     int save = 0;
     int load = 0;
-    int parse = 1;
+    int parse = 0;
 
     for (int i = 1; i < argc; i++)
     {
         if (!strcmp(argv[i],"--save"))         {save = 1;}
         else if (!strcmp(argv[i],"--load"))    {load = 1;}
         else if (!strcmp(argv[i],"--parseon"))    {parse = 1;}
-        else if (!strcmp(argv[i],"--nummon"))  {d.num_monsters = atoi(argv[++i]);}
+        else if (!strcmp(argv[i],"--nummon"))  {d->num_monsters = atoi(argv[++i]);}
         else {seed=atoi(argv[i]);}
     }
     if(parse){
@@ -103,25 +102,24 @@ int main(int argc, char *argv[])
     curs_set(0);
     keypad(stdscr, TRUE);
 
-    init_dungeon(&d);
     if (load){
-        load_dungeon(&d);
+        load_dungeon(d);
     } else {
         monster_parser();
-        gen_dungeon(&d);
+        gen_dungeon(d);
     }
     if (save) {
-        save_dungeon(&d);
+        save_dungeon(d);
     }
 
-    render(&d);
+    render(d);
 
     heap_t h;
     heap_init(&h,character_cmp,NULL);
-    play_game(&d, &h);
+    play_game(d, &h);
 
     endwin();
-    delete_dungeon(&d, &h);
+    delete_dungeon(d, &h);
     return 0;
 
 }

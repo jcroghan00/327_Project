@@ -30,6 +30,7 @@ typedef struct heap_node heap_node_t;
 #define vismonsterpair(pair) (d->pc->vis_monsters[pair[dim_y]][pair[dim_x]])
 #define mapxy(x, y) (d->map[y][x])
 #define hardnesspair(pair) (d->hardness[pair[dim_y]][pair[dim_x]])
+#define dhardnesspair(pair) (hardness[pair[dim_y]][pair[dim_x]])
 #define hardnessxy(x, y) (d->hardness[y][x])
 #define character_mappair(pair) (d->character_map[pair[dim_y]][pair[dim_x]])
 #define character_mapxy(x, y) (d->character_map[y][x])
@@ -69,19 +70,33 @@ public:
 
 class Dungeon {
 public:
-  uint32_t num_rooms;
-  Room *rooms;
-  Monster **monsters;
-  Stair *stairs;
-  terrain_type_t map[DUNGEON_Y][DUNGEON_X];
-  Character *character_map[DUNGEON_Y][DUNGEON_X];
-  uint8_t hardness[DUNGEON_Y][DUNGEON_X];
-  PC *pc;
-  int num_monsters;
-  Monster_Path non_tun_path[DUNGEON_Y][DUNGEON_X];
-  Monster_Path tun_path[DUNGEON_Y][DUNGEON_X];
-  Windows *windows;
-  int fow;
+    uint32_t num_rooms;
+    Room *rooms;
+    Monster **monsters;
+    Stair *stairs;
+    terrain_type_t map[DUNGEON_Y][DUNGEON_X];
+    Character *character_map[DUNGEON_Y][DUNGEON_X];
+    uint8_t hardness[DUNGEON_Y][DUNGEON_X];
+    PC *pc;
+    int num_monsters;
+    Monster_Path non_tun_path[DUNGEON_Y][DUNGEON_X];
+    Monster_Path tun_path[DUNGEON_Y][DUNGEON_X];
+    Windows *windows;
+    int fow;
+    Dungeon();
+    uint32_t is_open_space(int16_t y, int16_t x);
+    int empty_dungeon();
+protected:
+    uint32_t adjacent_to_room(int16_t y, int16_t x);
+    void dijkstra_corridor(pair_t from, pair_t to);
+    void dijkstra_corridor_inv(pair_t from, pair_t to);
+    int smoothhardness(Dungeon *);
+    int make_rooms();
+    int place_rooms();
+    int connect_two_rooms(Room *r1, Room *r2);
+    int create_cycle();
+    int connect_rooms();
+    void place_stairs();
 };
 
 uint32_t in_room(Room r, Character *c);
@@ -92,7 +107,6 @@ void render_teleport_select(Dungeon *d, heap_t *h);
 void render(Dungeon *d);
 void delete_dungeon(Dungeon *d, heap_t *h);
 int load_dungeon(Dungeon *d);
-void init_dungeon(Dungeon *d);
 int save_dungeon(Dungeon *d);
 void new_dungeon(Dungeon *d, heap_t *h);
 
