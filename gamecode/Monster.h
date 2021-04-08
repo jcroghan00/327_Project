@@ -54,7 +54,7 @@ public:
 
     void print();
     Monster* createMonster();
-    int pickColor();
+    int getColor();
 };
 
 class Monster: public Character {

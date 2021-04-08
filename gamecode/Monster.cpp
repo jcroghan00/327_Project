@@ -197,7 +197,7 @@ void Monster::setAbilities(string abil){
 int Monster::create_monster(Monstertype *t){
     name = t->name;
     desc = t->desc;
-    dispColor = t->pickColor();
+    dispColor = t->getColor();
     speed = t->speed.roll();
     setAbilities(t->abil);
     hitpoints = t->hp.roll();
@@ -430,7 +430,7 @@ Monster* Monstertype::createMonster(){
     return monster;
 }
 
-int Monstertype::pickColor(){
+int Monstertype::getColor(){
     //TODO pick a color from the monsters color list
     // note things like COLOR_CYAN is technically an int so return that
     // Color are already defined in rlg327.cpp
