@@ -98,7 +98,11 @@ int32_t character_cmp(const void *key, const void *with) {
 //TODO roll the dice and return the number
 int Dice::roll()
 {
-    return 1;
+    int roll = this->base;
+    for(int i = 0; i < this->numDice; ++i){
+        roll += (rand() % this->numSides) + 1;
+    }
+    return roll;
 }
 
 void Dice::print()
