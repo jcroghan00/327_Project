@@ -28,11 +28,12 @@ typedef struct type{
     
 }type_t;
 
-class ObjectType {
+class ObjectType{
+public:
     string name;
     string desc;
     type_t type;
-    int color;
+    string color;
     Dice hit;
     Dice dam;
     Dice dodge;
@@ -43,6 +44,8 @@ class ObjectType {
     Dice val;
     int art;
     int rrty;
+
+    void print();
 };
 
 class Object{
