@@ -167,6 +167,35 @@ void monster_parser()
             case abilid:
             {
                 monster_types.at(i).abil = line.substr(line.find(" ") + 1, line.find("\n"));
+                string temp = monster_types.at(i).abil ;
+                int position;
+                while(!temp.empty()){
+                     position = temp.find(" ");
+
+                    if(line.substr(0, position).compare("PICKUP")){
+                        monster_types.at(i).pickup = 1;
+                    }
+                    if(line.substr(0, position).compare("ERRATIC")){
+                        monster_types.at(i).erratic = 1;
+                    }
+                    if(line.substr(0, position).compare("TELE")){
+                        monster_types.at(i).tele = 1;
+                    }
+                    if(line.substr(0, position).compare("UNIQ")){
+                        monster_types.at(i).uniq = 1;                        
+                    }
+                    if(line.substr(0, position).compare("DESTROY")){
+                        monster_types.at(i).destroy = 1;     
+                    }
+                    if(line.substr(0, position).compare("TUNNEL")){
+                        monster_types.at(i).tunneling = 1;                        
+                    }
+                    if(line.substr(0, position).compare("BOSS")){
+                        monster_types.at(i).boss= 1;                        
+                    }
+                    temp.erase(0, position + 1);
+
+                }
 
                 break;
             }

@@ -27,6 +27,13 @@ public:
     Dice dam;
     string abil;
     string symb;
+    int tunneling;
+    int boss;
+    int destroy;
+    int erratic;
+    int tele;
+    int uniq;
+    int pickup;
     int rrty;
 
     void print();
