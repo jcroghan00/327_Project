@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 
     int save = 0;
     int load = 0;
-    int parse = 0;
+    int parse = 1;
 
     for (int i = 1; i < argc; i++)
     {
@@ -66,7 +66,8 @@ int main(int argc, char *argv[])
         else {seed=atoi(argv[i]);}
     }
     if(parse){
-        monster_parser();
+        //monster_parser();
+        object_parser();
         return 0;
     }
     if (!seed)
@@ -101,7 +102,6 @@ int main(int argc, char *argv[])
     noecho();
     curs_set(0);
     keypad(stdscr, TRUE);
-
 
     init_dungeon(&d);
     if (load){

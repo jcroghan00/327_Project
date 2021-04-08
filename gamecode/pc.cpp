@@ -10,6 +10,13 @@ typedef struct heap heap_t;
 PC::PC(){
     setDisplayChar('@');
     setSpeed(PC_SPEED);
+    for(int i = 0; i < DUNGEON_Y; i++){
+        for(int j = 0; j < DUNGEON_X; j++){
+            pc_map[i][j] = ter_wall;
+            vis_monsters[i][j] = NULL;
+        }
+    }
+
 }
 
 void PC::update_pc_map(Dungeon *d){
@@ -19,7 +26,7 @@ void PC::update_pc_map(Dungeon *d){
     for(int i = -2; i <= 2; ++i){
         for(int j = -2; j <= 2; ++j){
             if((x + i >= 0 && x + i < DUNGEON_X) && (y + j >= 0 && y + j < DUNGEON_Y)){
-                d->pc_map[y + j][x + i] = d->map[y + j][x + i];
+                this->pc_map[y + j][x + i] = d->map[y + j][x + i];
             }
             else{
                 continue;
@@ -38,7 +45,7 @@ int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
     }
 
     d->character_map[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
-    d->vis_monsters[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
+    vis_monsters[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
     pos[dim_y] += dy;
     pos[dim_x] += dx;
     if (d->character_map[pos[dim_y]][pos[dim_x]] != NULL){
@@ -48,14 +55,6 @@ int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
     d->character_map[pos[dim_y]][pos[dim_x]] = this;
     update_pc_map(d);
     return 0;
-}
-
-void init_pc_map(Dungeon *d){
-    for(int i = 0; i < DUNGEON_Y; i++){
-        for(int j = 0; j < DUNGEON_X; j++){
-            d->pc_map[i][j] = ter_wall;
-        }
-    }
 }
 
 

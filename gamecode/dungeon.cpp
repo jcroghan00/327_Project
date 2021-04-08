@@ -606,8 +606,6 @@ int gen_dungeon(Dungeon *d)
     make_rooms(d);
   } while (place_rooms(d));
   connect_rooms(d);
-  //TODO can probably be intergrated into the PC class
-  init_pc_map(d);
   place_stairs(d);
   config_pc(d);
   // gen_monsters(d);

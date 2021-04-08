@@ -218,18 +218,18 @@ void update_last_seen(Dungeon *d)
                 d->monsters[i]->pos[dim_y] <= d->pc->pos[dim_y] + 2)
         {
             if(d->monsters[i]->last_seen[dim_x] == -1){
-                d->vis_monsters[d->monsters[i]->pos[dim_y]][d->monsters[i]->pos[dim_x]] = d->monsters[i];
+                d->pc->vis_monsters[d->monsters[i]->pos[dim_y]][d->monsters[i]->pos[dim_x]] = d->monsters[i];
 
                 d->monsters[i]->last_seen[dim_x] = d->monsters[i]->pos[dim_x];
                 d->monsters[i]->last_seen[dim_y] = d->monsters[i]->pos[dim_y];
             }
             else{
-                d->vis_monsters[d->monsters[i]->last_seen[dim_y]][d->monsters[i]->last_seen[dim_x]] = NULL;
+                d->pc->vis_monsters[d->monsters[i]->last_seen[dim_y]][d->monsters[i]->last_seen[dim_x]] = NULL;
 
                 d->monsters[i]->last_seen[dim_x] = d->monsters[i]->pos[dim_x];
                 d->monsters[i]->last_seen[dim_y] = d->monsters[i]->pos[dim_y];
 
-                d->vis_monsters[d->monsters[i]->pos[dim_y]][d->monsters[i]->pos[dim_x]] = d->monsters[i];
+                d->pc->vis_monsters[d->monsters[i]->pos[dim_y]][d->monsters[i]->pos[dim_x]] = d->monsters[i];
             }
         }
     }
