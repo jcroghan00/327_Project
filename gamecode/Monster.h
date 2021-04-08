@@ -28,6 +28,7 @@ public:
     int x;
     int y;
 };
+
 class Monstertype{
 public:
     string name;
@@ -37,6 +38,7 @@ public:
     Dice hp;
     Dice dam;
     string abil;
+    abil_t abilities;
     string symb;
     int rrty;
 

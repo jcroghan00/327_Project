@@ -166,7 +166,69 @@ void monster_parser()
 
             case abilid:
             {
-                monster_types.at(i).abil = line.substr(line.find(" ") + 1, line.find("\n"));
+                string abil_string = line.substr(line.find(" ") + 1, line.find("\n"));
+                monster_types.at(i).abil = abil_string;
+
+                vector<string> abils;
+
+                size_t start;
+                size_t end = 0;
+
+                while ((start = abil_string.find_first_not_of(" ", end)) != string::npos)
+                {
+                    end = abil_string.find(" ", start);
+                    abils.push_back(abil_string.substr(start, end - start));
+                }
+
+                monster_types.at(i).abilities.SMART = 0;
+                monster_types.at(i).abilities.TELE = 0;
+                monster_types.at(i).abilities.TUNNEL = 0;
+                monster_types.at(i).abilities.ERRATIC = 0;
+                monster_types.at(i).abilities.PASS = 0;
+                monster_types.at(i).abilities.PICKUP = 0;
+                monster_types.at(i).abilities.DESTROY = 0;
+                monster_types.at(i).abilities.UNIQ = 0;
+                monster_types.at(i).abilities.BOSS = 0;
+
+                for(size_t j = 0; j < abils.size(); ++j)
+                {
+                    if(!abils.at(j).compare("SMART"))
+                    {
+                        monster_types.at(i).abilities.SMART = 1;
+                    }
+                    else if(!abils.at(j).compare("TELE"))
+                    {
+                        monster_types.at(i).abilities.TELE = 1;
+                    }
+                    else if(!abils.at(j).compare("TUNNEL"))
+                    {
+                        monster_types.at(i).abilities.TUNNEL = 1;
+                    }
+                    else if(!abils.at(j).compare("ERRATIC"))
+                    {
+                        monster_types.at(i).abilities.ERRATIC = 1;
+                    }
+                    else if(!abils.at(j).compare("PASS"))
+                    {
+                        monster_types.at(i).abilities.PASS = 1;
+                    }
+                    else if(!abils.at(j).compare("PICKUP"))
+                    {
+                        monster_types.at(i).abilities.PICKUP = 1;
+                    }
+                    else if(!abils.at(j).compare("DESTROY"))
+                    {
+                        monster_types.at(i).abilities.SMART = 1;
+                    }
+                    else if(!abils.at(j).compare("UNIQ"))
+                    {
+                        monster_types.at(i).abilities.UNIQ = 1;
+                    }
+                    else if(!abils.at(j).compare("BOSS"))
+                    {
+                        monster_types.at(i).abilities.BOSS = 1;
+                    }
+                }
 
                 break;
             }
