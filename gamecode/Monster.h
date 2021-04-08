@@ -6,17 +6,29 @@
 #include <cstdio>
 #include <iostream>
 #include <fstream>
-#include <cstring>
 #include <functional>
 #include <vector>
 
 using namespace std;
+
+typedef struct abil{
+    int SMART;
+    int TELE;
+    int TUNNEL;
+    int ERRATIC;
+    int PASS;
+    int PICKUP;
+    int DESTROY;
+    int UNIQ;
+    int BOSS;
+}abil_t;
 
 class Dif{
 public:
     int x;
     int y;
 };
+
 class Monstertype{
 public:
     string name;
@@ -26,6 +38,7 @@ public:
     Dice hp;
     Dice dam;
     string abil;
+    abil_t abilities;
     string symb;
     int tunneling;
     int boss;
@@ -48,6 +61,8 @@ public:
     void move_monster(Dungeon *d);
     int create_monster(Monstertype *t);
 protected:
+    //struct of the monsters abilities
+    abil_t abil;
     int intelligent;
     int telepath;
     int tunneling;
