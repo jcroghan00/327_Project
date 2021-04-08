@@ -80,9 +80,6 @@ private:
     void final_move(Dungeon *d,int dx,int dy);
 };
 
-
-extern vector<Monstertype> monster_types();
-
 void update_last_seen(Dungeon *d);
 void monster_list(Dungeon *d);
 int gen_monsters(Dungeon *d);

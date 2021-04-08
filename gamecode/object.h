@@ -28,7 +28,7 @@ typedef struct type{
     
 }type_t;
 
-class ObjectType{
+class ObjectType {
     string name;
     string desc;
     type_t type;
@@ -43,7 +43,7 @@ class ObjectType{
     Dice val;
     int art;
     int rrty;
-};
+}
 
 class Object{
     string name;
