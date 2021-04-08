@@ -72,7 +72,6 @@ protected:
     int erratic;
     pair_t pc_last_loc;
     Monster_Path path_to_pc[DUNGEON_Y][DUNGEON_X];
-    void setAbilities(string abil);
 
 private:
     void set_monster_char();

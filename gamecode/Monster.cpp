@@ -191,9 +191,6 @@ void Monster::move_monster(Dungeon *d)
         final_move(d, dx, dy);
     }
 }
-void Monster::setAbilities(string abil){
-    //TODO parse abil and set monster abilities
-}
 int Monster::create_monster(Monstertype *t){
     name = t->name;
     desc = t->desc;
