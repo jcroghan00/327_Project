@@ -7,6 +7,7 @@
 #include "Character.h"
 #include "windows.h"
 #include "pc.h"
+#include "rlg327.h"
 
 
 //default constructor to make a new random monster
@@ -310,6 +311,49 @@ int new_gen_monster(Dungeon *d){
     //same rules for determining number of monsters in dungeon
     if (d->num_monsters == -1) {d->num_monsters = d->num_rooms * 2 < 50 ? d->num_rooms * 2 : 50;}
     d->monsters = (Monster**)calloc((d->num_monsters),sizeof(Monster) * (d->num_monsters));
+    Monstertype mon;
+    do {
+        mon = monster_types.at(rand() % monster_types.size());
+        //TODO if its a uniq monster, make it not gen again
+    } while (mon.rrty < rand() % 100);
+
+    for(int i = 0; i < d->num_monsters; i++)
+    {
+        d->monsters[i] = mon.createMonster();
+    }
+
+    int pcRoomNum;
+    int totalArea = 0;
+    for(uint32_t i = 0; i < d->num_rooms; ++i)
+    {
+        if (in_room(d->rooms[i],d->pc)){
+            pcRoomNum = i;
+        } else {
+            totalArea += d->rooms[i].size[dim_x] * d->rooms[i].size[dim_y];
+        }
+    }
+
+    int totalMonsters = 0;
+    while(totalMonsters < d->num_monsters)
+    {
+        if(totalMonsters == totalArea){break;}
+
+        int randRoom = rand() % d->num_rooms;
+
+        if(randRoom == pcRoomNum){continue;}
+
+        int x = rand() % d->rooms[randRoom].size[dim_x];
+        int y = rand() % d->rooms[randRoom].size[dim_y];
+
+        if(d->character_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] != NULL){continue;}
+
+        d->character_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] = d->monsters[totalMonsters];
+
+        d->monsters[totalMonsters]->pos[dim_y] = d->rooms[randRoom].position[dim_y] + y;
+        d->monsters[totalMonsters]->pos[dim_x] = d->rooms[randRoom].position[dim_x] + x;
+
+        ++totalMonsters;
+    }
     return 0;
 }
 int gen_monsters(Dungeon *d)

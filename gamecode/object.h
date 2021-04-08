@@ -28,12 +28,29 @@ typedef struct type{
     
 }type_t;
 
+class ObjectType {
+    string name;
+    string desc;
+    type_t type;
+    int color;
+    Dice hit;
+    Dice dam;
+    Dice dodge;
+    Dice def;
+    Dice weight;
+    Dice speed;
+    Dice attr;
+    Dice val;
+    int art;
+    int rrty;
+};
+
 class Object{
     string name;
     string desc;
     type_t type;
     int color;
-    int hp;
+    int hit;
     Dice dam;
     int dodge;
     int def;
@@ -43,7 +60,6 @@ class Object{
     int val;
     int art;
     int rrty;
-
 };
 
 #endif //GAMECODE_OBJECT_H
