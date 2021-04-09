@@ -7,6 +7,7 @@
 #include "Character.h"
 #include "path.h"
 #include "windows.h"
+#include "object.h"
 
 /* Returns true if random float in [0,1] is less than *
  * numerator/denominator.  Uses only integer math.    */
@@ -53,8 +54,9 @@ int gen_dungeon(Dungeon *d)
   config_pc(d);
   // gen_monsters(d);
   new_gen_monster(d);
-  // add gen_objects
+  gen_objects(d);
   d->pc->update_pc_map(d);
+  d->pc->update_vis_objects(d);
   //TODO should be moved outside of dungeon so windows can be game wide not dungeon specific
   d->windows = (Windows*)malloc(sizeof(Windows));
   create_windows(d);
@@ -182,8 +184,6 @@ int load_dungeon(Dungeon *d)
 //renders the entire game board to a a given screen, stdscr by default
 void render_ncurses(Dungeon *d, WINDOW *scr=stdscr)
 {
-
-
     pair_t p;
     for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
         for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
@@ -197,6 +197,10 @@ void render_ncurses(Dungeon *d, WINDOW *scr=stdscr)
                     mvwaddch(scr,p[dim_y] + 1, p[dim_x], (character_mappair(p)->getDisplayChar()));
                     attroff(COLOR_PAIR(character_mappair(p)->dispColor));
                 }
+            }
+            else if(d->objMap[p[dim_y]][p[dim_x]])
+            {
+                mvwaddch(scr,p[dim_y] + 1, p[dim_x], (d->objMap[p[dim_y]][p[dim_x]]->displayChar));
             }
             else {
                 switch (mappair(p)) {
@@ -262,6 +266,10 @@ void render_fow(Dungeon *d)
                     mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->getDisplayChar()));
                     attroff(COLOR_PAIR(character_mappair(p)->dispColor));
                 }
+            }
+            else if (visobjectmappair(p))
+            {
+                mvaddch(p[dim_y] + 1, p[dim_x], (visobjectmappair(p)->displayChar));
             }
             else {
                 switch (pcmappair(p)) {

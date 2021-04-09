@@ -99,6 +99,7 @@ int main(int argc, char *argv[])
         load_dungeon(d);
     } else {
         monster_parser();
+        object_parser();
         gen_dungeon(d);
     }
     if (save) {

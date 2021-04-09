@@ -177,8 +177,6 @@ void monster_parser()
                      if(position == -1){
                          position = temp.size() +1;
                      }
-                    cout << temp.substr(0, position) << endl;
-                    cout << temp.substr(0, position).compare("SMART") << endl;
                     if(!temp.substr(0, position).compare("PICKUP")){
                         monster_types.at(i).abilities.PICKUP = 1;
                     }
@@ -201,7 +199,6 @@ void monster_parser()
                         monster_types.at(i).abilities.BOSS = 1;
                     }
                     else if(temp.substr(0, position).compare("SMART") == 0){
-                        cout << "HELLO" << endl;
                         monster_types.at(i).abilities.SMART = 1;
                     }
                     else if(!temp.substr(0, position).compare("PASS")){
@@ -223,11 +220,6 @@ void monster_parser()
         }
     }
     inFile.close();
-
-    for(int j = 0; j < num_monster_types; ++j)
-    {
-        monster_types.at(j).print();
-    }
 }
 
 #define typeid 1896164134
@@ -511,8 +503,4 @@ void object_parser()
     }
 
     inFile.close();
-
-    for(size_t i = 0; i < object_types.size(); ++i){
-        object_types.at(i).print();
-    }
 }

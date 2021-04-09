@@ -12,7 +12,6 @@
 #include <sys/time.h>
 #include <assert.h>
 #include <unistd.h>
-
 #include "dim.h"
 #include "config.h"
 
@@ -21,13 +20,14 @@
  class Monster;
  class PC;
  class Windows;
-
+ class Object;
 typedef struct heap heap_t;
 typedef struct heap_node heap_node_t;
 
 #define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
 #define pcmappair(pair) (d->pc->pc_map[pair[dim_y]][pair[dim_x]])
 #define vismonsterpair(pair) (d->pc->vis_monsters[pair[dim_y]][pair[dim_x]])
+#define visobjectmappair(pair) (d->pc->visObj[pair[dim_y]][pair[dim_x]])
 #define mapxy(x, y) (d->map[y][x])
 #define hardnesspair(pair) (d->hardness[pair[dim_y]][pair[dim_x]])
 #define dhardnesspair(pair) (hardness[pair[dim_y]][pair[dim_x]])
@@ -82,6 +82,9 @@ public:
     Monster_Path non_tun_path[DUNGEON_Y][DUNGEON_X];
     Monster_Path tun_path[DUNGEON_Y][DUNGEON_X];
     Windows *windows;
+    int numObjects;
+    Object **objects;
+    Object *objMap[DUNGEON_Y][DUNGEON_X];
     int fow;
     Dungeon();
     uint32_t is_open_space(int16_t y, int16_t x);

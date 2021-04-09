@@ -334,7 +334,6 @@ int new_gen_monster(Dungeon *d){
     } while (mon.rrty < rand() % 100);
 
         d->monsters[i] = mon.createMonster();
-        cout<<"hello"<<endl;
         // d->monsters[i]->setDisplayChar(mon.symb);
 
     }
