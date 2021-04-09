@@ -3,6 +3,7 @@
 #include "Character.h"
 
 class Dice;
+class Dungeon;
 
 typedef struct type{
     unsigned int WEAPON:1;
@@ -30,6 +31,8 @@ typedef struct type{
 
 class ObjectType{
 public:
+    Object* createObj();
+
     string name;
     string desc;
     type_t type;
@@ -44,15 +47,19 @@ public:
     Dice val;
     int art;
     int rrty;
+    int inUse;
 
     void print();
 };
 
 class Object{
+    public:
+        int createObj(ObjectType *t);
+
     string name;
     string desc;
     type_t type;
-    int color;
+    string color;
     int hit;
     Dice dam;
     int dodge;
@@ -62,6 +69,7 @@ class Object{
     int attr;
     int val;
     int art;
+    int inUse;
     int rrty;
 };
 
