@@ -34,6 +34,24 @@ void PC::update_pc_map(Dungeon *d){
         }
     }
 }
+
+void PC::update_vis_objects(Dungeon *d)
+{
+    int x = pos[dim_x];
+    int y = pos[dim_y];
+
+    for(int i = -2; i <= 2; ++i){
+        for(int j = -2; j <= 2; ++j){
+            if((x + i >= 0 && x + i < DUNGEON_X) && (y + j >= 0 && y + j < DUNGEON_Y)){
+                this->visObj[y + j][x + i] = d->objMap[y + j][x + i];
+            }
+            else{
+                continue;
+            }
+        }
+    }
+}
+
 int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
 
     if(d->map[pos[dim_y] + dy][pos[dim_x] + dx] < ter_floor &&
@@ -54,9 +72,9 @@ int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
     }
     d->character_map[pos[dim_y]][pos[dim_x]] = this;
     update_pc_map(d);
+    update_vis_objects(d);
     return 0;
 }
-
 
 void place_pc(Dungeon *d)
 {
@@ -73,10 +91,6 @@ void config_pc(Dungeon *d)
     d->pc = new PC();
     place_pc(d);
 }
-
-void move_pc_ncurses(Dungeon *d, heap_t *h);
-
-
 
 void move_pc_ncurses(Dungeon *d, heap_t *h)
 {

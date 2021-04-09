@@ -68,9 +68,71 @@ int Object::createObj(ObjectType *obj){
      art = obj->art;
      inUse = obj->inUse;
      rrty = obj->rrty;
+     setObjChar();
 
      return 0;
 
+}
+
+void Object::setObjChar()
+{
+    if(type.AMMUNITION){
+        displayChar = '/';
+    }
+    else if(type.AMULET){
+        displayChar ='"';
+    }
+    else if(type.ARMOR){
+        displayChar ='[';
+    }
+    else if(type.BOOK){
+        displayChar ='?';
+    }
+    else if(type.BOOTS){
+        displayChar ='\\';
+    }
+    else if(type.CLOAK){
+        displayChar ='(';
+    }
+    else if(type.CONTAINER){
+        displayChar ='%';
+    }
+    else if(type.FOOD){
+        displayChar =',';
+    }
+    else if(type.FLASK){
+        displayChar ='!';
+    }
+    else if(type.GLOVES){
+        displayChar ='{';
+    }
+    else if(type.GOLD){
+        displayChar ='$';
+    }
+    else if(type.HELMET){
+        displayChar =']';
+    }
+    else if(type.LIGHT){
+        displayChar ='_';
+    }
+    else if(type.OFFHAND){
+        displayChar =')';
+    }
+    else if(type.RANGED){
+        displayChar ='}';
+    }
+    else if(type.RING){
+        displayChar ='=';
+    }
+    else if(type.SCROLL){
+        displayChar ='~';
+    }
+    else if(type.WAND){
+        displayChar ='-';
+    }
+    else if(type.WEAPON){
+        displayChar ='|';
+    }
 }
 
 void gen_objects(Dungeon *d){
@@ -82,7 +144,7 @@ void gen_objects(Dungeon *d){
     int i = 0;
     ObjectType num;
 
-       for(i = 0; i < d->num_monsters; i++)
+       for(i = 0; i < d->numObjects; i++)
     {
     do {
 
@@ -106,21 +168,13 @@ void gen_objects(Dungeon *d){
         int x = rand() % 79;
         int y = rand() %21;
 
-        if(d->map[y][x] != ter_wall_immutable && d->map[y][x] != ter_wall){
-            d->objMap[dim_y + y][dim_x + x] = d->objects[i];
+        if(d->map[y][x] > ter_floor){
+            d->objMap[y][x] = d->objects[i];
+            ++i;
         }
 
 
     }
-
-    
-
-
-    
-
-
-
-
 }
 Object* ObjectType::createObj(){
     Object *obj = new Object();

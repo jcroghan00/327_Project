@@ -4,6 +4,7 @@
 
 class Dice;
 class Dungeon;
+class Object;
 
 typedef struct type{
     unsigned int WEAPON:1;
@@ -55,6 +56,7 @@ public:
 class Object{
     public:
         int createObj(ObjectType *t);
+        void setObjChar();
 
     string name;
     string desc;
@@ -71,6 +73,9 @@ class Object{
     int art;
     int inUse;
     int rrty;
+    char displayChar;
 };
+
+void gen_objects(Dungeon *d);
 
 #endif //GAMECODE_OBJECT_H

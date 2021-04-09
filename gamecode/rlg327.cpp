@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 
     int save = 0;
     int load = 0;
-    int parse = 1;
+    int parse = 0;
 
     for (int i = 1; i < argc; i++)
     {
@@ -108,6 +108,7 @@ int main(int argc, char *argv[])
         load_dungeon(d);
     } else {
         monster_parser();
+        object_parser();
         gen_dungeon(d);
     }
     if (save) {

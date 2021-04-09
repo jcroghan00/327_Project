@@ -12,7 +12,6 @@
 #include <sys/time.h>
 #include <assert.h>
 #include <unistd.h>
-#include <object.h>
 #include "dim.h"
 #include "config.h"
 
@@ -28,7 +27,7 @@ typedef struct heap_node heap_node_t;
 #define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
 #define pcmappair(pair) (d->pc->pc_map[pair[dim_y]][pair[dim_x]])
 #define vismonsterpair(pair) (d->pc->vis_monsters[pair[dim_y]][pair[dim_x]])
-// #define objectmappair(x, y) (d->objMap[pair[dim_y]][pair[dim_x]])
+#define visobjectmappair(pair) (d->pc->visObj[pair[dim_y]][pair[dim_x]])
 #define mapxy(x, y) (d->map[y][x])
 #define hardnesspair(pair) (d->hardness[pair[dim_y]][pair[dim_x]])
 #define dhardnesspair(pair) (hardness[pair[dim_y]][pair[dim_x]])

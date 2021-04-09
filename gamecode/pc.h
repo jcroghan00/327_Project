@@ -7,15 +7,16 @@ typedef struct heap heap_t;
 typedef enum terrain_type terrain_type_t;
 
 class Dungeon;
-class object;
+class Object;
 
 class PC: public Character{
 public:
     terrain_type_t pc_map[DUNGEON_Y][DUNGEON_X];
     Character *vis_monsters[DUNGEON_Y][DUNGEON_X];
-    object *visObj[DUNGEON_Y][DUNGEON_X];
+    Object *visObj[DUNGEON_Y][DUNGEON_X];
     PC();
     void update_pc_map(Dungeon *d);
+    void update_vis_objects(Dungeon *d);
     int move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport);
 };
 
