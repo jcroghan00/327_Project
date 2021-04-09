@@ -260,11 +260,11 @@ void render_fow(Dungeon *d)
                         p[dim_y] >= d->pc->pos[dim_y] - 2 &&
                         p[dim_y] <= d->pc->pos[dim_y] + 2)
                 {
-                    mvaddch(p[dim_y] + 1, p[dim_x], (vismonsterpair(p)->getDisplayChar()));
-                } else{
                     attron(COLOR_PAIR(character_mappair(p)->dispColor));
-                    mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->getDisplayChar()));
+                    mvaddch(p[dim_y] + 1, p[dim_x], (vismonsterpair(p)->getDisplayChar()));
                     attroff(COLOR_PAIR(character_mappair(p)->dispColor));
+                } else{
+                    mvaddch(p[dim_y] + 1, p[dim_x], (character_mappair(p)->getDisplayChar()));
                 }
             }
             else if (visobjectmappair(p))
