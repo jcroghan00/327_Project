@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <sstream>
 
 #include "Monster.h"
 #include "dungeon.h"
@@ -438,10 +439,30 @@ Monster* Monstertype::createMonster(){
 }
 
 int Monstertype::getColor(){
-    //TODO pick a color from the monsters color list
-    // note things like COLOR_CYAN is technically an int so return that
-    // Color are already defined in rlg327.cpp
-    return 0;
+    string dispColor;
+
+    for (int i = 0; i < (int)this->color.length();i++){
+        if (this->color.at(i) == ' '){
+            break;
+        }
+        dispColor.push_back(this->color.at(i));
+    }
+
+    if (dispColor == "RED"){
+        return COLOR_RED;
+    } else if (dispColor == "GREEN"){
+        return COLOR_GREEN;
+    }else if (dispColor == "BLUE"){
+        return COLOR_BLUE;
+    }else if (dispColor == "CYAN"){
+        return COLOR_CYAN;
+    }else if (dispColor == "YELLOW"){
+        return COLOR_YELLOW;
+    }else if (dispColor == "MAGENTA"){
+        return COLOR_MAGENTA;
+    }else{
+        return COLOR_WHITE;
+    }
 }
 
 void Monstertype::print()

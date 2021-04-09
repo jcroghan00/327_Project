@@ -82,15 +82,6 @@ int main(int argc, char *argv[])
     resizeterm(24,81);
     start_color();
 
-    //TODO remove at some point
-    init_pair(HARD_WALL_PAIR, COLOR_YELLOW, COLOR_BLACK); //??
-    init_pair(SOFT_WALL_PAIR, COLOR_GREEN, COLOR_BLACK);   //??
-    init_pair(IMMUTABLE_WALL_PAIR, COLOR_BLUE, COLOR_BLACK);
-    init_pair(FLOOR_PAIR, COLOR_WHITE, COLOR_BLACK);
-    init_pair(STAIR_PAIR, COLOR_CYAN, COLOR_BLACK);
-    init_pair(PLAYER_PAIR, COLOR_MAGENTA, COLOR_BLACK);
-    init_pair(MONSTER_PAIR, COLOR_RED, COLOR_BLACK);
-
     init_pair(COLOR_BLACK, COLOR_BLACK, COLOR_BLACK);
     init_pair(COLOR_RED, COLOR_RED, COLOR_BLACK);
     init_pair(COLOR_GREEN, COLOR_GREEN, COLOR_BLACK);
