@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 
     int save = 0;
     int load = 0;
-    int parse = 0;
+    int parse = 1;
 
     for (int i = 1; i < argc; i++)
     {
