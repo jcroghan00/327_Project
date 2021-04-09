@@ -2,16 +2,14 @@ Jack Croghan           jcroghan@iastate.edu
 Ryan Tullis            rctullis@iastate.edu
 Aashish Komaragiri     adkoma@iastate.edu 
 
-README assignment-1.07
+README assignment-1.08
 
-Assignment 1.07 focused on parsing monster descriptions from the monster.txt file. We had to make sure that we got all the attributes
+This weeks assignment was about generating the monsters and objects
+that we parsed in from a file last week.
 
-describing each monster, and parse it properly so that we can print it to the terminal. Some difficulties that we went through is finding 
+Monsters were created using the attributes that will determine how they
+act and spawn. Unique monsters are only able to be spawned once. Monster
+colors are also used to help differentiate from other monsters.
 
-ways to actually retrieve the information. We decided to scan the file line by line. With each line that we retrieve, we convert it to a string
-
-and use a delimiter to break apart the string. This allowed us to find certain words that allowed us to know the monster, and correct attributes. 
-
-Other than that this assignment was very straight forward, and being able to implement these certain monsters in further assignments will allow
-
-us to know a little more about each monster. 
+The object parser and spawning works almost identically to the way that
+monsters are handled.
