@@ -19,7 +19,12 @@ PC::PC(){
     }
 
 }
-
+void check_for_drop(Dungeon *d,Object *o){
+    //TODO check carry slots for space to put object, drop otherwise
+}
+void PC::wear_item(Dungeon *d, int slot){
+    //TODO check for swap and equip logic
+}
 void PC::pickup_item(Dungeon *d){
     int size = sizeof d->pc->carrySlots / sizeof d->pc->carrySlots[0];
     Object *object = d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]];
@@ -293,9 +298,11 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
             move_pc_ncurses(d, h);
             break;
 
-            //TODO Inspect equipped item
+            //Inspect equipped item
         case 'E':
-            goto jump;
+            render_inspect(d);
+            move_pc_ncurses(d, h);
+            break;
 
             //Display the hardness map
         case 'H':
