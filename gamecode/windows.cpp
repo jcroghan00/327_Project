@@ -385,6 +385,41 @@ void render_inventory(Dungeon *d){
         }
     }
 }
+void render_equipment(Dungeon *d){
+    const char *titles[] = {"WEAPON ","OFFHAND ","RANGED ","ARMOR ","HELMET ","CLOAK ","GLOVES ","BOOTS ","RING ","RING ","AMULET ","LIGHT "};
+    WINDOW *inventory_win = d->windows->inventory_win;
+    int row=0,col=0;
+    getmaxyx(inventory_win,row,col);
+    const char *msg = "Press \'Q\' to close inventory";
+    mvwprintw(inventory_win,row-row, (col/2 - strlen(msg)/2), msg);
+    wmove(inventory_win,1,0);
+    int size = sizeof d->pc->equipSlots / sizeof d->pc->equipSlots[0];
+    for (int i = 0; i < size; i++){
+        wprintw(inventory_win, " %s%2i","Equip. slot:", i);
+        wprintw(inventory_win, "%8s",titles[i]);
+        if (d->pc->equipSlots[i]){
+            wprintw(inventory_win,d->pc->equipSlots[i]->name.c_str());
+        } else {
+            wprintw(inventory_win, "Empty!");
+        }
+        wprintw(inventory_win,"\n");
+    }
+    touchwin(inventory_win);
+    int visible = 1;
+    while (visible) {
+        int val = wgetch(inventory_win);
+        switch (val) {
+            // Quit the window
+            case 'Q':
+                visible = 0;
+                werase(inventory_win);
+                touchwin(stdscr);
+                break;
+            default:
+                break;
+        }
+    }
+}
 void render_drop(Dungeon *d) {
     WINDOW *inventory_win = d->windows->inventory_win;
     int row = 0, col = 0, cursor = 0;

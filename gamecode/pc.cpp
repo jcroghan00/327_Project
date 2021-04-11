@@ -230,7 +230,9 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
 
             //TODO Display equipment
         case 'e':
-            goto jump;
+            render_equipment(d);
+            move_pc_ncurses(d, h);
+            break;
 
             //Toggle fog-of-war
         case 'f':
@@ -298,11 +300,9 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
             move_pc_ncurses(d, h);
             break;
 
-            //Inspect equipped item
+            //TODO Inspect equipped item
         case 'E':
-            render_inspect(d);
-            move_pc_ncurses(d, h);
-            break;
+            goto jump;
 
             //Display the hardness map
         case 'H':
@@ -310,9 +310,11 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
             move_pc_ncurses(d, h);
             break;
 
-            //TODO Inspect inventory item
+            //Inspect inventory item
         case 'I':
-            goto jump;
+            render_inspect(d);
+            move_pc_ncurses(d, h);
+            break;
 
             //Look at monster
         case 'L':
