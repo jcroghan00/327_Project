@@ -385,6 +385,77 @@ void render_inventory(Dungeon *d){
         }
     }
 }
+void render_drop(Dungeon *d) {
+    WINDOW *inventory_win = d->windows->inventory_win;
+    int row = 0, col = 0, cursor = 0;
+    const char *l = "Press \'ENTER\' to drop item";
+    const int ENTER_KEY = 10;
+    getmaxyx(inventory_win, row, col);
+    const char *msg = "Press \'Q\' to close inventory";
+    int size = sizeof d->pc->carrySlots / sizeof d->pc->carrySlots[0];
+    mvwprintw(inventory_win, row - 1, (col / 2 - strlen(l) / 2), l);
+    touchwin(inventory_win);
+    int visible = 1;
+    while (visible) {
+        mvwprintw(inventory_win, row - row, (col / 2 - strlen(msg) / 2), msg);
+        wmove(inventory_win, 2, 0);
+        cursor = cursor >= 0 ? cursor : 0;
+        cursor = cursor < size ? cursor : size-1;
+        for (int i = 0; i < size; i++) {
+            if (cursor == i) {
+                wattron(inventory_win, A_STANDOUT);
+            }
+            wprintw(inventory_win, " Carry Slot %2i: ", i);
+            if (d->pc->carrySlots[i]) {
+                wprintw(inventory_win, d->pc->carrySlots[i]->name.c_str());
+            } else {
+                wprintw(inventory_win, "Empty!");
+            }
+            wprintw(inventory_win, "\n");
+            wattroff(inventory_win, A_STANDOUT);
+        }
+        int val = wgetch(inventory_win);
+        switch (val) {
+            //select a item to drop
+            case ENTER_KEY:
+            case KEY_ENTER:
+                if (d->pc->carrySlots[cursor]){
+                    //TODO drop item and close window
+                } else {
+                    const char *mes = "        No Item In This Slot!        ";
+                    mvwprintw(inventory_win, row - 1, (col / 2 - strlen(mes) / 2), mes);
+                }
+                break;
+
+                // Quit the window
+            case 'Q':
+                visible = 0;
+                werase(inventory_win);
+                touchwin(stdscr);
+                break;
+
+                // scroll up
+            case KEY_UP:
+            case '8':
+            case 'k':
+                cursor--;
+                werase(inventory_win);
+                mvwprintw(inventory_win, row - 1, (col / 2 - strlen(l) / 2), l);
+                break;
+
+                // scroll down
+            case KEY_DOWN:
+            case '2':
+            case 'j':
+                cursor++;
+                werase(inventory_win);
+                mvwprintw(inventory_win, row - 1, (col / 2 - strlen(l) / 2), l);
+                break;
+            default:
+                break;
+        }
+    }
+}
 
 void create_monster_info_win(Dungeon *d){
     d->windows->monster_info_win = create_window();

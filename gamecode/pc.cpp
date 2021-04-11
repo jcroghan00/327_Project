@@ -185,9 +185,11 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
             move_pc_ncurses(d, h);
             break;
 
-            //TODO Drop item
+            //Drop item
         case 'd':
-            goto jump;
+            render_drop(d);
+            move_pc_ncurses(d, h);
+            break;
 
             //TODO Display equipment
         case 'e':
