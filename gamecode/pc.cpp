@@ -249,9 +249,11 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
         case 'w':
             goto jump;
 
-            //TODO Expunge item
+            //Expunge item
         case 'x':
-            goto jump;
+            render_expunge(d);
+            move_pc_ncurses(d, h);
+            break;
 
             //Display the non-tunneling distance map
         case 'D':
