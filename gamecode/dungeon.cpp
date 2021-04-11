@@ -200,7 +200,9 @@ void render_ncurses(Dungeon *d, WINDOW *scr=stdscr, int render_items=1)
             }
             else if(d->objMap[p[dim_y]][p[dim_x]] && render_items)
             {
+                wattron(scr,COLOR_PAIR(d->objMap[p[dim_y]][p[dim_x]]->color));
                 mvwaddch(scr,p[dim_y] + 1, p[dim_x], (d->objMap[p[dim_y]][p[dim_x]]->displayChar));
+                wattroff(scr,COLOR_PAIR(d->objMap[p[dim_y]][p[dim_x]]->color));
             }
             else {
                 switch (mappair(p)) {
@@ -269,7 +271,9 @@ void render_fow(Dungeon *d)
             }
             else if (visobjectmappair(p))
             {
+                attron(COLOR_PAIR(d->objMap[p[dim_y]][p[dim_x]]->color));
                 mvaddch(p[dim_y] + 1, p[dim_x], (visobjectmappair(p)->displayChar));
+                attroff(COLOR_PAIR(d->objMap[p[dim_y]][p[dim_x]]->color));
             }
             else {
                 switch (pcmappair(p)) {

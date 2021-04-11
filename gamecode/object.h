@@ -33,6 +33,7 @@ typedef struct type{
 class ObjectType{
 public:
     Object* createObj();
+    int getColor();
 
     string name;
     string desc;
@@ -61,7 +62,7 @@ class Object{
     string name;
     string desc;
     type_t type;
-    string color;
+    int color;
     int hit;
     Dice dam;
     int dodge;

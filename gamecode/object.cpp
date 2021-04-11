@@ -56,7 +56,7 @@ int Object::createObj(ObjectType *obj){
      name = obj->name;
      desc = obj->desc;
      type = obj->type;
-     color = obj->color;
+     color = obj->getColor();
      hit  = obj->hit.roll();
      dam = obj->dam;
      dodge = obj->dodge.roll();
@@ -135,6 +135,33 @@ void Object::setObjChar()
     }
 }
 
+
+int ObjectType::getColor(){
+    string dispColor;
+
+    for (int i = 0; i < (int)this->color.length();i++){
+        if (this->color.at(i) == ' '){
+            break;
+        }
+        dispColor.push_back(this->color.at(i));
+    }
+
+    if (dispColor == "RED"){
+        return COLOR_RED;
+    } else if (dispColor == "GREEN"){
+        return COLOR_GREEN;
+    }else if (dispColor == "BLUE"){
+        return COLOR_BLUE;
+    }else if (dispColor == "CYAN"){
+        return COLOR_CYAN;
+    }else if (dispColor == "YELLOW"){
+        return COLOR_YELLOW;
+    }else if (dispColor == "MAGENTA"){
+        return COLOR_MAGENTA;
+    }else{
+        return COLOR_CYAN;
+    }
+}
 void gen_objects(Dungeon *d){
 
     d->numObjects = rand() % (14 - 10 + 1) + 10;
@@ -154,12 +181,8 @@ void gen_objects(Dungeon *d){
             num.rrty = -1;
         }
         num.inUse = 1;
-        //TODO if its a uniq monster, make it not gen again
     } while (num.rrty < rand() % 100);
-
         d->objects[i] = num.createObj();
-        // d->monsters[i]->setDisplayChar(mon.symb);
-
     }
 
     i = 0;
