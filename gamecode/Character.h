@@ -23,8 +23,6 @@ public:
 using namespace std;
 class Character {
 protected:
-    string name;
-    string desc;
     uint32_t speed;
     uint32_t hitpoints;
     Dice damage;
@@ -48,7 +46,8 @@ public:
     void setNextTurn();
     int dispColor;
     int living;
-
+    string name;
+    string desc;
     pair_t pos;
     Pc *pc;
 };

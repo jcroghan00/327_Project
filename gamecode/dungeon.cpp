@@ -182,7 +182,7 @@ int load_dungeon(Dungeon *d)
 }
 
 //renders the entire game board to a a given screen, stdscr by default
-void render_ncurses(Dungeon *d, WINDOW *scr=stdscr)
+void render_ncurses(Dungeon *d, WINDOW *scr=stdscr, int render_items=1)
 {
     pair_t p;
     for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
@@ -193,12 +193,12 @@ void render_ncurses(Dungeon *d, WINDOW *scr=stdscr)
                 {
                     mvwaddch(scr,p[dim_y] + 1, p[dim_x], (character_mappair(p)->getDisplayChar()));
                 } else{
-                    attron(COLOR_PAIR(character_mappair(p)->dispColor));
+                    wattron(scr,COLOR_PAIR(character_mappair(p)->dispColor));
                     mvwaddch(scr,p[dim_y] + 1, p[dim_x], (character_mappair(p)->getDisplayChar()));
-                    attroff(COLOR_PAIR(character_mappair(p)->dispColor));
+                    wattroff(scr,COLOR_PAIR(character_mappair(p)->dispColor));
                 }
             }
-            else if(d->objMap[p[dim_y]][p[dim_x]])
+            else if(d->objMap[p[dim_y]][p[dim_x]] && render_items)
             {
                 mvwaddch(scr,p[dim_y] + 1, p[dim_x], (d->objMap[p[dim_y]][p[dim_x]]->displayChar));
             }

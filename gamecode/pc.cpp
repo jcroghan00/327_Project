@@ -227,7 +227,7 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
             move_pc_ncurses(d, h);
             break;
 
-            // Display monster list
+            // TODO Display monster list seg faults when ran
         case 'm':
             monster_list(d);
             move_pc_ncurses(d, h);
@@ -271,9 +271,11 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
         case 'I':
             goto jump;
 
-            //TODO Look at monster
+            //Look at monster
         case 'L':
-            goto jump;
+            render_monster_info_win(d);
+            move_pc_ncurses(d, h);
+            break;
 
             // Quit the game
         case 'Q':

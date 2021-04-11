@@ -16,8 +16,8 @@ void create_monster_list_win(Dungeon *d){
     d->windows->monster_list_win = create_window();
     wresize(d->windows->monster_list_win, LINES-4, 30);
     mvwin(d->windows->monster_list_win, 2, COLS/2 - 15);
-    init_pair(1,COLOR_WHITE, COLOR_BLUE);
-    wbkgd(d->windows->monster_list_win, COLOR_PAIR(1));
+    init_pair(33,COLOR_WHITE, COLOR_BLUE);
+    wbkgd(d->windows->monster_list_win, COLOR_PAIR(33));
 }
 
 void create_terrain_map_win(Dungeon *d){
@@ -347,11 +347,28 @@ void render_character_info(Dungeon *d){
 
 void create_inventory_win(Dungeon *d){
     d->windows->inventory_win = create_window();
+    wresize(d->windows->inventory_win, LINES-10, 50);
+    mvwin(d->windows->inventory_win, 5, COLS/2 - 25);
+    init_pair(33,COLOR_WHITE, COLOR_BLUE);
+    wbkgd(d->windows->inventory_win, COLOR_PAIR(33));
 }
 void render_inventory(Dungeon *d){
     WINDOW *inventory_win = d->windows->inventory_win;
+    int row=0,col=0;
+    getmaxyx(inventory_win,row,col);
     const char *msg = "Press \'Q\' to close inventory";
-    mvwprintw(inventory_win,0, (COLS/2 - strlen(msg)/2), msg);
+    mvwprintw(inventory_win,row-row, (col/2 - strlen(msg)/2), msg);
+    wmove(inventory_win,2,0);
+    int size = sizeof d->pc->carrySlots / sizeof d->pc->carrySlots[0];
+    for (int i = 0; i < size; i++){
+        wprintw(inventory_win, " Carry Slot %2i: ", i);
+        if (d->pc->carrySlots[i]){
+            wprintw(inventory_win,d->pc->carrySlots[i]->name.c_str());
+        } else {
+            wprintw(inventory_win, "Empty!");
+        }
+        wprintw(inventory_win,"\n");
+    }
     touchwin(inventory_win);
     int visible = 1;
     while (visible) {
@@ -360,6 +377,7 @@ void render_inventory(Dungeon *d){
             // Quit the window
             case 'Q':
                 visible = 0;
+                werase(inventory_win);
                 touchwin(stdscr);
                 break;
             default:
@@ -367,6 +385,152 @@ void render_inventory(Dungeon *d){
         }
     }
 }
+
+void create_monster_info_win(Dungeon *d){
+    d->windows->monster_info_win = create_window();
+}
+void create_monster_info(Dungeon *d){
+    d->windows->monster_info = create_window();
+    wresize(d->windows->monster_info, LINES, 80);
+    mvwin(d->windows->monster_info, 0, COLS/2 - 40);
+    init_pair(33,COLOR_WHITE, COLOR_BLUE);
+    wbkgd(d->windows->monster_info, COLOR_PAIR(33));
+}
+void render_monster_info(Dungeon *d, Monster *m){
+    WINDOW *info_win = d->windows->monster_info;
+    wclear(info_win);
+    const char *msg = "Press \'Q\' to close window";
+    mvwprintw(info_win, 0, (COLS / 2 - strlen(msg) / 2), msg);
+    wmove(info_win,2,0);
+
+    string monster = "Name: " + m->name;
+    monster.push_back('\n');
+    monster += "Description: " + m->desc;
+    wprintw(info_win,monster.c_str());
+    touchwin(info_win);
+    int visible = 1;
+    while (visible) {
+        int val = wgetch(info_win);
+        switch (val) {
+            case 'Q':
+                visible = 0;
+                break;
+            default:
+                break;
+        }
+    }
+}
+void render_monster_info_win(Dungeon *d) {
+    pair_t cursor;
+    cursor[dim_x] = d->pc->pos[dim_x];
+    cursor[dim_y] = d->pc->pos[dim_y];
+    WINDOW *monster_win = d->windows->monster_info_win;
+    const char *msg = "Press \'t\' to select a monster or \'Q\' to close window";
+    touchwin(monster_win);
+    int visible = 1;
+    while (visible) {
+        mvwprintw(monster_win, 0, (COLS / 2 - strlen(msg) / 2), msg);
+        cursor[dim_x] = 0 < cursor[dim_x] ? cursor[dim_x] : 1;
+        cursor[dim_y] = 0 < cursor[dim_y] ? cursor[dim_y] : 1;
+        cursor[dim_x] = cursor[dim_x] < DUNGEON_X ? cursor[dim_x] : DUNGEON_X - 1;
+        cursor[dim_y] = cursor[dim_y] < DUNGEON_Y ? cursor[dim_y] : DUNGEON_Y - 1;
+        mvwprintw(monster_win, 0, (COLS / 2 - strlen(msg) / 2), msg);
+        render_ncurses(d, monster_win, 0);
+        mvwaddch(monster_win, cursor[dim_y] + 1, cursor[dim_x], '*');
+        if (character_mappair(cursor)){
+            //TODO maybe render more monsters stats here
+            mvwprintw(monster_win, DUNGEON_Y +1, 0, character_mappair(cursor)->name.c_str());
+        }
+        int val = wgetch(monster_win);
+        switch (val) {
+            // Quit the window
+            case 'Q':
+                visible = 0;
+                werase(monster_win);
+                touchwin(stdscr);
+                break;
+            //select a monster
+            case 't':
+                if (character_mappair(cursor)){
+                    if (character_mappair(cursor)->getDisplayChar() != '@'){
+                        render_monster_info(d, (Monster *)character_mappair(cursor));
+                        werase(monster_win);
+                    } else {
+                        mvwprintw(monster_win, DUNGEON_Y +1, 0, "This is you!");
+                    }
+
+                } else {
+                    mvwprintw(monster_win, DUNGEON_Y +1, 0, "Not a monster!");
+                }
+                break;
+                // Move up-left
+            case KEY_HOME:
+            case '7':
+            case 'y':
+                cursor[dim_y]--;
+                cursor[dim_x]--;
+                werase(monster_win);
+                break;
+                // Move up
+            case KEY_UP:
+            case '8':
+            case 'k':
+                cursor[dim_y]--;
+                werase(monster_win);
+                break;
+                // Move up-right
+            case KEY_PPAGE:
+            case '9':
+            case 'u':
+                cursor[dim_y]--;
+                cursor[dim_x]++;
+                werase(monster_win);
+                break;
+                // Move right
+            case KEY_RIGHT:
+            case '6':
+            case 'l':
+                cursor[dim_x]++;
+                werase(monster_win);
+                break;
+
+                // Move down-right
+            case KEY_NPAGE:
+            case '3':
+            case 'n':
+                cursor[dim_y]++;
+                cursor[dim_x]++;
+                werase(monster_win);
+                break;
+
+                // Move down
+            case KEY_DOWN:
+            case '2':
+            case 'j':
+                cursor[dim_y]++;
+                werase(monster_win);
+                break;
+                // Move down-left
+            case KEY_END:
+            case '1':
+            case 'b':
+                cursor[dim_y]++;
+                cursor[dim_x]--;
+                werase(monster_win);
+                break;
+                // Move left
+            case KEY_LEFT:
+            case '4':
+            case 'h':
+                cursor[dim_x]--;
+                werase(monster_win);
+                break;
+            default:
+                break;
+        }
+    }
+}
+
 
 
 
@@ -380,4 +544,6 @@ void create_windows(Dungeon *d){
     create_teleport_win(d);
     create_character_info_win(d);
     create_inventory_win(d);
+    create_monster_info_win(d);
+    create_monster_info(d);
 }

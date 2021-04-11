@@ -14,6 +14,8 @@ public:
     terrain_type_t pc_map[DUNGEON_Y][DUNGEON_X];
     Character *vis_monsters[DUNGEON_Y][DUNGEON_X];
     Object *visObj[DUNGEON_Y][DUNGEON_X];
+    Object *equipSlots[12];
+    Object *carrySlots[10];
     PC();
     void update_pc_map(Dungeon *d);
     void update_vis_objects(Dungeon *d);
