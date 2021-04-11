@@ -5,6 +5,7 @@
 #include "Monster.h"
 #include "windows.h"
 #include "pc.h"
+#include "object.h"
 typedef struct heap heap_t;
 
 PC::PC(){
@@ -17,6 +18,31 @@ PC::PC(){
         }
     }
 
+}
+
+void PC::pickup_item(Dungeon *d){
+    int size = sizeof d->pc->carrySlots / sizeof d->pc->carrySlots[0];
+    Object *object = d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]];
+    for (int i = 0; i < size;i++){
+        if (!d->pc->carrySlots[i]){
+            d->pc->carrySlots[i] = object;
+
+            mvprintw(LINES-2,0,"Placed ");
+            attron(COLOR_PAIR(object->color));
+            printw(object->name.c_str());
+            printw(" \'%c\'",object->displayChar);
+            attroff(COLOR_PAIR(object->color));
+            printw(" in slot %i",i);
+            d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = NULL;
+            return;
+        }
+    }
+    mvprintw(LINES-2,0,"Not enough room to pickup  ");
+    attron(COLOR_PAIR(object->color));
+    printw(object->name.c_str());
+    printw(" \'%c\'",object->displayChar);
+    attroff(COLOR_PAIR(object->color));
+    printw("!");
 }
 
 void PC::update_pc_map(Dungeon *d){
@@ -54,6 +80,7 @@ void PC::update_vis_objects(Dungeon *d)
 
 int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
 
+    // disp wall message
     if(d->map[pos[dim_y] + dy][pos[dim_x] + dx] < ter_floor &&
        !teleport){
         const char *msg = "There's a wall there!";
@@ -62,15 +89,20 @@ int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
         return -1;
     }
 
+
     d->character_map[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
     vis_monsters[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
     pos[dim_y] += dy;
     pos[dim_x] += dx;
+    //TODO update combat
     if (d->character_map[pos[dim_y]][pos[dim_x]] != NULL){
         d->character_map[pos[dim_y]][pos[dim_x]]->setLiving(0);
         d->num_monsters--;
     }
     d->character_map[pos[dim_y]][pos[dim_x]] = this;
+    if (d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]]){
+        pickup_item(d);
+    }
     update_pc_map(d);
     update_vis_objects(d);
     return 0;

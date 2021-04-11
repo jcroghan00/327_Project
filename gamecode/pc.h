@@ -17,6 +17,7 @@ public:
     Object *equipSlots[12];
     Object *carrySlots[10];
     PC();
+    void pickup_item(Dungeon *d);
     void update_pc_map(Dungeon *d);
     void update_vis_objects(Dungeon *d);
     int move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport);
