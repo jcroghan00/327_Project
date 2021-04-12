@@ -92,12 +92,16 @@ void PC::update_vis_objects(Dungeon *d)
         }
     }
 }
-void PC::fight_monster(Dungeon *d, int dx, int dy){
+int PC::fight_monster(Dungeon *d, int dx, int dy){
     //TODO implement combat logic
     Monster *monster = (Monster*)character_mapxy(pos[dim_x] + dx,pos[dim_y] + dy);
-    int damageDone = monster->damage.roll();
-    hitpoints -= damageDone;
-    mvprintw(LINES-2, 0, "%s hit you for %i damage!",monster->name.c_str(),damageDone);
+    int damageReceived = monster->damage.roll();
+    int damageDone = damage.roll();
+    hitpoints -= damageReceived;
+    mvprintw(LINES-2, 0, "%s hit you for %i damage! you hit back for %i damage!",
+             monster->name.c_str(),damageReceived,damageDone);
+    printw("\nmonster health: %i",monster->hitpoints);
+    return monster->attack_monster(d,damageDone);
 }
 int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
 
@@ -115,8 +119,9 @@ int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
 
     //TODO update combat
     if (d->character_map[pos[dim_y]+dy][pos[dim_x]+dx] != NULL){
-        fight_monster(d,dx,dy);
-        return 0;
+        if (!fight_monster(d,dx,dy)){
+            return 0;
+        }
     }
     d->character_map[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
     pos[dim_y] += dy;

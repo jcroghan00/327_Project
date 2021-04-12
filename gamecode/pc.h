@@ -21,7 +21,7 @@ public:
     void wear_item(Dungeon *d, int slot);
     void update_pc_map(Dungeon *d);
     void update_vis_objects(Dungeon *d);
-    void fight_monster(Dungeon *d, int dx, int dy);
+    int fight_monster(Dungeon *d, int dx, int dy);
     int move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport);
 };
 

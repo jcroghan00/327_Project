@@ -53,6 +53,7 @@ public:
     Monster();
     //pair_t last_seen;
     pair_t destination;
+    int attack_monster(Dungeon *d,int damage);
     void move_monster(Dungeon *d);
     int create_monster(Monstertype *t);
 protected:

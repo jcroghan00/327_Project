@@ -28,6 +28,7 @@ protected:
     uint32_t turn;
     int sees_player(Dungeon *d);
     void bresenham_move(Dungeon *d, Dif *dif);
+    int living;
 public:
     Character();
     Character(int speed);
@@ -42,7 +43,6 @@ public:
     uint32_t getSpeed();
     void setNextTurn();
     int dispColor;
-    int living;
     string name;
     string desc;
     pair_t pos;

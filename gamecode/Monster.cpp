@@ -36,6 +36,15 @@ Monstertype* Monster::pick_type(){
     mon->inUse = 1;
     return mon;
 }
+int Monster::attack_monster(Dungeon *d,int damage){
+    hitpoints -= damage;
+    if (hitpoints <= 0){
+        character_mappair(pos) = NULL;
+        setLiving(0);
+        return 1;
+    }
+    return 0;
+}
 void Monster::get_monster_path(Dungeon *d){
     int x,y;
     if (abil.TUNNEL) {
@@ -201,7 +210,7 @@ void update_last_seen(Dungeon *d)
 {
     for(int i = 0; i < d->num_monsters; ++i){
 
-        if(d->monsters[i]->living &&
+        if(d->monsters[i]->isLiving() &&
                 d->monsters[i]->pos[dim_x] >= d->pc->pos[dim_x] - 2 &&
                 d->monsters[i]->pos[dim_x] <= d->pc->pos[dim_x] + 2 &&
                 d->monsters[i]->pos[dim_y] >= d->pc->pos[dim_y] - 2 &&
