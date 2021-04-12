@@ -51,26 +51,18 @@ public:
 class Monster: public Character {
 public:
     Monster();
-    pair_t last_seen;
+    //pair_t last_seen;
+    pair_t destination;
     void move_monster(Dungeon *d);
     int create_monster(Monstertype *t);
 protected:
     //struct of the monsters abilities
     abil_t abil;
-    int intelligent;
-    int telepath;
-    int tunneling;
-    int erratic;
-    int pass;
-    int uniq;
-    int boss;
-    int destroy;
-    int pickup;
-    pair_t pc_last_loc;
-    Monster_Path path_to_pc[DUNGEON_Y][DUNGEON_X];
+    // distance map to destination tun/non tun by monster
+    Monster_Path path_to_dest[DUNGEON_Y][DUNGEON_X];
 
 private:
-    void set_monster_char();
+    Monstertype* pick_type();
     void get_monster_path(Dungeon *d);
     void erratic_move(Dungeon *d);
     void tun_rock_check(Dungeon *d, int *dx, int *dy);

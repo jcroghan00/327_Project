@@ -23,13 +23,10 @@ public:
 using namespace std;
 class Character {
 protected:
-    uint32_t speed;
-    uint32_t hitpoints;
-    Dice damage;
     char display_char;
     uint32_t sd;
     uint32_t turn;
-    int bresenham_LOS(Dungeon *d);
+    int sees_player(Dungeon *d);
     void bresenham_move(Dungeon *d, Dif *dif);
 public:
     Character();
@@ -49,6 +46,9 @@ public:
     string name;
     string desc;
     pair_t pos;
+    uint32_t speed;
+    uint32_t hitpoints;
+    Dice damage;
     Pc *pc;
 };
 

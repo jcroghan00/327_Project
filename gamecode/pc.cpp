@@ -11,11 +11,21 @@ typedef struct heap heap_t;
 PC::PC(){
     setDisplayChar('@');
     setSpeed(PC_SPEED);
+    hitpoints = 100;
     for(int i = 0; i < DUNGEON_Y; i++){
         for(int j = 0; j < DUNGEON_X; j++){
             pc_map[i][j] = ter_wall;
             vis_monsters[i][j] = NULL;
+            visObj[i][j] = NULL;
         }
+    }
+    int carrySize = sizeof(carrySlots) / sizeof(carrySlots[0]);
+    for (int i = 0; i < carrySize; i++){
+        carrySlots[i] = NULL;
+    }
+    int equipSize = sizeof(equipSlots) / sizeof(equipSlots[0]);
+    for (int i = 0; i < equipSize; i++){
+        equipSlots[i] = NULL;
     }
 
 }
@@ -82,7 +92,13 @@ void PC::update_vis_objects(Dungeon *d)
         }
     }
 }
-
+void PC::fight_monster(Dungeon *d, int dx, int dy){
+    //TODO implement combat logic
+    Monster *monster = (Monster*)character_mapxy(pos[dim_x] + dx,pos[dim_y] + dy);
+    int damageDone = monster->damage.roll();
+    hitpoints -= damageDone;
+    mvprintw(LINES-2, 0, "%s hit you for %i damage!",monster->name.c_str(),damageDone);
+}
 int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
 
     // disp wall message
@@ -95,15 +111,16 @@ int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
     }
 
 
-    d->character_map[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
     vis_monsters[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
+
+    //TODO update combat
+    if (d->character_map[pos[dim_y]+dy][pos[dim_x]+dx] != NULL){
+        fight_monster(d,dx,dy);
+        return 0;
+    }
+    d->character_map[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
     pos[dim_y] += dy;
     pos[dim_x] += dx;
-    //TODO update combat
-    if (d->character_map[pos[dim_y]][pos[dim_x]] != NULL){
-        d->character_map[pos[dim_y]][pos[dim_x]]->setLiving(0);
-        d->num_monsters--;
-    }
     d->character_map[pos[dim_y]][pos[dim_x]] = this;
     if (d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]]){
         pickup_item(d);
@@ -113,21 +130,6 @@ int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
     return 0;
 }
 
-void place_pc(Dungeon *d)
-{
-    int randRoom = rand() % d->num_rooms;
-    int x = rand() % d->rooms[randRoom].size[dim_x];
-    int y = rand() % d->rooms[randRoom].size[dim_y];
-    d->pc->pos[dim_x] = d->rooms[randRoom].position[dim_x] + x;
-    d->pc->pos[dim_y] = d->rooms[randRoom].position[dim_y] + y;
-    character_mapxy(d->pc->pos[dim_x],d->pc->pos[dim_y]) = d->pc;
-}
-
-void config_pc(Dungeon *d)
-{
-    d->pc = new PC();
-    place_pc(d);
-}
 
 void move_pc_ncurses(Dungeon *d, heap_t *h)
 {

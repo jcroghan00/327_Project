@@ -26,7 +26,7 @@ void Character::setNextTurn(){
     turn += (1000/speed);
 }
 
-int Character::bresenham_LOS(Dungeon *d)
+int Character::sees_player(Dungeon *d)
 {
     int x0 = pos[dim_x];
     int y0 = pos[dim_y];

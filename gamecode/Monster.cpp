@@ -14,50 +14,42 @@
 //default constructor to make a new random monster
 Monster:: Monster()
     :Character(rand() % 16 + 5){
-    intelligent = rand() % 2;
-    telepath = rand() % 2;
-    tunneling = rand() % 2;
-    erratic = rand() % 2;
-    last_seen[dim_x] = -1;
-    last_seen[dim_y] = -1;
-    set_monster_char();
+    create_monster(pick_type());
+    for(int i = 0; i < DUNGEON_Y; i++){
+        for(int j = 0; j < DUNGEON_X; j++){
+            path_to_dest[i][j].cost = INT_MAX;
+        }
+    }
+
 }
 
+Monstertype* Monster::pick_type(){
+    // pick a random monster type and if it can be spawned return it
+    Monstertype* mon;
+    do {
+        mon = &monster_types.at(rand() % monster_types.size());
+        //TODO if the unique monster didnt die it can spawn again
+        if(mon->abilities.UNIQ && mon->inUse) {
+            mon->rrty = -1;
+        }
+    } while (mon->rrty < rand() % 100);
+    mon->inUse = 1;
+    return mon;
+}
 void Monster::get_monster_path(Dungeon *d){
     int x,y;
-    if (tunneling) {
+    if (abil.TUNNEL) {
         for (y = 0; y < DUNGEON_Y; y++) {
             for (x = 0; x < DUNGEON_X; x++) {
-                path_to_pc[y][x] = d->tun_path[y][x];
+                path_to_dest[y][x] = d->tun_path[y][x];
             }
         }
     } else {
         for (y = 0; y < DUNGEON_Y; y++) {
             for (x = 0; x < DUNGEON_X; x++) {
-                path_to_pc[y][x] = d->non_tun_path[y][x];
+                path_to_dest[y][x] = d->non_tun_path[y][x];
             }
         }
-    }
-}
-void Monster::set_monster_char()
-{
-    char binary_char[4] = {(char)('0'+(char)erratic),
-                           (char)('0'+(char)tunneling),
-                           (char)('0'+(char)telepath),
-                           (char)('0'+(char)intelligent)};
-
-    int binary = atoi(binary_char),decimal = 0,base = 1,rem;
-    while (binary > 0){
-        rem = binary % 10;
-        decimal = decimal + rem * base;
-        binary = binary/10;
-        base = base * 2;
-    }
-    if (decimal <= 9){
-        display_char = (char)('0' + decimal);}
-    else {
-        decimal -= 10;
-        display_char = (char)('A' + decimal);
     }
 }
 void Monster::erratic_move(Dungeon *d){
@@ -69,7 +61,7 @@ void Monster::erratic_move(Dungeon *d){
         dy = (rand() % 3) - 1;
         //wall and tunneling check dont need to happen anymore but continue still needs to be present
         if (mapxy(pos[dim_x]+dx,pos[dim_y]+dy) == ter_wall) {
-            if(tunneling) {
+            if(abil.TUNNEL) {
                 tun_rock_check(d,&dx,&dy);
             } else {
                 continue;
@@ -83,7 +75,7 @@ void Monster::erratic_move(Dungeon *d){
 }
 void Monster::tun_rock_check(Dungeon *d, int *dx, int *dy){
     if (d->map[pos[dim_y]+*dy][pos[dim_x]+*dx] == ter_wall){
-        if (tunneling) {
+        if (abil.TUNNEL) {
             int hardness = (hardnessxy(pos[dim_x] + *dx, pos[dim_y] + *dy)) - 85;
             hardnessxy(pos[dim_x] + *dx, pos[dim_y] + *dy) = MAX(0, hardness);
             if (d->is_open_space(pos[dim_y] + *dy, pos[dim_x] + *dx)) {
@@ -98,17 +90,17 @@ void Monster::tun_rock_check(Dungeon *d, int *dx, int *dy){
 }
 void Monster::move_line(Dungeon *d, Dif *dif)
 {
-    if(pos[dim_x] < pc_last_loc[dim_x]){
+    if(pos[dim_x] < destination[dim_x]){
         dif->x = 1;
-    } else if(pos[dim_x] > pc_last_loc[dim_x]){
+    } else if(pos[dim_x] > destination[dim_x]){
         dif->x = -1;
     } else{
         dif->x = 0;
     }
 
-    if(pos[dim_y] < pc_last_loc[dim_y]){
+    if(pos[dim_y] < destination[dim_y]){
         dif->y = 1;
-    } else if(pos[dim_y] > pc_last_loc[dim_y]){
+    } else if(pos[dim_y] > destination[dim_y]){
         dif->y = -1;
     } else{
         dif->y = 0;
@@ -139,44 +131,43 @@ void Monster::final_move(Dungeon *d, int dx, int dy)
 }
 void Monster::move_monster(Dungeon *d)
 {
-    int sees_player = 0,dx = 0,dy = 0;
-
+    int sees_pc = 0,dx = 0,dy = 0;
     Dif dif;
     dif.x = 0;
     dif.y = 0;
-    // 50% that if a monster is erratic it make an erratic move
-    if (erratic && rand() % 2) {
-        erratic_move(d);
-    }
-    //if the player is seen
-    if (telepath || bresenham_LOS(d))
-    {
-        sees_player = 1;
-        // can probably rewrite to use current pc location
-        pc_last_loc[dim_x] = d->pc->pos[dim_x];
-        pc_last_loc[dim_y] = d->pc->pos[dim_y];
-        get_monster_path(d);
 
+    //if erratic 50% chance of erratic move
+    if (abil.ERRATIC && rand() % 2) {
+        erratic_move(d);
+        return;
     }
-    if (intelligent) {
-        //test if path_to_pc has been filled
-        if (path_to_pc[0][0].cost == INT_MAX) {
+    //update destination and map if the pc can be seen
+    if (abil.TELE || sees_player(d)){
+        sees_pc = 1; //should be removed when done
+        destination[dim_y] = d->pc->pos[dim_y];
+        destination[dim_x] = d->pc->pos[dim_x];
+        get_monster_path(d);
+    } else if (!abil.SMART){ return;} //if not smart and cant see player  end move
+
+    if (abil.SMART) {
+        //if destination is not yourself
+        if (destination[dim_y] != pos[dim_y] && destination[dim_x] != pos[dim_x]) {
             uint32_t cost = INT_MAX;
             for (int y = -1; y <= 1; y++) {
                 for (int x = -1; x <= 1; x++) {
-                    if (path_to_pc[pos[dim_y] + y][pos[dim_x] + x].cost < cost) {
+                    if (path_to_dest[pos[dim_y] + y][pos[dim_x] + x].cost < cost) {
                         dy = y;
                         dx = x;
-                        cost = path_to_pc[pos[dim_y] + y][pos[dim_x] + x].cost;
+                        cost = path_to_dest[pos[dim_y] + y][pos[dim_x] + x].cost;
                     }
                 }
             }
             tun_rock_check(d,&dx,&dy);
         }
     }
-    else if (sees_player) {
+    else if (sees_pc) {
         // sees player but non monster->intelligent
-        if(tunneling){
+        if(abil.TUNNEL){
             bresenham_move(d,&dif);
             dx = dif.x;
             dy = dif.y;
@@ -197,16 +188,7 @@ int Monster::create_monster(Monstertype *t){
     desc = t->desc;
     dispColor = t->getColor();
     speed = t->speed.roll();
-
-    intelligent = t->abilities.SMART;
-    tunneling = t->abilities.TUNNEL;
-    telepath = t->abilities.TELE;
-    erratic = t->abilities.ERRATIC;
-    pass = t->abilities.PASS;
-    uniq = t->abilities.UNIQ;
-    boss = t->abilities.BOSS;
-    destroy = t->abilities.DESTROY;
-    pickup = t->abilities.PICKUP;
+    abil = t->abilities;
 
     hitpoints = t->hp.roll();
     damage = t->dam;
@@ -225,17 +207,17 @@ void update_last_seen(Dungeon *d)
                 d->monsters[i]->pos[dim_y] >= d->pc->pos[dim_y] - 2 &&
                 d->monsters[i]->pos[dim_y] <= d->pc->pos[dim_y] + 2)
         {
-            if(d->monsters[i]->last_seen[dim_x] == -1){
+            if(d->monsters[i]->destination[dim_x] == -1){
                 d->pc->vis_monsters[d->monsters[i]->pos[dim_y]][d->monsters[i]->pos[dim_x]] = d->monsters[i];
 
-                d->monsters[i]->last_seen[dim_x] = d->monsters[i]->pos[dim_x];
-                d->monsters[i]->last_seen[dim_y] = d->monsters[i]->pos[dim_y];
+                d->monsters[i]->destination[dim_x] = d->monsters[i]->pos[dim_x];
+                d->monsters[i]->destination[dim_y] = d->monsters[i]->pos[dim_y];
             }
             else{
-                d->pc->vis_monsters[d->monsters[i]->last_seen[dim_y]][d->monsters[i]->last_seen[dim_x]] = NULL;
+                d->pc->vis_monsters[d->monsters[i]->destination[dim_y]][d->monsters[i]->destination[dim_x]] = NULL;
 
-                d->monsters[i]->last_seen[dim_x] = d->monsters[i]->pos[dim_x];
-                d->monsters[i]->last_seen[dim_y] = d->monsters[i]->pos[dim_y];
+                d->monsters[i]->destination[dim_x] = d->monsters[i]->pos[dim_x];
+                d->monsters[i]->destination[dim_y] = d->monsters[i]->pos[dim_y];
 
                 d->pc->vis_monsters[d->monsters[i]->pos[dim_y]][d->monsters[i]->pos[dim_x]] = d->monsters[i];
             }
@@ -312,124 +294,6 @@ void monster_list(Dungeon *d) {
         }
     }
 }
-
-int new_gen_monster(Dungeon *d){
-    //TODO add new monster gen rules
-
-    //same rules for determining number of monsters in dungeon
-    if (d->num_monsters == -1) {d->num_monsters = d->num_rooms * 2 < 50 ? d->num_rooms * 2 : 50;}
-    d->monsters = (Monster**)calloc((d->num_monsters),sizeof(Monster) * (d->num_monsters));
-    Monstertype mon;
-    for(int i = 0; i < d->num_monsters; i++)
-    {
-    do {
-
-        mon = monster_types.at(rand() % monster_types.size());
-
-        if(mon.abilities.UNIQ && mon.inUse){
-            mon.rrty = -1;
-        }
-        mon.inUse = 1;
-        //TODO if its a uniq monster, make it not gen again
-    } while (mon.rrty < rand() % 100);
-
-        d->monsters[i] = mon.createMonster();
-        // d->monsters[i]->setDisplayChar(mon.symb);
-
-    }
-    // do {
-    //     mon = monster_types.at(rand() % monster_types.size());
-    //     //TODO if its a uniq monster, make it not gen again
-    // } while (mon.rrty < rand() % 100);
-
-    // for(int i = 0; i < d->num_monsters; i++)
-    // {
-    //     d->monsters[i] = mon.createMonster();
-
-    //     // d->monsters[i]->setDisplayChar(mon.symb);
-
-    // }
-
-    int pcRoomNum;
-    int totalArea = 0;
-    for(uint32_t i = 0; i < d->num_rooms; ++i)
-    {
-        if (in_room(d->rooms[i],d->pc)){
-            pcRoomNum = i;
-        } else {
-            totalArea += d->rooms[i].size[dim_x] * d->rooms[i].size[dim_y];
-        }
-    }
-
-    int totalMonsters = 0;
-    while(totalMonsters < d->num_monsters)
-    {
-        if(totalMonsters == totalArea){break;}
-
-        int randRoom = rand() % d->num_rooms;
-
-        if(randRoom == pcRoomNum){continue;}
-
-        int x = rand() % d->rooms[randRoom].size[dim_x];
-        int y = rand() % d->rooms[randRoom].size[dim_y];
-
-        if(d->character_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] != NULL){continue;}
-
-        d->character_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] = d->monsters[totalMonsters];
-
-        d->monsters[totalMonsters]->pos[dim_y] = d->rooms[randRoom].position[dim_y] + y;
-        d->monsters[totalMonsters]->pos[dim_x] = d->rooms[randRoom].position[dim_x] + x;
-
-        ++totalMonsters;
-    }
-    return 0;
-}
-int gen_monsters(Dungeon *d)
-{
-    if (d->num_monsters == -1) {d->num_monsters = d->num_rooms * 2 < 50 ? d->num_rooms * 2 : 50;}
-    d->monsters = (Monster**)calloc((d->num_monsters),sizeof(Monster) * (d->num_monsters));
-
-    for(int i = 0; i < d->num_monsters; i++)
-    {
-        d->monsters[i] = new Monster();
-    }
-    int pcRoomNum;
-    int totalArea = 0;
-    for(uint32_t i = 0; i < d->num_rooms; ++i)
-    {
-        if (in_room(d->rooms[i],d->pc)){
-            pcRoomNum = i;
-        } else {
-            totalArea += d->rooms[i].size[dim_x] * d->rooms[i].size[dim_y];
-        }
-    }
-
-    int totalMonsters = 0;
-    while(totalMonsters < d->num_monsters)
-    {
-        if(totalMonsters == totalArea){break;}
-
-        int randRoom = rand() % d->num_rooms;
-
-        if(randRoom == pcRoomNum){continue;}
-
-        int x = rand() % d->rooms[randRoom].size[dim_x];
-        int y = rand() % d->rooms[randRoom].size[dim_y];
-
-        if(d->character_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] != NULL){continue;}
-
-        d->character_map[d->rooms[randRoom].position[dim_y] + y][d->rooms[randRoom].position[dim_x] + x] = d->monsters[totalMonsters];
-
-        d->monsters[totalMonsters]->pos[dim_y] = d->rooms[randRoom].position[dim_y] + y;
-        d->monsters[totalMonsters]->pos[dim_x] = d->rooms[randRoom].position[dim_x] + x;
-
-        ++totalMonsters;
-    }
-    return 0;
-}
-
-
-
 
 Monster* Monstertype::createMonster(){
     Monster *monster = new Monster();

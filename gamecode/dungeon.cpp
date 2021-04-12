@@ -8,6 +8,7 @@
 #include "path.h"
 #include "windows.h"
 #include "object.h"
+#include "parser.h"
 
 /* Returns true if random float in [0,1] is less than *
  * numerator/denominator.  Uses only integer math.    */
@@ -51,9 +52,6 @@ typedef struct queue_node {
 
 int gen_dungeon(Dungeon *d)
 {
-  config_pc(d);
-  // gen_monsters(d);
-  new_gen_monster(d);
   gen_objects(d);
   d->pc->update_pc_map(d);
   d->pc->update_vis_objects(d);
@@ -172,11 +170,11 @@ int load_dungeon(Dungeon *d)
     d->stairs[i].direction = mapxy(x, y) = ter_stairs_down;
   }
     if (d->num_monsters == -1){d->num_monsters = d->num_rooms*2 < 50 ? d->num_rooms*2 : 50;}
-    config_pc(d);
+    //config_pc(d);
 
   //monster path making
   //adds monsters to the dungeon
-  gen_monsters(d);
+  //gen_monsters(d);
 
   return 0;
 }
@@ -551,19 +549,79 @@ void new_dungeon(Dungeon *d, heap_t *h)
     refresh();
 }
 
-Dungeon::Dungeon(){
-    num_monsters = -1;
-    for(int i = 0; i < DUNGEON_Y; i++){
-        for(int j = 0; j < DUNGEON_X; j++){
-            character_map[i][j] = NULL;
-        }
-    }
+Dungeon::Dungeon(int numMon){
+    monster_parser();
+    object_parser();
+
+    //generate the dungeon
     empty_dungeon();
     do {
         make_rooms();
     } while (place_rooms());
     connect_rooms();
     place_stairs();
+
+    //initialize maps
+    for(int i = 0; i < DUNGEON_Y; i++){
+        for(int j = 0; j < DUNGEON_X; j++){
+            character_map[i][j] = NULL;
+            objMap[i][j] = NULL;
+        }
+    }
+
+    //generate the pc
+    pc = new PC();
+    int randRoom = rand() % num_rooms;
+    int x = rand() % rooms[randRoom].size[dim_x];
+    int y = rand() % rooms[randRoom].size[dim_y];
+    pc->pos[dim_x] = rooms[randRoom].position[dim_x] + x;
+    pc->pos[dim_y] = rooms[randRoom].position[dim_y] + y;
+    character_map[pc->pos[dim_y]][pc->pos[dim_x]] = pc;
+
+    //generate monsters
+    num_monsters = numMon;
+    gen_monsters();
+}
+void Dungeon::gen_monsters(){
+    if (num_monsters == -1) {num_monsters = num_rooms * 2 < 50 ? num_rooms * 2 : 50;}
+    monsters = (Monster**)calloc((num_monsters),sizeof(Monster) * (num_monsters));
+    for(int i = 0; i < num_monsters; i++) {
+        monsters[i] = new Monster();
+    }
+    int pcRoomNum;
+    int totalArea = 0;
+    for(uint32_t i = 0; i < num_rooms; ++i)
+    {
+        if (in_room(rooms[i],pc)){
+            pcRoomNum = i;
+        } else {
+            totalArea += rooms[i].size[dim_x] * rooms[i].size[dim_y];
+        }
+    }
+
+    int totalMonsters = 0;
+    while(totalMonsters < num_monsters)
+    {
+        if(totalMonsters == totalArea){break;}
+
+        int randRoom = rand() % num_rooms;
+
+        if(randRoom == pcRoomNum){continue;}
+
+        int x = rand() % rooms[randRoom].size[dim_x];
+        int y = rand() % rooms[randRoom].size[dim_y];
+
+        if(character_map[rooms[randRoom].position[dim_y] + y][rooms[randRoom].position[dim_x] + x] != NULL){continue;}
+
+        character_map[rooms[randRoom].position[dim_y] + y][rooms[randRoom].position[dim_x] + x] = monsters[totalMonsters];
+
+        monsters[totalMonsters]->pos[dim_y] = rooms[randRoom].position[dim_y] + y;
+        monsters[totalMonsters]->pos[dim_x] = rooms[randRoom].position[dim_x] + x;
+        monsters[totalMonsters]->destination[dim_y] = monsters[totalMonsters]->pos[dim_y];
+        monsters[totalMonsters]->destination[dim_x] = monsters[totalMonsters]->pos[dim_x];
+
+        ++totalMonsters;
+    }
 }
 uint32_t Dungeon::adjacent_to_room(int16_t y, int16_t x)
 {
