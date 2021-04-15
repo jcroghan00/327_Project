@@ -31,6 +31,17 @@ PC::PC(){
 }
 
 void check_for_drop(Dungeon *d,Object *o){
+    int check = 0;
+    for(int i = 0; i < 10; i++){
+        if(!d->pc->carrySlots[i]){
+            d->pc->carrySlots[i] = o;
+            check = 1;
+        }
+
+    }
+    if(!check){
+        d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = o;
+    }
     //TODO check carry slots for space to put object, drop otherwise
 }
 
