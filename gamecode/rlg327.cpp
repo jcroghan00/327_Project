@@ -24,7 +24,6 @@ void play_game(Dungeon *d, heap_t *h)
     Character *c;
     while(d->pc->isLiving())
     {
-        if (!d->num_monsters){break;}
         c = (Character*)heap_remove_min(h);
         if (c->isLiving()){
             if (c->getSd() == 0) {
@@ -34,6 +33,7 @@ void play_game(Dungeon *d, heap_t *h)
                 usleep(250000);
             }
             else{
+                if (((Monster*)c)->abil.BOSS && !c->isLiving()){break;}
                 ((Monster*)c)->move_monster(d);
                 update_last_seen(d);
             }
