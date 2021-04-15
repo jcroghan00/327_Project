@@ -228,7 +228,7 @@ void render_ncurses(Dungeon *d, WINDOW *scr=stdscr, int render_items=1)
             }
         }
     }
-    mvwprintw(scr, LINES - 1, 0, "HP: %d", d->pc->hitpoints);
+    mvwprintw(scr, 0, 0, "HP: %d", d->pc->hitpoints);
 }
 
 void render_fow(Dungeon *d)
@@ -300,7 +300,7 @@ void render_fow(Dungeon *d)
             }
         }
     }
-    mvprintw(LINES - 1, 0, "HP: %d", d->pc->hitpoints);
+    mvprintw(0, 0, "HP: %d", d->pc->hitpoints);
 }
 
 void render_teleport_select(Dungeon *d, heap_t *h){
