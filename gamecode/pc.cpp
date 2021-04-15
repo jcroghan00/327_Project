@@ -30,22 +30,29 @@ PC::PC(){
 
 }
 
+void PC::reset_maps()
+{
+    for(int i = 0; i < DUNGEON_Y; i++){
+        for(int j = 0; j < DUNGEON_X; j++){
+            pc_map[i][j] = ter_wall;
+            vis_monsters[i][j] = NULL;
+            visObj[i][j] = NULL;
+        }
+    }
+}
+
 void check_for_drop(Dungeon *d,Object *o){
-    int check = 0;
     for(int i = 0; i < 10; i++){
         if(!d->pc->carrySlots[i]){
             d->pc->carrySlots[i] = o;
-            check = 1;
-            break;
+            return;
         }
-
     }
-    if(!check){
-        d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = o;
-    }
+    d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = o;
     //TODO check carry slots for space to put object, drop otherwise
 }
 
+/*
 void PC::wear_item(Dungeon *d, int slot){
     if(slot > 9){
 
@@ -53,8 +60,8 @@ void PC::wear_item(Dungeon *d, int slot){
     else if(!d->pc->equipped){
         if(d->pc->carrySlots[slot]){
             d->pc->equipped = d->pc->carrySlots[slot];
-
         }
+        d->pc->carrySlots[slot] = NULL;
     }
     else{
         if(d->pc->carrySlots[slot]){
@@ -63,12 +70,10 @@ void PC::wear_item(Dungeon *d, int slot){
             d->pc->carrySlots[slot] = temp;
         }
     }
-    if(d->pc->carrySlots[slot] == NULL){
-
-    }
     d->pc->equipped = d->objects[slot];
     //TODO check for swap and equip logic
 }
+*/
 
 void PC::pickup_item(Dungeon *d){
     int size = sizeof d->pc->carrySlots / sizeof d->pc->carrySlots[0];
@@ -275,7 +280,7 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
             move_pc_ncurses(d, h);
             break;
 
-            //TODO Display equipment
+            // Display equipment
         case 'e':
             render_equipment(d);
             move_pc_ncurses(d, h);
@@ -327,13 +332,17 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
             move_pc_ncurses(d, h);
             break;
 
-            //TODO Take off item
+            // Take off item
         case 't':
+            render_unequip(d);
+            move_pc_ncurses(d, h);
             goto jump;
 
-            //TODO Wear item
+            // Wear item
         case 'w':
-            goto jump;
+            render_equip(d);
+            move_pc_ncurses(d, h);
+            break;
 
             //Expunge item
         case 'x':

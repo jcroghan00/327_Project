@@ -455,7 +455,133 @@ void render_drop(Dungeon *d) {
             case ENTER_KEY:
             case KEY_ENTER:
                 if (d->pc->carrySlots[cursor]){
-                    //TODO drop item and close window
+                    d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = d->pc->carrySlots[cursor];
+                    d->pc->carrySlots[cursor] = NULL;
+
+                    visible = 0;
+                    werase(inventory_win);
+                    touchwin(stdscr);
+                } else {
+                    const char *mes = "        No Item In This Slot!        ";
+                    mvwprintw(inventory_win, row - 1, (col / 2 - strlen(mes) / 2), mes);
+                }
+                break;
+
+                // Quit the window
+            case 'Q':
+                visible = 0;
+                werase(inventory_win);
+                touchwin(stdscr);
+                break;
+
+                // scroll up
+            case KEY_UP:
+            case '8':
+            case 'k':
+                cursor--;
+                werase(inventory_win);
+                mvwprintw(inventory_win, row - 1, (col / 2 - strlen(l) / 2), l);
+                break;
+
+                // scroll down
+            case KEY_DOWN:
+            case '2':
+            case 'j':
+                cursor++;
+                werase(inventory_win);
+                mvwprintw(inventory_win, row - 1, (col / 2 - strlen(l) / 2), l);
+                break;
+            default:
+                break;
+        }
+    }
+}
+void render_equip(Dungeon *d) {
+    WINDOW *inventory_win = d->windows->inventory_win;
+    int row = 0, col = 0, cursor = 0;
+    const char *l = "Press \'ENTER\' to equip item";
+    const int ENTER_KEY = 10;
+    getmaxyx(inventory_win, row, col);
+    const char *msg = "Press \'Q\' to close inventory";
+    int size = sizeof d->pc->carrySlots / sizeof d->pc->carrySlots[0];
+    mvwprintw(inventory_win, row - 1, (col / 2 - strlen(l) / 2), l);
+    touchwin(inventory_win);
+    int visible = 1;
+    while (visible) {
+        mvwprintw(inventory_win, row - row, (col / 2 - strlen(msg) / 2), msg);
+        wmove(inventory_win, 2, 0);
+        cursor = cursor >= 0 ? cursor : 0;
+        cursor = cursor < size ? cursor : size-1;
+        for (int i = 0; i < size; i++) {
+            if (cursor == i) {
+                wattron(inventory_win, A_STANDOUT);
+            }
+            wprintw(inventory_win, " Carry Slot %2i: ", i);
+            if (d->pc->carrySlots[i]) {
+                wprintw(inventory_win, d->pc->carrySlots[i]->name.c_str());
+            } else {
+                wprintw(inventory_win, "Empty!");
+            }
+            wprintw(inventory_win, "\n");
+            wattroff(inventory_win, A_STANDOUT);
+        }
+        int val = wgetch(inventory_win);
+        switch (val) {
+            //select a item to drop
+            case ENTER_KEY:
+            case KEY_ENTER:
+                if (d->pc->carrySlots[cursor]){
+                    int type;
+
+                    if(d->pc->carrySlots[cursor]->type.WEAPON){
+                        type = 0;
+                    }
+                    else if(d->pc->carrySlots[cursor]->type.OFFHAND){
+                        type = 1;
+                    }
+                    else if(d->pc->carrySlots[cursor]->type.RANGED){
+                        type = 2;
+                    }
+                    else if(d->pc->carrySlots[cursor]->type.ARMOR){
+                        type = 3;
+                    }
+                    else if(d->pc->carrySlots[cursor]->type.HELMET){
+                        type = 4;
+                    }
+                    else if(d->pc->carrySlots[cursor]->type.CLOAK){
+                        type = 5;
+                    }
+                    else if(d->pc->carrySlots[cursor]->type.GLOVES){
+                        type = 6;
+                    }
+                    else if(d->pc->carrySlots[cursor]->type.BOOTS){
+                        type = 7;
+                    }
+                    else if(d->pc->carrySlots[cursor]->type.RING && !d->pc->equipSlots[8]){
+                        type = 8;
+                    }
+                    else if(d->pc->carrySlots[cursor]->type.RING){
+                        type = 9;
+                    }
+                    else if(d->pc->carrySlots[cursor]->type.AMULET){
+                        type = 10;
+                    }
+                    else if(d->pc->carrySlots[cursor]->type.LIGHT){
+                        type = 11;
+                    }
+
+                    if(d->pc->equipSlots[type]){
+                        swap(d->pc->carrySlots[cursor], d->pc->equipSlots[type]);
+                    }
+                    else {
+                        d->pc->equipSlots[type] = d->pc->carrySlots[cursor];
+                        d->pc->carrySlots[cursor] = NULL;
+                    }
+
+
+                    visible = 0;
+                    werase(inventory_win);
+                    touchwin(stdscr);
                 } else {
                     const char *mes = "        No Item In This Slot!        ";
                     mvwprintw(inventory_win, row - 1, (col / 2 - strlen(mes) / 2), mes);
@@ -526,7 +652,11 @@ void render_expunge(Dungeon *d){
             case ENTER_KEY:
             case KEY_ENTER:
                 if (d->pc->carrySlots[cursor]){
-                    //TODO expunge item and close window
+                    d->pc->carrySlots[cursor] = NULL;
+
+                    visible = 0;
+                    werase(inventory_win);
+                    touchwin(stdscr);
                 } else {
                     const char *mes = "        No Item In This Slot!        ";
                     mvwprintw(inventory_win, row - 1, (col / 2 - strlen(mes) / 2), mes);
@@ -649,6 +779,93 @@ void render_inspect(Dungeon *d){
         }
     }
 }
+void render_unequip(Dungeon *d){
+    const char *titles[] = {"WEAPON ","OFFHAND ","RANGED ","ARMOR ","HELMET ","CLOAK ","GLOVES ","BOOTS ","RING ","RING ","AMULET ","LIGHT "};
+    WINDOW *inventory_win = d->windows->inventory_win;
+    int row=0,col=0,cursor=0;
+    const char *l = "Press \'ENTER\' to take off item";
+    const int ENTER_KEY = 10;
+    getmaxyx(inventory_win,row,col);
+    const char *msg = "Press \'Q\' to close inventory";
+    int size = sizeof d->pc->equipSlots / sizeof d->pc->equipSlots[0];
+    mvwprintw(inventory_win, row - 1, (col / 2 - strlen(l) / 2), l);
+    touchwin(inventory_win);
+    int visible = 1;
+    while(visible)
+    {
+        mvwprintw(inventory_win,row-row, (col/2 - strlen(msg)/2), msg);
+        wmove(inventory_win,1,0);
+        cursor = cursor >= 0 ? cursor : 0;
+        cursor = cursor < size ? cursor : size-1;
+        for (int i = 0; i < size; i++){
+            if (cursor == i) {
+                wattron(inventory_win, A_STANDOUT);
+            }
+            wprintw(inventory_win, " %s%2i","Equip. slot:", i);
+            wprintw(inventory_win, "%8s",titles[i]);
+            if (d->pc->equipSlots[i]){
+                wprintw(inventory_win,d->pc->equipSlots[i]->name.c_str());
+            } else {
+                wprintw(inventory_win, "Empty!");
+            }
+            wprintw(inventory_win,"\n");
+            wattroff(inventory_win, A_STANDOUT);
+        }
+        int val = wgetch(inventory_win);
+        switch (val) {
+            case ENTER_KEY:
+            case KEY_ENTER:
+                {
+                    //haha
+                    int moved = 0;
+                    int size2 = sizeof d->pc->carrySlots / sizeof d->pc->carrySlots[0];
+                    for(int i = 0; i < size2; ++i){
+                        if(!d->pc->carrySlots[i]){
+                            d->pc->carrySlots[i] = d->pc->equipSlots[cursor];
+                            d->pc->equipSlots[cursor] = NULL;
+                            moved = 1;
+                            break;
+                        }
+                    }
+
+                    if(!moved){
+                        d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = d->pc->equipSlots[cursor];
+                        d->pc->equipSlots[cursor] = NULL;
+                    }
+
+                    visible = 0;
+                    werase(inventory_win);
+                    touchwin(stdscr);
+                    break;
+                }
+            // Quit the window
+            case 'Q':
+                visible = 0;
+                werase(inventory_win);
+                touchwin(stdscr);
+                break;
+            case KEY_UP:
+            case '8':
+            case 'k':
+                cursor--;
+                werase(inventory_win);
+                mvwprintw(inventory_win, row - 1, (col / 2 - strlen(l) / 2), l);
+                break;
+
+                // scroll down
+            case KEY_DOWN:
+            case '2':
+            case 'j':
+                cursor++;
+                werase(inventory_win);
+                mvwprintw(inventory_win, row - 1, (col / 2 - strlen(l) / 2), l);
+                break;
+            default:
+                break;
+        }
+    }
+    }
+
 
 void create_monster_info_win(Dungeon *d){
     d->windows->monster_info_win = create_window();

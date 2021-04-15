@@ -416,7 +416,7 @@ void delete_dungeon(Dungeon *d, heap_t *h)
     for (int i = 0; i < d->num_monsters;i++){
         delete d->monsters[i];
     }
-    delete d->pc;
+    //delete d->pc;
     free(d->monsters);
 }
 
@@ -585,7 +585,12 @@ void Dungeon::new_dungeon(heap_t *h)
     }
 
     //generate the pc
-    pc = new PC();
+    if(!this->pc){
+        pc = new PC();
+    }
+    else {
+        this->pc->reset_maps();
+    }
     int randRoom = rand() % num_rooms;
     int x = rand() % rooms[randRoom].size[dim_x];
     int y = rand() % rooms[randRoom].size[dim_y];

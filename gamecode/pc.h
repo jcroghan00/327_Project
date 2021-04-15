@@ -16,8 +16,8 @@ public:
     Object *visObj[DUNGEON_Y][DUNGEON_X];
     Object *equipSlots[12];
     Object *carrySlots[10];
-    Object *equipped;
     PC();
+    void reset_maps();
     void pickup_item(Dungeon *d);
     void wear_item(Dungeon *d, int slot);
     void update_pc_map(Dungeon *d);
