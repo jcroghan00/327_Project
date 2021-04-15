@@ -795,9 +795,6 @@ void render_monster_info_win(Dungeon *d) {
     }
 }
 
-
-
-
 void create_windows(Dungeon *d){
     create_monster_list_win(d);
     create_terrain_map_win(d);

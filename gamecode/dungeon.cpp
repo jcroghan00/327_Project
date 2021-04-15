@@ -47,9 +47,6 @@ typedef struct queue_node {
   struct queue_node *next;
 } queue_node_t;
 
-
-
-
 int gen_dungeon(Dungeon *d)
 {
   gen_objects(d);
@@ -655,6 +652,7 @@ void Dungeon::gen_monsters(){
         ++totalMonsters;
     }
 }
+
 uint32_t Dungeon::adjacent_to_room(int16_t y, int16_t x)
 {
     return (map[y][x-1] == ter_floor_room ||
@@ -662,7 +660,9 @@ uint32_t Dungeon::adjacent_to_room(int16_t y, int16_t x)
             map[y-1][x] == ter_floor_room ||
             map[y+1][x] == ter_floor_room);
 }
+
 uint32_t Dungeon::is_open_space(int16_t y, int16_t x){return !hardness[y][x];}
+
 void Dungeon::dijkstra_corridor(pair_t from, pair_t to)
 {
     static Corridor_Path path[DUNGEON_Y][DUNGEON_X], *p;
@@ -758,6 +758,7 @@ void Dungeon::dijkstra_corridor(pair_t from, pair_t to)
         }
     }
 }
+
 void Dungeon::dijkstra_corridor_inv(pair_t from, pair_t to)
 {
     /* This is a cut-and-paste of the above.  The code is modified to  *
@@ -860,6 +861,7 @@ void Dungeon::dijkstra_corridor_inv(pair_t from, pair_t to)
         }
     }
 }
+
 int Dungeon::smoothhardness(Dungeon *d){
     int32_t i, x, y;
     int32_t s, t, p, q;
@@ -1012,6 +1014,7 @@ int Dungeon::smoothhardness(Dungeon *d){
 
     return 0;
 }
+
 int Dungeon::empty_dungeon(){
     uint8_t x, y;
     smoothhardness(this);
@@ -1027,6 +1030,7 @@ int Dungeon::empty_dungeon(){
     }
     return 0;
 }
+
 int Dungeon::make_rooms(){
     uint32_t i;
 
@@ -1048,6 +1052,7 @@ int Dungeon::make_rooms(){
 
     return 0;
 }
+
 int Dungeon::place_rooms(){
     pair_t p;
     uint32_t i;
@@ -1083,6 +1088,7 @@ int Dungeon::place_rooms(){
 
     return 0;
 }
+
 int Dungeon::connect_two_rooms(Room *r1, Room *r2)
 {
     /* Chooses a random point inside each room and connects them with a *
@@ -1104,6 +1110,7 @@ int Dungeon::connect_two_rooms(Room *r1, Room *r2)
 
     return 0;
 }
+
 int Dungeon::create_cycle()
 {
     /* Find the (approximately) farthest two rooms, then connect *
@@ -1145,6 +1152,7 @@ int Dungeon::create_cycle()
 
     return 0;
 }
+
 int Dungeon::connect_rooms(){
     uint32_t i;
 
@@ -1156,6 +1164,7 @@ int Dungeon::connect_rooms(){
 
     return 0;
 }
+
 void Dungeon::place_stairs()
 {
     pair_t p;

@@ -7,6 +7,7 @@ Character:: Character(){
     living = 1;
     turn = 0;
 }
+
 Character:: Character(int s){
     living = 1;
     turn = 0;
@@ -14,14 +15,23 @@ Character:: Character(int s){
 }
 
 void Character::setSd(uint32_t sd2){sd = sd2;}
+
 uint32_t Character::getSd(){return sd;}
+
 void Character::setDisplayChar(char c) {display_char = c;}
+
 char Character::getDisplayChar() {return display_char;}
+
 void Character::setLiving(int l){living = l;}
+
 int Character::isLiving(){return living;}
+
 uint32_t Character::getTurn(){return turn;}
+
 void Character::setSpeed(int s){speed = s;}
+
 uint32_t Character::getSpeed(){return speed;}
+
 void Character::setNextTurn(){
     turn += (1000/speed);
 }
@@ -60,6 +70,7 @@ int Character::sees_player(Dungeon *d)
         }
     }
 }
+
 void Character::bresenham_move(Dungeon *d, Dif *dif)
 {
     int x0 = pos[dim_x];
@@ -84,7 +95,6 @@ void Character::bresenham_move(Dungeon *d, Dif *dif)
         dif->y = sy;
     }
 }
-
 
 int32_t character_cmp(const void *key, const void *with) {
     if (((Character *) key)->getTurn() != ((Character *) with)->getTurn()){

@@ -135,7 +135,6 @@ void Object::setObjChar()
     }
 }
 
-
 int ObjectType::getColor(){
     string dispColor;
 
@@ -162,6 +161,7 @@ int ObjectType::getColor(){
         return COLOR_CYAN;
     }
 }
+
 void gen_objects(Dungeon *d){
 
     d->numObjects = rand() % (14 - 10 + 1) + 10;

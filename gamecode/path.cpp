@@ -1,13 +1,12 @@
 #include "path.h"
 #include "heap.h"
 #include "dungeon.h"
-#include "Character.h"
 #include "pc.h"
-
 
 static int32_t monster_path_cmp(const void *key, const void *with) {
     return ((Monster_Path *) key)->cost - ((Monster_Path *) with)->cost;
 }
+
 int32_t corridor_path_cmp(const void *key, const void *with) {
     return ((Corridor_Path *) key)->cost - ((Corridor_Path *) with)->cost;
 }

@@ -1,11 +1,11 @@
 #include <ncurses.h>
 
 #include "dungeon.h"
-#include "Character.h"
 #include "Monster.h"
 #include "windows.h"
 #include "pc.h"
 #include "object.h"
+
 typedef struct heap heap_t;
 
 PC::PC(){
@@ -29,12 +29,15 @@ PC::PC(){
     }
 
 }
+
 void check_for_drop(Dungeon *d,Object *o){
     //TODO check carry slots for space to put object, drop otherwise
 }
+
 void PC::wear_item(Dungeon *d, int slot){
     //TODO check for swap and equip logic
 }
+
 void PC::pickup_item(Dungeon *d){
     int size = sizeof d->pc->carrySlots / sizeof d->pc->carrySlots[0];
     Object *object = d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]];
@@ -92,6 +95,7 @@ void PC::update_vis_objects(Dungeon *d)
         }
     }
 }
+
 int PC::fight_monster(Dungeon *d, int dx, int dy){
     //TODO implement combat logic
     Monster *monster = (Monster*)character_mapxy(pos[dim_x] + dx,pos[dim_y] + dy);
@@ -103,6 +107,7 @@ int PC::fight_monster(Dungeon *d, int dx, int dy){
     mvprintw(0, 0, "Monster Health: %d",monster->hitpoints);
     return monster->attack_monster(d,damageDone);
 }
+
 int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
 
     // disp wall message
@@ -138,7 +143,6 @@ int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
     update_vis_objects(d);
     return 0;
 }
-
 
 void move_pc_ncurses(Dungeon *d, heap_t *h)
 {
