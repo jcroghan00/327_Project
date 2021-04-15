@@ -866,7 +866,6 @@ void render_unequip(Dungeon *d){
     }
     }
 
-
 void create_monster_info_win(Dungeon *d){
     d->windows->monster_info_win = create_window();
 }
@@ -1012,7 +1011,7 @@ void render_monster_info_win(Dungeon *d) {
     }
 }
 
-void create_windows(Dungeon *d){
+void create_windows(Dungeon *d) {
     create_monster_list_win(d);
     create_terrain_map_win(d);
     create_hardness_map_win(d);

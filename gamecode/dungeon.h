@@ -109,6 +109,7 @@ uint32_t in_room(Room r, Character *c);
 uint32_t is_open_space(Dungeon *d, int16_t y, int16_t x);
 int gen_dungeon(Dungeon *d);
 void render_ncurses(Dungeon *d, WINDOW *scr,int render_items);
+void render_fow(Dungeon *d);
 void render_dungeon(Dungeon *d);
 void render_teleport_select(Dungeon *d, heap_t *h);
 void render(Dungeon *d);
