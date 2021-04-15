@@ -131,21 +131,19 @@ int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
             return 0;
         }
     }
+    vis_monsters[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
+    d->character_map[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
+    pos[dim_y] += dy;
+    pos[dim_x] += dx;
+    d->character_map[pos[dim_y]][pos[dim_x]] = this;
+
     //Check for object on the ground
     if (d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]]){
         pickup_item(d);
     }
 
 
-    vis_monsters[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
 
-
-
-
-    d->character_map[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
-    pos[dim_y] += dy;
-    pos[dim_x] += dx;
-    d->character_map[pos[dim_y]][pos[dim_x]] = this;
     update_pc_map(d);
     update_vis_objects(d);
     return 0;
