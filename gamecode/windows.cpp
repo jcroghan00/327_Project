@@ -308,7 +308,7 @@ void render_end_game(Dungeon *d, heap_t *h){
                 exit(0);
             case 'R':
                 visible = 0;
-                new_dungeon(d,h);
+                d->new_dungeon(h);
                 play_game(d, h);
                 touchwin(stdscr);
             default:
@@ -794,9 +794,6 @@ void render_monster_info_win(Dungeon *d) {
         }
     }
 }
-
-
-
 
 void create_windows(Dungeon *d){
     create_monster_list_win(d);

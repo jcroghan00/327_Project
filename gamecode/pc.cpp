@@ -1,11 +1,11 @@
 #include <ncurses.h>
 
 #include "dungeon.h"
-#include "Character.h"
 #include "Monster.h"
 #include "windows.h"
 #include "pc.h"
 #include "object.h"
+
 typedef struct heap heap_t;
 
 PC::PC(){
@@ -29,12 +29,15 @@ PC::PC(){
     }
 
 }
+
 void check_for_drop(Dungeon *d,Object *o){
     //TODO check carry slots for space to put object, drop otherwise
 }
+
 void PC::wear_item(Dungeon *d, int slot){
     //TODO check for swap and equip logic
 }
+
 void PC::pickup_item(Dungeon *d){
     int size = sizeof d->pc->carrySlots / sizeof d->pc->carrySlots[0];
     Object *object = d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]];
@@ -92,17 +95,19 @@ void PC::update_vis_objects(Dungeon *d)
         }
     }
 }
+
 int PC::fight_monster(Dungeon *d, int dx, int dy){
     //TODO implement combat logic
     Monster *monster = (Monster*)character_mapxy(pos[dim_x] + dx,pos[dim_y] + dy);
     int damageReceived = monster->damage.roll();
     int damageDone = damage.roll();
     hitpoints -= damageReceived;
-    mvprintw(LINES-2, 0, "%s hit you for %i damage! you hit back for %i damage!",
+    mvprintw(LINES-2, 0, "%s hit you for %i damage! You hit back for %i damage!",
              monster->name.c_str(),damageReceived,damageDone);
-    printw("\nmonster health: %i",monster->hitpoints);
+    mvprintw(0, 0, "Monster Health: %d",monster->hitpoints);
     return monster->attack_monster(d,damageDone);
 }
+
 int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
 
     // disp wall message
@@ -116,6 +121,10 @@ int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
 
 
     vis_monsters[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
+
+    if(!dy && !dx){
+        return 0;
+    }
 
     //TODO update combat
     if (d->character_map[pos[dim_y]+dy][pos[dim_x]+dx] != NULL){
@@ -134,7 +143,6 @@ int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
     update_vis_objects(d);
     return 0;
 }
-
 
 void move_pc_ncurses(Dungeon *d, heap_t *h)
 {
@@ -205,7 +213,7 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
         case '>':
             //TODO start on up stairs
             if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_down){
-                new_dungeon(d, h);
+                d->new_dungeon(h);
             } else {
                 const char *down_msg = "You can't go down here!";
                 mvprintw(0, (COLS/2 - strlen(down_msg)/2), down_msg);
@@ -215,7 +223,7 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
         case '<':
             //TODO start on down stairs
             if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_up){
-                new_dungeon(d, h);
+                d->new_dungeon(h);
             } else{
                 const char *up_msg = "You can't go up here!";
                 mvprintw(0, (COLS/2 - strlen(up_msg)/2), up_msg);

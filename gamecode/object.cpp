@@ -139,7 +139,6 @@ void Object::setObjChar()
     }
 }
 
-
 int ObjectType::getColor(){
     string dispColor;
 
@@ -167,6 +166,7 @@ int ObjectType::getColor(){
     }
 }
 
+<<<<<<< HEAD
 void carrySlot(Dungeon *d){
     if(d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]]){
         for(int i = 0; i < 10; i++){
@@ -179,6 +179,8 @@ void carrySlot(Dungeon *d){
 
     }
 }
+=======
+>>>>>>> 86ace5b16ad899845a4d6c0e3af8cb01ba138a84
 void gen_objects(Dungeon *d){
 
     d->numObjects = rand() % (14 - 10 + 1) + 10;

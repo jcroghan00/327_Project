@@ -47,9 +47,6 @@ typedef struct queue_node {
   struct queue_node *next;
 } queue_node_t;
 
-
-
-
 int gen_dungeon(Dungeon *d)
 {
   gen_objects(d);
@@ -231,6 +228,7 @@ void render_ncurses(Dungeon *d, WINDOW *scr=stdscr, int render_items=1)
             }
         }
     }
+    mvwprintw(scr, LINES - 1, 0, "HP: %d", d->pc->hitpoints);
 }
 
 void render_fow(Dungeon *d)
@@ -302,6 +300,7 @@ void render_fow(Dungeon *d)
             }
         }
     }
+    mvprintw(LINES - 1, 0, "HP: %d", d->pc->hitpoints);
 }
 
 void render_teleport_select(Dungeon *d, heap_t *h){
@@ -530,25 +529,6 @@ int save_dungeon(Dungeon *d)
   return 0;
 }
 
-void new_dungeon(Dungeon *d, heap_t *h)
-{
-    delete_dungeon(d, h);
-    d->num_monsters = -1;
-
-    gen_dungeon(d);
-
-    heap_init(h,character_cmp,NULL);
-    for(int i = 0; i < d->num_monsters; i++)
-    {
-        d->monsters[i]->setSd(i);
-        heap_insert(h,d->monsters[i]);
-    }
-
-    clear();
-    render_ncurses(d);
-    refresh();
-}
-
 Dungeon::Dungeon(int numMon){
     monster_parser();
     object_parser();
@@ -582,6 +562,55 @@ Dungeon::Dungeon(int numMon){
     num_monsters = numMon;
     gen_monsters();
 }
+
+void Dungeon::new_dungeon(heap_t *h)
+{
+    delete_dungeon(this, h);
+    num_monsters = -1;
+
+    //generate the dungeon
+    empty_dungeon();
+    do {
+        make_rooms();
+    } while (place_rooms());
+    connect_rooms();
+    place_stairs();
+
+    //initialize maps
+    for(int i = 0; i < DUNGEON_Y; i++){
+        for(int j = 0; j < DUNGEON_X; j++){
+            character_map[i][j] = NULL;
+            objMap[i][j] = NULL;
+        }
+    }
+
+    //generate the pc
+    pc = new PC();
+    int randRoom = rand() % num_rooms;
+    int x = rand() % rooms[randRoom].size[dim_x];
+    int y = rand() % rooms[randRoom].size[dim_y];
+    pc->pos[dim_x] = rooms[randRoom].position[dim_x] + x;
+    pc->pos[dim_y] = rooms[randRoom].position[dim_y] + y;
+    character_map[pc->pos[dim_y]][pc->pos[dim_x]] = pc;
+
+    //generate monsters
+    num_monsters = -1;
+    gen_monsters();
+
+    gen_dungeon(this);
+
+    heap_init(h,character_cmp,NULL);
+    for(int i = 0; i < num_monsters; i++)
+    {
+        monsters[i]->setSd(i);
+        heap_insert(h,monsters[i]);
+    }
+
+    clear();
+    render_ncurses(this);
+    refresh();
+}
+
 void Dungeon::gen_monsters(){
     if (num_monsters == -1) {num_monsters = num_rooms * 2 < 50 ? num_rooms * 2 : 50;}
     monsters = (Monster**)calloc((num_monsters),sizeof(Monster) * (num_monsters));
@@ -623,6 +652,7 @@ void Dungeon::gen_monsters(){
         ++totalMonsters;
     }
 }
+
 uint32_t Dungeon::adjacent_to_room(int16_t y, int16_t x)
 {
     return (map[y][x-1] == ter_floor_room ||
@@ -630,7 +660,9 @@ uint32_t Dungeon::adjacent_to_room(int16_t y, int16_t x)
             map[y-1][x] == ter_floor_room ||
             map[y+1][x] == ter_floor_room);
 }
+
 uint32_t Dungeon::is_open_space(int16_t y, int16_t x){return !hardness[y][x];}
+
 void Dungeon::dijkstra_corridor(pair_t from, pair_t to)
 {
     static Corridor_Path path[DUNGEON_Y][DUNGEON_X], *p;
@@ -726,6 +758,7 @@ void Dungeon::dijkstra_corridor(pair_t from, pair_t to)
         }
     }
 }
+
 void Dungeon::dijkstra_corridor_inv(pair_t from, pair_t to)
 {
     /* This is a cut-and-paste of the above.  The code is modified to  *
@@ -828,6 +861,7 @@ void Dungeon::dijkstra_corridor_inv(pair_t from, pair_t to)
         }
     }
 }
+
 int Dungeon::smoothhardness(Dungeon *d){
     int32_t i, x, y;
     int32_t s, t, p, q;
@@ -980,6 +1014,7 @@ int Dungeon::smoothhardness(Dungeon *d){
 
     return 0;
 }
+
 int Dungeon::empty_dungeon(){
     uint8_t x, y;
     smoothhardness(this);
@@ -995,6 +1030,7 @@ int Dungeon::empty_dungeon(){
     }
     return 0;
 }
+
 int Dungeon::make_rooms(){
     uint32_t i;
 
@@ -1016,6 +1052,7 @@ int Dungeon::make_rooms(){
 
     return 0;
 }
+
 int Dungeon::place_rooms(){
     pair_t p;
     uint32_t i;
@@ -1051,6 +1088,7 @@ int Dungeon::place_rooms(){
 
     return 0;
 }
+
 int Dungeon::connect_two_rooms(Room *r1, Room *r2)
 {
     /* Chooses a random point inside each room and connects them with a *
@@ -1072,6 +1110,7 @@ int Dungeon::connect_two_rooms(Room *r1, Room *r2)
 
     return 0;
 }
+
 int Dungeon::create_cycle()
 {
     /* Find the (approximately) farthest two rooms, then connect *
@@ -1113,6 +1152,7 @@ int Dungeon::create_cycle()
 
     return 0;
 }
+
 int Dungeon::connect_rooms(){
     uint32_t i;
 
@@ -1124,6 +1164,7 @@ int Dungeon::connect_rooms(){
 
     return 0;
 }
+
 void Dungeon::place_stairs()
 {
     pair_t p;

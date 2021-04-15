@@ -10,7 +10,6 @@
 #include "pc.h"
 #include "rlg327.h"
 
-
 //default constructor to make a new random monster
 Monster:: Monster()
     :Character(rand() % 16 + 5){
@@ -36,6 +35,7 @@ Monstertype* Monster::pick_type(){
     mon->inUse = 1;
     return mon;
 }
+
 int Monster::attack_monster(Dungeon *d,int damage){
     hitpoints -= damage;
     if (hitpoints <= 0){
@@ -45,6 +45,7 @@ int Monster::attack_monster(Dungeon *d,int damage){
     }
     return 0;
 }
+
 void Monster::get_monster_path(Dungeon *d){
     int x,y;
     if (abil.TUNNEL) {
@@ -61,6 +62,7 @@ void Monster::get_monster_path(Dungeon *d){
         }
     }
 }
+
 void Monster::erratic_move(Dungeon *d){
     int moved = 0,counter = 0,dx,dy;
     while(!moved) {
@@ -82,6 +84,7 @@ void Monster::erratic_move(Dungeon *d){
         }
     }
 }
+
 void Monster::tun_rock_check(Dungeon *d, int *dx, int *dy){
     if (d->map[pos[dim_y]+*dy][pos[dim_x]+*dx] == ter_wall){
         if (abil.TUNNEL) {
@@ -97,6 +100,7 @@ void Monster::tun_rock_check(Dungeon *d, int *dx, int *dy){
         }
     }
 }
+
 void Monster::move_line(Dungeon *d, Dif *dif)
 {
     if(pos[dim_x] < destination[dim_x]){
@@ -125,6 +129,7 @@ void Monster::move_line(Dungeon *d, Dif *dif)
         }
     }
 }
+
 void Monster::final_move(Dungeon *d, int dx, int dy)
 {
     //set current space to null
@@ -138,6 +143,7 @@ void Monster::final_move(Dungeon *d, int dx, int dy)
     pos[dim_x] = pos[dim_x]+dx;
     d->character_map[pos[dim_y]][pos[dim_x]] = this;
 }
+
 void Monster::move_monster(Dungeon *d)
 {
     int sees_pc = 0,dx = 0,dy = 0;
@@ -192,6 +198,7 @@ void Monster::move_monster(Dungeon *d)
         final_move(d, dx, dy);
     }
 }
+
 int Monster::create_monster(Monstertype *t){
     name = t->name;
     desc = t->desc;
@@ -233,6 +240,7 @@ void update_last_seen(Dungeon *d)
         }
     }
 }
+
 //TODO update monster list with new fields
 void write_monster_list(Dungeon *d, int index){
 #define win d->windows->monster_list_win
