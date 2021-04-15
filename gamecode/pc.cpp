@@ -323,7 +323,7 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
             move_pc_ncurses(d, h);
             break;
 
-            // TODO Display monster list seg faults when ran
+            // Display monster list
         case 'm':
             monster_list(d);
             move_pc_ncurses(d, h);
@@ -409,5 +409,3 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
     render(d);
     refresh();
 }
-
-
