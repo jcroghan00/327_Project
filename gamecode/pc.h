@@ -24,6 +24,8 @@ public:
     void update_vis_objects(Dungeon *d);
     int fight_monster(Dungeon *d, int dx, int dy);
     int move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport);
+    int getDamage();
+    int getSpeed();
 };
 
 void config_pc(Dungeon *d);

@@ -107,7 +107,7 @@ int PC::fight_monster(Dungeon *d, int dx, int dy){
     hitpoints -= damageReceived;
     mvprintw(LINES-2, 0, "%s hit you for %i damage! You hit back for %i damage!",
              monster->name.c_str(),damageReceived,damageDone);
-    mvprintw(0, 0, "Monster Health: %d",monster->hitpoints);
+    mvprintw(LINES-1, 0, "Monster Health: %d",monster->hitpoints);
     return monster->attack_monster(d,damageDone);
 }
 
@@ -145,6 +145,38 @@ int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
     update_pc_map(d);
     update_vis_objects(d);
     return 0;
+}
+
+int PC::getDamage()
+{
+    int base;
+    if(this->equipSlots[0]){
+        base = equipSlots[0]->dam.roll();
+    }
+    else{
+        base = this->damage.roll();
+    }
+
+    int damage = base;
+    for(int i = 1; i < 12; ++i){
+        if(equipSlots[i])
+        {
+            damage += equipSlots[i]->dam.roll();
+        }
+    }
+    return damage;
+}
+
+int PC::getSpeed()
+{
+    int speed = 10;
+    for(int i = 0; i < 12; ++i){
+        if(equipSlots[i])
+        {
+            speed += equipSlots[i]->speed;
+        }
+    }
+    return speed;
 }
 
 void move_pc_ncurses(Dungeon *d, heap_t *h)

@@ -578,6 +578,7 @@ void render_equip(Dungeon *d) {
                         d->pc->carrySlots[cursor] = NULL;
                     }
 
+                    d->pc->speed = d->pc->getSpeed();
 
                     visible = 0;
                     werase(inventory_win);
@@ -816,8 +817,8 @@ void render_unequip(Dungeon *d){
             case ENTER_KEY:
             case KEY_ENTER:
                 {
-                    //haha
                     int moved = 0;
+                    //haha
                     int size2 = sizeof d->pc->carrySlots / sizeof d->pc->carrySlots[0];
                     for(int i = 0; i < size2; ++i){
                         if(!d->pc->carrySlots[i]){
@@ -832,6 +833,8 @@ void render_unequip(Dungeon *d){
                         d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = d->pc->equipSlots[cursor];
                         d->pc->equipSlots[cursor] = NULL;
                     }
+
+                    d->pc->speed = d->pc->getSpeed();
 
                     visible = 0;
                     werase(inventory_win);
