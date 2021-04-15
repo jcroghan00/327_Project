@@ -112,7 +112,10 @@ int PC::fight_monster(Dungeon *d, int dx, int dy){
 }
 
 int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
-
+    // if not moving, end function
+    if(!dy && !dx){
+        return 0;
+    }
     // disp wall message
     if(d->map[pos[dim_y] + dy][pos[dim_x] + dx] < ter_floor &&
        !teleport){
@@ -121,27 +124,28 @@ int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
         move_pc_ncurses(d,h);
         return -1;
     }
-
-
-    vis_monsters[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
-
-    if(!dy && !dx){
-        return 0;
-    }
-
+    //Check for combat
     //TODO update combat
     if (d->character_map[pos[dim_y]+dy][pos[dim_x]+dx] != NULL){
         if (!fight_monster(d,dx,dy)){
             return 0;
         }
     }
+    //Check for object on the ground
+    if (d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]]){
+        pickup_item(d);
+    }
+
+
+    vis_monsters[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
+
+
+
+
     d->character_map[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
     pos[dim_y] += dy;
     pos[dim_x] += dx;
     d->character_map[pos[dim_y]][pos[dim_x]] = this;
-    if (d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]]){
-        pickup_item(d);
-    }
     update_pc_map(d);
     update_vis_objects(d);
     return 0;
