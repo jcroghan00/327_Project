@@ -14,6 +14,12 @@ Character:: Character(int s){
     speed = s;
 }
 
+int Character:: isPc(){
+
+    return !getSd();
+
+}
+
 void Character::setSd(uint32_t sd2){sd = sd2;}
 
 uint32_t Character::getSd(){return sd;}
