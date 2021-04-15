@@ -5,6 +5,10 @@
 #include "object.h"
 #include "dungeon.h"
 #include "rlg327.h"
+#include "Character.h"
+#include "Monster.h"
+#include "windows.h"
+#include "pc.h"
 
 #include <iostream>
 
@@ -160,6 +164,19 @@ int ObjectType::getColor(){
         return COLOR_MAGENTA;
     }else{
         return COLOR_CYAN;
+    }
+}
+
+void carrySlot(Dungeon *d){
+    if(d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]]){
+        for(int i = 0; i < 10; i++){
+            if(d->carry[i] == NULL){
+                d->carry[i] = d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]];
+                d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]]  = NULL; 
+                break;
+            }
+        }
+
     }
 }
 void gen_objects(Dungeon *d){

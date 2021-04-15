@@ -86,6 +86,7 @@ public:
     int numObjects;
     Object **objects;
     Object *objMap[DUNGEON_Y][DUNGEON_X];
+    Object *carry[10];
     int fow;
     Dungeon(int numMon);
     void gen_monsters();
