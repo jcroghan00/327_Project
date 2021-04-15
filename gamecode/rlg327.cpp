@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
         else if (!strcmp(argv[i],"--nummon"))  {numMon = atoi(argv[++i]);}
         else {seed=atoi(argv[i]);}
     }
-    Dungeon* d = new Dungeon(numMon);
+
     if(parse){
         monster_parser();
         object_parser();
@@ -76,6 +76,9 @@ int main(int argc, char *argv[])
     }
 
     srand(seed);
+
+    Dungeon* d = new Dungeon(numMon);
+
     initscr();
     resizeterm(24,81);
     start_color();

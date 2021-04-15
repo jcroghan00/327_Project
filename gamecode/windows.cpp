@@ -308,7 +308,7 @@ void render_end_game(Dungeon *d, heap_t *h){
                 exit(0);
             case 'R':
                 visible = 0;
-                new_dungeon(d,h);
+                d->new_dungeon(h);
                 play_game(d, h);
                 touchwin(stdscr);
             default:

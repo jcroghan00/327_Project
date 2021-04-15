@@ -117,6 +117,10 @@ int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
 
     vis_monsters[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
 
+    if(!dy && !dx){
+        return 0;
+    }
+
     //TODO update combat
     if (d->character_map[pos[dim_y]+dy][pos[dim_x]+dx] != NULL){
         if (!fight_monster(d,dx,dy)){
@@ -205,7 +209,7 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
         case '>':
             //TODO start on up stairs
             if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_down){
-                new_dungeon(d, h);
+                d->new_dungeon(h);
             } else {
                 const char *down_msg = "You can't go down here!";
                 mvprintw(0, (COLS/2 - strlen(down_msg)/2), down_msg);
@@ -215,7 +219,7 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
         case '<':
             //TODO start on down stairs
             if(d->map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] == ter_stairs_up){
-                new_dungeon(d, h);
+                d->new_dungeon(h);
             } else{
                 const char *up_msg = "You can't go up here!";
                 mvprintw(0, (COLS/2 - strlen(up_msg)/2), up_msg);

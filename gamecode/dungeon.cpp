@@ -532,25 +532,6 @@ int save_dungeon(Dungeon *d)
   return 0;
 }
 
-void new_dungeon(Dungeon *d, heap_t *h)
-{
-    delete_dungeon(d, h);
-    d->num_monsters = -1;
-
-    gen_dungeon(d);
-
-    heap_init(h,character_cmp,NULL);
-    for(int i = 0; i < d->num_monsters; i++)
-    {
-        d->monsters[i]->setSd(i);
-        heap_insert(h,d->monsters[i]);
-    }
-
-    clear();
-    render_ncurses(d);
-    refresh();
-}
-
 Dungeon::Dungeon(int numMon){
     monster_parser();
     object_parser();
@@ -583,6 +564,54 @@ Dungeon::Dungeon(int numMon){
     //generate monsters
     num_monsters = numMon;
     gen_monsters();
+}
+
+void Dungeon::new_dungeon(heap_t *h)
+{
+    delete_dungeon(this, h);
+    num_monsters = -1;
+
+    //generate the dungeon
+    empty_dungeon();
+    do {
+        make_rooms();
+    } while (place_rooms());
+    connect_rooms();
+    place_stairs();
+
+    //initialize maps
+    for(int i = 0; i < DUNGEON_Y; i++){
+        for(int j = 0; j < DUNGEON_X; j++){
+            character_map[i][j] = NULL;
+            objMap[i][j] = NULL;
+        }
+    }
+
+    //generate the pc
+    pc = new PC();
+    int randRoom = rand() % num_rooms;
+    int x = rand() % rooms[randRoom].size[dim_x];
+    int y = rand() % rooms[randRoom].size[dim_y];
+    pc->pos[dim_x] = rooms[randRoom].position[dim_x] + x;
+    pc->pos[dim_y] = rooms[randRoom].position[dim_y] + y;
+    character_map[pc->pos[dim_y]][pc->pos[dim_x]] = pc;
+
+    //generate monsters
+    num_monsters = -1;
+    gen_monsters();
+
+    gen_dungeon(this);
+
+    heap_init(h,character_cmp,NULL);
+    for(int i = 0; i < num_monsters; i++)
+    {
+        monsters[i]->setSd(i);
+        heap_insert(h,monsters[i]);
+    }
+
+    clear();
+    render_ncurses(this);
+    refresh();
 }
 
 void Dungeon::gen_monsters(){

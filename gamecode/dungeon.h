@@ -91,6 +91,7 @@ public:
     void gen_monsters();
     uint32_t is_open_space(int16_t y, int16_t x);
     int empty_dungeon();
+    void new_dungeon(heap_t *h);
 protected:
     uint32_t adjacent_to_room(int16_t y, int16_t x);
     void dijkstra_corridor(pair_t from, pair_t to);
