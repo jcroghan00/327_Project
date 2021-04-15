@@ -41,40 +41,6 @@ void PC::reset_maps()
     }
 }
 
-void check_for_drop(Dungeon *d,Object *o){
-    for(int i = 0; i < 10; i++){
-        if(!d->pc->carrySlots[i]){
-            d->pc->carrySlots[i] = o;
-            return;
-        }
-    }
-    d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = o;
-    //TODO check carry slots for space to put object, drop otherwise
-}
-
-/*
-void PC::wear_item(Dungeon *d, int slot){
-    if(slot > 9){
-
-    }
-    else if(!d->pc->equipped){
-        if(d->pc->carrySlots[slot]){
-            d->pc->equipped = d->pc->carrySlots[slot];
-        }
-        d->pc->carrySlots[slot] = NULL;
-    }
-    else{
-        if(d->pc->carrySlots[slot]){
-            Object *temp = d->pc->equipped;
-            d->pc->equipped = d->pc->carrySlots[slot];
-            d->pc->carrySlots[slot] = temp;
-        }
-    }
-    d->pc->equipped = d->objects[slot];
-    //TODO check for swap and equip logic
-}
-*/
-
 void PC::pickup_item(Dungeon *d){
     int size = sizeof d->pc->carrySlots / sizeof d->pc->carrySlots[0];
     Object *object = d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]];
