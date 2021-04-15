@@ -98,9 +98,9 @@ int PC::fight_monster(Dungeon *d, int dx, int dy){
     int damageReceived = monster->damage.roll();
     int damageDone = damage.roll();
     hitpoints -= damageReceived;
-    mvprintw(LINES-2, 0, "%s hit you for %i damage! you hit back for %i damage!",
+    mvprintw(LINES-2, 0, "%s hit you for %i damage! You hit back for %i damage!",
              monster->name.c_str(),damageReceived,damageDone);
-    printw("\nmonster health: %i",monster->hitpoints);
+    mvprintw(0, 0, "Monster Health: %d",monster->hitpoints);
     return monster->attack_monster(d,damageDone);
 }
 int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){

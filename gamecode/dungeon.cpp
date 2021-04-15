@@ -231,6 +231,7 @@ void render_ncurses(Dungeon *d, WINDOW *scr=stdscr, int render_items=1)
             }
         }
     }
+    mvwprintw(scr, LINES - 1, 0, "HP: %d", d->pc->hitpoints);
 }
 
 void render_fow(Dungeon *d)
@@ -302,6 +303,7 @@ void render_fow(Dungeon *d)
             }
         }
     }
+    mvprintw(LINES - 1, 0, "HP: %d", d->pc->hitpoints);
 }
 
 void render_teleport_select(Dungeon *d, heap_t *h){
@@ -582,6 +584,7 @@ Dungeon::Dungeon(int numMon){
     num_monsters = numMon;
     gen_monsters();
 }
+
 void Dungeon::gen_monsters(){
     if (num_monsters == -1) {num_monsters = num_rooms * 2 < 50 ? num_rooms * 2 : 50;}
     monsters = (Monster**)calloc((num_monsters),sizeof(Monster) * (num_monsters));
