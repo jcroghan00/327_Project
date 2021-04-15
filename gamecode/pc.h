@@ -16,6 +16,7 @@ public:
     Object *visObj[DUNGEON_Y][DUNGEON_X];
     Object *equipSlots[12];
     Object *carrySlots[10];
+    Object *equipped;
     PC();
     void pickup_item(Dungeon *d);
     void wear_item(Dungeon *d, int slot);
