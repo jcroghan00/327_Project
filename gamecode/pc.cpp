@@ -36,6 +36,7 @@ void check_for_drop(Dungeon *d,Object *o){
         if(!d->pc->carrySlots[i]){
             d->pc->carrySlots[i] = o;
             check = 1;
+            break;
         }
 
     }
