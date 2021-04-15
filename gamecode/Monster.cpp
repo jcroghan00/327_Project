@@ -132,6 +132,7 @@ void Monster::move_line(Dungeon *d, Dif *dif)
 
 void Monster::final_move(Dungeon *d, int dx, int dy)
 {
+    isMonster(d, dx, dy);
     //set current space to null
     d->character_map[pos[dim_y]][pos[dim_x]] = NULL;
     // if there's another character in destination, kill it
@@ -199,13 +200,13 @@ void Monster::move_monster(Dungeon *d)
     }
 }
 
-void Monster:: isMonster(Dungeon *d, Dif *dif){
+void Monster:: isMonster(Dungeon *d, int dx, int dy){
     int count = NULL;
     for(int i = 0; i < d->num_monsters; i++){
         int monstX = d->monsters[i]->pos[dim_x];
         int monstY = d->monsters[i]->pos[dim_y];
 
-        if(pos[dim_x] + dif->x == monstX && pos[dim_y] + dif->y == monstY){
+        if(pos[dim_x] + dx == monstX && pos[dim_y] + dy == monstY){
             count = i;
             break;
         }

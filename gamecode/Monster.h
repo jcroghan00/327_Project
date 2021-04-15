@@ -56,7 +56,7 @@ public:
     int attack_monster(Dungeon *d,int damage);
     void move_monster(Dungeon *d);
     int create_monster(Monstertype *t);
-    void isMonster(Dungeon *d, Dif *dif);
+    void isMonster(Dungeon *d, int dx, int dy);
 
 protected:
     //struct of the monsters abilities
