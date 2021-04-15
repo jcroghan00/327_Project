@@ -32,6 +32,7 @@ void render_drop(Dungeon *d);
 void render_equip(Dungeon *d);
 void render_expunge(Dungeon *d);
 void render_inspect(Dungeon *d);
+void render_inspect_equipment(Dungeon *d);
 void render_monster_info_win(Dungeon *d);
 void render_unequip(Dungeon *d);
 void create_windows(Dungeon *d);

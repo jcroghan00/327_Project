@@ -724,11 +724,11 @@ void render_inspect(Dungeon *d){
         }
         int val = wgetch(inventory_win);
         switch (val) {
-            //select a item to expunge
+            //select a item to inspect
             case ENTER_KEY:
             case KEY_ENTER:
                 if (d->pc->carrySlots[cursor]){
-                    //TODO inspect item
+                    // inspect item
                     werase(inventory_win);
                     int info = 1;
                     const char *name = d->pc->carrySlots[cursor]->name.c_str();
@@ -867,7 +867,95 @@ void render_unequip(Dungeon *d){
                 break;
         }
     }
+}
+void render_inspect_equipment(Dungeon *d){
+    const char *titles[] = {"WEAPON ","OFFHAND ","RANGED ","ARMOR ","HELMET ","CLOAK ","GLOVES ","BOOTS ","RING ","RING ","AMULET ","LIGHT "};
+    WINDOW *inventory_win = d->windows->inventory_win;
+    int row=0,col=0,cursor=0;
+    const char *l = "Press \'ENTER\' to take off item";
+    const int ENTER_KEY = 10;
+    getmaxyx(inventory_win,row,col);
+    const char *msg = "Press \'Q\' to close inventory";
+    int size = sizeof d->pc->equipSlots / sizeof d->pc->equipSlots[0];
+    mvwprintw(inventory_win, row - 1, (col / 2 - strlen(l) / 2), l);
+    touchwin(inventory_win);
+    int visible = 1;
+    while(visible)
+    {
+        mvwprintw(inventory_win,row-row, (col/2 - strlen(msg)/2), msg);
+        wmove(inventory_win,1,0);
+        cursor = cursor >= 0 ? cursor : 0;
+        cursor = cursor < size ? cursor : size-1;
+        for (int i = 0; i < size; i++){
+            if (cursor == i) {
+                wattron(inventory_win, A_STANDOUT);
+            }
+            wprintw(inventory_win, " %s%2i","Equip. slot:", i);
+            wprintw(inventory_win, "%8s",titles[i]);
+            if (d->pc->equipSlots[i]){
+                wprintw(inventory_win,d->pc->equipSlots[i]->name.c_str());
+            } else {
+                wprintw(inventory_win, "Empty!");
+            }
+            wprintw(inventory_win,"\n");
+            wattroff(inventory_win, A_STANDOUT);
+        }
+        int val = wgetch(inventory_win);
+        switch (val) {
+            case ENTER_KEY:
+            case KEY_ENTER:
+            {
+                if (d->pc->equipSlots[cursor]){
+                    // inspect item
+                    werase(inventory_win);
+                    int info = 1;
+                    const char *name = d->pc->equipSlots[cursor]->name.c_str();
+                    mvwprintw(inventory_win, 1, (col / 2 - strlen(name) / 2), name);
+                    wprintw(inventory_win,"\n");
+                    wprintw(inventory_win, d->pc->equipSlots[cursor]->desc.c_str());
+                    while (info){
+                        int val = wgetch(inventory_win);
+                        switch(val){
+                            case 'Q':
+                                info = 0;
+                                break;
+                        }
+                    }
+                    werase(inventory_win);
+                    mvwprintw(inventory_win, row - 1, (col / 2 - strlen(l) / 2), l);
+                } else {
+                    const char *mes = "        No Item In This Slot!        ";
+                    mvwprintw(inventory_win, row - 1, (col / 2 - strlen(mes) / 2), mes);
+                }
+                break;
+            }
+                // Quit the window
+            case 'Q':
+                visible = 0;
+                werase(inventory_win);
+                touchwin(stdscr);
+                break;
+            case KEY_UP:
+            case '8':
+            case 'k':
+                cursor--;
+                werase(inventory_win);
+                mvwprintw(inventory_win, row - 1, (col / 2 - strlen(l) / 2), l);
+                break;
+
+                // scroll down
+            case KEY_DOWN:
+            case '2':
+            case 'j':
+                cursor++;
+                werase(inventory_win);
+                mvwprintw(inventory_win, row - 1, (col / 2 - strlen(l) / 2), l);
+                break;
+            default:
+                break;
+        }
     }
+}
 
 void create_monster_info_win(Dungeon *d){
     d->windows->monster_info_win = create_window();

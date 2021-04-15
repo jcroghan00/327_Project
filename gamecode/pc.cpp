@@ -359,8 +359,10 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
             move_pc_ncurses(d, h);
             break;
 
-            //TODO Inspect equipped item
+            // Inspect equipped item
         case 'E':
+            render_inspect_equipment(d);
+            move_pc_ncurses(d, h);
             goto jump;
 
             //Display the hardness map
