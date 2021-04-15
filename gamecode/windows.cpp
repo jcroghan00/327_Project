@@ -731,8 +731,8 @@ void render_inspect(Dungeon *d){
                     //TODO inspect item
                     werase(inventory_win);
                     int info = 1;
-                    const char *mes = d->pc->carrySlots[cursor]->name.c_str();
-                    mvwprintw(inventory_win, 1, (col / 2 - strlen(mes) / 2), mes);
+                    const char *name = d->pc->carrySlots[cursor]->name.c_str();
+                    mvwprintw(inventory_win, 1, (col / 2 - strlen(name) / 2), name);
                     wprintw(inventory_win,"\n");
                     wprintw(inventory_win, d->pc->carrySlots[cursor]->desc.c_str());
                     while (info){
