@@ -248,12 +248,14 @@ void write_monster_list(Dungeon *d, int index){
     wclear(win);
 
     wmove(win,2,0);
-    for(int i = index; i < index + 16 && i < d->num_monsters + 1; ++i)
+    for(int i = index; i < index + 16 && i < d->num_monsters; ++i)
     {
         wprintw(win, " %3i: ", i);
-        wprintw(win, "%c: ", d->monsters[i]->getDisplayChar());
+        //wattron(win,COLOR_PAIR(d->monsters[i]->dispColor));
+        wprintw(win, "%c: ", d->monsters[i]->display_char);
+        //wattroff(win, COLOR_PAIR(d->monsters[i]->dispColor));
 
-        int dy = d->pc->pos[dim_y] - d->pc->pos[dim_y];
+        int dy = d->pc->pos[dim_y] - d->monsters[i]->pos[dim_y];
         if(dy < 0) {
             wprintw(win, "%2d South ", abs(dy));
         }
@@ -261,7 +263,7 @@ void write_monster_list(Dungeon *d, int index){
             wprintw(win, "%2d North ", abs(dy));
         }
 
-        int dx = d->pc->pos[dim_x] - d->pc->pos[dim_x];
+        int dx = d->pc->pos[dim_x] - d->monsters[i]->pos[dim_x];
         if(dx < 0) {
             wprintw(win, "by %2d East\n", abs(dx));
         }

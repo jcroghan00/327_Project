@@ -23,7 +23,6 @@ public:
 using namespace std;
 class Character {
 protected:
-    char display_char;
     uint32_t sd;
     uint32_t turn;
     int sees_player(Dungeon *d);
@@ -33,6 +32,7 @@ public:
     Character();
     Character(int speed);
     uint32_t getSd();
+    char display_char;
     void setSd(uint32_t sd);
     void setDisplayChar(char c);
     char getDisplayChar();
