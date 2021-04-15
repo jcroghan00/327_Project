@@ -4,21 +4,22 @@
 #include "pc.h"
 
 Character:: Character(){
+    name = "";
+    desc = "";
     living = 1;
     turn = 0;
+    hitpoints = 0;
 }
 
 Character:: Character(int s){
+    name = "";
+    desc = "";
     living = 1;
     turn = 0;
     speed = s;
 }
 
-int Character:: isPc(){
-
-    return !getSd();
-
-}
+int Character:: isPc(){return !getSd();}
 
 void Character::setSd(uint32_t sd2){sd = sd2;}
 
@@ -28,7 +29,10 @@ void Character::setDisplayChar(char c) {display_char = c;}
 
 char Character::getDisplayChar() {return display_char;}
 
-void Character::setLiving(int l){living = l;}
+void Character::setLiving(int l){
+
+    living = l;
+}
 
 int Character::isLiving(){return living;}
 
@@ -40,6 +44,16 @@ uint32_t Character::getSpeed(){return speed;}
 
 void Character::setNextTurn(){
     turn += (1000/speed);
+}
+
+int Character::attack(int dam){
+    hitpoints -= dam;
+    if (hitpoints <= 0){
+        hitpoints = 0;
+        setLiving(0);
+        return 1;
+    }
+    return 0;
 }
 
 int Character::sees_player(Dungeon *d)

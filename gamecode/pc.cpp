@@ -2,13 +2,14 @@
 
 #include "dungeon.h"
 #include "Monster.h"
+#include "Character.h"
 #include "windows.h"
 #include "pc.h"
 #include "object.h"
 
 typedef struct heap heap_t;
 
-PC::PC(){
+PC::PC():Character(){
     setDisplayChar('@');
     setSpeed(PC_SPEED);
     hitpoints = 100;
@@ -103,12 +104,12 @@ int PC::fight_monster(Dungeon *d, int dx, int dy){
     //TODO implement combat logic
     Monster *monster = (Monster*)character_mapxy(pos[dim_x] + dx,pos[dim_y] + dy);
     int damageReceived = monster->damage.roll();
-    int damageDone = damage.roll();
+    int damageDone = getDamage();
     hitpoints -= damageReceived;
     mvprintw(LINES-2, 0, "%s hit you for %i damage! You hit back for %i damage!",
              monster->name.c_str(),damageReceived,damageDone);
     mvprintw(LINES-1, 0, "Monster Health: %d",monster->hitpoints);
-    return monster->attack_monster(d,damageDone);
+    return monster->attack(damageDone);
 }
 
 int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
@@ -127,7 +128,7 @@ int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
     //Check for combat
     //TODO update combat
     if (d->character_map[pos[dim_y]+dy][pos[dim_x]+dx] != NULL){
-        if (!fight_monster(d,dx,dy)){
+        if (fight_monster(d,dx,dy)){
             return 0;
         }
     }
@@ -184,7 +185,9 @@ int PC::getSpeed()
 void move_pc_ncurses(Dungeon *d, heap_t *h)
 {
     int val  = wgetch(stdscr);
-
+    if (!d->pc->isLiving()){
+        return;
+    }
     clear();
     render(d);
     refresh();
@@ -392,7 +395,9 @@ void move_pc_ncurses(Dungeon *d, heap_t *h)
 
             //TODO Print list of controls
         case 'C':
-            goto jump;
+            d->pc->setLiving(0); //TODO testing
+            
+            break;
 
             jump:
         default:

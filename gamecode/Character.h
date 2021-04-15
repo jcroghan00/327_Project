@@ -42,6 +42,7 @@ public:
     void setSpeed(int speed);
     uint32_t getSpeed();
     void setNextTurn();
+    int attack(int dam);
     int isPc();
     int dispColor;
     string name;
