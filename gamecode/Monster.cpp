@@ -199,6 +199,34 @@ void Monster::move_monster(Dungeon *d)
     }
 }
 
+void Monster:: isMonster(Dungeon *d, Dif *dif){
+    int count = NULL;
+    for(int i = 0; i < d->num_monsters; i++){
+        int monstX = d->monsters[i]->pos[dim_x];
+        int monstY = d->monsters[i]->pos[dim_y];
+
+        if(pos[dim_x] + dif->x == monstX && pos[dim_y] + dif->y == monstY){
+            count = i;
+            break;
+        }
+    }
+
+    if(count){
+        for (int y = -1; y <= 1; y++) {
+            for (int x = -1; x <= 1; x++) {
+                if(mapxy(d->monsters[count]->pos[dim_x]+x,d->monsters[count]->pos[dim_y]+y) ==ter_floor_hall || mapxy(d->monsters[count]->pos[dim_x] + x, d->monsters[count]->pos[dim_y] + y) == ter_floor_room || mapxy(d->monsters[count]->pos[dim_x] + x, d->monsters[count]->pos[dim_y] + y) == ter_floor ){
+                    d->monsters[count]->pos[dim_x] = d->monsters[count]->pos[dim_x] + x;
+                    d->monsters[count]->pos[dim_y] = d->monsters[count]->pos[dim_y] + y;
+                    break;
+
+                }
+            }
+        
+            }
+    }
+
+}
+
 int Monster::create_monster(Monstertype *t){
     name = t->name;
     desc = t->desc;
