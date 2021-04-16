@@ -413,11 +413,10 @@ void delete_dungeon(Dungeon *d, heap_t *h)
 {
     heap_delete(h);
     free(d->rooms);
-    for (int i = 0; i < d->num_monsters;i++){
-        delete d->monsters[i];
+    for (Monster* m : d->monsters){
+        delete m;
     }
-    //delete d->pc;
-    free(d->monsters);
+    d->monsters.clear();
 }
 
 uint16_t count_up_stairs(Dungeon *d){
@@ -605,10 +604,10 @@ void Dungeon::new_dungeon(heap_t *h)
     gen_dungeon(this);
 
     heap_init(h,character_cmp,NULL);
-    for(int i = 0; i < num_monsters; i++)
+    for(int i = 0; i < (int)monsters.size(); i++)
     {
-        monsters[i]->setSd(i);
-        heap_insert(h,monsters[i]);
+        monsters.at(i)->setSd(i);
+        heap_insert(h,monsters.at(i));
     }
 
     clear();
@@ -618,9 +617,8 @@ void Dungeon::new_dungeon(heap_t *h)
 
 void Dungeon::gen_monsters(){
     if (num_monsters == -1) {num_monsters = num_rooms * 2 < 50 ? num_rooms * 2 : 50;}
-    monsters = (Monster**)calloc((num_monsters),sizeof(Monster) * (num_monsters));
     for(int i = 0; i < num_monsters; i++) {
-        monsters[i] = new Monster();
+        monsters.push_back(new Monster());
     }
     int pcRoomNum;
     int totalArea = 0;

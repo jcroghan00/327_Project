@@ -57,12 +57,9 @@ public:
     void move_monster(Dungeon *d);
     int create_monster(Monstertype *t);
     void isMonster(Dungeon *d, int dx, int dy);
-
-protected:
     //struct of the monsters abilities
     abil_t abil;
 protected:
-
     // distance map to destination tun/non tun by monster
     Monster_Path path_to_dest[DUNGEON_Y][DUNGEON_X];
 

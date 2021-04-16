@@ -12,6 +12,7 @@
 #include <sys/time.h>
 #include <assert.h>
 #include <unistd.h>
+#include <vector>
 #include "dim.h"
 #include "config.h"
 #include <ncurses.h>
@@ -28,6 +29,7 @@ typedef struct heap_node heap_node_t;
 #define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
 #define pcmappair(pair) (d->pc->pc_map[pair[dim_y]][pair[dim_x]])
 #define vismonsterpair(pair) (d->pc->vis_monsters[pair[dim_y]][pair[dim_x]])
+#define vismonsterxy(x,y) (d->pc->vis_monsters[y][x])
 #define visobjectmappair(pair) (d->pc->visObj[pair[dim_y]][pair[dim_x]])
 #define mapxy(x, y) (d->map[y][x])
 #define hardnesspair(pair) (d->hardness[pair[dim_y]][pair[dim_x]])
@@ -73,7 +75,7 @@ class Dungeon {
 public:
     uint32_t num_rooms;
     Room *rooms;
-    Monster **monsters;
+    std::vector<Monster*> monsters;
     Stair *stairs;
     terrain_type_t map[DUNGEON_Y][DUNGEON_X];
     Character *character_map[DUNGEON_Y][DUNGEON_X];

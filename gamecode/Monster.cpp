@@ -137,7 +137,10 @@ void Monster::final_move(Dungeon *d, int dx, int dy)
     d->character_map[pos[dim_y]][pos[dim_x]] = NULL;
     // if there's another character in destination, kill it
     if (d->character_map[pos[dim_y]+dy][pos[dim_x]+dx]){
-        //d->character_map[pos[dim_y]+dy][pos[dim_x]+dx]->setLiving(0);
+        d->character_map[pos[dim_y]+dy][pos[dim_x]+dx]->setLiving(0);
+        pos[dim_y] = pos[dim_y]+dy;
+        pos[dim_x] = pos[dim_x]+dx;
+        d->character_map[pos[dim_y]][pos[dim_x]] = this;
     } else {
         //set future position and update the map
 
@@ -203,9 +206,9 @@ void Monster::move_monster(Dungeon *d)
 }
 
 
-void Monster:: isMonster(Dungeon *d, Dif *dif){
+void Monster:: isMonster(Dungeon *d, int dx, int dy){
     int count = 0;
-    for(int i = 0; i < d->num_monsters; i++){
+    for(int i = 0; i < (int)d->monsters.size(); i++){
         int monstX = d->monsters[i]->pos[dim_x];
         int monstY = d->monsters[i]->pos[dim_y];
 
@@ -229,6 +232,7 @@ void Monster:: isMonster(Dungeon *d, Dif *dif){
     }
 }
 
+
 int Monster::create_monster(Monstertype *t){
     name = t->name;
     desc = t->desc;
@@ -245,7 +249,7 @@ return 0;
 
 void update_last_seen(Dungeon *d)
 {
-    for(int i = 0; i < d->num_monsters; ++i){
+    for(int i = 0; i < (int)d->monsters.size(); ++i){
 
         if(d->monsters[i]->isLiving() &&
                 d->monsters[i]->pos[dim_x] >= d->pc->pos[dim_x] - 2 &&
@@ -278,7 +282,7 @@ void write_monster_list(Dungeon *d, int index){
     wclear(win);
 
     wmove(win,2,0);
-    for(int i = index; i < index + 16 && i < d->num_monsters; ++i)
+    for(int i = index; i < index + 16 && i < (int)d->monsters.size(); ++i)
     {
         wprintw(win, " %3i: ", i);
         //wattron(win,COLOR_PAIR(d->monsters[i]->dispColor));
@@ -326,7 +330,7 @@ void monster_list(Dungeon *d) {
                 break;
 
             case KEY_DOWN:
-                if (index < d->num_monsters-15){
+                if (index < (int)d->monsters.size()-15){
                     index++;
                 }
                 write_monster_list(d,index);

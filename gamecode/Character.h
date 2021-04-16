@@ -42,7 +42,8 @@ public:
     void setSpeed(int speed);
     uint32_t getSpeed();
     void setNextTurn();
-    int attack(int dam);
+    int attack(Dungeon *d, int dam);
+    void kill(Dungeon *d);
     int isPc();
     int dispColor;
     string name;

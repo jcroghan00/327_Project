@@ -106,10 +106,15 @@ int PC::fight_monster(Dungeon *d, int dx, int dy){
     int damageReceived = monster->damage.roll();
     int damageDone = getDamage();
     hitpoints -= damageReceived;
-    mvprintw(LINES-2, 0, "%s hit you for %i damage! You hit back for %i damage!",
-             monster->name.c_str(),damageReceived,damageDone);
-    mvprintw(LINES-1, 0, "Monster Health: %d",monster->hitpoints);
-    return monster->attack(damageDone);
+    if (monster->attack(d, damageDone)){
+        mvprintw(LINES-1, 0, "Killed %s",monster->name.c_str());
+        return 1;
+    } else {
+        mvprintw(LINES-2, 0, "%s hit you for %i damage! You hit back for %i damage!",
+                 monster->name.c_str(),damageReceived,damageDone);
+        mvprintw(LINES-1, 0, "Monster Health: %d",monster->hitpoints);
+        return 0;
+    }
 }
 
 int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
@@ -128,15 +133,26 @@ int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
     //Check for combat
     //TODO update combat
     if (d->character_map[pos[dim_y]+dy][pos[dim_x]+dx] != NULL){
+        Monster *monster = (Monster*)character_mapxy(pos[dim_x] + dx,pos[dim_y] + dy);
+        mvprintw(LINES-1, 0, "Killed %s",monster->name.c_str());
+        monster->kill(d);
+        /*
         if (fight_monster(d,dx,dy)){
+            d->character_map[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
+            pos[dim_y] += dy;
+            pos[dim_x] += dx;
+            vis_monsters[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
+            d->character_map[pos[dim_y]][pos[dim_x]] = this;
             return 0;
         }
+         */
     }
-    vis_monsters[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
     d->character_map[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
     pos[dim_y] += dy;
     pos[dim_x] += dx;
+    vis_monsters[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
     d->character_map[pos[dim_y]][pos[dim_x]] = this;
+
 
     //Check for object on the ground
     if (d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]]){
