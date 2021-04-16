@@ -56,7 +56,7 @@ public:
     int attack_monster(Dungeon *d,int damage);
     void move_monster(Dungeon *d);
     int create_monster(Monstertype *t);
-    void isMonster(Dungeon *d, int dx, int dy);
+    int what_is(Dungeon *d, int dx, int dy);
     //struct of the monsters abilities
     abil_t abil;
 protected:
@@ -70,6 +70,7 @@ private:
     void tun_rock_check(Dungeon *d, int *dx, int *dy);
     void move_line(Dungeon *d, Dif *dif);
     void final_move(Dungeon *d,int dx,int dy);
+    void relocate_monster(Dungeon *d, int dy, int dx);
 };
 
 void update_last_seen(Dungeon *d);

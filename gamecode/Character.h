@@ -50,7 +50,7 @@ public:
     string desc;
     pair_t pos;
     uint32_t speed;
-    uint32_t hitpoints;
+    int hitpoints;
     Dice damage;
     Pc *pc;
 };

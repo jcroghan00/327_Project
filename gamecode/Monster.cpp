@@ -132,22 +132,34 @@ void Monster::move_line(Dungeon *d, Dif *dif)
 
 void Monster::final_move(Dungeon *d, int dx, int dy)
 {
-    isMonster(d, dx, dy);
-    //set current space to null
-    d->character_map[pos[dim_y]][pos[dim_x]] = NULL;
-    // if there's another character in destination, kill it
-    if (d->character_map[pos[dim_y]+dy][pos[dim_x]+dx]){
-        d->character_map[pos[dim_y]+dy][pos[dim_x]+dx]->setLiving(0);
-        pos[dim_y] = pos[dim_y]+dy;
-        pos[dim_x] = pos[dim_x]+dx;
-        d->character_map[pos[dim_y]][pos[dim_x]] = this;
-    } else {
-        //set future position and update the map
+    /*
+    int what = what_is(d, dx, dy);
 
-        pos[dim_y] = pos[dim_y]+dy;
-        pos[dim_x] = pos[dim_x]+dx;
-        d->character_map[pos[dim_y]][pos[dim_x]] = this;
+    if(what == 2)
+    {
+        d->pc->hitpoints -= this->damage.roll();
+        if(d->pc->hitpoints <= 0){
+            d->pc->setLiving(0);
+        }
     }
+    else if(what == 1)
+    {
+        relocate_monster(d, dy, dx);
+    }
+    else
+    {
+        d->character_map[this->pos[dim_y] + dy][this->pos[dim_x] + dx] = this;
+        d->character_map[this->pos[dim_y]][this->pos[dim_x]] = NULL;
+
+        this->pos[dim_y] += dy;
+        this->pos[dim_x] += dx;
+    }
+     */
+}
+
+void Monster::relocate_monster(Dungeon *d, int dy, int dx)
+{
+
 }
 
 void Monster::move_monster(Dungeon *d)
@@ -205,33 +217,19 @@ void Monster::move_monster(Dungeon *d)
     }
 }
 
-
-void Monster:: isMonster(Dungeon *d, int dx, int dy){
-    int count = 0;
-    for(int i = 0; i < (int)d->monsters.size(); i++){
-        int monstX = d->monsters[i]->pos[dim_x];
-        int monstY = d->monsters[i]->pos[dim_y];
-
-        if(pos[dim_x] + dx == monstX && pos[dim_y] + dy == monstY){
-            count = i;
-            break;
-        }
+int Monster::what_is(Dungeon *d, int dx, int dy){
+    if(d->pc->pos[dim_y] == this->pos[dim_y] + dy && d->pc->pos[dim_x] == this->pos[dim_x] + dx)
+    {
+        return 2;
     }
-
-    if(count){
-        for (int y = -1; y <= 1; y++) {
-            for (int x = -1; x <= 1; x++) {
-                if(mapxy(d->monsters[count]->pos[dim_x]+x,d->monsters[count]->pos[dim_y]+y) ==ter_floor_hall || mapxy(d->monsters[count]->pos[dim_x] + x, d->monsters[count]->pos[dim_y] + y) == ter_floor_room || mapxy(d->monsters[count]->pos[dim_x] + x, d->monsters[count]->pos[dim_y] + y) == ter_floor ){
-                    d->monsters[count]->pos[dim_x] = d->monsters[count]->pos[dim_x] + x;
-                    d->monsters[count]->pos[dim_y] = d->monsters[count]->pos[dim_y] + y;
-                    break;
-
-                }
-            }
-        }
+    else if(d->character_map[this->pos[dim_y] + dy][this->pos[dim_x] + dx])
+    {
+        return 1;
+    }
+    else {
+        return 0;
     }
 }
-
 
 int Monster::create_monster(Monstertype *t){
     name = t->name;
@@ -244,7 +242,7 @@ int Monster::create_monster(Monstertype *t){
     damage = t->dam;
     display_char = t->symb[0];
 
-return 0;
+    return 0;
 }
 
 void update_last_seen(Dungeon *d)

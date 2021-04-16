@@ -40,7 +40,7 @@ void play_game(Dungeon *d, heap_t *h)
             c->setNextTurn();
             heap_insert(h, c);
 
-            usleep(2500); // you cant see the monsters' steps otherwise
+            //usleep(2500); // you cant see the monsters' steps otherwise
             render(d);
             refresh();
         }

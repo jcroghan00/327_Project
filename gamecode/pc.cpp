@@ -13,6 +13,9 @@ PC::PC():Character(){
     setDisplayChar('@');
     setSpeed(PC_SPEED);
     hitpoints = 100;
+    damage.base = 0;
+    damage.numDice = 4;
+    damage.numSides = 1;
     for(int i = 0; i < DUNGEON_Y; i++){
         for(int j = 0; j < DUNGEON_X; j++){
             pc_map[i][j] = ter_wall;
@@ -103,15 +106,24 @@ void PC::update_vis_objects(Dungeon *d)
 int PC::fight_monster(Dungeon *d, int dx, int dy){
     //TODO implement combat logic
     Monster *monster = (Monster*)character_mapxy(pos[dim_x] + dx,pos[dim_y] + dy);
-    int damageReceived = monster->damage.roll();
     int damageDone = getDamage();
-    hitpoints -= damageReceived;
-    if (monster->attack(d, damageDone)){
+    monster->hitpoints -= damageDone;
+    if (monster->hitpoints <= 0){
+        monster->hitpoints = 0;
         mvprintw(LINES-1, 0, "Killed %s",monster->name.c_str());
+
+        monster->setLiving(0);
+
+        for (int i = 0; i < (int)d->monsters.size(); i++){
+            if (d->monsters.at(i)->hitpoints == 0){
+                d->monsters.erase(d->monsters.begin()+i);
+            }
+        }
+
         return 1;
     } else {
-        mvprintw(LINES-2, 0, "%s hit you for %i damage! You hit back for %i damage!",
-                 monster->name.c_str(),damageReceived,damageDone);
+        mvprintw(LINES-2, 0, "You hit %s for %i damage!",
+                 monster->name.c_str(), damageDone);
         mvprintw(LINES-1, 0, "Monster Health: %d",monster->hitpoints);
         return 0;
     }
@@ -133,33 +145,25 @@ int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
     //Check for combat
     //TODO update combat
     if (d->character_map[pos[dim_y]+dy][pos[dim_x]+dx] != NULL){
-        Monster *monster = (Monster*)character_mapxy(pos[dim_x] + dx,pos[dim_y] + dy);
-        mvprintw(LINES-1, 0, "Killed %s",monster->name.c_str());
-        monster->kill(d);
-        /*
-        if (fight_monster(d,dx,dy)){
+        if(fight_monster(d, dx, dy)){
             d->character_map[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
             pos[dim_y] += dy;
             pos[dim_x] += dx;
             vis_monsters[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
             d->character_map[pos[dim_y]][pos[dim_x]] = this;
-            return 0;
         }
-         */
     }
-    d->character_map[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
-    pos[dim_y] += dy;
-    pos[dim_x] += dx;
-    vis_monsters[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
-    d->character_map[pos[dim_y]][pos[dim_x]] = this;
-
+    else{
+        d->character_map[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
+        pos[dim_y] += dy;
+        pos[dim_x] += dx;
+        d->character_map[pos[dim_y]][pos[dim_x]] = this;
+    }
 
     //Check for object on the ground
     if (d->objMap[d->pc->pos[dim_y]][d->pc->pos[dim_x]]){
         pickup_item(d);
     }
-
-
 
     update_pc_map(d);
     update_vis_objects(d);
@@ -176,13 +180,15 @@ int PC::getDamage()
         base = this->damage.roll();
     }
 
+    int size = sizeof this->equipSlots / sizeof this->equipSlots[0];
     int damage = base;
-    for(int i = 1; i < 12; ++i){
-        if(equipSlots[i])
-        {
-            damage += equipSlots[i]->dam.roll();
+
+    for(int i = 1; i < size; ++i) {
+        if (this->equipSlots[i]) {
+            damage += this->equipSlots[i]->dam.roll();
         }
     }
+
     return damage;
 }
 
