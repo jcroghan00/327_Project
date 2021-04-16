@@ -132,13 +132,11 @@ void Monster::move_line(Dungeon *d, Dif *dif)
 
 void Monster::final_move(Dungeon *d, int dx, int dy)
 {
-    /*
     int what = what_is(d, dx, dy);
 
-    if(what == 2)
-    {
+    if(what == 2) {
         d->pc->hitpoints -= this->damage.roll();
-        if(d->pc->hitpoints <= 0){
+        if (d->pc->hitpoints <= 0) {
             d->pc->setLiving(0);
         }
     }
@@ -154,7 +152,6 @@ void Monster::final_move(Dungeon *d, int dx, int dy)
         this->pos[dim_y] += dy;
         this->pos[dim_x] += dx;
     }
-     */
 }
 
 void Monster::relocate_monster(Dungeon *d, int dy, int dx)

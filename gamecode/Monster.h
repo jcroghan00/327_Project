@@ -69,7 +69,7 @@ private:
     void erratic_move(Dungeon *d);
     void tun_rock_check(Dungeon *d, int *dx, int *dy);
     void move_line(Dungeon *d, Dif *dif);
-    void final_move(Dungeon *d,int dx,int dy);
+    void final_move(Dungeon *d, int dx, int dy);
     void relocate_monster(Dungeon *d, int dy, int dx);
 };
 

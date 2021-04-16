@@ -13,7 +13,7 @@ PC::PC():Character(){
     setDisplayChar('@');
     setSpeed(PC_SPEED);
     hitpoints = 100;
-    damage.base = 0;
+    damage.base = 10000;
     damage.numDice = 4;
     damage.numSides = 1;
     for(int i = 0; i < DUNGEON_Y; i++){
@@ -31,7 +31,6 @@ PC::PC():Character(){
     for (int i = 0; i < equipSize; i++){
         equipSlots[i] = NULL;
     }
-
 }
 
 void PC::reset_maps()
@@ -103,12 +102,16 @@ void PC::update_vis_objects(Dungeon *d)
     }
 }
 
-int PC::fight_monster(Dungeon *d, int dx, int dy){
-    //TODO implement combat logic
+int PC::fight_monster(Dungeon *d, int dx, int dy, heap_t *h){
+    // implement combat logic
     Monster *monster = (Monster*)character_mapxy(pos[dim_x] + dx,pos[dim_y] + dy);
     int damageDone = getDamage();
     monster->hitpoints -= damageDone;
     if (monster->hitpoints <= 0){
+        if(monster->abil.BOSS){
+            render_end_game(d, h);
+        }
+
         monster->hitpoints = 0;
         mvprintw(LINES-1, 0, "Killed %s",monster->name.c_str());
 
@@ -145,7 +148,7 @@ int PC::move_pc(Dungeon *d, heap_t *h, int dy, int dx, int teleport = 0){
     //Check for combat
     //TODO update combat
     if (d->character_map[pos[dim_y]+dy][pos[dim_x]+dx] != NULL){
-        if(fight_monster(d, dx, dy)){
+        if(fight_monster(d, dx, dy, h)){
             d->character_map[d->pc->pos[dim_y]][pos[dim_x]] = NULL;
             pos[dim_y] += dy;
             pos[dim_x] += dx;
