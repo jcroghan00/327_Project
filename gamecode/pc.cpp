@@ -13,9 +13,9 @@ PC::PC():Character(){
     setDisplayChar('@');
     setSpeed(PC_SPEED);
     hitpoints = 100;
-    damage.base = 10000;
-    damage.numDice = 4;
-    damage.numSides = 1;
+    damage.base = 2;
+    damage.numDice = 2;
+    damage.numSides = 2;
     for(int i = 0; i < DUNGEON_Y; i++){
         for(int j = 0; j < DUNGEON_X; j++){
             pc_map[i][j] = ter_wall;
