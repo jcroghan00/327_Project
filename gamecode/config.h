@@ -25,7 +25,7 @@
 #define SEMANTIC_FILE_MARKER   "RLG327-S2021"
 #define SAVE_DIR               ".rlg327"
 #define SAVE_FILE              "dungeon"
-#define FILE_VERSION           8
+#define FILE_VERSION           10
 
 
 #endif //GAMECODE_CONFIG_H

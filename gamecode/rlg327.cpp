@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
     }
 
     srand(seed);
-    seed = 1; //TODO remove
+    //seed = 1; //TODO remove
     Dungeon* d = new Dungeon(numMon);
 
     initscr();
@@ -96,11 +96,10 @@ int main(int argc, char *argv[])
     curs_set(0);
     keypad(stdscr, TRUE);
 
-    if (load){
+    if (load) {
         load_dungeon(d);
-    } else {
-        gen_dungeon(d);
     }
+        gen_dungeon(d);
     if (save) {
         save_dungeon(d);
     }
