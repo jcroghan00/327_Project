@@ -47,28 +47,6 @@ void Character::setNextTurn(){
     turn += (1000/speed);
 }
 
-int Character::attack(Dungeon *d, int dam){
-    hitpoints -= dam;
-    if (hitpoints <= 0){
-        hitpoints = 0;
-        setLiving(0);
-        character_mapxy(pos[dim_x],pos[dim_y]) = NULL;
-        vismonsterxy(pos[dim_x],pos[dim_y]) = NULL;
-        return 1;
-    }
-    return 0;
-}
-
-void Character::kill(Dungeon *d){
-    character_mappair(pos) = NULL;
-    for (int i = 0; i < (int)d->monsters.size(); i++){
-        if (d->monsters[i]->sd == sd){
-            d->monsters.erase(d->monsters.cbegin()+ i);
-        }
-    }
-    setLiving(0);
-}
-
 int Character::sees_player(Dungeon *d)
 {
     int x0 = pos[dim_x];
