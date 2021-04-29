@@ -13,4 +13,5 @@ extra ways of rendering the dungeon. these include rendering a
 4. terrain map
 As well as adding these functions we decided to update the save and load
 functions of the dungeon to bring them up to date with a dungeon
-containing monsters and objects.
+containing monsters and objects. We also added some more functionality to the look at monsters function by displaying a monsters colored name,HP, damage range,
+and speed when your cursor is hovered over them before you select them.

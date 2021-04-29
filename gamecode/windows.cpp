@@ -1009,8 +1009,14 @@ void render_monster_info_win(Dungeon *d) {
         render_ncurses(d, monster_win, 0);
         mvwaddch(monster_win, cursor[dim_y] + 1, cursor[dim_x], '*');
         if (character_mappair(cursor)){
+            Character *Char = character_mappair(cursor);
             //TODO maybe render more monsters stats here
-            mvwprintw(monster_win, DUNGEON_Y +1, 0, character_mappair(cursor)->name.c_str());
+            wattron(monster_win,COLOR_PAIR(Char->dispColor));
+            mvwprintw(monster_win, DUNGEON_Y +1, 0, Char->name.c_str());
+            wattroff(monster_win,COLOR_PAIR(Char->dispColor));
+            wprintw(monster_win, " HP: %i", Char->hitpoints);
+            wprintw(monster_win, " Damage: %i-%i", Char->damage.base, Char->damage.base + (Char->damage.numDice * Char->damage.numSides));
+            wprintw(monster_win, " Speed: %i", Char->speed);
         }
         int val = wgetch(monster_win);
         switch (val) {

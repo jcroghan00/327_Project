@@ -12,6 +12,8 @@ typedef struct heap heap_t;
 PC::PC():Character(){
     setDisplayChar('@');
     setSpeed(PC_SPEED);
+    name = "The Mighty Stacy Abrams";
+    dispColor = COLOR_WHITE;
     hitpoints = 1000;
     damage.base = 2;
     damage.numDice = 2;
