@@ -113,12 +113,11 @@ uint32_t is_open_space(Dungeon *d, int16_t y, int16_t x);
 int gen_dungeon(Dungeon *d);
 void render_ncurses(Dungeon *d, WINDOW *scr,int render_items);
 void render_fow(Dungeon *d);
-void render_dungeon(Dungeon *d);
 void render_teleport_select(Dungeon *d, heap_t *h);
 void render(Dungeon *d);
 void delete_dungeon(Dungeon *d, heap_t *h);
 int load_dungeon(Dungeon *d);
 int save_dungeon(Dungeon *d);
-void new_dungeon(Dungeon *d, heap_t *h);
+//void new_dungeon(Dungeon *d, heap_t *h);
 
 #endif

@@ -76,7 +76,6 @@ int main(int argc, char *argv[])
     }
 
     srand(seed);
-    //seed = 1; //TODO remove
 
     initscr();
     resizeterm(24,81);

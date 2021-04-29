@@ -43,7 +43,6 @@ public:
     int rrty;
     int inUse;
 
-    void print();
     Monster* createMonster();
     int getColor();
 };
@@ -53,7 +52,6 @@ public:
     Monster();
     //pair_t last_seen;
     pair_t destination;
-    int attack_monster(Dungeon *d,int damage);
     void move_monster(Dungeon *d);
     int create_monster(Monstertype *t);
     int what_is(Dungeon *d, int dx, int dy);

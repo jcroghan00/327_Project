@@ -50,8 +50,6 @@ public:
     int art;
     int rrty;
     int inUse;
-
-    void print();
 };
 
 class Object{

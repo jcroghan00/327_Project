@@ -451,16 +451,24 @@ int load_dungeon(Dungeon *d)
     inFile.read((char*)&file_size, 4);
     file_size = be32toh(file_size);
 
+    d->pc = new PC();
+
     //pc location
     inFile.read((char*)&d->pc->pos[dim_x], 1);
     inFile.read((char*)&d->pc->pos[dim_y], 1);
 
-    d->pc = new PC();
     d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = d->pc;
 
     //hardness
     for (int i=0; i<DUNGEON_Y;i++) {
         for(int j=0; j<DUNGEON_X;j++) {
+            if(i == 0 || j == 0 || i == DUNGEON_Y - 1 || j == DUNGEON_X - 1)
+            {
+                mapxy(j, i) = ter_wall_immutable;
+            }
+            else{
+                mapxy(j, i) = ter_wall;
+            }
             inFile.read((char*)&d->hardness[i][j],1);//Hardness map: 1680 bytes, 1 bytes each
         }
     }

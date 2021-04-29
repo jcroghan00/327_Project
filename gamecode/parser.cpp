@@ -1,11 +1,7 @@
-
 #include "parser.h"
-#include "Monster.h"
 #include "object.h"
 #include "rlg327.h"
 #include <iostream>
-#include <fstream>
-#include <cstring>
 #include <functional>
 #include <sstream>
 

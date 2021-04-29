@@ -49,7 +49,6 @@ void render_terrain_map(Dungeon *d)
                     break;
                 case ter_debug:
                     mvwaddch(map_window,p[dim_y] + 1, p[dim_x],'*');
-                    //fprintf(stderr, "Debug character at %d, %d\n", p[dim_y], p[dim_x]);
                     break;
                 case ter_stairs_up:
                     wattron(map_window,COLOR_PAIR(STAIR_PAIR));

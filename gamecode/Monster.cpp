@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
-#include <sstream>
+
 
 #include "Monster.h"
 #include "dungeon.h"
@@ -34,16 +34,6 @@ Monstertype* Monster::pick_type(){
     } while (mon->rrty < rand() % 100);
     mon->inUse = 1;
     return mon;
-}
-
-int Monster::attack_monster(Dungeon *d,int damage){
-    hitpoints -= damage;
-    if (hitpoints <= 0){
-        character_mappair(pos) = NULL;
-        setLiving(0);
-        return 1;
-    }
-    return 0;
 }
 
 void Monster::get_monster_path(Dungeon *d){
@@ -154,6 +144,7 @@ void Monster::final_move(Dungeon *d, int dx, int dy)
     }
 }
 
+// i never wrote this and now i guess i never will -J
 void Monster::relocate_monster(Dungeon *d, int dy, int dx)
 {
 
@@ -280,9 +271,7 @@ void write_monster_list(Dungeon *d, int index){
     for(int i = index; i < index + 16 && i < (int)d->monsters.size(); ++i)
     {
         wprintw(win, " %3i: ", i);
-        //wattron(win,COLOR_PAIR(d->monsters[i]->dispColor));
         wprintw(win, "%c: ", d->monsters[i]->display_char);
-        //wattroff(win, COLOR_PAIR(d->monsters[i]->dispColor));
 
         int dy = d->pc->pos[dim_y] - d->monsters[i]->pos[dim_y];
         if(dy < 0) {
@@ -376,6 +365,7 @@ int Monstertype::getColor(){
     }
 }
 
+/*
 void Monstertype::print()
 {
     cout << "NAME: " + this->name << endl;
@@ -399,3 +389,4 @@ void Monstertype::print()
     cout << this->rrty << endl;
     cout << "\n";
 }
+*/

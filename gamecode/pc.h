@@ -27,9 +27,6 @@ public:
     int getSpeed();
 };
 
-void config_pc(Dungeon *d);
-void place_pc(Dungeon *d);
 void move_pc_ncurses(Dungeon *d, heap_t *h);
-int pc_next_pos(Dungeon *d);
 
 #endif

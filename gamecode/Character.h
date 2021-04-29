@@ -1,4 +1,3 @@
-
 #ifndef GAMECODE_CHARACTER_H
 #define GAMECODE_CHARACTER_H
 
@@ -42,8 +41,6 @@ public:
     void setSpeed(int speed);
     uint32_t getSpeed();
     void setNextTurn();
-    int attack(Dungeon *d, int dam);
-    void kill(Dungeon *d);
     int isPc();
     int dispColor;
     string name;
@@ -56,6 +53,5 @@ public:
 };
 
 int32_t character_cmp(const void *key, const void *with);
-void delete_characters(Character **c, Dungeon *d);
 
 #endif //GAMECODE_CHARACTER_H

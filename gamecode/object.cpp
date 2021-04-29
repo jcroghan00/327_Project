@@ -6,14 +6,12 @@
 #include "dungeon.h"
 #include "rlg327.h"
 #include "Character.h"
-#include "Monster.h"
 #include "windows.h"
 #include "pc.h"
 
-#include <iostream>
-
 using namespace std;
 
+/*
 void ObjectType::print()
 {
     cout << "NAME: " + this->name << endl;
@@ -54,6 +52,7 @@ void ObjectType::print()
     cout << this->art << endl;
     cout << "\n";
 }
+ */
 
 int Object::createObj(ObjectType *obj){
 
@@ -172,7 +171,7 @@ void gen_objects(Dungeon *d){
 
     d->objects = (Object**)calloc((d->numObjects),sizeof(Object) * (d->numObjects));
 
-    int i = 0;
+    int i;
     ObjectType num;
 
        for(i = 0; i < d->numObjects; i++)
