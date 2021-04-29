@@ -1,4 +1,5 @@
 #include <ncurses.h>
+#include <sstream>
 
 #include "dungeon.h"
 #include "heap.h"
@@ -334,51 +335,51 @@ uint32_t calc_file_size(Dungeon *d){
 
 int save_dungeon(Dungeon *d)
 {
-    FILE *file;
     uint32_t version, file_size, be32;
-  char *home = getenv("HOME");
   version = htobe32(FILE_VERSION);
   file_size = calc_file_size(d);
 
   //TODO change file name depending on floor
-  char *path = (char*)malloc(strlen(home) + sizeof(SAVE_DIR) + sizeof(SAVE_FILE) + 4);
-  sprintf(path,"%s/%s/%s", home, SAVE_DIR, SAVE_FILE);
-  if (!(file = fopen(path,"w"))){
-        return -1;
-    }
-  free(path);
+  stringstream filepath;
+  filepath << getenv("HOME");
+  filepath << "/.rlg327/dungeon";
 
+  ofstream outFile(filepath.str());
 
-  fwrite(SEMANTIC_FILE_MARKER, 1, sizeof(SEMANTIC_FILE_MARKER)-1,file);//semantic file marker: 12 bytes
+  if(!outFile){
+      cerr << "cannot open \"dungeon\", are you sure it's located in HOME/.rlg327/?" << endl;
+      outFile.close();
+      return 1;
+  }
 
-   be32= htobe32(version);
-  fwrite(&be32,sizeof(be32),1,file); //file version: 4 bytes
+  outFile.write(SEMANTIC_FILE_MARKER, sizeof(SEMANTIC_FILE_MARKER)-1);//semantic file marker: 12 bytes
+
+  be32= htobe32(version);
+  outFile.write((char*)&be32,sizeof(be32)); //file version: 4 bytes
 
   be32 = htobe32(file_size);
-  fwrite(&be32,sizeof(be32),1,file);//file size: 4 bytes
+  outFile.write((char*)&be32,sizeof(be32));//file size: 4 bytes
 
-  fwrite(&d->pc->pos[dim_x],1,1,file);//pc loc dim-x: 2 bytes
-  fwrite(&d->pc->pos[dim_y],1,1,file);//pc loc dim-y: 2 bytes
+  outFile.write((char*)&d->pc->pos[dim_x],1);//pc loc dim-x: 2 bytes
+  outFile.write((char*)&d->pc->pos[dim_y],1);//pc loc dim-y: 2 bytes
 
-  
   for (int i=0; i<DUNGEON_Y;i++) {
       for(int j=0; j<DUNGEON_X;j++) {
-	        fwrite(&d->hardness[i][j],1,1,file);//Hardness map: 1680 bytes, 1 bytes each
+	        outFile.write((char*)&d->hardness[i][j],1);//Hardness map: 1680 bytes, 1 bytes each
 	    }
     }
 
-
-  int tempnumrooms = d->num_rooms;
+  int temp_num_rooms = d->num_rooms;
   d->num_rooms = htobe16(d->num_rooms);
-  fwrite(&d->num_rooms,2,1,file);// number of rooms: 2 bytes
+  outFile.write((char*)&d->num_rooms,2);// number of rooms: 2 bytes
   
-  for (int i=0; i <tempnumrooms;i++)
+  for (int i=0; i <temp_num_rooms;i++)
     {
       //room pos and size: 4 x 4 bytes
-        fwrite(&d->rooms[i].position[dim_x],1,1,file);
-        fwrite(&d->rooms[i].position[dim_y],1,1,file);
-        fwrite(&d->rooms[i].size[dim_x],1,1,file);
-        fwrite(&d->rooms[i].size[dim_y],1,1,file);
+        outFile.write((char*)&d->rooms[i].position[dim_x],1);
+        outFile.write((char*)&d->rooms[i].position[dim_y],1);
+        outFile.write((char*)&d->rooms[i].size[dim_x],1);
+        outFile.write((char*)&d->rooms[i].size[dim_y],1);
     }
 
 //im sorry
@@ -387,16 +388,16 @@ int save_dungeon(Dungeon *d)
 
  //number of up and down stairs: 2 x 2 bytes
   stairs_up = htobe16(stairs_up);
-  fwrite(&stairs_up,2,1,file);
+  outFile.write((char*)&stairs_up,2);
   stairs_down = htobe16(stairs_down);
-  fwrite(&stairs_down,2,1,file);
+  outFile.write((char*)&stairs_down,2);
   for (uint32_t i =0; i <(sizeof(d->stairs));i++)
     {
       //write only the up stairs
       if (d->stairs[i].direction == ter_stairs_up){
         //up stairs position: 2 x 2 bytes
-      fwrite(&d->stairs[i].position[dim_x],1,1,file);
-      fwrite(&d->stairs[i].position[dim_y],1,1,file);
+      outFile.write((char*)&d->stairs[i].position[dim_x],1);
+      outFile.write((char*)&d->stairs[i].position[dim_y],1);
       }
     }
 
@@ -405,49 +406,67 @@ int save_dungeon(Dungeon *d)
       //write only the down stairs
       if (d->stairs[i].direction == ter_stairs_down){
           //down stairs position: 2 x 2 bytes
-      fwrite(&d->stairs[i].position[dim_x],1,1,file);
-      fwrite(&d->stairs[i].position[dim_y],1,1,file);
+      outFile.write((char*)&d->stairs[i].position[dim_x],1);
+      outFile.write((char*)&d->stairs[i].position[dim_y],1);
       }
     }
+
+  // TODO save monster positions
+
+  // TODO save object positions
+
+  outFile.close();
   return 0;
 }
 
+// TODO fix this
 int load_dungeon(Dungeon *d)
 {
     // NON FUNCTIONING
     uint32_t version, file_size;
     char semantic[sizeof(SEMANTIC_FILE_MARKER)];
-    char *home = getenv("HOME");
-    const char *game_dir = ".rlg327";
-    const char *save_file = "dungeon";
 
-    char *path = (char*)malloc(strlen(home) + strlen(game_dir) + strlen(save_file) + 3);
-    sprintf(path,"%s/%s/%s", home, game_dir, save_file);
-    FILE *file = fopen(path,"r");
-    free(path);
+    stringstream filepath;
+    filepath << getenv("HOME");
+    filepath << "/.rlg327/dungeon";
 
-    fread(semantic, 1, sizeof(SEMANTIC_FILE_MARKER), file);
+    ifstream inFile(filepath.str());
 
-    if(strcmp(semantic, "RLG327-S2021")){
+    if(!inFile){
+        cerr << "cannot open \"dungeon\", are you sure it's located in HOME/.rlg327/?" << endl;
+        inFile.close();
+        return 1;
+    }
+
+    inFile.read((char*)semantic, sizeof(SEMANTIC_FILE_MARKER));
+
+    if(strcmp(semantic, "RLG327-S2021\n")){
         return -1;
     }
 
     //version
-    fread(&version, 4, 1, file);
+    inFile.read((char*)&version, 4);
     version = be32toh(version);
     //file size
-    fread(&file_size, 4, 1, file);
+    inFile.read((char*)&file_size, 4);
     file_size = be32toh(file_size);
 
     //pc location
-    fread(&d->pc->pos[dim_x], 1, 1, file);
-    fread(&d->pc->pos[dim_y], 1, 1, file);
+    inFile.read((char*)&d->pc->pos[dim_x], 1);
+    inFile.read((char*)&d->pc->pos[dim_y], 1);
+
+    d->pc = new PC();
+    d->character_map[d->pc->pos[dim_y]][d->pc->pos[dim_x]] = d->pc;
 
     //hardness
-    fread(&d->hardness, 1, 1680, file);
+    for (int i=0; i<DUNGEON_Y;i++) {
+        for(int j=0; j<DUNGEON_X;j++) {
+            inFile.read((char*)&d->hardness[i][j],1);//Hardness map: 1680 bytes, 1 bytes each
+        }
+    }
 
     //rooms
-    fread(&d->num_rooms, 2, 1, file);
+    inFile.read((char*)&d->num_rooms, 2);
     d->num_rooms = be16toh(d->num_rooms);
 
     d->rooms = (Room*)malloc(sizeof (*d->rooms) * d->num_rooms);
@@ -459,10 +478,10 @@ int load_dungeon(Dungeon *d)
         uint8_t width;
         uint8_t height;
 
-        fread(&x, 1, 1, file);
-        fread(&y, 1, 1, file);
-        fread(&width, 1, 1, file);
-        fread(&height, 1, 1, file);
+        inFile.read((char*)&x, 1);
+        inFile.read((char*)&y, 1);
+        inFile.read((char*)&width, 1);
+        inFile.read((char*)&height, 1);
 
         d->rooms[i].position[dim_x] = x;
         d->rooms[i].position[dim_y] = y;
@@ -487,18 +506,17 @@ int load_dungeon(Dungeon *d)
     //stairs
     //TODO with stairs being malloced now make need to store stair locations in a buffer so the stairs array can be malloced
     uint16_t stairs_down = 0, stairs_up = 0;
-    fread(&stairs_up, 2, 1, file);
+    inFile.read((char*)&stairs_up, 2);
     stairs_up = be16toh(stairs_up);
-    fread(&stairs_down, 2, 1, file);
+    inFile.read((char*)&stairs_down, 2);
     stairs_down = be16toh(stairs_down);
     for(int i = 0; i < stairs_up; ++i)
     {
         uint8_t x;
         uint8_t y;
 
-        fread(&x, 1, 1, file);
-        fread(&y, 1, 1, file);
-
+        inFile.read((char*)&x, 1);
+        inFile.read((char*)&y, 1);
 
         d->stairs[i].position[dim_x] = x;
         d->stairs[i].position[dim_y] = y;
@@ -509,15 +527,18 @@ int load_dungeon(Dungeon *d)
         uint8_t x;
         uint8_t y;
 
-        fread(&x, 1, 1, file);
-        fread(&y, 1, 1, file);
-
+        inFile.read((char*)&x, 1);
+        inFile.read((char*)&y, 1);
 
         d->stairs[i].position[dim_x] = x;
         d->stairs[i].position[dim_y] = y;
         d->stairs[i].direction = mapxy(x, y) = ter_stairs_down;
     }
     if (d->num_monsters == -1){d->num_monsters = d->num_rooms*2 < 50 ? d->num_rooms*2 : 50;}
+
+    // TODO load monster positions and create monsters
+
+    // TODO load object positions and create objects
     return 0;
 }
 
@@ -527,6 +548,7 @@ Dungeon::Dungeon(int numMon){
 
     //generate the dungeon
     empty_dungeon();
+
     do {
         make_rooms();
     } while (place_rooms());
@@ -541,7 +563,6 @@ Dungeon::Dungeon(int numMon){
         }
     }
 
-    //generate the pc
     pc = new PC();
     int randRoom = rand() % num_rooms;
     int x = rand() % rooms[randRoom].size[dim_x];
@@ -551,6 +572,29 @@ Dungeon::Dungeon(int numMon){
     character_map[pc->pos[dim_y]][pc->pos[dim_x]] = pc;
 
     //generate monsters
+    num_monsters = numMon;
+    gen_monsters();
+}
+
+Dungeon::Dungeon(int numMon, int load)
+{
+    monster_parser();
+    object_parser();
+
+    //generate the dungeon
+    //empty_dungeon();
+
+    for(int i = 0; i < DUNGEON_Y; i++){
+        for(int j = 0; j < DUNGEON_X; j++){
+            character_map[i][j] = NULL;
+            objMap[i][j] = NULL;
+        }
+    }
+
+    pc = new PC();
+
+    load_dungeon(this);
+
     num_monsters = numMon;
     gen_monsters();
 }

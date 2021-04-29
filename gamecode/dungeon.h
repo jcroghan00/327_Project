@@ -90,6 +90,7 @@ public:
     Object *objMap[DUNGEON_Y][DUNGEON_X];
     int fow;
     Dungeon(int numMon);
+    Dungeon(int numMon, int load);
     void gen_monsters();
     uint32_t is_open_space(int16_t y, int16_t x);
     int empty_dungeon();

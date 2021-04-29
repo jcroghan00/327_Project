@@ -52,7 +52,6 @@ void monster_parser()
 
     ifstream inFile(filepath.str());
 
-
     if(!inFile){
         cerr << "cannot open \"monster_desc.txt\", are you sure it's located in HOME/.rlg327/?" << endl;
         inFile.close();

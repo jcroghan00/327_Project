@@ -12,7 +12,7 @@ typedef struct heap heap_t;
 PC::PC():Character(){
     setDisplayChar('@');
     setSpeed(PC_SPEED);
-    hitpoints = 100;
+    hitpoints = 1000;
     damage.base = 2;
     damage.numDice = 2;
     damage.numSides = 2;
