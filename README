@@ -2,14 +2,15 @@ Jack Croghan           jcroghan@iastate.edu
 Ryan Tullis            rctullis@iastate.edu
 Aashish Komaragiri     adkoma@iastate.edu 
 
-README assignment-1.08
+README assignment-1.10
 
-This weeks assignment was about generating the monsters and objects
-that we parsed in from a file last week.
-
-Monsters were created using the attributes that will determine how they
-act and spawn. Unique monsters are only able to be spawned once. Monster
-colors are also used to help differentiate from other monsters.
-
-The object parser and spawning works almost identically to the way that
-monsters are handled.
+For this weeks assignment we choose to implement a few extra functions
+to make our dungeon better. First we added commands to display a few
+extra ways of rendering the dungeon. these include rendering a
+1. hardness map
+2. tunneling distance map
+3. non tunneling distance map
+4. terrain map
+As well as adding these functions we decided to update the save and load
+functions of the dungeon to bring them up to date with a dungeon
+containing monsters and objects.
