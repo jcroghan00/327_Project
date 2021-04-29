@@ -85,43 +85,118 @@ void create_hardness_map_win(Dungeon *d){
     d->windows->hardness_map_win = create_window();
 }
 void render_hardness_map(Dungeon *d){
-    //TODO add cursor functionality to view targeted squares hardness
     init_pair(21, COLOR_RED, COLOR_BLACK);
     init_pair(22, COLOR_YELLOW, COLOR_BLACK);
     init_pair(23, COLOR_GREEN, COLOR_BLACK);
+    pair_t cursor;
+    cursor[dim_x] = d->pc->pos[dim_x];
+    cursor[dim_y] = d->pc->pos[dim_y];
     WINDOW *map_window = d->windows->hardness_map_win;
-    pair_t p;
+    int visible = 1;
     const char *msg = "Press \'Q\' to close hardness map";
-    mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
-
-    for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
-        for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
-            uint8_t hardness = d->hardness[p[dim_y]][p[dim_x]];
-            if (hardness && hardness != 255){
-                char display = '0' + 1 + hardness/85;
-                int color = (1+ hardness/85) + 20;
-                wattron(map_window,COLOR_PAIR(color));
-                mvwaddch(map_window,p[dim_y] + 1, p[dim_x],display);
-                wattroff(map_window,COLOR_PAIR(color));
+    while (visible) {
+        mvwprintw(map_window,0, (COLS/2 - strlen(msg)/2), msg);
+        cursor[dim_x] = 0 < cursor[dim_x] ? cursor[dim_x] : 1;
+        cursor[dim_y] = 0 < cursor[dim_y] ? cursor[dim_y] : 1;
+        cursor[dim_x] = cursor[dim_x] < DUNGEON_X-1 ? cursor[dim_x] : DUNGEON_X - 2;
+        cursor[dim_y] = cursor[dim_y] < DUNGEON_Y-1 ? cursor[dim_y] : DUNGEON_Y - 2;
+        pair_t p;
+        for (p[dim_y] = 0; p[dim_y] < DUNGEON_Y; p[dim_y]++) {
+            for (p[dim_x] = 0; p[dim_x] < DUNGEON_X; p[dim_x]++) {
+                uint8_t hardness = d->hardness[p[dim_y]][p[dim_x]];
+                if (hardness && hardness != 255){
+                    char display = '0' + 1 + hardness/85;
+                    int color = (1+ hardness/85) + 20;
+                    wattron(map_window,COLOR_PAIR(color));
+                    mvwaddch(map_window,p[dim_y] + 1, p[dim_x],display);
+                    wattroff(map_window,COLOR_PAIR(color));
+                }
             }
         }
-    }
+        mvwaddch(map_window, cursor[dim_y] + 1, cursor[dim_x], '*');
 
-
-    touchwin(map_window);
-    int visible = 1;
-    while (visible) {
+        mvwprintw(map_window, DUNGEON_Y +1, 0, ("Cell Hardness: "));
+        int hard = d->hardness[cursor[dim_y]][cursor[dim_x]];
+        int color = (1+ hard/85) + 20;
+        wattron(map_window,COLOR_PAIR(color));
+        hard ? wprintw(map_window, ("%3i"),hard) : wprintw(map_window, ("   "));
+        wattroff(map_window,COLOR_PAIR(color));
+        wprintw(map_window, (" Pos: %2i %2i"),cursor[dim_x], cursor[dim_y]);
         int val = wgetch(map_window);
         switch (val) {
             // Quit the window
             case 'Q':
                 visible = 0;
+                werase(map_window);
                 touchwin(stdscr);
+                break;
+                // Move up-left
+            case KEY_HOME:
+            case '7':
+            case 'y':
+                cursor[dim_y]--;
+                cursor[dim_x]--;
+                werase(map_window);
+                break;
+                // Move up
+            case KEY_UP:
+            case '8':
+            case 'k':
+                cursor[dim_y]--;
+                werase(map_window);
+                break;
+                // Move up-right
+            case KEY_PPAGE:
+            case '9':
+            case 'u':
+                cursor[dim_y]--;
+                cursor[dim_x]++;
+                werase(map_window);
+                break;
+                // Move right
+            case KEY_RIGHT:
+            case '6':
+            case 'l':
+                cursor[dim_x]++;
+                werase(map_window);
+                break;
+
+                // Move down-right
+            case KEY_NPAGE:
+            case '3':
+            case 'n':
+                cursor[dim_y]++;
+                cursor[dim_x]++;
+                werase(map_window);
+                break;
+
+                // Move down
+            case KEY_DOWN:
+            case '2':
+            case 'j':
+                cursor[dim_y]++;
+                werase(map_window);
+                break;
+                // Move down-left
+            case KEY_END:
+            case '1':
+            case 'b':
+                cursor[dim_y]++;
+                cursor[dim_x]--;
+                werase(map_window);
+                break;
+                // Move left
+            case KEY_LEFT:
+            case '4':
+            case 'h':
+                cursor[dim_x]--;
+                werase(map_window);
                 break;
             default:
                 break;
         }
     }
+    //TODO add cursor functionality to view targeted squares hardness
 }
 
 void create_dist_map_win(Dungeon *d){
@@ -1009,7 +1084,6 @@ void render_monster_info_win(Dungeon *d) {
         mvwaddch(monster_win, cursor[dim_y] + 1, cursor[dim_x], '*');
         if (character_mappair(cursor)){
             Character *Char = character_mappair(cursor);
-            //TODO maybe render more monsters stats here
             wattron(monster_win,COLOR_PAIR(Char->dispColor));
             mvwprintw(monster_win, DUNGEON_Y +1, 0, Char->name.c_str());
             wattroff(monster_win,COLOR_PAIR(Char->dispColor));
