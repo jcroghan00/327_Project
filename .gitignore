@@ -1,1 +1,20 @@
+# idk
+.#dungeon.c
+.M.swp
+
+# Generated Files
+*.o 
+*.d 
+TAGS 
+core 
+vgcore.* 
+gmon.out
+
+# Backup files
 /backups
+*~ 
+\#* 
+*pgm
+
+# Executable
+rlg327

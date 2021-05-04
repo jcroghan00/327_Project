@@ -1,17 +1,20 @@
-Jack Croghan   jcroghan@iastate.edu
-Ryan Tullis    rctullis@iastate.edu
+Jack Croghan           jcroghan@iastate.edu
+Ryan Tullis            rctullis@iastate.edu
+Aashish Komaragiri     adkoma@iastate.edu 
 
-README assignment-1.03
+README assignment-1.10
 
-     1.03 was all about the monster pathfinding algorithm for the dungeon.
-We started with our code from 1.02 that was built off of the instructor's
-code from 1.01.
-     The non-tunneling monsters pathfinding only checks the areas that are
-accessible via traveling over rooms or corridors. The tunneling monster is
-able to travel over or through any surface and will prioritize tiles with
-less hardness.
-     All of the distance checking starts at the players location and will
-check all of the viable areas of the dungeon to see how many steps they
-should take.
-     Currently both of the distance maps are printed to the console along
-with the standard dungeon output. 
+For this weeks assignment we choose to implement a few extra functions
+to make our dungeon better. First we added commands to display a few
+extra ways of rendering the dungeon. these include rendering a
+1. hardness map
+2. tunneling distance map
+3. non tunneling distance map
+4. terrain map
+As well as adding these functions we decided to update the save and load
+functions of the dungeon to bring them up to date with a dungeon
+containing monsters and objects. We also added some more functionality to the
+look at monsters function by displaying a monsters colored name,HP, damage
+range,and speed when your cursor is hovered over them before you select them.
+We also added an improvment to our hardness map, detailed earlier, that allows
+you to hover over a cell and display its exact hardness and position.
